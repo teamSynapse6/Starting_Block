@@ -14,6 +14,7 @@ export 'package:starting_block/constants/widgets/divider_component.dart'; //디�
 export 'package:starting_block/constants/widgets/detailpage_containedbutton.dart'; //공고 상세페이지의 버튼
 export 'package:starting_block/constants/widgets/inputchips_component.dart'; //인풋칩버튼
 export 'package:starting_block/constants/widgets/dialog_component.dart'; //다이얼로그(alert창) 컴포넌트
+export 'package:starting_block/constants/widgets/bookmark/bookmark_button.dart'; //로드맵에 저장 버튼
 
 //바텀시트
 export 'package:starting_block/constants/widgets/bottomsheet/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트

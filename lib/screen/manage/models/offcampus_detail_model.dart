@@ -1,5 +1,14 @@
 class OffCampusDetailModel {
-  final String id, title, organize, startDate, endDate, target, age, type, link;
+  final String id,
+      title,
+      organize,
+      startDate,
+      endDate,
+      target,
+      age,
+      type,
+      link,
+      classification;
 
   OffCampusDetailModel.fromJson(Map<String, dynamic> json)
       : id = json['id'].toString(),
@@ -10,5 +19,6 @@ class OffCampusDetailModel {
         target = json['지원대상'] ?? '',
         age = json['나이'] ?? '',
         type = json['지원유형'] ?? '',
-        link = json['링크'] ?? '';
+        link = json['링크'] ?? '',
+        classification = json['구분'] ?? '';
 }

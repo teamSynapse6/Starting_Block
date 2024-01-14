@@ -27,4 +27,7 @@ class AppColors {
 
   // chipsColor
   static const Color chipsColor = Color(0XFFC8C8C8);
+
+  // BG Color
+  static const Color secondaryBG = Color(0XFFF3F4F6);
 }

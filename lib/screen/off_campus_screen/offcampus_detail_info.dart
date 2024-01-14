@@ -11,6 +11,7 @@ class OffCampusDetailBody extends StatelessWidget {
   final String type;
   final String link;
   final String thisID;
+  final String classification;
 
   const OffCampusDetailBody({
     Key? key,
@@ -22,6 +23,7 @@ class OffCampusDetailBody extends StatelessWidget {
     required this.type,
     required this.link,
     required this.thisID,
+    required this.classification,
   }) : super(key: key);
 
   @override

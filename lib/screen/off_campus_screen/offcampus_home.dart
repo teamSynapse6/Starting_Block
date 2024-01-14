@@ -97,6 +97,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                           thisTitle: offCampusData.title,
                           thisStartDate: offCampusData.startDate,
                           thisEndDate: offCampusData.endDate,
+                          thisClassification: offCampusData.classification,
                           isSaved: false,
                           bookMarkTap: null,
                         );

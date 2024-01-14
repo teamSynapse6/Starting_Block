@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/color_table.dart';
+import 'package:starting_block/constants/font_table.dart';
 import 'package:starting_block/constants/sizes.dart';
 
 class ThemeManage {
@@ -52,6 +53,24 @@ class ThemeManage {
         surfaceTintColor: AppColors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      tabBarTheme: TabBarTheme(
+        labelStyle: AppTextStyles.bd1,
+        unselectedLabelStyle: AppTextStyles.bd2,
+        labelColor: AppColors.blue,
+        unselectedLabelColor: AppColors.g4,
+        indicatorColor: AppColors.blue,
+        indicatorSize: TabBarIndicatorSize.tab,
+        dividerColor: Colors.transparent,
+        overlayColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.focused) ||
+                states.contains(MaterialState.pressed)) {
+              return AppColors.g1;
+            }
+            return AppColors.g1;
+          },
         ),
       ),
     );

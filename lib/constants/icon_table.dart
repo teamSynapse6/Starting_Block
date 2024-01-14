@@ -42,6 +42,10 @@ class AppImages {
   static AssetImage get like_inactived24 =>
       const AssetImage('assets/icon/24/like_inactived.png');
   static AssetImage get next => const AssetImage('assets/icon/24/next.png');
+  static AssetImage get next_g1 =>
+      const AssetImage('assets/icon/24/next_g1.png');
+  static AssetImage get next_g2_small =>
+      const AssetImage('assets/icon/24/next_g1_small.png');
   static AssetImage get notification_actived =>
       const AssetImage('assets/icon/24/notification_actived.png');
   static AssetImage get notification_inactived =>

@@ -225,12 +225,10 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
 class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SaveAppBar({
     Key? key,
-    required this.isSaved,
-    required this.bookMarkTap,
+    required this.thisBookMark, // 이 부분을 Widget으로 변경
   }) : super(key: key);
 
-  final bool isSaved;
-  final bookMarkTap;
+  final Widget thisBookMark; // 이 부분을 Widget으로 변경
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -249,16 +247,10 @@ class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Image(image: AppImages.back),
         ),
         actions: <Widget>[
-          GestureDetector(
-            onTap: bookMarkTap,
-            child: SizedBox(
-              height: 48,
-              width: 48,
-              child: Image(
-                  image: isSaved
-                      ? AppImages.bookmark_actived
-                      : AppImages.bookmark_inactived),
-            ),
+          SizedBox(
+            height: 48,
+            width: 48,
+            child: thisBookMark, // 이 부분에서 위젯을 사용
           ),
         ],
       ),

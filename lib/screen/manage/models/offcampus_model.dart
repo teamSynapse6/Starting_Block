@@ -1,5 +1,13 @@
 class OffCampusModel {
-  final String id, title, organize, startDate, endDate, target, age, type;
+  final String id,
+      title,
+      organize,
+      startDate,
+      endDate,
+      target,
+      age,
+      type,
+      classification;
 
   OffCampusModel.fromJson(Map<String, dynamic> json)
       : id = json['id'].toString(),
@@ -9,5 +17,6 @@ class OffCampusModel {
         endDate = json['마감일'] ?? '',
         target = json['지원대상'] ?? '',
         age = json['나이'] ?? '',
-        type = json['지원유형'] ?? '';
+        type = json['지원유형'] ?? '',
+        classification = json['구분'] ?? '';
 }

@@ -5,7 +5,12 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class ItemList extends StatelessWidget {
-  final String thisID, thisOrganize, thisTitle, thisStartDate, thisEndDate;
+  final String thisID,
+      thisOrganize,
+      thisTitle,
+      thisStartDate,
+      thisEndDate,
+      thisClassification;
   final bool isSaved;
   final bookMarkTap;
 
@@ -16,6 +21,7 @@ class ItemList extends StatelessWidget {
     required this.thisTitle,
     required this.thisStartDate,
     required this.thisEndDate,
+    required this.thisClassification,
     required this.isSaved, //여기부터 저장 기능
     required this.bookMarkTap,
   });
@@ -47,12 +53,9 @@ class ItemList extends StatelessWidget {
               children: [
                 OrganizeChip(text: thisOrganize),
                 const Spacer(),
-                GestureDetector(
-                  onTap: bookMarkTap,
-                  child: Image(
-                      image: isSaved
-                          ? AppImages.bookmark_actived
-                          : AppImages.bookmark_inactived),
+                BookMarkButton(
+                  id: thisID,
+                  classification: thisClassification,
                 ),
               ],
             ),
