@@ -4,7 +4,12 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class RoadMapList extends StatefulWidget {
-  const RoadMapList({super.key});
+  final Function(String) onSelectedRoadmapChanged;
+
+  const RoadMapList({
+    super.key,
+    required this.onSelectedRoadmapChanged,
+  });
 
   @override
   State<RoadMapList> createState() => _RoadMapListState();
@@ -13,6 +18,11 @@ class RoadMapList extends StatefulWidget {
 class _RoadMapListState extends State<RoadMapList> {
   int? selectedRoadmapIndex;
   String? selectedRoadmapText;
+
+  // Getter를 추가하여 외부에서 선택된 텍스트에 접근할 수 있게 함
+  String? getSelectedRoadmapText() {
+    return selectedRoadmapText;
+  }
 
   void _onEditTap() {
     Navigator.push(
@@ -28,11 +38,21 @@ class _RoadMapListState extends State<RoadMapList> {
 
   @override
   Widget build(BuildContext context) {
-    final roadmapItems = Provider.of<RoadMapModel>(context).roadmapList;
+    final roadmapModel = Provider.of<RoadMapModel>(context);
+    final roadmapItems = roadmapModel.roadmapList;
+    final roadmapCheckItems = roadmapModel.roadmapListCheck;
 
+    // 첫 번째 항목이 '현 단계'인 경우를 기본값으로 설정
     if (selectedRoadmapText == null && roadmapItems.isNotEmpty) {
       selectedRoadmapText = roadmapItems[0];
+      if (roadmapCheckItems.isEmpty) {
+        roadmapCheckItems[0] = '현단계';
+      }
     }
+
+    // '현 단계'의 인덱스 찾기
+    int currentStepIndex =
+        roadmapCheckItems.indexOf('현단계') + 1; // 인덱스가 0부터 시작하므로 +1
 
     void roadMapTap(BuildContext context) async {
       await showModalBottomSheet(
@@ -41,9 +61,12 @@ class _RoadMapListState extends State<RoadMapList> {
         builder: (BuildContext bc) {
           return Consumer<RoadMapModel>(
             builder: (context, roadmapModel, child) {
+              final roadmapItems = roadmapModel.roadmapList;
+              final roadmapCheckItems =
+                  roadmapModel.roadmapListCheck; // roadmapListCheck를 가져옴
+
               return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setStateModal) {
-                  final roadmapItems = roadmapModel.roadmapList;
                   return Container(
                     color: AppColors.white,
                     height: 600,
@@ -74,6 +97,11 @@ class _RoadMapListState extends State<RoadMapList> {
                             itemCount: roadmapItems.length,
                             itemBuilder: (BuildContext context, int index) {
                               String roadmapList = roadmapItems[index];
+                              String? roadmapCheck =
+                                  roadmapCheckItems.isNotEmpty
+                                      ? roadmapCheckItems[index]
+                                      : null;
+
                               return GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
@@ -82,6 +110,8 @@ class _RoadMapListState extends State<RoadMapList> {
                                   });
                                   setState(() {
                                     selectedRoadmapText = roadmapItems[index];
+                                    widget.onSelectedRoadmapChanged(
+                                        selectedRoadmapText!);
                                   });
                                 },
                                 child: Container(
@@ -92,13 +122,35 @@ class _RoadMapListState extends State<RoadMapList> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 24),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        roadmapList,
-                                        style: AppTextStyles.bd2
-                                            .copyWith(color: AppColors.g6),
-                                      ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        if (roadmapCheck == '현단계')
+                                          Text(
+                                            roadmapList,
+                                            style: AppTextStyles.bd1.copyWith(
+                                                color: AppColors.blue),
+                                          ),
+                                        if (roadmapCheck == '도약완료' ||
+                                            roadmapCheck == null)
+                                          Text(
+                                            roadmapList,
+                                            style: AppTextStyles.bd2
+                                                .copyWith(color: AppColors.g6),
+                                          ),
+                                        Gaps.h8,
+                                        if (roadmapCheck == '현단계')
+                                          Text(
+                                            '· 현 단계',
+                                            style: AppTextStyles.caption
+                                                .copyWith(
+                                                    color: AppColors.blue),
+                                          ),
+                                        if (roadmapCheck == '도약완료')
+                                          Text('· 도약완료',
+                                              style: AppTextStyles.caption),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -122,7 +174,7 @@ class _RoadMapListState extends State<RoadMapList> {
                               color: AppColors.bluebg,
                               child: Center(
                                 child: Text(
-                                  '현재 ${roadmapItems.length}단계 중 1단계를 도약했어요 :)',
+                                  '현재 ${roadmapItems.length}단계 중 $currentStepIndex단계를 도약했어요 :)',
                                   style: AppTextStyles.bd2
                                       .copyWith(color: AppColors.g5),
                                 ),

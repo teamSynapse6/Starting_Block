@@ -19,4 +19,6 @@ class OffCampusModel {
         age = json['나이'] ?? '',
         type = json['지원유형'] ?? '',
         classification = json['구분'] ?? '';
+
+  // void toJson() {}
 }

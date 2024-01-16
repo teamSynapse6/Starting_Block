@@ -21,9 +21,17 @@ export 'package:starting_block/constants/widgets/bottomsheet/enterpreneurchipshe
 export 'package:starting_block/constants/widgets/bottomsheet/residencechipsheet.dart'; //지역 리스트 및 칩스 컴포넌트
 export 'package:starting_block/constants/widgets/bottomsheet/supportchipsheet.dart'; //지원유형 리스트 및 칩스 컴포넌트
 export 'package:starting_block/constants/widgets/bottomsheet/resetbutton.dart'; //지원유형 리스트 및 칩스 컴포넌트
+export 'package:starting_block/constants/widgets/bottomsheet/bottomsheet_list.dart'; //bottomsheet 리스트 컴포넌트
 
 //리스트 필터 시스템
 export 'package:starting_block/constants/widgets/bottomsheet/intergrate_filter.dart'; //통합 필터 시스템
 
-export 'package:starting_block/constants/widgets/bottomsheet/bottomsheet_list.dart'; //bottomsheet 리스트 컴포넌트
+//교외지원사업용 컴포넌트 관리
+export 'package:starting_block/screen/roadmap_screen/widget/roadmap_gotosave.dart'; //로드맵_지원사업 저장하러 가기
+export 'package:starting_block/screen/roadmap_screen/widget/roadmap_stepnotify.dart'; //단계 알리미
+export 'package:starting_block/screen/roadmap_screen/widget/roadmap_nextstep.dart'; // 다음 단계 도약
+export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_card.dart'; //로드맵_교외사업의 카드
+
+
+
 

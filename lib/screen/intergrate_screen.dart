@@ -5,16 +5,28 @@ import 'package:starting_block/screen/manage/screen_manage.dart';
 class IntergrateScreen extends StatefulWidget {
   const IntergrateScreen({super.key});
 
+  // 외부에서 접근 가능한 함수를 정의
+  static void setSelectedIndexToZero(BuildContext context) {
+    final state = context.findAncestorStateOfType<_OffCampusState>();
+    state?.setSelectedIndexToZero();
+  }
+
   @override
   State<IntergrateScreen> createState() => _OffCampusState();
 }
 
 class _OffCampusState extends State<IntergrateScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 3;
 
   void _onTap(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  void setSelectedIndexToZero() {
+    setState(() {
+      _selectedIndex = 0;
     });
   }
 
