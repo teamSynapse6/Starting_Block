@@ -25,29 +25,41 @@ class RoadMapModel extends ChangeNotifier {
     }
   }
 
-  // 항목의 순서를 변경하는 메소드
+// 항목의 순서를 변경하는 메소드
   void reorderRoadmapList(int oldIndex, int newIndex) {
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
+
+    // roadmapList와 roadmapListCheck에서 항목을 이동
     final item = _roadmapList.removeAt(oldIndex);
     _roadmapList.insert(newIndex, item);
-
-    // roadmapListCheck의 순서도 동일하게 업데이트
     final checkItem = _roadmapListCheck.removeAt(oldIndex);
     _roadmapListCheck.insert(newIndex, checkItem);
 
-    // '현단계'의 새 위치에 따라 이전 항목들을 '도약완료'로 업데이트
-    if (checkItem == '현단계') {
-      for (int i = 0; i < newIndex; i++) {
-        _roadmapListCheck[i] = '도약완료';
+    // 현단계의 새 위치 찾기
+    int currentStageIndex = _roadmapListCheck.indexOf('현단계');
+
+    // 현단계가 존재하는 경우, 새 위치에 따라 업데이트
+    if (currentStageIndex != -1) {
+      for (int i = 0; i < _roadmapListCheck.length; i++) {
+        if (i < currentStageIndex) {
+          _roadmapListCheck[i] = '도약완료';
+        } else if (i == currentStageIndex) {
+          _roadmapListCheck[i] = '현단계';
+        } else {
+          _roadmapListCheck[i] = null;
+        }
       }
-      _roadmapListCheck[newIndex] = '현단계';
     }
 
-    saveRoadmapList(); // SharedPreferences에서 변경 사항 저장
+    saveRoadmapList(); // 변경 사항 저장
     _saveRoadmapListCheck(); // 변경된 roadmapListCheck 저장
     notifyListeners(); // 변경 사항 리스너들에게 알림
+
+    // 로깅: roadmapList와 roadmapListCheck의 현재 상태 출력
+    print("Updated roadmapList: $_roadmapList");
+    print("Updated roadmapListCheck: $_roadmapListCheck");
   }
 
   Future<void> saveRoadmapList() async {
@@ -66,7 +78,10 @@ class RoadMapModel extends ChangeNotifier {
   void addNewItem(String newItem) {
     if (newItem.isNotEmpty) {
       _roadmapList.add(newItem);
+      _roadmapListCheck.add(null); // roadmapListCheck에도 항목 추가
+
       saveRoadmapList();
+      _saveRoadmapListCheck(); // roadmapListCheck 변경 사항 저장
       notifyListeners();
     }
   }
@@ -206,6 +221,7 @@ class RoadMapModel extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     String roadmapListCheckString = json.encode(_roadmapListCheck);
     await prefs.setString('roadmapListCheck', roadmapListCheckString);
+    notifyListeners(); // 변경 사항 리스너들에게 알림
   }
 
   void setCurrentStage(int index) {
@@ -219,7 +235,6 @@ class RoadMapModel extends ChangeNotifier {
       }
     }
     _saveRoadmapListCheck();
-    notifyListeners();
   }
 
   // 현 단계를 다음 항목으로 이동하는 메소드

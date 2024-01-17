@@ -93,14 +93,15 @@ class RoadMapEditState extends State<RoadMapEdit> {
                         ),
                       ),
                   ],
+                  // RoadMapEditState 클래스 내의 onReorder 콜백
                   onReorder: (int oldIndex, int newIndex) {
                     setState(() {
-                      if (newIndex > oldIndex) {
-                        newIndex -= 1;
-                      }
-                      final item = roadmapModel.roadmapList.removeAt(oldIndex);
-                      roadmapModel.roadmapList.insert(newIndex, item);
                       _isOrderChanged = true;
+                      // RoadMapModel 인스턴스를 가져옵니다.
+                      final roadmapModel =
+                          Provider.of<RoadMapModel>(context, listen: false);
+                      // reorderRoadmapList 메소드를 사용하여 순서 변경을 처리합니다.
+                      roadmapModel.reorderRoadmapList(oldIndex, newIndex);
                     });
                   },
                 );
@@ -116,10 +117,7 @@ class RoadMapEditState extends State<RoadMapEdit> {
             child: GestureDetector(
               onTap: _isOrderChanged
                   ? () {
-                      Provider.of<RoadMapModel>(context, listen: false)
-                          .updateRoadmapList(
-                              Provider.of<RoadMapModel>(context, listen: false)
-                                  .roadmapList);
+                      // 불필요한 updateRoadmapList 호출 제거
                       Navigator.pop(context);
                     }
                   : null,

@@ -42,29 +42,28 @@ class _RoadMapListState extends State<RoadMapList> {
     final roadmapItems = roadmapModel.roadmapList;
     final roadmapCheckItems = roadmapModel.roadmapListCheck;
 
-    // 첫 번째 항목이 '현 단계'인 경우를 기본값으로 설정
-    if (selectedRoadmapText == null && roadmapItems.isNotEmpty) {
+    // '현단계' 인덱스 찾기 및 선택 상태 업데이트
+    int currentStageIndex = roadmapCheckItems.indexOf('현단계');
+    if (currentStageIndex != -1 && selectedRoadmapIndex != currentStageIndex) {
+      // '현단계'가 있는 경우
+      selectedRoadmapText = roadmapItems[currentStageIndex];
+      selectedRoadmapIndex = currentStageIndex;
+    } else if (roadmapItems.isNotEmpty && selectedRoadmapIndex == null) {
+      // 초기 상태에서 '현단계'가 없는 경우 첫 번째 항목을 기본값으로 설정
       selectedRoadmapText = roadmapItems[0];
-      if (roadmapCheckItems.isEmpty) {
-        roadmapCheckItems[0] = '현단계';
-      }
+      selectedRoadmapIndex = 0;
     }
 
-    // '현 단계'의 인덱스 찾기
-    int currentStepIndex =
-        roadmapCheckItems.indexOf('현단계') + 1; // 인덱스가 0부터 시작하므로 +1
-
     void roadMapTap(BuildContext context) async {
+      // '현 단계'의 인덱스를 구하는 로직을 StatefulBuilder 외부로 이동
+      int currentStepIndex = roadmapCheckItems.indexOf('현단계') + 1;
+
       await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
         builder: (BuildContext bc) {
           return Consumer<RoadMapModel>(
             builder: (context, roadmapModel, child) {
-              final roadmapItems = roadmapModel.roadmapList;
-              final roadmapCheckItems =
-                  roadmapModel.roadmapListCheck; // roadmapListCheck를 가져옴
-
               return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setStateModal) {
                   return Container(
@@ -107,11 +106,9 @@ class _RoadMapListState extends State<RoadMapList> {
                                 onTap: () {
                                   setStateModal(() {
                                     selectedRoadmapIndex = index;
-                                  });
-                                  setState(() {
-                                    selectedRoadmapText = roadmapItems[index];
-                                    widget.onSelectedRoadmapChanged(
-                                        selectedRoadmapText!);
+                                    selectedRoadmapText = roadmapList;
+                                    widget
+                                        .onSelectedRoadmapChanged(roadmapList);
                                   });
                                 },
                                 child: Container(

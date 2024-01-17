@@ -11,13 +11,27 @@ class NextStep extends StatefulWidget {
 }
 
 class _NextStepState extends State<NextStep> {
+  void _thisNextTap() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DialogComponent(
+          title: '단계를 도약하시겠습니까?',
+          description: '단계 도약 후에는 이전 단계로 되돌아갈 수 없습니다',
+          rightActionText: '도약하기',
+          rightActionTap: () {
+            Provider.of<RoadMapModel>(context, listen: false).moveToNextStage();
+            Navigator.of(context).pop(); // 다이얼로그 닫기
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // RoadMapModel에 접근하여 moveToNextStage 메소드를 호출
-        Provider.of<RoadMapModel>(context, listen: false).moveToNextStage();
-      },
+      onTap: _thisNextTap,
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.white.withOpacity(0.08),
