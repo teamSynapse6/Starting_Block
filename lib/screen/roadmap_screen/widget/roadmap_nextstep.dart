@@ -4,8 +4,12 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class NextStep extends StatefulWidget {
-  const NextStep({super.key});
+  final VoidCallback onResetToCurrentStage;
 
+  const NextStep({
+    Key? key,
+    required this.onResetToCurrentStage,
+  }) : super(key: key);
   @override
   State<NextStep> createState() => _NextStepState();
 }
@@ -22,6 +26,7 @@ class _NextStepState extends State<NextStep> {
           rightActionTap: () {
             Provider.of<RoadMapModel>(context, listen: false).moveToNextStage();
             Navigator.of(context).pop(); // 다이얼로그 닫기
+            widget.onResetToCurrentStage();
           },
         );
       },

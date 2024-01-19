@@ -28,11 +28,15 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   String thisLink = 'N/A';
   String thisID = 'N/A';
   String thisClassification = 'N/A'; //<- 여기까지가 데이터 모델에서 받아오는 데이터
+  late Future<List<OffCampusRecommendModel>> futureRecommendations;
 
   @override
   void initState() {
     super.initState();
     loadoffCampusDetailData();
+
+    // loadJsonData 함수를 사용하여 futureRecommendations 초기화
+    futureRecommendations = loadJsonData();
   }
 
   Future<void> loadoffCampusDetailData() async {
@@ -100,6 +104,10 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
               height: 8,
               decoration: const BoxDecoration(color: AppColors.g1),
             ),
+            Recommendation(
+              futureRecommendations: futureRecommendations,
+              thisID: thisID,
+            )
           ],
         ),
       ),

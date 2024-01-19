@@ -80,14 +80,22 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Gaps.v24,
-          Text(
-            '저장한 사업으로 도약하기',
-            style: AppTextStyles.st2.copyWith(color: AppColors.g6),
-          ),
-          Gaps.v4,
-          Text(
-            '신청 완료한 사업은 도약 완료 버튼으로 진행도 확인하기',
-            style: AppTextStyles.caption.copyWith(color: AppColors.g5),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '저장한 사업으로 도약하기',
+                  style: AppTextStyles.st2.copyWith(color: AppColors.g6),
+                ),
+                Gaps.v4,
+                Text(
+                  '신청 완료한 사업은 도약 완료 버튼으로 진행도 확인하기',
+                  style: AppTextStyles.caption.copyWith(color: AppColors.g5),
+                ),
+              ],
+            ),
           ),
           Gaps.v20,
           Expanded(
@@ -102,6 +110,7 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
                 if (filteredItems.isNotEmpty) {
                   // 리스트에 아이템이 있는 경우
                   return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     itemCount: filteredItems.length,
                     itemBuilder: (context, index) {
                       OffCampusModel item = filteredItems[index];

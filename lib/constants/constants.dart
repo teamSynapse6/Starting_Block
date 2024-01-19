@@ -26,10 +26,11 @@ export 'package:starting_block/constants/widgets/bottomsheet/bottomsheet_list.da
 //리스트 필터 시스템
 export 'package:starting_block/constants/widgets/bottomsheet/intergrate_filter.dart'; //통합 필터 시스템
 
-//교외지원사업용 컴포넌트 관리
+//로드맵 컴포넌트 관리
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_gotosave.dart'; //로드맵_지원사업 저장하러 가기
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_stepnotify.dart'; //단계 알리미
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_nextstep.dart'; // 다음 단계 도약
+export 'package:starting_block/screen/roadmap_screen/widget/roadmap_backtostep.dart'; // 현 단계로 돌아가기
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_card.dart'; //로드맵_교외사업의 카드
 
 

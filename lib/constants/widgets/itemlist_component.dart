@@ -4,6 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
+String formatDate(String date) {
+  // '20240102'와 같은 문자열을 '2024-01-02' 형식으로 변환
+  String year = date.substring(0, 4);
+  String month = date.substring(4, 6);
+  String day = date.substring(6, 8);
+
+  return '$year-$month-$day';
+}
+
 class ItemList extends StatelessWidget {
   final String thisID,
       thisOrganize,
@@ -11,8 +20,6 @@ class ItemList extends StatelessWidget {
       thisStartDate,
       thisEndDate,
       thisClassification;
-  final bool isSaved;
-  final bookMarkTap;
 
   const ItemList({
     super.key,
@@ -22,12 +29,13 @@ class ItemList extends StatelessWidget {
     required this.thisStartDate,
     required this.thisEndDate,
     required this.thisClassification,
-    required this.isSaved, //여기부터 저장 기능
-    required this.bookMarkTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    String formattedStartDate = formatDate(thisStartDate);
+    String formattedEndDate = formatDate(thisEndDate);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -66,12 +74,12 @@ class ItemList extends StatelessWidget {
             ),
             Gaps.v10,
             Text(
-              '등록일 $thisStartDate',
+              '등록일 $formattedStartDate',
               style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
             ),
             Gaps.v4,
             Text(
-              '마감일 $thisEndDate',
+              '마감일 $formattedEndDate',
               style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
             ),
             Gaps.v16

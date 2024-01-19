@@ -14,6 +14,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
   late TabController _tabController;
   String _nickName = "";
   String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
+  bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
 
   @override
   void initState() {
@@ -21,6 +22,12 @@ class _RoadmapHomeState extends State<RoadmapHome>
     _loadNickName();
     _tabController = TabController(length: 4, vsync: this);
     // _selectedRoadmapText를 로드하는 논리를 여기에 추가합니다
+  }
+
+  final GlobalKey<State<RoadMapList>> roadMapListKey = GlobalKey();
+
+  void resetToCurrentStage() {
+    RoadMapList.resetToCurrentStage(roadMapListKey);
   }
 
   Future<void> _loadNickName() async {
@@ -31,9 +38,10 @@ class _RoadmapHomeState extends State<RoadmapHome>
   }
 
   // 콜백 함수 구현
-  void _onSelectedRoadmapChanged(String selectedText) {
+  void _onSelectedRoadmapChanged(String selectedText, bool isCurrentStage) {
     setState(() {
       _selectedRoadmapText = selectedText;
+      _isCurrentStageSelected = isCurrentStage;
     });
   }
 
@@ -75,14 +83,19 @@ class _RoadmapHomeState extends State<RoadmapHome>
                     ),
                     Gaps.v4,
                     RoadMapList(
+                      key: roadMapListKey, // GlobalKey를 RoadMapList에 할당
                       onSelectedRoadmapChanged: _onSelectedRoadmapChanged,
                     ),
                     Gaps.v12,
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Spacer(),
-                        NextStep(),
+                        const Spacer(),
+                        _isCurrentStageSelected
+                            ? NextStep(
+                                onResetToCurrentStage: resetToCurrentStage)
+                            : GoBackToStep(
+                                onResetToCurrentStage: resetToCurrentStage),
                       ],
                     ),
                   ],

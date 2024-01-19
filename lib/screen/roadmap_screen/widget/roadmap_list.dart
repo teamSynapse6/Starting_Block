@@ -4,15 +4,20 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class RoadMapList extends StatefulWidget {
-  final Function(String) onSelectedRoadmapChanged;
+  final Function(String, bool) onSelectedRoadmapChanged;
 
   const RoadMapList({
-    super.key,
+    Key? key,
     required this.onSelectedRoadmapChanged,
-  });
+  }) : super(key: key);
 
   @override
   State<RoadMapList> createState() => _RoadMapListState();
+
+  // Public 메서드로 resetToCurrentStage 추가
+  static void resetToCurrentStage(GlobalKey<State<RoadMapList>> key) {
+    (key.currentState as _RoadMapListState?)?.resetToCurrentStage();
+  }
 }
 
 class _RoadMapListState extends State<RoadMapList> {
@@ -36,6 +41,29 @@ class _RoadMapListState extends State<RoadMapList> {
     });
   }
 
+  final GlobalKey<State<RoadMapList>> key = GlobalKey();
+
+  void resetToCurrentStage() {
+    // Provider를 통해 RoadMapModel의 인스턴스를 가져옴
+    final roadmapModel = Provider.of<RoadMapModel>(context, listen: false);
+    final roadmapItems = roadmapModel.roadmapList;
+    final roadmapCheckItems = roadmapModel.roadmapListCheck;
+    // '현단계' 인덱스 찾기
+    final int currentStageIndex = roadmapCheckItems.indexOf('현단계');
+
+    // '현단계' 텍스트 찾기
+    final String currentStageText = currentStageIndex != -1
+        ? roadmapItems[currentStageIndex]
+        : ''; // 혹은 기본값 설정
+
+    setState(() {
+      selectedRoadmapIndex = currentStageIndex;
+      selectedRoadmapText = currentStageText;
+      widget.onSelectedRoadmapChanged(
+          currentStageText, currentStageIndex != -1);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final roadmapModel = Provider.of<RoadMapModel>(context);
@@ -44,12 +72,12 @@ class _RoadMapListState extends State<RoadMapList> {
 
     // '현단계' 인덱스 찾기 및 선택 상태 업데이트
     int currentStageIndex = roadmapCheckItems.indexOf('현단계');
-    if (currentStageIndex != -1 && selectedRoadmapIndex != currentStageIndex) {
-      // '현단계'가 있는 경우
+    if (currentStageIndex != -1 && selectedRoadmapIndex == null) {
+      // '현단계'가 있고, 아직 선택된 항목이 없는 경우
       selectedRoadmapText = roadmapItems[currentStageIndex];
       selectedRoadmapIndex = currentStageIndex;
     } else if (roadmapItems.isNotEmpty && selectedRoadmapIndex == null) {
-      // 초기 상태에서 '현단계'가 없는 경우 첫 번째 항목을 기본값으로 설정
+      // 초기 상태에서 '현단계'가 없고, 선택된 항목이 없는 경우 첫 번째 항목을 기본값으로 설정
       selectedRoadmapText = roadmapItems[0];
       selectedRoadmapIndex = 0;
     }
@@ -104,11 +132,17 @@ class _RoadMapListState extends State<RoadMapList> {
                               return GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
+                                  bool isCurrentStage =
+                                      roadmapCheckItems[index] == '현단계';
                                   setStateModal(() {
                                     selectedRoadmapIndex = index;
                                     selectedRoadmapText = roadmapList;
-                                    widget
-                                        .onSelectedRoadmapChanged(roadmapList);
+                                    widget.onSelectedRoadmapChanged(
+                                        roadmapList, isCurrentStage);
+                                    print(
+                                        'Selected Index: $selectedRoadmapIndex');
+                                    print(
+                                        'Current Stage text: $selectedRoadmapText');
                                   });
                                 },
                                 child: Container(

@@ -47,8 +47,6 @@ class Recommendation extends StatelessWidget {
                         thisStartDate: item.startDate,
                         thisEndDate: item.endDate,
                         thisClassification: item.classification,
-                        bookMarkTap: null,
-                        isSaved: false,
                       );
                     },
                   );

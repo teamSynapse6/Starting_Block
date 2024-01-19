@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
+String formatDate(String date) {
+  // 문자열 길이가 8이 아니면 원래 날짜 문자열을 반환
+  if (date.length != 8) {
+    return date;
+  }
+
+  String year = date.substring(0, 4);
+  String month = date.substring(4, 6);
+  String day = date.substring(6, 8);
+
+  return '$year-$month-$day';
+}
+
 class OffCampusDetailBody extends StatelessWidget {
   final String organize;
   final String title;
@@ -28,6 +41,9 @@ class OffCampusDetailBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formattedStartDate = formatDate(startDate);
+    String formattedEndDate = formatDate(endDate);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -47,11 +63,11 @@ class OffCampusDetailBody extends StatelessWidget {
           ),
           Gaps.v8,
           Text(
-            '등록일 $startDate',
+            '등록일 $formattedStartDate',
             style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
           ),
           Text(
-            '마감일 $endDate',
+            '마감일 $formattedEndDate',
             style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
           ),
           Gaps.v12,
