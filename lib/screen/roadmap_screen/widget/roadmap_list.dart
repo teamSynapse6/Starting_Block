@@ -92,10 +92,6 @@ class _RoadMapListState extends State<RoadMapList> {
         builder: (BuildContext context) {
           return Consumer<RoadMapModel>(
             builder: (context, roadmapModel, child) {
-              print(
-                  'RoadMapList가 업데이트되었습니다. 현재 로드맵 리스트: ${roadmapModel.roadmapList}');
-              print('RoadMapList의 단계 업데이트: ${roadmapModel.roadmapListCheck}');
-
               final roadmapItems = roadmapModel.roadmapList;
               final roadmapCheckItems =
                   roadmapModel.roadmapListCheck; // roadmapListCheck를 가져옴

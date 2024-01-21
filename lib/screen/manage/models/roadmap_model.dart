@@ -45,8 +45,8 @@ class RoadMapModel extends ChangeNotifier {
     _saveRoadmapListCheck(); // 변경된 roadmapListCheck 저장
     notifyListeners(); // 변경 사항을 알립니다.
 
-    print('로드맵 리스트: $_roadmapList');
-    print('단계 체크: $_roadmapListCheck');
+    print('로드맵 순서: $_roadmapList');
+    print('단계체킹: $_roadmapListCheck');
   }
 
   Future<void> saveRoadmapList() async {

@@ -118,24 +118,48 @@ class RoadMapEditState extends State<RoadMapEdit> {
               builder: (context, roadmapModel, child) {
                 return ReorderableListView(
                   children: <Widget>[
-                    for (final item in _tempRoadmapList)
-                      SizedBox(
-                        key: Key(item),
-                        height: 48,
-                        child: ListTile(
-                          titleAlignment: ListTileTitleAlignment.center,
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 24),
-                          title: Text(
-                            item,
-                            style:
-                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                    for (int index = 0;
+                        index < _tempRoadmapList.length;
+                        index++)
+                      IgnorePointer(
+                        ignoring: _tempRoadmapListCheck[index] == '도약완료',
+                        key: ValueKey(_tempRoadmapList[index]),
+                        child: SizedBox(
+                          height: 48,
+                          child: ListTile(
+                            titleAlignment: ListTileTitleAlignment.center,
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 24),
+                            title: Text(
+                              _tempRoadmapList[index],
+                              style: AppTextStyles.bd2
+                                  .copyWith(color: AppColors.g6),
+                            ),
+                            trailing: Image(image: AppImages.sort_actived),
                           ),
-                          trailing: Image(image: AppImages.sort_actived),
                         ),
                       ),
                   ],
                   onReorder: (int oldIndex, int newIndex) {
+                    if (_tempRoadmapListCheck[oldIndex] == '도약완료') {
+                      return;
+                    }
+
+                    // 현단계 이후의 null 상태 항목들만 순서 변경 가능하게 합니다.
+                    int currentStageIndex =
+                        _tempRoadmapListCheck.indexOf('현단계');
+                    if (currentStageIndex != -1) {
+                      if (oldIndex < currentStageIndex ||
+                          newIndex <= currentStageIndex) {
+                        return;
+                      }
+                      int lastNullIndex =
+                          _tempRoadmapListCheck.lastIndexOf(null);
+                      if (newIndex > lastNullIndex + 1) {
+                        return;
+                      }
+                    }
+
                     setState(() {
                       _isOrderChanged = true;
                       if (newIndex > oldIndex) {
