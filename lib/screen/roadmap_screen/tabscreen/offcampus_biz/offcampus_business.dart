@@ -8,11 +8,11 @@ import 'package:starting_block/screen/manage/models/offcampus_model.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class TabScreenOfCaBiz extends StatefulWidget {
-  final String thisKeyValue;
+  final String thisSelectedText;
 
   const TabScreenOfCaBiz({
     super.key,
-    required this.thisKeyValue,
+    required this.thisSelectedText,
   });
 
   @override
@@ -41,7 +41,7 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
 
   void _loadAndMatchItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? savedItemsString = prefs.getString(widget.thisKeyValue);
+    String? savedItemsString = prefs.getString(widget.thisSelectedText);
 
     if (savedItemsString != null) {
       List<dynamic> allItemsDynamic = json.decode(savedItemsString);

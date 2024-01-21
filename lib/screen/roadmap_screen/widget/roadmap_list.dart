@@ -4,7 +4,7 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class RoadMapList extends StatefulWidget {
-  final Function(String, bool) onSelectedRoadmapChanged;
+  final Function(String, int, bool) onSelectedRoadmapChanged;
 
   const RoadMapList({
     Key? key,
@@ -23,25 +23,22 @@ class RoadMapList extends StatefulWidget {
 class _RoadMapListState extends State<RoadMapList> {
   int? selectedRoadmapIndex;
   String? selectedRoadmapText;
+  final GlobalKey<State<RoadMapList>> key = GlobalKey();
 
   // Getter를 추가하여 외부에서 선택된 텍스트에 접근할 수 있게 함
   String? getSelectedRoadmapText() {
     return selectedRoadmapText;
   }
 
-  void _onEditTap() {
-    Navigator.push(
+  void _onEditTap() async {
+    bool result = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const RoadMapEdit(),
-      ),
-    ).then((_) {
-      // RoadMapEdit에서 돌아온 후 상태를 갱신합니다.
-      setState(() {});
-    });
+      MaterialPageRoute(builder: (context) => const RoadMapEdit()),
+    );
+    if (result) {
+      resetToCurrentStage();
+    }
   }
-
-  final GlobalKey<State<RoadMapList>> key = GlobalKey();
 
   void resetToCurrentStage() {
     // Provider를 통해 RoadMapModel의 인스턴스를 가져옴
@@ -60,7 +57,7 @@ class _RoadMapListState extends State<RoadMapList> {
       selectedRoadmapIndex = currentStageIndex;
       selectedRoadmapText = currentStageText;
       widget.onSelectedRoadmapChanged(
-          currentStageText, currentStageIndex != -1);
+          currentStageText, currentStageIndex, currentStageIndex != -1);
     });
   }
 
@@ -74,8 +71,13 @@ class _RoadMapListState extends State<RoadMapList> {
     int currentStageIndex = roadmapCheckItems.indexOf('현단계');
     if (currentStageIndex != -1 && selectedRoadmapIndex == null) {
       // '현단계'가 있고, 아직 선택된 항목이 없는 경우
-      selectedRoadmapText = roadmapItems[currentStageIndex];
-      selectedRoadmapIndex = currentStageIndex;
+      setState(() {
+        selectedRoadmapText = roadmapItems[currentStageIndex];
+        selectedRoadmapIndex = currentStageIndex;
+        // 콜백 함수 호출하여 상태 변경 반영
+        widget.onSelectedRoadmapChanged(
+            selectedRoadmapText!, selectedRoadmapIndex!, true);
+      });
     } else if (roadmapItems.isNotEmpty && selectedRoadmapIndex == null) {
       // 초기 상태에서 '현단계'가 없고, 선택된 항목이 없는 경우 첫 번째 항목을 기본값으로 설정
       selectedRoadmapText = roadmapItems[0];
@@ -84,14 +86,20 @@ class _RoadMapListState extends State<RoadMapList> {
 
     void roadMapTap(BuildContext context) async {
       // '현 단계'의 인덱스를 구하는 로직을 StatefulBuilder 외부로 이동
-      int currentStepIndex = roadmapCheckItems.indexOf('현단계') + 1;
-
       await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
-        builder: (BuildContext bc) {
+        builder: (BuildContext context) {
           return Consumer<RoadMapModel>(
             builder: (context, roadmapModel, child) {
+              print(
+                  'RoadMapList가 업데이트되었습니다. 현재 로드맵 리스트: ${roadmapModel.roadmapList}');
+              print('RoadMapList의 단계 업데이트: ${roadmapModel.roadmapListCheck}');
+
+              final roadmapItems = roadmapModel.roadmapList;
+              final roadmapCheckItems =
+                  roadmapModel.roadmapListCheck; // roadmapListCheck를 가져옴
+
               return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setStateModal) {
                   return Container(
@@ -138,11 +146,7 @@ class _RoadMapListState extends State<RoadMapList> {
                                     selectedRoadmapIndex = index;
                                     selectedRoadmapText = roadmapList;
                                     widget.onSelectedRoadmapChanged(
-                                        roadmapList, isCurrentStage);
-                                    print(
-                                        'Selected Index: $selectedRoadmapIndex');
-                                    print(
-                                        'Current Stage text: $selectedRoadmapText');
+                                        roadmapList, index, isCurrentStage);
                                   });
                                 },
                                 child: Container(
@@ -205,7 +209,7 @@ class _RoadMapListState extends State<RoadMapList> {
                               color: AppColors.bluebg,
                               child: Center(
                                 child: Text(
-                                  '현재 ${roadmapItems.length}단계 중 $currentStepIndex단계를 도약했어요 :)',
+                                  '현재 ${roadmapItems.length}단계 중 ${roadmapCheckItems.indexOf('현단계') + 1}단계를 도약했어요 :)',
                                   style: AppTextStyles.bd2
                                       .copyWith(color: AppColors.g5),
                                 ),

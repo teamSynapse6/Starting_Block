@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -26,40 +24,29 @@ class RoadMapModel extends ChangeNotifier {
   }
 
 // 항목의 순서를 변경하는 메소드
-  void reorderRoadmapList(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) {
-      newIndex -= 1;
-    }
+  void reorderRoadmapList(List<String> newList, List<String?> newCheckList) {
+    _roadmapList = List<String>.from(newList);
+    _roadmapListCheck = List<String?>.from(newCheckList);
 
-    // roadmapList와 roadmapListCheck에서 항목을 이동
-    final item = _roadmapList.removeAt(oldIndex);
-    _roadmapList.insert(newIndex, item);
-    final checkItem = _roadmapListCheck.removeAt(oldIndex);
-    _roadmapListCheck.insert(newIndex, checkItem);
-
-    // 현단계의 새 위치 찾기
+    // '현단계'가 있는 인덱스 찾기
     int currentStageIndex = _roadmapListCheck.indexOf('현단계');
 
-    // 현단계가 존재하는 경우, 새 위치에 따라 업데이트
-    if (currentStageIndex != -1) {
-      for (int i = 0; i < _roadmapListCheck.length; i++) {
-        if (i < currentStageIndex) {
-          _roadmapListCheck[i] = '도약완료';
-        } else if (i == currentStageIndex) {
-          _roadmapListCheck[i] = '현단계';
-        } else {
-          _roadmapListCheck[i] = null;
-        }
+    // '현단계' 이전 항목들을 '도약완료'로 설정하고, 이후 항목들은 null로 설정
+    for (int i = 0; i < _roadmapListCheck.length; i++) {
+      if (i < currentStageIndex) {
+        _roadmapListCheck[i] = '도약완료';
+      } else if (i > currentStageIndex) {
+        _roadmapListCheck[i] = null;
       }
+      // '현단계' 자체는 변경하지 않음
     }
 
-    saveRoadmapList(); // 변경 사항 저장
+    saveRoadmapList(); // 변경 사항을 SharedPreferences에 저장합니다.
     _saveRoadmapListCheck(); // 변경된 roadmapListCheck 저장
-    notifyListeners(); // 변경 사항 리스너들에게 알림
+    notifyListeners(); // 변경 사항을 알립니다.
 
-    // 로깅: roadmapList와 roadmapListCheck의 현재 상태 출력
-    print("Updated roadmapList: $_roadmapList");
-    print("Updated roadmapListCheck: $_roadmapListCheck");
+    print('로드맵 리스트: $_roadmapList');
+    print('단계 체크: $_roadmapListCheck');
   }
 
   Future<void> saveRoadmapList() async {
@@ -74,11 +61,18 @@ class RoadMapModel extends ChangeNotifier {
     notifyListeners(); // 변경 사항을 알립니다.
   }
 
-  //로드맵 신규 저장 기능
+// 로드맵 신규 저장 기능
   void addNewItem(String newItem) {
     if (newItem.isNotEmpty) {
       _roadmapList.add(newItem);
-      _roadmapListCheck.add(null); // roadmapListCheck에도 항목 추가
+
+      // 새로 추가된 항목이 리스트의 첫 번째라면 '현단계'로 설정합니다.
+      // 그렇지 않은 경우 null (아직 도달하지 않은 단계)로 설정합니다.
+      if (_roadmapList.length == 1) {
+        _roadmapListCheck.add('현단계');
+      } else {
+        _roadmapListCheck.add(null);
+      }
 
       saveRoadmapList();
       _saveRoadmapListCheck(); // roadmapListCheck 변경 사항 저장
@@ -96,13 +90,17 @@ class RoadMapModel extends ChangeNotifier {
       // roadmapListCheck에서 해당 항목 삭제
       _roadmapListCheck.removeAt(index);
 
-      saveRoadmapList(); // 변경된 roadmapList를 SharedPreferences에 저장
-
-      // 삭제된 항목이 '현단계'였다면, 이전 항목을 새로운 '현단계'로 설정
-      if (isCurrentStage && index > 0) {
-        _roadmapListCheck[index - 1] = '현단계';
+      // 삭제된 항목이 '현단계'였고, 첫 번째 항목이라면 다음 항목을 '현단계'로 설정
+      if (isCurrentStage) {
+        if (index == 0 && _roadmapListCheck.isNotEmpty) {
+          _roadmapListCheck[0] = '현단계';
+        } else if (index > 0) {
+          // 삭제된 항목이 첫 번째 항목이 아니면 이전 항목을 새로운 '현단계'로 설정
+          _roadmapListCheck[index - 1] = '현단계';
+        }
       }
 
+      saveRoadmapList(); // 변경된 roadmapList를 SharedPreferences에 저장
       notifyListeners(); // 변경 사항 리스너들에게 알림
     }
   }
@@ -132,8 +130,6 @@ class RoadMapModel extends ChangeNotifier {
       prefs.setString(key, encodedItems);
 
       // 저장된 키와 값 출력
-      print("Saved under key: $key");
-      print("Saved value: $encodedItems");
     }
     notifyListeners(); // UI 업데이트를 위해 호출
     _hasUpdated = true;
@@ -202,7 +198,6 @@ class RoadMapModel extends ChangeNotifier {
       // 기존에 저장된 roadmapListCheck가 있으면 불러오기
       _roadmapListCheck =
           List<String?>.from(json.decode(roadmapListCheckString));
-      print("Loaded roadmapListCheck: $_roadmapListCheck"); // 로드된 데이터 출력
     } else {
       // 저장된 roadmapListCheck가 없는 경우
       _roadmapListCheck =
@@ -211,8 +206,6 @@ class RoadMapModel extends ChangeNotifier {
         // roadmapList의 첫 번째 항목을 '현단계'로 설정
         _roadmapListCheck[0] = '현단계';
       }
-      print(
-          "Initialized roadmapListCheck with first item as 현단계"); // 초기화된 데이터 출력
     }
   }
 

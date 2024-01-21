@@ -29,7 +29,7 @@ class _RoadMapDeleteState extends State<RoadMapDelete> {
             final roadmapModel =
                 Provider.of<RoadMapModel>(context, listen: false);
             roadmapModel.removeAt(selectedDeleteIndex!); // 삭제 로직
-            Navigator.pop(context); // Dialog 닫기
+            Navigator.pop(context, true); // Dialog 닫기
           },
         );
       },
@@ -46,7 +46,9 @@ class _RoadMapDeleteState extends State<RoadMapDelete> {
     final roadmapList = roadmapModel.roadmapList;
 
     return Scaffold(
-      appBar: const CloseAppBar(),
+      appBar: const CloseAppBar(
+        state: true,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

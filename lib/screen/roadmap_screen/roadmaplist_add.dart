@@ -63,7 +63,9 @@ class _RoadMapAddState extends State<RoadMapAdd> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        appBar: const CloseAppBar(),
+        appBar: const CloseAppBar(
+          state: true,
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
@@ -129,7 +131,7 @@ class _RoadMapAddState extends State<RoadMapAdd> {
                               _selectedChip ?? _textController.text;
                           roadmapModel.addNewItem(newItem);
                           Navigator.pop(
-                              context); // 현재 화면을 스택에서 제거하고 이전 화면으로 돌아갑니다.
+                              context, true); // 현재 화면을 스택에서 제거하고 이전 화면으로 돌아갑니다.
                         }
                       : null,
                   child: NextContained(

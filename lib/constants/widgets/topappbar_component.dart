@@ -173,7 +173,12 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BackAppBar({Key? key}) : super(key: key);
+  final state;
+
+  const BackAppBar({
+    Key? key,
+    this.state,
+  }) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -183,7 +188,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: GestureDetector(
         onTap: () {
-          Navigator.pop(context);
+          Navigator.pop(context, state);
         },
         child: Image(image: AppImages.back),
       ),
@@ -192,7 +197,12 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CloseAppBar({Key? key}) : super(key: key);
+  final state;
+
+  const CloseAppBar({
+    Key? key,
+    this.state,
+  }) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -208,7 +218,7 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: <Widget>[
           GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pop(context, state);
             },
             child: SizedBox(
               height: 48,

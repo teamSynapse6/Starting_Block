@@ -38,10 +38,13 @@ class _RoadmapHomeState extends State<RoadmapHome>
   }
 
   // 콜백 함수 구현
-  void _onSelectedRoadmapChanged(String selectedText, bool isCurrentStage) {
-    setState(() {
-      _selectedRoadmapText = selectedText;
-      _isCurrentStageSelected = isCurrentStage;
+  void _onSelectedRoadmapChanged(
+      String selectedText, int selectedIndex, bool isCurrentStage) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _selectedRoadmapText = selectedText;
+        _isCurrentStageSelected = isCurrentStage;
+      });
     });
   }
 
@@ -123,7 +126,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
                   const Center(child: Text('비교과')),
                   TabScreenOfCaBiz(
                     key: ValueKey(_selectedRoadmapText), // Key를 추가합니다.
-                    thisKeyValue: _selectedRoadmapText,
+                    thisSelectedText: _selectedRoadmapText,
                   ),
                 ],
               ),

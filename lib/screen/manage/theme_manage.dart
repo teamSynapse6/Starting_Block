@@ -73,6 +73,10 @@ class ThemeManage {
           },
         ),
       ),
+      cardTheme: const CardTheme(
+        elevation: 0,
+      ),
+      canvasColor: AppColors.white,
     );
   }
 }
