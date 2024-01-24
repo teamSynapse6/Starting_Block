@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'dart:math' as math;
 
 class RoadmapHome extends StatefulWidget {
   const RoadmapHome({super.key});
@@ -64,70 +65,105 @@ class _RoadmapHomeState extends State<RoadmapHome>
           color: AppColors.blue,
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              height: 152,
-              width: MediaQuery.of(context).size.width,
-              color: AppColors.blue,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Gaps.v36,
-                    Text(
-                      '$_nickName님의 현재 단계는',
-                      style: AppTextStyles.bd6.copyWith(color: AppColors.white),
-                    ),
-                    Gaps.v4,
-                    RoadMapList(
-                      key: roadMapListKey, // GlobalKey를 RoadMapList에 할당
-                      onSelectedRoadmapChanged: _onSelectedRoadmapChanged,
-                    ),
-                    Gaps.v12,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              elevation: 0,
+              forceElevated: true,
+              backgroundColor: AppColors.blue,
+              pinned: true,
+              expandedHeight: 152,
+              collapsedHeight: 56,
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: const EdgeInsets.symmetric(horizontal: 24),
+                expandedTitleScale: 1.33,
+                title: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    // AppBar의 최대 확장 높이를 계산합니다.
+                    final double appBarHeight = constraints.biggest.height;
+                    // AppBar의 최소 높이를 정의합니다.
+                    const double collapsedHeight = 56;
+                    // AppBar의 최대 높이를 정의합니다.
+                    const double expandedHeight = 152;
+                    // AppBar의 확장 정도를 계산합니다.
+                    final double expansionRatio =
+                        (appBarHeight - collapsedHeight) /
+                            (expandedHeight - collapsedHeight);
+                    // bottomPadding이 음수가 되지 않도록 보장합니다.
+                    final double bottomPadding =
+                        math.max(0, 16 + (32 * expansionRatio));
+                    // 패딩을 동적으로 계산합니다.
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: bottomPadding),
+                      child: RoadMapList(
+                        key: roadMapListKey,
+                        onSelectedRoadmapChanged: _onSelectedRoadmapChanged,
+                      ),
+                    );
+                  },
+                ),
+                background: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Spacer(),
-                        _isCurrentStageSelected
-                            ? NextStep(
-                                onResetToCurrentStage: resetToCurrentStage)
-                            : GoBackToStep(
-                                onResetToCurrentStage: resetToCurrentStage),
+                        Gaps.v36,
+                        Text(
+                          '$_nickName님의 현재 단계는',
+                          style: AppTextStyles.bd6
+                              .copyWith(color: AppColors.white),
+                        ),
+                        Gaps.v46,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            _isCurrentStageSelected
+                                ? NextStep(
+                                    onResetToCurrentStage: resetToCurrentStage)
+                                : GoBackToStep(
+                                    onResetToCurrentStage: resetToCurrentStage),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
-            Container(
-              color: AppColors.white,
-              child: TabBar(
-                controller: _tabController,
-                tabs: const [
-                  Tab(text: '제도'),
-                  Tab(text: '정규교과'),
-                  Tab(text: '비교과'),
-                  Tab(text: '교외사업'),
-                ],
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: RoadMapPersistantTabBar(
+                child: TabBar(
+                  controller: _tabController,
+                  tabs: const [
+                    Tab(text: '교외사업'),
+                    Tab(text: '교내사업'),
+                    Tab(text: '창업강의'),
+                    Tab(text: '창업제도'),
+                  ],
+                ),
               ),
-            ),
+            )
+          ];
+        },
+        body: Column(
+          children: [
             Expanded(
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  const Center(child: Text('제도')),
-                  const Center(child: Text('정규교과')),
-                  const Center(child: Text('비교과')),
                   TabScreenOfCaBiz(
-                    key: ValueKey(_selectedRoadmapText), // Key를 추가합니다.
+                    key: ValueKey(_selectedRoadmapText),
                     thisSelectedText: _selectedRoadmapText,
+                    thisCurrentStage: _isCurrentStageSelected,
                   ),
+                  const Center(child: Text('교내사업')),
+                  const Center(child: Text('창업강의')),
+                  const Center(child: Text('창업제도')),
                 ],
               ),
             ),

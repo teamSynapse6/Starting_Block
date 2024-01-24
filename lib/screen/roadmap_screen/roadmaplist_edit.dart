@@ -132,8 +132,11 @@ class RoadMapEditState extends State<RoadMapEdit> {
                                 const EdgeInsets.symmetric(horizontal: 24),
                             title: Text(
                               _tempRoadmapList[index],
-                              style: AppTextStyles.bd2
-                                  .copyWith(color: AppColors.g6),
+                              style: _tempRoadmapListCheck[index] == '도약완료'
+                                  ? AppTextStyles.bd2
+                                      .copyWith(color: AppColors.g4)
+                                  : AppTextStyles.bd2
+                                      .copyWith(color: AppColors.g6),
                             ),
                             trailing: Image(image: AppImages.sort_actived),
                           ),

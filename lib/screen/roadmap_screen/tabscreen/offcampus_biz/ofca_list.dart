@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-String calculateDDay(String endDate) {
+String calculateDDayList(String endDate) {
   int year = int.parse(endDate.substring(0, 4));
   int month = int.parse(endDate.substring(4, 6));
   int day = int.parse(endDate.substring(6, 8));
@@ -20,10 +20,10 @@ String calculateDDay(String endDate) {
   }
 }
 
-class OfCaCard extends StatelessWidget {
+class OfCaList extends StatelessWidget {
   final String thisOrganize, thisID, thisClassification, thisTitle, thisEnddate;
 
-  const OfCaCard({
+  const OfCaList({
     super.key,
     required this.thisOrganize,
     required this.thisID,
@@ -34,7 +34,7 @@ class OfCaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String dDay = calculateDDay(thisEnddate);
+    String dDay = calculateDDayList(thisEnddate);
 
     return GestureDetector(
       onTap: () {
@@ -47,7 +47,6 @@ class OfCaCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
         width: 312,
         decoration: BoxDecoration(
           color: AppColors.white,

@@ -163,8 +163,13 @@ class _RoadMapListState extends State<RoadMapList> {
                                             style: AppTextStyles.bd1.copyWith(
                                                 color: AppColors.blue),
                                           ),
-                                        if (roadmapCheck == '도약완료' ||
-                                            roadmapCheck == null)
+                                        if (roadmapCheck == '도약완료')
+                                          Text(
+                                            roadmapList,
+                                            style: AppTextStyles.bd2
+                                                .copyWith(color: AppColors.g4),
+                                          ),
+                                        if (roadmapCheck == null)
                                           Text(
                                             roadmapList,
                                             style: AppTextStyles.bd2
@@ -179,8 +184,13 @@ class _RoadMapListState extends State<RoadMapList> {
                                                     color: AppColors.blue),
                                           ),
                                         if (roadmapCheck == '도약완료')
-                                          Text('· 도약완료',
-                                              style: AppTextStyles.caption),
+                                          Text(
+                                            '· 도약완료',
+                                            style:
+                                                AppTextStyles.caption.copyWith(
+                                              color: AppColors.g4,
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -231,7 +241,7 @@ class _RoadMapListState extends State<RoadMapList> {
         children: [
           Text(
             selectedRoadmapText ?? '', // 선택된 항목의 텍스트 또는 기본 텍스트 표시
-            style: AppTextStyles.h5.copyWith(color: AppColors.white),
+            style: AppTextStyles.st2.copyWith(color: AppColors.white),
           ),
           Gaps.h6,
           Image(image: AppImages.roadmap_downarrow),

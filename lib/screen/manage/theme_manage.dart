@@ -10,7 +10,7 @@ class ThemeManage {
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.white,
         foregroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         titleTextStyle: TextStyle(
           color: Colors.blue,
