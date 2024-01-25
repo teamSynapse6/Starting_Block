@@ -30,6 +30,9 @@ export 'package:starting_block/screen/roadmap_screen/widget/roadmap_list.dart'; 
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/offcampus_business.dart';
 export 'package:starting_block/screen/roadmap_screen/test.dart';
 
+//교내지원사업 페이지
+export 'package:starting_block/screen/on_campus_screen/oncampus_home.dart';
+
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/intergrate_webview.dart';
 

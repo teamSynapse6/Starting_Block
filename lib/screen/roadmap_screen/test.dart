@@ -1,173 +1,205 @@
 // import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
 // import 'package:starting_block/constants/constants.dart';
 // import 'package:starting_block/screen/manage/screen_manage.dart';
-// import 'dart:math' as math;
 
-// class TestRoadmapHome extends StatefulWidget {
-//   const TestRoadmapHome({super.key});
+// class RoadMapEdit extends StatefulWidget {
+//   const RoadMapEdit({
+//     super.key,
+//   });
 
 //   @override
-//   State<TestRoadmapHome> createState() => _TestRoadmapHomeState();
+//   RoadMapEditState createState() => RoadMapEditState();
 // }
 
-// class _TestRoadmapHomeState extends State<TestRoadmapHome>
-//     with SingleTickerProviderStateMixin {
-//   late TabController _tabController;
-//   String _nickName = "";
-//   String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
-//   bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
+// class RoadMapEditState extends State<RoadMapEdit> {
+//   bool _isOrderChanged = false;
+//   late List<String> _tempRoadmapList; // 임시 로드맵 순서
+//   late List<String?> _tempRoadmapListCheck; // 임시 체크 상태
+//   bool isDragged = false;
+//   int? oldIndex; // oldIndex를 선언합니다.
 
 //   @override
 //   void initState() {
 //     super.initState();
-//     _loadNickName();
-//     _tabController = TabController(length: 4, vsync: this);
-//     // _selectedRoadmapText를 로드하는 논리를 여기에 추가합니다
+//     final roadmapModel = Provider.of<RoadMapModel>(context, listen: false);
+//     _tempRoadmapList = List<String>.from(roadmapModel.roadmapList);
+//     _tempRoadmapListCheck = List<String?>.from(roadmapModel.roadmapListCheck);
 //   }
 
-//   final GlobalKey<State<RoadMapList>> roadMapListKey = GlobalKey();
-
-//   void resetToCurrentStage() {
-//     RoadMapList.resetToCurrentStage(roadMapListKey);
+//   void _updateRoadmapOrder() {
+//     // RoadMapModel 인스턴스를 가져옵니다.
+//     final roadmapModel = Provider.of<RoadMapModel>(context, listen: false);
+//     // 모델을 업데이트합니다.
+//     roadmapModel.reorderRoadmapList(_tempRoadmapList, _tempRoadmapListCheck);
 //   }
 
-//   Future<void> _loadNickName() async {
-//     String nickName = await UserInfo.getNickName();
+//   void _reloadRoadmapModel() {
 //     setState(() {
-//       _nickName = nickName;
+//       final roadmapModel = Provider.of<RoadMapModel>(context, listen: false);
+//       _tempRoadmapList = List<String>.from(roadmapModel.roadmapList);
+//       _tempRoadmapListCheck = List<String?>.from(roadmapModel.roadmapListCheck);
 //     });
-//   }
-
-//   // 콜백 함수 구현
-//   void _onSelectedRoadmapChanged(
-//       String selectedText, int selectedIndex, bool isCurrentStage) {
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       setState(() {
-//         _selectedRoadmapText = selectedText;
-//         _isCurrentStageSelected = isCurrentStage;
-//       });
-//     });
-//   }
-
-//   @override
-//   void dispose() {
-//     _tabController.dispose();
-//     super.dispose();
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       backgroundColor: AppColors.secondaryBG,
-//       appBar: PreferredSize(
-//         preferredSize: const Size.fromHeight(0),
-//         child: Container(
-//           color: AppColors.blue,
-//         ),
+//       appBar: const BackAppBar(
+//         state: false,
 //       ),
-//       body: NestedScrollView(
-//         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-//           return [
-//             SliverAppBar(
-//               elevation: 0,
-//               forceElevated: true,
-//               backgroundColor: AppColors.blue,
-//               pinned: true,
-//               expandedHeight: 152,
-//               collapsedHeight: 56,
-//               flexibleSpace: FlexibleSpaceBar(
-//                 titlePadding: const EdgeInsets.symmetric(horizontal: 24),
-//                 expandedTitleScale: 1.33,
-//                 title: LayoutBuilder(
-//                   builder: (BuildContext context, BoxConstraints constraints) {
-//                     // AppBar의 최대 확장 높이를 계산합니다.
-//                     final double appBarHeight = constraints.biggest.height;
-//                     // AppBar의 최소 높이를 정의합니다.
-//                     const double collapsedHeight = 56;
-//                     // AppBar의 최대 높이를 정의합니다.
-//                     const double expandedHeight = 152;
-//                     // AppBar의 확장 정도를 계산합니다.
-//                     final double expansionRatio =
-//                         (appBarHeight - collapsedHeight) /
-//                             (expandedHeight - collapsedHeight);
-//                     // bottomPadding이 음수가 되지 않도록 보장합니다.
-//                     final double bottomPadding =
-//                         math.max(0, 16 + (32 * expansionRatio));
-//                     // 패딩을 동적으로 계산합니다.
-//                     return Padding(
-//                       padding: EdgeInsets.only(bottom: bottomPadding),
-//                       child: RoadMapList(
-//                         key: roadMapListKey,
-//                         onSelectedRoadmapChanged: _onSelectedRoadmapChanged,
-//                       ),
-//                     );
-//                   },
-//                 ),
-//                 background: SingleChildScrollView(
-//                   child: Padding(
-//                     padding: const EdgeInsets.symmetric(horizontal: 24),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       mainAxisSize: MainAxisSize.min,
-//                       children: [
-//                         Gaps.v36,
-//                         Text(
-//                           '$_nickName님의 현재 단계는',
-//                           style: AppTextStyles.bd6
-//                               .copyWith(color: AppColors.white),
-//                         ),
-//                         Gaps.v46,
-//                         Row(
-//                           mainAxisAlignment: MainAxisAlignment.center,
-//                           children: [
-//                             const Spacer(),
-//                             _isCurrentStageSelected
-//                                 ? NextStep(
-//                                     onResetToCurrentStage: resetToCurrentStage)
-//                                 : GoBackToStep(
-//                                     onResetToCurrentStage: resetToCurrentStage),
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
+//       body: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Gaps.v22,
+//           Padding(
+//             padding: const EdgeInsets.only(
+//               left: 24,
+//               right: 12,
 //             ),
-//             SliverPersistentHeader(
-//               pinned: true,
-//               delegate: RoadMapPersistantTabBar(
-//                 child: TabBar(
-//                   controller: _tabController,
-//                   tabs: const [
-//                     Tab(text: '교외사업'),
-//                     Tab(text: '교내사업'),
-//                     Tab(text: '창업강의'),
-//                     Tab(text: '창업제도'),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   '로드맵 단계 수정',
+//                   style: AppTextStyles.h5.copyWith(color: AppColors.black),
+//                 ),
+//                 Gaps.v10,
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.end,
+//                   children: [
+//                     GestureDetector(
+//                       onTap: () async {
+//                         bool result = await Navigator.push(
+//                           context,
+//                           MaterialPageRoute(
+//                               builder: (context) => const RoadMapAdd()),
+//                         );
+//                         if (result) {
+//                           _reloadRoadmapModel();
+//                         }
+//                       },
+//                       child: SizedBox(
+//                         height: 32,
+//                         width: 49,
+//                         child: Center(
+//                           child: Text(
+//                             '추가',
+//                             style: AppTextStyles.btn1
+//                                 .copyWith(color: AppColors.g6),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                     Gaps.h4,
+//                     GestureDetector(
+//                       onTap: () async {
+//                         bool result = await Navigator.push(
+//                           context,
+//                           MaterialPageRoute(
+//                               builder: (context) => const RoadMapDelete()),
+//                         );
+//                         if (result) {
+//                           _reloadRoadmapModel();
+//                         }
+//                       },
+//                       child: SizedBox(
+//                         height: 32,
+//                         width: 49,
+//                         child: Center(
+//                           child: Text(
+//                             '삭제',
+//                             style: AppTextStyles.btn1
+//                                 .copyWith(color: AppColors.g6),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
 //                   ],
 //                 ),
-//               ),
-//             )
-//           ];
-//         },
-//         body: Column(
-//           children: [
-//             Expanded(
-//               child: TabBarView(
-//                 controller: _tabController,
-//                 children: [
-//                   TabScreenOfCaBiz(
-//                     key: ValueKey(_selectedRoadmapText),
-//                     thisSelectedText: _selectedRoadmapText,
-//                   ),
-//                   const Center(child: Text('교내사업')),
-//                   const Center(child: Text('창업강의')),
-//                   const Center(child: Text('창업제도')),
-//                 ],
+//               ],
+//             ),
+//           ),
+//           Expanded(
+//             child: Consumer<RoadMapModel>(
+//               builder: (context, roadmapModel, child) {
+//                 return ReorderableListView(
+//                   onReorderStart: (int oldIndex) {
+//                     // 드래그가 시작될 때 isDragged와 oldIndex를 설정
+//                     setState(() {
+//                       isDragged = true;
+//                       this.oldIndex = oldIndex;
+//                     });
+//                   },
+//                   onReorderEnd: (int newIndex) {
+//                     setState(() {
+//                       isDragged = false;
+//                       oldIndex = null; // 드래그 종료 시 oldIndex를 초기화
+//                     });
+//                   },
+//                   onReorder: (int oldIndex, int newIndex) {
+//                     // oldIndex를 사용하여 드래그 중인 아이템을 확인합니다.
+//                     if (this.oldIndex != null && this.oldIndex == oldIndex) {
+//                       // 이제 oldIndex를 사용하여 스타일을 적용할 수 있습니다.
+//                       setState(() {
+//                         _isOrderChanged = true;
+//                         if (newIndex > oldIndex) {
+//                           newIndex -= 1;
+//                         }
+//                         final item = _tempRoadmapList.removeAt(oldIndex);
+//                         final checkItem =
+//                             _tempRoadmapListCheck.removeAt(oldIndex);
+//                         _tempRoadmapList.insert(newIndex, item);
+//                         _tempRoadmapListCheck.insert(newIndex, checkItem);
+//                         isDragged = false;
+//                         oldIndex = null; // 드래그 종료 시 oldIndex를 초기화
+//                       });
+//                     }
+//                   },
+//                   children: <Widget>[
+//                     for (int index = 0;
+//                         index < _tempRoadmapList.length;
+//                         index++)
+//                       IgnorePointer(
+//                         ignoring: _tempRoadmapListCheck[index] == '도약완료',
+//                         key: ValueKey(_tempRoadmapList[index]),
+//                         child: ReorderCustomTile(
+//                           thisText: _tempRoadmapList[index],
+//                           // 드래그 중일 때와 아닐 때의 스타일을 조건부로 설정
+//                           thisTextStyle: isDragged && index == oldIndex
+//                               ? AppTextStyles.bd1.copyWith(color: AppColors.g6)
+//                               : (_tempRoadmapListCheck[index] == '도약완료'
+//                                   ? AppTextStyles.bd2
+//                                       .copyWith(color: AppColors.g4)
+//                                   : AppTextStyles.bd2
+//                                       .copyWith(color: AppColors.g6)),
+//                         ),
+//                       ),
+//                   ],
+//                 );
+//               },
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.only(
+//               right: 24,
+//               left: 24,
+//               bottom: 24,
+//             ),
+//             child: GestureDetector(
+//               onTap: _isOrderChanged
+//                   ? () {
+//                       _updateRoadmapOrder();
+//                       Navigator.pop(context, true);
+//                     }
+//                   : null,
+//               child: NextContained(
+//                 text: "완료",
+//                 disabled: !_isOrderChanged,
 //               ),
 //             ),
-//           ],
-//         ),
+//           ),
+//         ],
 //       ),
 //     );
 //   }

@@ -16,7 +16,7 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _OffCampusState extends State<IntergrateScreen> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 1;
 
   void _onTap(int index) {
     setState(() {
@@ -41,9 +41,7 @@ class _OffCampusState extends State<IntergrateScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: const Center(
-              child: Text('교내지원'),
-            ),
+            child: const OnCampusHome(),
           ),
           Offstage(
             offstage: _selectedIndex != 2,

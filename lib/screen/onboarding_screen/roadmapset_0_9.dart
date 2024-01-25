@@ -12,6 +12,8 @@ class RoadmapScreen extends StatefulWidget {
 }
 
 class _RoadmapScreenState extends State<RoadmapScreen> {
+  int? draggingIndex = -1;
+
   // 항상 초기 리스트를 사용합니다.
   List<String> roadmapItems = [
     '창업 교육',
@@ -46,129 +48,157 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Image(image: AppImages.back),
+      appBar: BackTitleAppBar(
+        thisTextStyle: AppTextStyles.btn1.copyWith(
+          color: AppColors.g5,
         ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              // 건너뛰기 버튼을 눌렀을 때의 동작
-            },
-            child: const Text(
-              '건너뛰기',
-              style: TextStyle(
-                color: AppColors.activered, // 텍스트 색상
-                // 다른 스타일 속성을 여기에 추가할 수 있습니다.
-              ),
-            ),
-          ),
-        ],
+        text: '건너뛰기',
+        onPress: null,
       ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gaps.v12,
-              const Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gaps.v12,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
+                  const Row(
+                    children: [
+                      Icon(
+                        Icons.circle,
+                        size: Sizes.size8,
+                        color: AppColors.g2,
+                      ),
+                      Gaps.h4,
+                      Icon(
+                        Icons.circle,
+                        size: Sizes.size8,
+                        color: AppColors.g2,
+                      ),
+                      Gaps.h4,
+                      Icon(
+                        Icons.circle,
+                        size: Sizes.size8,
+                        color: AppColors.g2,
+                      ),
+                      Gaps.h4,
+                      Icon(
+                        Icons.circle,
+                        size: Sizes.size8,
+                        color: AppColors.g2,
+                      ),
+                      Gaps.h4,
+                      Icon(
+                        Icons.circle,
+                        size: Sizes.size8,
+                        color: AppColors.g2,
+                      ),
+                      Gaps.h4,
+                      Icon(
+                        Icons.circle,
+                        size: Sizes.size8,
+                        color: AppColors.blue,
+                      ),
+                    ],
                   ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
+                  Gaps.v36,
+                  Text(
+                    "로드맵을 설정해보세요",
+                    style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.blue,
+                  Gaps.v10,
+                  Text(
+                    "본인에게 맞는 창업 로드맵을 설정할 수 있습니다",
+                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
                   ),
                 ],
               ),
-              Gaps.v36,
-              Text(
-                "로드맵을 설정해보세요",
-                style: AppTextStyles.h5.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v10,
-              Text(
-                "본인에게 맞는 창업 로드맵을 설정할 수 있습니다",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v32,
-              Expanded(
-                child: ReorderableListView(
-                  children: <Widget>[
-                    for (final item
-                        in roadmapItems) // roadmapItems는 screen_manage.dart에서 정의된 것으로 가정
-                      SizedBox(
-                        key: Key(item),
-                        height: 48, // 여기에서 높이를 지정합니다
-                        child: ListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 0),
-                          title: Text(
-                            item,
-                            style:
-                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
+            ),
+            Gaps.v32,
+            Expanded(
+              child: ReorderableListView(
+                onReorderStart: (int newIndex) {
+                  setState(() {
+                    draggingIndex = newIndex;
+                  });
+                },
+                onReorderEnd: (int oldIndex) {
+                  setState(() {
+                    draggingIndex = -1;
+                  });
+                },
+                proxyDecorator:
+                    (Widget child, int index, Animation<double> animation) {
+                  return AnimatedBuilder(
+                    animation: animation,
+                    builder: (context, child) {
+                      double elevation = Tween<double>(begin: 0.0, end: 6.0)
+                          .evaluate(animation);
+                      if (index == draggingIndex &&
+                          index < roadmapItems.length) {
+                        // 현재 드래그 중인 아이템의 텍스트를 참조합니다.
+                        final String currentItemText = roadmapItems[index];
+                        return Material(
+                          elevation: elevation,
+                          child: ReorderCustomTile(
+                            thisText:
+                                currentItemText, // 드래그 중인 아이템의 텍스트를 설정합니다.
+                            thisTextStyle:
+                                AppTextStyles.bd1.copyWith(color: AppColors.g6),
                           ),
-                          trailing: Image(image: AppImages.sort_actived),
-                        ),
-                      ),
-                  ],
-                  onReorder: (int oldIndex, int newIndex) {
-                    setState(() {
-                      if (newIndex > oldIndex) {
-                        newIndex -= 1;
+                        );
                       }
-                      final item = roadmapItems.removeAt(oldIndex);
-                      roadmapItems.insert(newIndex, item);
-                    });
-                  },
+                      return Material(
+                        elevation: 0.0,
+                        child: child,
+                      );
+                    },
+                    child: child,
+                  );
+                },
+                children: <Widget>[
+                  for (final item
+                      in roadmapItems) // roadmapItems는 screen_manage.dart에서 정의된 것으로 가정
+                    ReorderCustomTile(
+                      key: Key(item),
+                      thisText: item,
+                      thisTextStyle: AppTextStyles.bd2.copyWith(
+                        color: AppColors.g6,
+                      ),
+                    ),
+                ],
+                onReorder: (int oldIndex, int newIndex) {
+                  setState(() {
+                    if (newIndex > oldIndex) {
+                      newIndex -= 1;
+                    }
+                    final item = roadmapItems.removeAt(oldIndex);
+                    roadmapItems.insert(newIndex, item);
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 24,
+                left: 24,
+                right: 24,
+              ),
+              child: GestureDetector(
+                onTap: _onNextTap,
+                child: const NextContained(
+                  text: "시작하기",
+                  disabled: false,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24),
-                child: GestureDetector(
-                  onTap: _onNextTap,
-                  child: const NextContained(
-                    text: "시작하기",
-                    disabled: false,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

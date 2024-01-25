@@ -76,11 +76,12 @@ class _SchoolScreenState extends State<SchoolScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Image(image: AppImages.back),
+      appBar: BackTitleAppBar(
+        thisTextStyle: AppTextStyles.btn1.copyWith(
+          color: AppColors.g5,
         ),
+        text: '건너뛰기',
+        onPress: null,
       ),
       body: GestureDetector(
         onTap: () {

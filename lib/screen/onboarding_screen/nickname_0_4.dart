@@ -121,12 +121,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Image(image: AppImages.back),
-        ),
-      ),
+      appBar: const BackAppBar(),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());

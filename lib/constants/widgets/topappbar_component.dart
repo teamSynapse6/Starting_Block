@@ -72,11 +72,12 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final searchTapScreen;
+  final searchTapScreen, thisBackGroundColor;
 
   const SearchAppBar({
     Key? key,
     required this.searchTapScreen,
+    this.thisBackGroundColor,
   }) : super(key: key);
 
   @override
@@ -90,6 +91,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
         right: 12,
       ),
       child: AppBar(
+        backgroundColor: thisBackGroundColor ?? AppColors.white,
         actions: <Widget>[
           GestureDetector(
             onTap: () {
@@ -106,6 +108,45 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class OnCampusSearchAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  final searchTapScreen, thisBackGroundColor;
+
+  const OnCampusSearchAppBar({
+    Key? key,
+    required this.searchTapScreen,
+    this.thisBackGroundColor,
+  }) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: thisBackGroundColor ?? AppColors.white,
+      actions: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(right: 12),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => searchTapScreen),
+              );
+            },
+            child: SizedBox(
+              height: 48,
+              width: 48,
+              child: Image(image: AppImages.search),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -295,11 +336,18 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 12.0),
-          child: TextButton(
-            onPressed: () {
-              onPress;
-            },
-            child: Text(text, style: thisTextStyle),
+          child: GestureDetector(
+            onTap: onPress,
+            child: SizedBox(
+              width: 73,
+              height: 32,
+              child: Center(
+                child: Text(
+                  text,
+                  style: thisTextStyle,
+                ),
+              ),
+            ),
           ),
         ),
       ],

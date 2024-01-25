@@ -36,12 +36,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Image(image: AppImages.back),
-        ),
-      ),
+      appBar: const BackAppBar(),
       body: GestureDetector(
         onTap: () {
           // 여기에서 키보드를 숨깁니다.
