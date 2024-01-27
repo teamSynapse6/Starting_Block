@@ -111,6 +111,14 @@ class AppImages {
       const AssetImage('assets/icon/other/TopAppLogo.png');
   static AssetImage get roadmap_downarrow =>
       const AssetImage('assets/icon/other/roadmap_downarrow.png');
+  static AssetImage get onschool_class =>
+      const AssetImage('assets/icon/other/onschool_home_class.png');
+  static AssetImage get onschool_notice =>
+      const AssetImage('assets/icon/other/onschool_home_notice.png');
+  static AssetImage get onschool_supportgroup =>
+      const AssetImage('assets/icon/other/onschool_home_supportgroup.png');
+  static AssetImage get onschool_system =>
+      const AssetImage('assets/icon/other/onschool_home_system.png');
 
 // exceptional image
   static AssetImage get kako_icon =>

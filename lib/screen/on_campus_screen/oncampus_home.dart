@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class OnCampusHome extends StatefulWidget {
   const OnCampusHome({super.key});
@@ -9,6 +10,21 @@ class OnCampusHome extends StatefulWidget {
 }
 
 class _OnCampusHomeState extends State<OnCampusHome> {
+  String _schoolName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSchoolName();
+  }
+
+  Future<void> _loadSchoolName() async {
+    String schoolName = await UserInfo.getSchoolName();
+    setState(() {
+      _schoolName = schoolName;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,10 +33,11 @@ class _OnCampusHomeState extends State<OnCampusHome> {
         thisBackGroundColor: AppColors.bluebg,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 272,
+            height: 274,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -32,82 +49,73 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                 ],
               ),
             ),
-            child: Column(
-              children: [
-                Gaps.v16,
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: Icon(Icons.school),
-                    ),
-                    Gaps.h4,
-                    Text(
-                      '서울대학교',
-                      style: AppTextStyles.st2.copyWith(color: AppColors.g6),
-                    ),
-                    Gaps.h8,
-                    Container(
-                      height: 24,
-                      width: 151,
-                      decoration: const BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(4),
-                        ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v16,
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Icon(Icons.school),
                       ),
-                      child: Center(
-                        child: Text(
-                          "교내 창업 지원의 통합 확인",
-                          style: AppTextStyles.bd6
-                              .copyWith(color: AppColors.bluedeep),
-                        ),
+                      Gaps.h4,
+                      Text(
+                        _schoolName,
+                        style: AppTextStyles.st2.copyWith(color: AppColors.g6),
                       ),
-                    ),
-                  ],
-                ),
-                Gaps.v28,
-                FractionallySizedBox(
-                  widthFactor: 1,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    height: 104,
-                    decoration: const BoxDecoration(
-                      color: AppColors.blue,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
-                      ),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 12,
-                          top: 29,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "창업 지원 공고",
-                                style: AppTextStyles.st2
-                                    .copyWith(color: AppColors.white),
-                              ),
-                              Gaps.v4,
-                              Text(
-                                "비교과 지원 확인!",
-                                style: AppTextStyles.bd6
-                                    .copyWith(color: AppColors.g2),
-                              )
-                            ],
+                      Gaps.h8,
+                      Container(
+                        height: 24,
+                        width: 151,
+                        decoration: const BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
                           ),
                         ),
-                      ],
-                    ),
+                        child: Center(
+                          child: Text(
+                            "교내 창업 지원의 통합 확인",
+                            style: AppTextStyles.bd6
+                                .copyWith(color: AppColors.bluedeep),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-              ],
+                  Gaps.v28,
+                  const OnCampusCardLarge(),
+                  Gaps.v12,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * (152 / 360),
+                        child: const OnCampusCardMedium(),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * (72 / 360),
+                        child: const OnCampusCardSmallSystem(),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * (72 / 360),
+                        child: const OnCampusCardSmallClass(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
+          Gaps.v48,
+          Text(
+            '최신 교내 지원 사업',
+            style: AppTextStyles.st2.copyWith(color: AppColors.g6),
+          )
         ],
       ),
     );

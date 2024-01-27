@@ -35,3 +35,9 @@ export 'package:starting_block/screen/roadmap_screen/widget/roadmap_backtostep.d
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_sliverappbar.dart'; //SliverAppBar 관리
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_card.dart'; //로드맵_교외사업의 카드
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_list.dart'; //로드맵_교외사업의 카드
+
+//교내지원사업 컴포넌트 관리
+export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card_large.dart'; //교내지원사업_Home_Large카드
+export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card_medium.dart'; //교내지원사업_Home_Medium카드
+export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card_smallsys.dart'; //교내지원사업_Home_Small 제도 카드
+export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card_smallclass.dart'; //교내지원사업_Home_Small 강의 카드

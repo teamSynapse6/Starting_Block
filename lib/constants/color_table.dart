@@ -29,5 +29,26 @@ class AppColors {
   static const Color chipsColor = Color(0XFFC8C8C8);
 
   // BG Color
-  static const Color secondaryBG = Color(0XFFF3F4F6);
+  static const Color secondaryBG = Color(0XFFF3F4F6); //secondary BG 컬러
+
+  /*교내지원사업 카드 컬러*/
+  //창업지원공고 카드_컨테이너 영역
+  static const Color oncampusLargePressed =
+      Color(0XFF4D7AF1); // 창업지원공고 카드 Pressed
+  //창업지원공고 카드 내 원형 영역
+  static const Color oncampusDeepBlue = Color(0XFF4E7FFF); // 교내지원사업 딥불루 컬러 카드
+
+  //창업지원단 카드
+  static const Color oncampusMedium = Color(0XFFFDA68A); // 창업지원단 카드 기본
+  static const Color oncampusMediumPressed =
+      Color(0XFFFF994F); // 창업지원단 카드 Pressed
+
+  //창업제도 카드
+  static const Color oncampusSmallSys = Color(0XFFDBB7FF); // 창업제도 카드 기본
+  static const Color oncampusSmallSysPressed =
+      Color(0XFFCB98FF); // 창업제도 카드 Pressed
+
+  //창업강의 카드
+  static const Color oncampusSmallClassPressed =
+      Color(0XFF95B4FF); // 창업제도 카드 Pressed
 }

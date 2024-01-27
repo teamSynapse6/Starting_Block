@@ -12,7 +12,7 @@ class UserInfo {
   }
 
   static Future<String> getNickName() async {
-    await initialize(); // SharedPreferences 초기화
+    await initialize();
     return _prefs.getString('userNickName') ?? "";
   }
 
@@ -36,7 +36,8 @@ class UserInfo {
     await _prefs.setString('userSchoolName', schoolName);
   }
 
-  static String getSchoolName() {
+  static Future<String> getSchoolName() async {
+    await initialize();
     return _prefs.getString('userSchoolName') ?? "";
   }
 }
