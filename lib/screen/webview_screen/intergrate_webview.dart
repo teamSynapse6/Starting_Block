@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class WebViewScreen extends StatelessWidget {
@@ -14,8 +14,6 @@ class WebViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WebViewController controller = WebViewController()
-      ..loadRequest(Uri.parse(url));
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(24),
@@ -23,7 +21,10 @@ class WebViewScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          WebViewWidget(controller: controller), // WebView 위젯
+          InAppWebView(
+            initialUrlRequest: URLRequest(url: WebUri(url)), // 여기를 수정합니다
+            // 필요한 경우 추가 InAppWebView 설정을 여기에 추가할 수 있습니다.
+          ),
           Positioned(
             // 오버레이 될 버튼
             top: 16,
@@ -36,10 +37,11 @@ class WebViewScreen extends StatelessWidget {
                 color: AppColors.black.withOpacity(0.5),
               ),
               child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: AppIcon.back_white),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: AppIcon.back_white,
+              ),
             ),
           ),
         ],
