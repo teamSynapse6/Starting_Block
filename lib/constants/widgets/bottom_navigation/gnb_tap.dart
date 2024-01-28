@@ -10,14 +10,14 @@ class GnbTap extends StatelessWidget {
     required this.isSelected,
     required this.onTap,
     required this.selectedIndex,
-    required this.selecetedImage,
-    required this.unselecetedImage,
+    required this.selecetedIcon,
+    required this.unselecetedIcon,
   });
 
   final String text;
   final bool isSelected;
-  final selecetedImage;
-  final unselecetedImage;
+  final selecetedIcon;
+  final unselecetedIcon;
   final Function onTap;
   final int selectedIndex;
 
@@ -31,9 +31,7 @@ class GnbTap extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image(
-                image: isSelected ? selecetedImage : unselecetedImage,
-              ),
+              isSelected ? selecetedIcon : unselecetedIcon,
               Gaps.v2,
               Text(
                 text,

@@ -88,7 +88,10 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
           onBackTap: () {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const IntergrateScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const IntergrateScreen(
+                        resetIndex: true,
+                      )),
               (Route<dynamic> route) => false,
             );
           },
@@ -130,7 +133,7 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
                               return Padding(
                                 padding: const EdgeInsets.only(right: 8),
                                 child: InputChipsDelete(
-                                  thisIcon: AppImages.close,
+                                  thisIcon: AppIcon.close,
                                   text: search,
                                   deleteTap: () => deleteSearch(search),
                                   chipTap: () =>

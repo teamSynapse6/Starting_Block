@@ -7,9 +7,9 @@ import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MainAppBar({
-    Key? key,
+    super.key,
     required this.newAlarm,
-  }) : super(key: key);
+  });
 
   final bool newAlarm;
 
@@ -27,17 +27,15 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: Transform.scale(
           scale: 0.625,
           alignment: Alignment.centerLeft,
-          child: Image(image: AppImages.topapplogo),
+          child: AppIcon.topapplogo,
         ),
         actions: <Widget>[
           SizedBox(
             height: 48,
             width: 48,
-            child: Image(
-              image: !newAlarm
-                  ? AppImages.notification_inactived
-                  : AppImages.notification_actived,
-            ),
+            child: !newAlarm
+                ? AppIcon.notification_inactived
+                : AppIcon.notification_actived,
           ),
         ],
       ),
@@ -46,7 +44,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const SettingAppBar({Key? key}) : super(key: key);
+  const SettingAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -63,7 +61,7 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
           SizedBox(
             height: 48,
             width: 48,
-            child: Image(image: AppImages.settings),
+            child: AppIcon.settings,
           ),
         ],
       ),
@@ -75,10 +73,10 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   final searchTapScreen, thisBackGroundColor;
 
   const SearchAppBar({
-    Key? key,
+    super.key,
     required this.searchTapScreen,
     this.thisBackGroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -103,7 +101,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: SizedBox(
               height: 48,
               width: 48,
-              child: Image(image: AppImages.search),
+              child: AppIcon.search,
             ),
           ),
         ],
@@ -117,10 +115,10 @@ class OnCampusSearchAppBar extends StatelessWidget
   final searchTapScreen, thisBackGroundColor;
 
   const OnCampusSearchAppBar({
-    Key? key,
+    super.key,
     required this.searchTapScreen,
     this.thisBackGroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -142,7 +140,7 @@ class OnCampusSearchAppBar extends StatelessWidget
             child: SizedBox(
               height: 48,
               width: 48,
-              child: Image(image: AppImages.search),
+              child: AppIcon.search,
             ),
           ),
         ),
@@ -158,12 +156,12 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
   final RecentSearchManager recentSearchManager;
 
   const SearchFiledAppBar({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.controller,
     required this.onBackTap,
     required this.recentSearchManager, // RecentSearchManager 인스턴스 추가
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -184,7 +182,7 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: GestureDetector(
         onTap: onBackTap,
-        child: Image(image: AppImages.back),
+        child: AppIcon.back,
       ),
       titleSpacing: 0,
       title: Row(
@@ -217,9 +215,9 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final state;
 
   const BackAppBar({
-    Key? key,
+    super.key,
     this.state,
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -231,7 +229,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
         onTap: () {
           Navigator.pop(context, state);
         },
-        child: Image(image: AppImages.back),
+        child: AppIcon.back,
       ),
     );
   }
@@ -241,9 +239,9 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final state;
 
   const CloseAppBar({
-    Key? key,
+    super.key,
     this.state,
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -264,7 +262,7 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: SizedBox(
               height: 48,
               width: 48,
-              child: Image(image: AppImages.close24),
+              child: AppIcon.close24,
             ),
           ),
         ],
@@ -275,9 +273,9 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SaveAppBar({
-    Key? key,
+    super.key,
     required this.thisBookMark, // 이 부분을 Widget으로 변경
-  }) : super(key: key);
+  });
 
   final Widget thisBookMark; // 이 부분을 Widget으로 변경
 
@@ -295,7 +293,7 @@ class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Image(image: AppImages.back),
+          child: AppIcon.back,
         ),
         actions: <Widget>[
           SizedBox(
@@ -311,11 +309,11 @@ class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BackTitleAppBar({
-    Key? key,
+    super.key,
     this.thisTextStyle,
     required this.text,
     this.onPress,
-  }) : super(key: key);
+  });
 
   final thisTextStyle;
   final String text;
@@ -331,7 +329,7 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
         onTap: () {
           Navigator.pop(context);
         },
-        child: Image(image: AppImages.back),
+        child: AppIcon.back,
       ),
       actions: <Widget>[
         Padding(
@@ -357,11 +355,11 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TitleAppBar({
-    Key? key,
+    super.key,
     required this.thisTextStyle,
     required this.text,
     required this.onPress,
-  }) : super(key: key);
+  });
 
   final thisTextStyle;
   final String text;

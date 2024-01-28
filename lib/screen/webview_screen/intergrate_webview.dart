@@ -7,16 +7,15 @@ class WebViewScreen extends StatelessWidget {
   final String id;
 
   const WebViewScreen({
-    Key? key,
+    super.key,
     required this.url,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     WebViewController controller = WebViewController()
       ..loadRequest(Uri.parse(url));
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(24),
@@ -37,11 +36,10 @@ class WebViewScreen extends StatelessWidget {
                 color: AppColors.black.withOpacity(0.5),
               ),
               child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Image(image: AppImages.back_white),
-              ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: AppIcon.back_white),
             ),
           ),
         ],

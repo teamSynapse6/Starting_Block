@@ -101,7 +101,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
                               fontSize: 14,
                               color: AppColors.g4),
                         ), // 현재 선택된 값으로 텍스트 업데이트
-                        Image(image: AppImages.down), // 버튼의 아이콘
+                        AppIcon.down,
                       ],
                     ),
                   ),

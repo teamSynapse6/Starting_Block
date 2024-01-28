@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
+
+import '../manage/api/oncampus_manage.dart';
 
 class OnCampusHome extends StatefulWidget {
   const OnCampusHome({super.key});
@@ -95,7 +99,20 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * (152 / 360),
-                        child: const OnCampusCardMedium(),
+                        child: OnCampusCardMedium(
+                          thisTap: () async {
+                            String targetUrl =
+                                await OnCampusAPI.onCampusWeb(); // API 호출
+                            if (targetUrl.isNotEmpty) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => OnCampusWebView(
+                                      url: targetUrl), // WebView 열기
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * (72 / 360),

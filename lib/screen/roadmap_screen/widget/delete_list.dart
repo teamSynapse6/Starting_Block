@@ -25,7 +25,7 @@ class DeleteList extends StatelessWidget {
             Gaps.h24,
             GestureDetector(
               onTap: thisTap,
-              child: Image(image: AppImages.delete),
+              child: AppIcon.delete,
             ),
             Gaps.h16,
             Text(

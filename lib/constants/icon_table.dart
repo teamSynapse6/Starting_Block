@@ -1,90 +1,126 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class AppImages {
+class AppIcon {
   // Size 20 Icons
-  static AssetImage get close => const AssetImage('assets/icon/20/close.png');
-  static AssetImage get delete => const AssetImage('assets/icon/20/delete.png');
-  static AssetImage get down => const AssetImage('assets/icon/20/down.png');
-  static AssetImage get down_white =>
-      const AssetImage('assets/icon/20/down_white.png');
-  static AssetImage get like_actived =>
-      const AssetImage('assets/icon/20/like_actived.png');
-  static AssetImage get like_inactived =>
-      const AssetImage('assets/icon/20/like_inactived.png');
-  static AssetImage get mail => const AssetImage('assets/icon/20/mail.png');
-  static AssetImage get notification =>
-      const AssetImage('assets/icon/20/notification.png');
-  static AssetImage get re => const AssetImage('assets/icon/20/re.png');
-  static AssetImage get school => const AssetImage('assets/icon/20/school.png');
+  static Widget get close =>
+      SvgPicture.asset('assets/icon/20/close.svg', fit: BoxFit.scaleDown);
+  static Widget get delete =>
+      SvgPicture.asset('assets/icon/20/delete.svg', fit: BoxFit.scaleDown);
+  static Widget get down =>
+      SvgPicture.asset('assets/icon/20/down.svg', fit: BoxFit.scaleDown);
+  static Widget get like_actived =>
+      SvgPicture.asset('assets/icon/20/like_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get like_inactived =>
+      SvgPicture.asset('assets/icon/20/like_inactived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get mail =>
+      SvgPicture.asset('assets/icon/20/mail.svg', fit: BoxFit.scaleDown);
+  static Widget get notification =>
+      SvgPicture.asset('assets/icon/20/notification.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get re =>
+      SvgPicture.asset('assets/icon/20/re.svg', fit: BoxFit.scaleDown);
+  static Widget get school =>
+      SvgPicture.asset('assets/icon/20/school.svg', fit: BoxFit.scaleDown);
 
   // Size 24 Icons
-  static AssetImage get back => const AssetImage('assets/icon/24/back.png');
-  static AssetImage get back_white =>
-      const AssetImage('assets/icon/24/back_white.png');
-  static AssetImage get bookmark_actived =>
-      const AssetImage('assets/icon/24/bookmark_actived.png');
-  static AssetImage get bookmark_inactived =>
-      const AssetImage('assets/icon/24/bookmark_inactived.png');
-  static AssetImage get checkbox_actived =>
-      const AssetImage('assets/icon/24/checkbox_actived.png');
-  static AssetImage get checkbox_inactived =>
-      const AssetImage('assets/icon/24/checkbox_inactived.png');
-  static AssetImage get close24 => const AssetImage('assets/icon/24/close.png');
-  static AssetImage get deletebox_actived =>
-      const AssetImage('assets/icon/24/deletebox_actived.png');
-  static AssetImage get deletebox_inactived =>
-      const AssetImage('assets/icon/24/deletebox_inactived.png');
-  static AssetImage get edit => const AssetImage('assets/icon/24/edit.png');
-  static AssetImage get like_actived24 =>
-      const AssetImage('assets/icon/24/like_actived.png');
-  static AssetImage get like_inactived24 =>
-      const AssetImage('assets/icon/24/like_inactived.png');
-  static AssetImage get next => const AssetImage('assets/icon/24/next.png');
-  static AssetImage get next_g1 =>
-      const AssetImage('assets/icon/24/next_g1.png');
-  static AssetImage get next_g2_small =>
-      const AssetImage('assets/icon/24/next_g1_small.png');
-  static AssetImage get notification_actived =>
-      const AssetImage('assets/icon/24/notification_actived.png');
-  static AssetImage get notification_inactived =>
-      const AssetImage('assets/icon/24/notification_inactived.png');
-  static AssetImage get plus_actived =>
-      const AssetImage('assets/icon/24/plus_actived.png');
-  static AssetImage get plus_inactived =>
-      const AssetImage('assets/icon/24/plus_inactived.png');
-  static AssetImage get search => const AssetImage('assets/icon/24/search.png');
-  static AssetImage get send_actived =>
-      const AssetImage('assets/icon/24/send_actived.png');
-  static AssetImage get send_inactived =>
-      const AssetImage('assets/icon/24/send_inactived.png');
-  static AssetImage get settings =>
-      const AssetImage('assets/icon/24/settings.png');
-  static AssetImage get sort_actived =>
-      const AssetImage('assets/icon/24/sort_actived.png');
+  static Widget get back =>
+      SvgPicture.asset('assets/icon/24/back.svg', fit: BoxFit.scaleDown);
+  static Widget get back_white =>
+      SvgPicture.asset('assets/icon/24/back_white.svg', fit: BoxFit.scaleDown);
+  static Widget get bookmark_actived =>
+      SvgPicture.asset('assets/icon/24/bookmark_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get bookmark_inactived =>
+      SvgPicture.asset('assets/icon/24/bookmark_inactived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get checkbox_actived =>
+      SvgPicture.asset('assets/icon/24/checkbox_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get checkbox_inactived =>
+      SvgPicture.asset('assets/icon/24/checkbox_inactived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get close24 =>
+      SvgPicture.asset('assets/icon/24/close.svg', fit: BoxFit.scaleDown);
+  static Widget get deletebox_actived =>
+      SvgPicture.asset('assets/icon/24/deletebox_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get deletebox_inactived =>
+      SvgPicture.asset('assets/icon/24/deletebox_inactived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get edit =>
+      SvgPicture.asset('assets/icon/24/edit.svg', fit: BoxFit.scaleDown);
+  static Widget get like_actived24 =>
+      SvgPicture.asset('assets/icon/24/like_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get like_inactived24 =>
+      SvgPicture.asset('assets/icon/24/like_inactived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get next =>
+      SvgPicture.asset('assets/icon/24/next.svg', fit: BoxFit.scaleDown);
+  static Widget get next_g1 =>
+      SvgPicture.asset('assets/icon/24/next_g1.svg', fit: BoxFit.scaleDown);
+  static Widget get notification_actived =>
+      SvgPicture.asset('assets/icon/24/notification_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get notification_inactived =>
+      SvgPicture.asset('assets/icon/24/notification_inactived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get plus_actived =>
+      SvgPicture.asset('assets/icon/24/plus_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get plus_inactived =>
+      SvgPicture.asset('assets/icon/24/plus_inactived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get search =>
+      SvgPicture.asset('assets/icon/24/search.svg', fit: BoxFit.scaleDown);
+  static Widget get send_actived =>
+      SvgPicture.asset('assets/icon/24/send_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get send_inactived =>
+      SvgPicture.asset('assets/icon/24/send_inactived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get settings =>
+      SvgPicture.asset('assets/icon/24/settings.svg', fit: BoxFit.scaleDown);
+  static Widget get sort_actived =>
+      SvgPicture.asset('assets/icon/24/sort_actived.svg',
+          fit: BoxFit.scaleDown);
 
-  //gnb_part_image
-  static AssetImage get home_active =>
-      const AssetImage('assets/icon/24/gnb_part/Home_active.png');
-  static AssetImage get home_inactive =>
-      const AssetImage('assets/icon/24/gnb_part/Home_inactive.png');
-  static AssetImage get myProfile_active =>
-      const AssetImage('assets/icon/24/gnb_part/MyProfile_active.png');
-  static AssetImage get myProfile_inactive =>
-      const AssetImage('assets/icon/24/gnb_part/MyProfile_inactive.png');
-  static AssetImage get outSchool_active =>
-      const AssetImage('assets/icon/24/gnb_part/OutSchool_active.png');
-  static AssetImage get outSchool_inactive =>
-      const AssetImage('assets/icon/24/gnb_part/OutSchool_inactive.png');
-  static AssetImage get roadMap_active =>
-      const AssetImage('assets/icon/24/gnb_part/RoadMap_active.png');
-  static AssetImage get roadMap_inactive =>
-      const AssetImage('assets/icon/24/gnb_part/RoadMap_inactive.png');
-  static AssetImage get school_active =>
-      const AssetImage('assets/icon/24/gnb_part/School_active.png');
-  static AssetImage get school_inactive =>
-      const AssetImage('assets/icon/24/gnb_part/School_inactive.png');
+  // GNB Part Image
+  static Widget get home_active =>
+      SvgPicture.asset('assets/icon/24/gnb_part/Home_active.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get home_inactive =>
+      SvgPicture.asset('assets/icon/24/gnb_part/Home_inactive.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get myProfile_active =>
+      SvgPicture.asset('assets/icon/24/gnb_part/MyProfile_active.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get myProfile_inactive =>
+      SvgPicture.asset('assets/icon/24/gnb_part/MyProfile_inactive.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get outSchool_active =>
+      SvgPicture.asset('assets/icon/24/gnb_part/OutSchool_active.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get outSchool_inactive =>
+      SvgPicture.asset('assets/icon/24/gnb_part/OutSchool_inactive.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get roadMap_active =>
+      SvgPicture.asset('assets/icon/24/gnb_part/RoadMap_active.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get roadMap_inactive =>
+      SvgPicture.asset('assets/icon/24/gnb_part/RoadMap_inactive.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get school_active =>
+      SvgPicture.asset('assets/icon/24/gnb_part/School_active.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get school_inactive =>
+      SvgPicture.asset('assets/icon/24/gnb_part/School_inactive.svg',
+          fit: BoxFit.scaleDown);
 
   // logo image
   static AssetImage get logo_40 =>
@@ -106,21 +142,33 @@ class AppImages {
   static AssetImage get logo_1024 =>
       const AssetImage('assets/logo/img_launcher_1024.png');
 
-// other image
-  static AssetImage get topapplogo =>
-      const AssetImage('assets/icon/other/TopAppLogo.png');
-  static AssetImage get roadmap_downarrow =>
-      const AssetImage('assets/icon/other/roadmap_downarrow.png');
-  static AssetImage get onschool_class =>
-      const AssetImage('assets/icon/other/onschool_home_class.png');
-  static AssetImage get onschool_notice =>
-      const AssetImage('assets/icon/other/onschool_home_notice.png');
-  static AssetImage get onschool_supportgroup =>
-      const AssetImage('assets/icon/other/onschool_home_supportgroup.png');
-  static AssetImage get onschool_system =>
-      const AssetImage('assets/icon/other/onschool_home_system.png');
+  // Other Image
+  static Widget get topapplogo =>
+      SvgPicture.asset('assets/icon/other/TopAppLogo.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get roadmap_downarrow =>
+      SvgPicture.asset('assets/icon/other/roadmap_downarrow.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get onschool_class =>
+      SvgPicture.asset('assets/icon/other/onschool_home_class.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get onschool_notice =>
+      SvgPicture.asset('assets/icon/other/onschool_home_notice.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get onschool_supportgroup =>
+      SvgPicture.asset('assets/icon/other/onschool_home_supportgroup.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get onschool_system =>
+      SvgPicture.asset('assets/icon/other/onschool_home_system.svg',
+          fit: BoxFit.scaleDown);
 
-// exceptional image
-  static AssetImage get kako_icon =>
-      const AssetImage('assets/icon/20/kakao_logo.png');
+  // Exceptional Image
+  static Widget get kako_icon =>
+      SvgPicture.asset('assets/icon/20/kakao_logo.svg', fit: BoxFit.scaleDown);
+  static Widget get run_yes =>
+      SvgPicture.asset('assets/onboard_image/run_yes.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get run_no =>
+      SvgPicture.asset('assets/onboard_image/run_no.svg',
+          fit: BoxFit.scaleDown);
 }

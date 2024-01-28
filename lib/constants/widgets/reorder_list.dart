@@ -32,7 +32,7 @@ class ReorderCustomTile extends StatelessWidget {
               SizedBox(
                 height: 24,
                 width: 24,
-                child: Image(image: AppImages.sort_actived),
+                child: AppIcon.sort_actived,
               ),
             ],
           ),

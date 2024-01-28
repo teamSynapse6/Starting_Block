@@ -58,10 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 bottom: Sizes.size140,
               ),
               child: GestureDetector(
-                  onTap: _onNextTap,
-                  child: FractionallySizedBox(
-                    child: Container(
-                      padding: const EdgeInsets.all(Sizes.size14),
+                onTap: _onNextTap,
+                child: FractionallySizedBox(
+                  widthFactor: 1,
+                  child: Container(
+                      height: 44,
                       decoration: const BoxDecoration(
                         color: Color(0XFFFEE500),
                         borderRadius: BorderRadius.all(
@@ -69,26 +70,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       child: Stack(
-                        alignment: Alignment.center,
                         children: [
+                          Positioned(
+                            top: 13,
+                            left: 16,
+                            child: AppIcon.kako_icon,
+                          ),
                           Align(
-                            alignment: Alignment.centerLeft,
-                            child: Image(
-                              image: AppImages.kako_icon,
-                              height: 18,
-                              width: 18,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "카카오로 로그인",
+                              style: AppTextStyles.bd3.copyWith(
+                                color: AppColors.g6,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "카카오로 로그인",
-                            textAlign: TextAlign.center,
-                            style:
-                                AppTextStyles.bd3.copyWith(color: AppColors.g6),
-                          ),
+                          )
                         ],
-                      ),
-                    ),
-                  )),
+                      )),
+                ),
+              ),
             ),
           ],
         ),

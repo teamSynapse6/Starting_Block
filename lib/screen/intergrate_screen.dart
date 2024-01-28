@@ -3,7 +3,12 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class IntergrateScreen extends StatefulWidget {
-  const IntergrateScreen({super.key});
+  final bool resetIndex;
+
+  const IntergrateScreen({
+    super.key,
+    this.resetIndex = false,
+  });
 
   // 외부에서 접근 가능한 함수를 정의
   static void setSelectedIndexToZero(BuildContext context) {
@@ -17,6 +22,14 @@ class IntergrateScreen extends StatefulWidget {
 
 class _OffCampusState extends State<IntergrateScreen> {
   int _selectedIndex = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.resetIndex) {
+      setSelectedIndexToZero();
+    }
+  }
 
   void _onTap(int index) {
     setState(() {
@@ -62,6 +75,8 @@ class _OffCampusState extends State<IntergrateScreen> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
+        height: 56 + 15,
+        elevation: 0,
         color: Colors.transparent, // BottomAppBar의 배경색을 투명하게 설정
         child: Column(
           children: [
@@ -76,40 +91,40 @@ class _OffCampusState extends State<IntergrateScreen> {
                   isSelected: _selectedIndex == 0,
                   onTap: () => _onTap(0),
                   selectedIndex: _selectedIndex,
-                  selecetedImage: AppImages.outSchool_active,
-                  unselecetedImage: AppImages.outSchool_inactive,
+                  selecetedIcon: AppIcon.outSchool_active,
+                  unselecetedIcon: AppIcon.outSchool_inactive,
                 ),
                 GnbTap(
                   text: '교내 지원',
                   isSelected: _selectedIndex == 1,
                   onTap: () => _onTap(1),
                   selectedIndex: _selectedIndex,
-                  selecetedImage: AppImages.school_active,
-                  unselecetedImage: AppImages.school_inactive,
+                  selecetedIcon: AppIcon.school_active,
+                  unselecetedIcon: AppIcon.school_inactive,
                 ),
                 GnbTap(
                   text: '홈',
                   isSelected: _selectedIndex == 2,
                   onTap: () => _onTap(2),
                   selectedIndex: _selectedIndex,
-                  selecetedImage: AppImages.home_active,
-                  unselecetedImage: AppImages.home_inactive,
+                  selecetedIcon: AppIcon.home_active,
+                  unselecetedIcon: AppIcon.home_inactive,
                 ),
                 GnbTap(
                   text: '로드맵',
                   isSelected: _selectedIndex == 3,
                   onTap: () => _onTap(3),
                   selectedIndex: _selectedIndex,
-                  selecetedImage: AppImages.roadMap_active,
-                  unselecetedImage: AppImages.roadMap_inactive,
+                  selecetedIcon: AppIcon.roadMap_active,
+                  unselecetedIcon: AppIcon.roadMap_inactive,
                 ),
                 GnbTap(
                   text: '마이페이지',
                   isSelected: _selectedIndex == 4,
                   onTap: () => _onTap(4),
                   selectedIndex: _selectedIndex,
-                  selecetedImage: AppImages.myProfile_active,
-                  unselecetedImage: AppImages.myProfile_inactive,
+                  selecetedIcon: AppIcon.myProfile_active,
+                  unselecetedIcon: AppIcon.myProfile_inactive,
                 )
               ],
             ),

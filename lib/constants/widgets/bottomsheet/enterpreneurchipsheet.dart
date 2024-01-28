@@ -121,7 +121,7 @@ class _EnterPreneurChipsSheetState extends State<EnterPreneurChipsSheet> {
               ),
             ),
             Gaps.h4,
-            Image(image: AppImages.down),
+            AppIcon.down,
             Gaps.h8,
           ],
         ),

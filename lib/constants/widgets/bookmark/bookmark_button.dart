@@ -79,8 +79,8 @@ class _BookMarkButtonState extends State<BookMarkButton> {
                               thisText: roadmapList[index],
                               thisColor: AppColors.white,
                               thisIcon: isSaved
-                                  ? AppImages.plus_actived
-                                  : AppImages.plus_inactived,
+                                  ? AppIcon.plus_actived
+                                  : AppIcon.plus_inactived,
                               thisTapAction: () {
                                 if (isSaved) {
                                   roadmapModel.removeSavedItem(
@@ -130,11 +130,9 @@ class _BookMarkButtonState extends State<BookMarkButton> {
               child: SizedBox(
                 height: 24,
                 width: 24,
-                child: Image(
-                  image: hasSavedItems
-                      ? AppImages.bookmark_actived
-                      : AppImages.bookmark_inactived,
-                ),
+                child: hasSavedItems
+                    ? AppIcon.bookmark_actived
+                    : AppIcon.bookmark_inactived,
               ),
             );
           },

@@ -7,9 +7,9 @@ class RoadMapList extends StatefulWidget {
   final Function(String, int, bool) onSelectedRoadmapChanged;
 
   const RoadMapList({
-    Key? key,
+    super.key,
     required this.onSelectedRoadmapChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<RoadMapList> createState() => _RoadMapListState();
@@ -244,7 +244,7 @@ class _RoadMapListState extends State<RoadMapList> {
             style: AppTextStyles.st2.copyWith(color: AppColors.white),
           ),
           Gaps.h6,
-          Image(image: AppImages.roadmap_downarrow),
+          AppIcon.roadmap_downarrow,
         ],
       ),
     );

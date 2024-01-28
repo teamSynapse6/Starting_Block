@@ -34,7 +34,7 @@ class BookMarkList extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: thisTapAction,
-                child: Image(image: thisIcon),
+                child: thisIcon,
               ),
             ],
           ),

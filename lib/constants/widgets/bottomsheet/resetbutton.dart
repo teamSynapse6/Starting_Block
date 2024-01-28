@@ -59,7 +59,7 @@ class _ResetButtonState extends State<ResetButton> {
               ),
             ),
             Gaps.h4,
-            Image(image: AppImages.re),
+            AppIcon.re,
             Gaps.h8,
           ],
         ),

@@ -1,8 +1,15 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class OnCampusCardMedium extends StatefulWidget {
-  const OnCampusCardMedium({super.key});
+  final thisTap;
+
+  const OnCampusCardMedium({
+    super.key,
+    this.thisTap,
+  });
 
   @override
   State<OnCampusCardMedium> createState() => _OnCampusCardMediumState();
@@ -20,7 +27,7 @@ class _OnCampusCardMediumState extends State<OnCampusCardMedium> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: null,
+      onTap: widget.thisTap,
       onLongPressStart: (details) => _handlePress(true),
       onLongPressEnd: (details) => _handlePress(false),
       child: FractionallySizedBox(
@@ -56,12 +63,7 @@ class _OnCampusCardMediumState extends State<OnCampusCardMedium> {
                 ),
               ),
               Positioned(
-                right: 11,
-                bottom: 12,
-                child: Image(
-                  image: AppImages.onschool_supportgroup,
-                ),
-              ),
+                  right: 11, bottom: 12, child: AppIcon.onschool_supportgroup),
             ],
           ),
         ),

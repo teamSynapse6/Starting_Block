@@ -1,3 +1,8 @@
+// ignore_for_file: avoid_print
+
+import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:http/http.dart' as http;
+
 Map<String, int> schoolNameToNumber = {
   '가톨릭대학교': 1,
   '감리교신학대학교': 2,
@@ -45,4 +50,26 @@ Map<String, int> schoolNameToNumber = {
 
 int getSchoolNumber(String schoolName) {
   return schoolNameToNumber[schoolName] ?? -1; // 학교명이 없을 경우 -1을 반환
+}
+
+class OnCampusAPI {
+  static String baseUrl = 'http://10.0.2.2:5000';
+
+  static Future<String> onCampusWeb() async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    String targetUrl = '';
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/url');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      targetUrl = response.body;
+      print('성공: $targetUrl');
+      return targetUrl;
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
 }

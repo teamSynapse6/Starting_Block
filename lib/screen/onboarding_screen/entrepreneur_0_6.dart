@@ -109,20 +109,22 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
                     onTap: () => _onCardTap(1),
                     child: Card(
                       elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                          side: BorderSide(color: AppColors.g2, width: 1)),
-                      color: selectedCard == 1
-                          ? AppColors.g2
-                          : AppColors.white, // 선택 상태에 따라 색상 변경
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                        side: BorderSide(
+                            color: selectedCard == 1
+                                ? AppColors.blue
+                                : AppColors.g2,
+                            width: selectedCard == 1 ? 3 : 1),
+                      ),
+                      color: AppColors.white,
                       child: SizedBox(
                         width: 148,
                         height: 148,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Image.asset('assets/onboard_image/run_yes.png',
-                                width: 80, height: 80),
+                            AppIcon.run_yes,
                             const Text(
                               '네,',
                               style: TextStyle(
@@ -148,21 +150,22 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
                     onTap: () => _onCardTap(2),
                     child: Card(
                       elevation: 0,
-                      shape: const RoundedRectangleBorder(
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
-                        side: BorderSide(color: AppColors.g2, width: 1),
+                        side: BorderSide(
+                            color: selectedCard == 2
+                                ? AppColors.blue
+                                : AppColors.g2,
+                            width: selectedCard == 2 ? 3 : 1),
                       ),
-                      color: selectedCard == 2
-                          ? AppColors.g2
-                          : AppColors.white, // 선택 상태에 따라 색상 변경
+                      color: AppColors.white,
                       child: SizedBox(
                         width: 148,
                         height: 148,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Image.asset('assets/onboard_image/run_no.png',
-                                width: 80, height: 80),
+                            AppIcon.run_no,
                             const Text(
                               '아니요,',
                               style: TextStyle(

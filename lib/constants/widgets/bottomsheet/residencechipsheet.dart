@@ -128,7 +128,7 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
               ),
             ),
             Gaps.h4,
-            Image(image: AppImages.down),
+            AppIcon.down,
             Gaps.h8,
           ],
         ),

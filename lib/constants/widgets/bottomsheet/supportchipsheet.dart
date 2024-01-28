@@ -121,7 +121,7 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
               ),
             ),
             Gaps.h4,
-            Image(image: AppImages.down),
+            AppIcon.down,
             Gaps.h8,
           ],
         ),

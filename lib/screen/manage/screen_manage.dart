@@ -34,7 +34,8 @@ export 'package:starting_block/screen/roadmap_screen/test.dart';
 export 'package:starting_block/screen/on_campus_screen/oncampus_home.dart';
 
 //인앱웹뷰 페이지 관리용
-export 'package:starting_block/screen/webview_screen/intergrate_webview.dart';
+export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰
+export 'package:starting_block/screen/webview_screen/oncampus_home_webview.dart'; //교내지원사업 웹뷰 기본
 
 //데이터 파일 관리용
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';

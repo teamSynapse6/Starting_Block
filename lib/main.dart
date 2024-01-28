@@ -3,7 +3,8 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
   runApp(
     ChangeNotifierProvider(
       create: (context) => RoadMapModel(),
@@ -20,13 +21,13 @@ class StartingBlock extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeManage.theme,
-      home: const IntergrateScreen(),
+      home: const SplashScreen(),
     );
   }
 }
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   SplashScreenState createState() => SplashScreenState();
@@ -53,7 +54,7 @@ class SplashScreenState extends State<SplashScreen> {
         children: <Widget>[
           Center(
             child: Image(
-              image: AppImages.logo_512,
+              image: AppIcon.logo_512,
               width: 180.0,
               height: 180.0,
             ),

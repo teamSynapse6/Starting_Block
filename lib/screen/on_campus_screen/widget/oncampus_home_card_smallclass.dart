@@ -56,9 +56,7 @@ class _OnCampusCardSmallClassState extends State<OnCampusCardSmallClass> {
               Positioned(
                 right: 8,
                 bottom: 12,
-                child: Image(
-                  image: AppImages.onschool_class,
-                ),
+                child: AppIcon.onschool_class,
               ),
             ],
           ),

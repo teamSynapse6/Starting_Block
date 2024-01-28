@@ -7,9 +7,9 @@ class NextStep extends StatefulWidget {
   final VoidCallback onResetToCurrentStage;
 
   const NextStep({
-    Key? key,
+    super.key,
     required this.onResetToCurrentStage,
-  }) : super(key: key);
+  });
   @override
   State<NextStep> createState() => _NextStepState();
 }
@@ -53,7 +53,7 @@ class _NextStepState extends State<NextStep> {
                 style: AppTextStyles.btn2.copyWith(color: AppColors.white),
               ),
               Gaps.h2,
-              Image(image: AppImages.next_g1)
+              AppIcon.next_g1,
             ],
           ),
         ),

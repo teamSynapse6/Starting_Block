@@ -5,9 +5,9 @@ class GoBackToStep extends StatefulWidget {
   final VoidCallback onResetToCurrentStage;
 
   const GoBackToStep({
-    Key? key,
+    super.key,
     required this.onResetToCurrentStage,
-  }) : super(key: key);
+  });
 
   @override
   State<GoBackToStep> createState() => _GoBackToStepState();

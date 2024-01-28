@@ -68,11 +68,8 @@ class _OnCampusCardLargeState extends State<OnCampusCardLarge> {
                     borderRadius: BorderRadius.circular(37),
                   ),
                   child: Transform.translate(
-                    offset: const Offset(0, 19),
-                    child: Image(
-                      image: AppImages.onschool_notice,
-                    ),
-                  ),
+                      offset: const Offset(0, 19),
+                      child: AppIcon.onschool_notice),
                 ),
               ),
             ],

@@ -27,7 +27,7 @@ class OffCampusDetailBody extends StatelessWidget {
   final String classification;
 
   const OffCampusDetailBody({
-    Key? key,
+    super.key,
     required this.organize,
     required this.title,
     required this.startDate,
@@ -37,7 +37,7 @@ class OffCampusDetailBody extends StatelessWidget {
     required this.link,
     required this.thisID,
     required this.classification,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
