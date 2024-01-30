@@ -1,7 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:starting_block/screen/manage/model_manage.dart';
 
 Map<String, int> schoolNameToNumber = {
   '가톨릭대학교': 1,
@@ -54,19 +55,75 @@ int getSchoolNumber(String schoolName) {
 
 class OnCampusAPI {
   static String baseUrl = 'http://10.0.2.2:5000';
+  static String schoolUrl = 'url';
+  static String schoolLogo = 'logo';
+  static String schoolSystem = 'system';
+  static String schoolClass = 'class';
 
   static Future<String> onCampusWeb() async {
     String schoolName =
         await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
     String targetUrl = '';
     int schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/url');
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolUrl');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
       targetUrl = response.body;
-      print('성공: $targetUrl');
       return targetUrl;
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
+
+  static Future<String> onCampusLogo() async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolLogo');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      // SVG 이미지 데이터를 문자열로 반환
+      String svgData = response.body;
+      return svgData;
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
+
+  static Future<List<OnCampusSystemModel>> getOnCampusSystem() async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolSystem');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCampusSystemModel> systemList =
+          jsonData.map((item) => OnCampusSystemModel.fromJson(item)).toList();
+      return systemList;
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
+
+  static Future<List<OnCampusClassModel>> getOnCampusClass() async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolClass');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCampusClassModel> classList =
+          jsonData.map((item) => OnCampusClassModel.fromJson(item)).toList();
+      return classList;
     } else {
       print('에러: ${response.statusCode}.');
       throw Error();

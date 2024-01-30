@@ -212,11 +212,12 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final state;
+  final state, thisBgColor;
 
   const BackAppBar({
     super.key,
     this.state,
+    this.thisBgColor,
   });
 
   @override
@@ -225,6 +226,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: thisBgColor ?? AppColors.white,
       leading: GestureDetector(
         onTap: () {
           Navigator.pop(context, state);

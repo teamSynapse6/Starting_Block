@@ -1,13 +1,12 @@
-// ignore_for_file: avoid_print
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:starting_block/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:starting_block/screen/manage/models/offcampus_model.dart';
+import 'package:starting_block/screen/manage/api/offcampus_manage.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class TabScreenOfCaBiz extends StatefulWidget {
@@ -39,14 +38,10 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
   }
 
   Future<void> _loadJsonData() async {
-    var jsonString =
-        await rootBundle.loadString('lib/data_manage/outschool_gara.json');
-    var jsonRawData = json.decode(jsonString) as List;
-    setState(() {
-      jsonData = jsonRawData
-          .map((item) => OffCampusModel.fromJson(item as Map<String, dynamic>))
-          .toList();
-    });
+    jsonData = await OffCampusApiService.getOffCampusData();
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _selectRandomItems() {
@@ -92,7 +87,6 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
         });
       }
     }
-    print('이건 필터링: $filteredItems');
   }
 
   @override

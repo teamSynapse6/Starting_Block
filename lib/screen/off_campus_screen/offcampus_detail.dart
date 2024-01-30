@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/api/offcampus_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:starting_block/screen/manage/models/offcampus_detail_model.dart';
 import 'package:starting_block/screen/manage/models/offcampus_recommend_model.dart';
@@ -27,52 +26,35 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   String thisType = 'N/A';
   String thisLink = 'N/A';
   String thisID = 'N/A';
-  String thisClassification = 'N/A'; //<- 여기까지가 데이터 모델에서 받아오는 데이터
+  String thisClassification = 'N/A';
   late Future<List<OffCampusRecommendModel>> futureRecommendations;
 
   @override
   void initState() {
     super.initState();
     loadoffCampusDetailData();
-
-    // loadJsonData 함수를 사용하여 futureRecommendations 초기화
-    futureRecommendations = loadJsonData();
+    futureRecommendations = OffCampusApiService.getOffCampusRecData(
+      widget.thisID,
+    ); // Updated to use OffCampusApiService
   }
 
   Future<void> loadoffCampusDetailData() async {
-    String jsonString =
-        await rootBundle.loadString('lib/data_manage/outschool_gara.json');
-    List<dynamic> jsonData = json.decode(jsonString);
+    List<OffCampusDetailModel> data =
+        await OffCampusApiService.getOffCampusDetailData();
     setState(() {
-      var detailJson = jsonData.firstWhere(
-        (element) => element['id'].toString() == widget.thisID,
-        orElse: () => null,
+      var detailData = data.firstWhere(
+        (element) => element.id == widget.thisID,
       );
-      if (detailJson != null) {
-        var detailData = OffCampusDetailModel.fromJson(detailJson);
-        thisOrganize = detailData.organize;
-        thisTitle = detailData.title;
-        thisStartDate = detailData.startDate;
-        thisEndDate = detailData.endDate;
-        thisAge = detailData.age;
-        thisType = detailData.type;
-        thisLink = detailData.link;
-        thisID = detailData.id;
-        thisClassification = detailData.classification;
-      }
+      thisOrganize = detailData.organize;
+      thisTitle = detailData.title;
+      thisStartDate = detailData.startDate;
+      thisEndDate = detailData.endDate;
+      thisAge = detailData.age;
+      thisType = detailData.type;
+      thisLink = detailData.link;
+      thisID = detailData.id;
+      thisClassification = detailData.classification;
     });
-  }
-
-  Future<List<OffCampusRecommendModel>> loadJsonData() async {
-    String jsonString =
-        await rootBundle.loadString('lib/data_manage/outschool_gara.json');
-    List<dynamic> jsonData = json.decode(jsonString);
-    List<OffCampusRecommendModel> recommendations = jsonData
-        .where((item) => item['id'].toString() != widget.thisID)
-        .map((item) => OffCampusRecommendModel.fromJson(item))
-        .toList();
-    recommendations.shuffle();
-    return recommendations.take(3).toList(); // 여기서 3개 아이템만 선택
   }
 
   @override

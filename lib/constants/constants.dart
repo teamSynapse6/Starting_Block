@@ -42,3 +42,8 @@ export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card
 export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card_medium.dart'; //교내지원사업_Home_Medium카드
 export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card_smallsys.dart'; //교내지원사업_Home_Small 제도 카드
 export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card_smallclass.dart'; //교내지원사업_Home_Small 강의 카드
+export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_system_listcard.dart'; //교내지원사업_교내제도 리스트 카드
+export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_class_chips.dart'; //교내지원사업_교내 강의 chips
+export 'package:starting_block/constants/widgets/oncampus_listcard/oncampuss_class_listcard.dart'; //교내지원사업_교내 강의 리스트 카드
+
+

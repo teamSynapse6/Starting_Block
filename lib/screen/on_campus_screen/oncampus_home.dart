@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
-
-import '../manage/api/oncampus_manage.dart';
+import 'package:starting_block/screen/manage/api/oncampus_manage.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OnCampusHome extends StatefulWidget {
   const OnCampusHome({super.key});
@@ -15,11 +15,13 @@ class OnCampusHome extends StatefulWidget {
 
 class _OnCampusHomeState extends State<OnCampusHome> {
   String _schoolName = "";
+  String _svgLogo = ""; // SVG 데이터를 저장할 변수
 
   @override
   void initState() {
     super.initState();
     _loadSchoolName();
+    _loadSvgLogo();
   }
 
   Future<void> _loadSchoolName() async {
@@ -27,6 +29,17 @@ class _OnCampusHomeState extends State<OnCampusHome> {
     setState(() {
       _schoolName = schoolName;
     });
+  }
+
+  Future<void> _loadSvgLogo() async {
+    try {
+      String svgData = await OnCampusAPI.onCampusLogo();
+      setState(() {
+        _svgLogo = svgData;
+      });
+    } catch (e) {
+      print('SVG 로고 로드 실패: $e');
+    }
   }
 
   @override
@@ -61,11 +74,12 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                   Gaps.v16,
                   Row(
                     children: [
-                      const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: Icon(Icons.school),
-                      ),
+                      _svgLogo.isNotEmpty
+                          ? SvgPicture.string(
+                              _svgLogo,
+                              fit: BoxFit.scaleDown,
+                            )
+                          : Container(), // SVG 이미지가 로드되지 않았을 경우 빈 컨테이너 표시
                       Gaps.h4,
                       Text(
                         _schoolName,
@@ -99,20 +113,7 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * (152 / 360),
-                        child: OnCampusCardMedium(
-                          thisTap: () async {
-                            String targetUrl =
-                                await OnCampusAPI.onCampusWeb(); // API 호출
-                            if (targetUrl.isNotEmpty) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => OnCampusWebView(
-                                      url: targetUrl), // WebView 열기
-                                ),
-                              );
-                            }
-                          },
-                        ),
+                        child: const OnCampusCardMedium(),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * (72 / 360),
@@ -132,7 +133,7 @@ class _OnCampusHomeState extends State<OnCampusHome> {
           Text(
             '최신 교내 지원 사업',
             style: AppTextStyles.st2.copyWith(color: AppColors.g6),
-          )
+          ),
         ],
       ),
     );

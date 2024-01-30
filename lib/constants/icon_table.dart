@@ -32,6 +32,8 @@ class AppIcon {
       SvgPicture.asset('assets/icon/24/back.svg', fit: BoxFit.scaleDown);
   static Widget get back_white =>
       SvgPicture.asset('assets/icon/24/back_white.svg', fit: BoxFit.scaleDown);
+  static Widget get back_web =>
+      SvgPicture.asset('assets/icon/24/back_web.svg', fit: BoxFit.scaleDown);
   static Widget get bookmark_actived =>
       SvgPicture.asset('assets/icon/24/bookmark_actived.svg',
           fit: BoxFit.scaleDown);

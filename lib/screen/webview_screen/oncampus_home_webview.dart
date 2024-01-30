@@ -58,7 +58,7 @@ class OnCampusWebView extends StatelessWidget {
                           ),
                         ),
                         child: Center(
-                          child: AppIcon.back,
+                          child: AppIcon.back_web,
                         ),
                       ),
                     ),

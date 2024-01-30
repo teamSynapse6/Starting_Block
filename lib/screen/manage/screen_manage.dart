@@ -1,5 +1,5 @@
 //Screen파일 관리용
-//#온보딩 페이지
+//온보딩 페이지
 export 'package:starting_block/main.dart';
 export 'package:starting_block/screen/onboarding_screen/login_0_2.dart';
 export 'package:starting_block/screen/onboarding_screen/nickname_0_4.dart';
@@ -32,6 +32,8 @@ export 'package:starting_block/screen/roadmap_screen/test.dart';
 
 //교내지원사업 페이지
 export 'package:starting_block/screen/on_campus_screen/oncampus_home.dart';
+export 'package:starting_block/screen/on_campus_screen/oncampus_system.dart'; //교내창업제도화면
+export 'package:starting_block/screen/on_campus_screen/oncampus_class.dart'; //교내창업강의화면
 
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰
@@ -39,8 +41,6 @@ export 'package:starting_block/screen/webview_screen/oncampus_home_webview.dart'
 
 //데이터 파일 관리용
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';
-export 'package:starting_block/screen/manage/userdata/user_info.dart'; //유저 데이터 관리용
-export 'package:starting_block/screen/manage/models/roadmap_model.dart'; //로드맵 관리용
 
 //설정 데이터 파일 관리용
 export 'package:starting_block/screen/manage/theme_manage.dart';

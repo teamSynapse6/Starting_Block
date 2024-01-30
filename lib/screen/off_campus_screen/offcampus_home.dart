@@ -1,19 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/api/offcampus_manage.dart';
 import 'package:starting_block/screen/manage/models/offcampus_model.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
-
-Future<List<OffCampusModel>> loadJsonData() async {
-  String jsonString =
-      await rootBundle.loadString('lib/data_manage/outschool_gara.json');
-  List<dynamic> jsonData = json.decode(jsonString);
-
-  return jsonData
-      .map<OffCampusModel>((json) => OffCampusModel.fromJson(json))
-      .toList();
-}
 
 class OffCampusHome extends StatefulWidget {
   const OffCampusHome({super.key});
@@ -79,7 +68,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
             ),
             Expanded(
               child: FutureBuilder<List<OffCampusModel>>(
-                future: loadJsonData(),
+                future: OffCampusApiService.getOffCampusData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {

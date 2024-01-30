@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class OnCampusCardMedium extends StatefulWidget {
-  final thisTap;
-
   const OnCampusCardMedium({
     super.key,
-    this.thisTap,
   });
 
   @override
@@ -27,7 +24,7 @@ class _OnCampusCardMediumState extends State<OnCampusCardMedium> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.thisTap,
+      onTap: null,
       onLongPressStart: (details) => _handlePress(true),
       onLongPressEnd: (details) => _handlePress(false),
       child: FractionallySizedBox(

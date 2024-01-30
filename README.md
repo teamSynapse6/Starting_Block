@@ -5,18 +5,11 @@ MJU DCD | Graduation project
 
 
 
-## Getting Started
+## 실행 전 Read me
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 0128 이후 변경사항
+240128 이후 서버를 이용하는 방식으로 변경, 플러터 앱 실행 전 simple_server내 app.py를 실행 한 후
+Starting block을 실행해야 데이터를 받아올 수 있음.
 
 
 ## Synapse_StartingBlock
