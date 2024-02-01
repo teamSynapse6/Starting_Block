@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:starting_block/constants/widgets/bottomsheet/model/filter_model.dart';
+import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 
 class ResetButton extends StatefulWidget {
   const ResetButton({super.key});

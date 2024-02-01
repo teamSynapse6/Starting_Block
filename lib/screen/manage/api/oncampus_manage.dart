@@ -59,6 +59,7 @@ class OnCampusAPI {
   static String schoolLogo = 'logo';
   static String schoolSystem = 'system';
   static String schoolClass = 'class';
+  static String schoolNotify = 'notify';
 
   static Future<String> onCampusWeb() async {
     String schoolName =
@@ -124,6 +125,24 @@ class OnCampusAPI {
       List<OnCampusClassModel> classList =
           jsonData.map((item) => OnCampusClassModel.fromJson(item)).toList();
       return classList;
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
+
+  static Future<List<OnCampusNotifyModel>> getOnCampusNotify() async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotify');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCampusNotifyModel> notifyList =
+          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
+      return notifyList;
     } else {
       print('에러: ${response.statusCode}.');
       throw Error();

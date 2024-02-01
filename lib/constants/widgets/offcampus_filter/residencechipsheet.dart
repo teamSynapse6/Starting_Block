@@ -2,34 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/bottomsheet/model/filter_model.dart';
+import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 
-const supporttype = [
+const residence = [
   "전체",
-  "시설/공간/보육",
-  "행사/네트워크",
-  "융자/금융",
-  "판로/해외진출/수출",
-  "인력",
-  "경영/사업화/창업",
-  "기술 개발(R&D)",
-  "기타",
+  "서울",
+  "부산",
+  "대구",
+  "인천",
+  "경기",
+  "강원",
+  "충북",
+  "충남",
+  "전북",
+  "광주",
+  "대전",
+  "울산",
+  "세종",
+  "전남",
+  "경북",
+  "경남",
+  "제주",
 ];
 
-class SupportTypeChipsSheet extends StatefulWidget {
-  const SupportTypeChipsSheet({super.key});
+class ResidenceChipsSheet extends StatefulWidget {
+  const ResidenceChipsSheet({super.key});
 
   @override
-  State<SupportTypeChipsSheet> createState() => _SupportTypeChipsSheetState();
+  State<ResidenceChipsSheet> createState() => _ResidenceChipsSheetState();
 }
 
-class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
-  Future<void> _saveSelectedSupportType(String supportType) async {
+class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
+  Future<void> _saveSelectedResidence(String thisResidence) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedSupportType', supportType);
+    await prefs.setString('selectedResidence', thisResidence);
   }
 
-  void _onSupportTypeBottom(BuildContext context) async {
+  void _onResidenceBottom(BuildContext context) async {
     final filterModel = Provider.of<FilterModel>(context, listen: false);
 
     await showModalBottomSheet(
@@ -47,7 +56,7 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
-                      '지원 분야',
+                      '지역',
                       style: AppTextStyles.st2.copyWith(color: AppColors.g6),
                     ),
                   ),
@@ -57,20 +66,20 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
                       thickness: 4,
                       thumbVisibility: true,
                       child: ListView.builder(
-                        itemCount: supporttype.length,
+                        itemCount: residence.length,
                         itemBuilder: (context, index) {
-                          String supportType = supporttype[index];
+                          String thisResidence = residence[index];
                           return BottomSheetList(
-                            thisText: supportType,
+                            thisText: thisResidence,
                             thisColor:
-                                filterModel.selectedSupportType == supportType
+                                filterModel.selectedResidence == thisResidence
                                     ? AppColors.g1
                                     : AppColors.white,
                             thisTapAction: () {
                               setStateBottomSheet(() {
-                                filterModel.setSelectedSupportType(supportType);
+                                filterModel.setSelectedResidence(thisResidence);
                               });
-                              _saveSelectedSupportType(supportType);
+                              _saveSelectedResidence(thisResidence);
                             },
                           );
                         },
@@ -89,20 +98,19 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedSupportType =
-        Provider.of<FilterModel>(context).selectedSupportType;
+    final selectedResidence =
+        Provider.of<FilterModel>(context).selectedResidence;
 
     return GestureDetector(
-      onTap: () => _onSupportTypeBottom(context),
+      onTap: () => _onResidenceBottom(context),
       child: Container(
         height: 32,
         decoration: BoxDecoration(
-          color: selectedSupportType == "전체"
-              ? AppColors.white
-              : AppColors.bluedark,
+          color:
+              selectedResidence == "전체" ? AppColors.white : AppColors.bluedark,
           borderRadius: BorderRadius.circular(46),
           border: Border.all(
-              color: selectedSupportType == "전체"
+              color: selectedResidence == "전체"
                   ? AppColors.chipsColor
                   : AppColors.bluedark,
               width: 1),
@@ -113,11 +121,10 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
           children: [
             Gaps.h12,
             Text(
-              selectedSupportType == "전체" ? '지원 분야' : selectedSupportType,
+              selectedResidence == "전체" ? '지역' : selectedResidence,
               style: AppTextStyles.btn2.copyWith(
-                color: selectedSupportType == "전체"
-                    ? AppColors.g5
-                    : AppColors.white,
+                color:
+                    selectedResidence == "전체" ? AppColors.g5 : AppColors.white,
               ),
             ),
             Gaps.h4,

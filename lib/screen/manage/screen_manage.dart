@@ -34,6 +34,7 @@ export 'package:starting_block/screen/roadmap_screen/test.dart';
 export 'package:starting_block/screen/on_campus_screen/oncampus_home.dart';
 export 'package:starting_block/screen/on_campus_screen/oncampus_system.dart'; //교내창업제도화면
 export 'package:starting_block/screen/on_campus_screen/oncampus_class.dart'; //교내창업강의화면
+export 'package:starting_block/screen/on_campus_screen/oncampus_notify.dart'; //교내지원공고화면
 
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰

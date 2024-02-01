@@ -18,15 +18,20 @@ export 'package:starting_block/constants/widgets/bookmark/bookmark_button.dart';
 export 'package:starting_block/constants/widgets/reorder_list.dart'; //로드맵 순서 변경 리스트
 export 'package:starting_block/constants/widgets/bottom_gradiant.dart'; //하단 투명 Gradient
 
-//바텀시트
-export 'package:starting_block/constants/widgets/bottomsheet/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트
-export 'package:starting_block/constants/widgets/bottomsheet/residencechipsheet.dart'; //지역 리스트 및 칩스 컴포넌트
-export 'package:starting_block/constants/widgets/bottomsheet/supportchipsheet.dart'; //지원유형 리스트 및 칩스 컴포넌트
-export 'package:starting_block/constants/widgets/bottomsheet/resetbutton.dart'; //지원유형 리스트 및 칩스 컴포넌트
-export 'package:starting_block/constants/widgets/bottomsheet/bottomsheet_list.dart'; //bottomsheet 리스트 컴포넌트
+//교외지원사업 바텀시트
+export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트
+export 'package:starting_block/constants/widgets/offcampus_filter/residencechipsheet.dart'; //지역 리스트 및 칩스 컴포넌트
+export 'package:starting_block/constants/widgets/offcampus_filter/supportchipsheet.dart'; //지원유형 리스트 및 칩스 컴포넌트
+export 'package:starting_block/constants/widgets/offcampus_filter/resetbutton.dart'; //필터 리셋 위젯
+export 'package:starting_block/constants/widgets/offcampus_filter/bottomsheet_list.dart'; //bottomsheet 리스트 컴포넌트_교내지원사업과 함께 공유됨
+
+//교외지원사업 바텀시트
+export 'package:starting_block/constants/widgets/oncampus_filter/onca_programchipsheet.dart'; //교내지원사업_프로그램 컴포넌트
+export 'package:starting_block/constants/widgets/oncampus_filter/onca_resetbutton.dart'; //교내지원사업 필터 리셋 위젯
 
 //리스트 필터 시스템
-export 'package:starting_block/constants/widgets/bottomsheet/intergrate_filter.dart'; //통합 필터 시스템
+export 'package:starting_block/constants/widgets/offcampus_filter/intergrate_filter.dart'; //교외지원사업_통합 필터 시스템
+export 'package:starting_block/constants/widgets/oncampus_filter/onca_intergrate_filter.dart'; //교내지원사업_통합 필터 시스템
 
 //로드맵 컴포넌트 관리
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_gotosave.dart'; //로드맵_지원사업 저장하러 가기
@@ -45,5 +50,4 @@ export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_system_listcard.dart'; //교내지원사업_교내제도 리스트 카드
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_class_chips.dart'; //교내지원사업_교내 강의 chips
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampuss_class_listcard.dart'; //교내지원사업_교내 강의 리스트 카드
-
-
+export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_notify_listcard.dart'; //교내지원사업_지원공고 리스트 카드

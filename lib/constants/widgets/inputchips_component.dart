@@ -39,7 +39,7 @@ class InputChipsDelete extends StatelessWidget {
             Gaps.h4,
             GestureDetector(
               onTap: deleteTap,
-              child: Image(image: thisIcon),
+              child: AppIcon.close,
             ),
             Gaps.h8,
           ],
@@ -75,7 +75,13 @@ class InputChupsSharp extends StatelessWidget {
           children: [
             Gaps.h12,
             Text(
-              '#$text',
+              '#',
+              style: AppTextStyles.btn1.copyWith(
+                color: AppColors.blue,
+              ),
+            ),
+            Text(
+              text,
               style: AppTextStyles.btn1.copyWith(
                 color: AppColors.g5,
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class OnCampusCardLarge extends StatefulWidget {
   const OnCampusCardLarge({
@@ -22,7 +23,13 @@ class _OnCampusCardLargeState extends State<OnCampusCardLarge> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: null,
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const OnCampusNotify(),
+          ),
+        );
+      },
       onLongPressStart: (details) => _handlePress(true),
       onLongPressEnd: (details) => _handlePress(false),
       child: FractionallySizedBox(

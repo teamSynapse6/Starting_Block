@@ -2,43 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/bottomsheet/model/filter_model.dart';
+import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 
-const residence = [
+const enterpreneur = [
   "전체",
-  "서울",
-  "부산",
-  "대구",
-  "인천",
-  "경기",
-  "강원",
-  "충북",
-  "충남",
-  "전북",
-  "광주",
-  "대전",
-  "울산",
-  "세종",
-  "전남",
-  "경북",
-  "경남",
-  "제주",
+  "예비창업자",
+  "1년미만",
+  "2년미만",
+  "3년미만",
+  "5년미만",
+  "7년미만",
+  "10년미만",
 ];
 
-class ResidenceChipsSheet extends StatefulWidget {
-  const ResidenceChipsSheet({super.key});
+class EnterPreneurChipsSheet extends StatefulWidget {
+  const EnterPreneurChipsSheet({super.key});
 
   @override
-  State<ResidenceChipsSheet> createState() => _ResidenceChipsSheetState();
+  State<EnterPreneurChipsSheet> createState() => _EnterPreneurChipsSheetState();
 }
 
-class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
-  Future<void> _saveSelectedResidence(String thisResidence) async {
+class _EnterPreneurChipsSheetState extends State<EnterPreneurChipsSheet> {
+  Future<void> _saveSelectedEntrepreneur(String entrepreneur) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedResidence', thisResidence);
+    await prefs.setString('selectedEntrepreneur', entrepreneur);
   }
 
-  void _onResidenceBottom(BuildContext context) async {
+  void _onEntrePreneurBottom(BuildContext context) async {
     final filterModel = Provider.of<FilterModel>(context, listen: false);
 
     await showModalBottomSheet(
@@ -56,7 +46,7 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
-                      '지역',
+                      '사업자 형태',
                       style: AppTextStyles.st2.copyWith(color: AppColors.g6),
                     ),
                   ),
@@ -66,20 +56,21 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
                       thickness: 4,
                       thumbVisibility: true,
                       child: ListView.builder(
-                        itemCount: residence.length,
+                        itemCount: enterpreneur.length,
                         itemBuilder: (context, index) {
-                          String thisResidence = residence[index];
+                          String entrepreneur = enterpreneur[index];
                           return BottomSheetList(
-                            thisText: thisResidence,
+                            thisText: entrepreneur,
                             thisColor:
-                                filterModel.selectedResidence == thisResidence
+                                filterModel.selectedEntrepreneur == entrepreneur
                                     ? AppColors.g1
                                     : AppColors.white,
                             thisTapAction: () {
                               setStateBottomSheet(() {
-                                filterModel.setSelectedResidence(thisResidence);
+                                filterModel
+                                    .setSelectedEntrepreneur(entrepreneur);
                               });
-                              _saveSelectedResidence(thisResidence);
+                              _saveSelectedEntrepreneur(entrepreneur);
                             },
                           );
                         },
@@ -98,19 +89,20 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedResidence =
-        Provider.of<FilterModel>(context).selectedResidence;
+    final selectedEntrepreneur =
+        Provider.of<FilterModel>(context).selectedEntrepreneur;
 
     return GestureDetector(
-      onTap: () => _onResidenceBottom(context),
+      onTap: () => _onEntrePreneurBottom(context),
       child: Container(
         height: 32,
         decoration: BoxDecoration(
-          color:
-              selectedResidence == "전체" ? AppColors.white : AppColors.bluedark,
+          color: selectedEntrepreneur == "전체"
+              ? AppColors.white
+              : AppColors.bluedark,
           borderRadius: BorderRadius.circular(46),
           border: Border.all(
-              color: selectedResidence == "전체"
+              color: selectedEntrepreneur == "전체"
                   ? AppColors.chipsColor
                   : AppColors.bluedark,
               width: 1),
@@ -121,10 +113,11 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
           children: [
             Gaps.h12,
             Text(
-              selectedResidence == "전체" ? '지역' : selectedResidence,
+              selectedEntrepreneur == "전체" ? '사업자 형태' : selectedEntrepreneur,
               style: AppTextStyles.btn2.copyWith(
-                color:
-                    selectedResidence == "전체" ? AppColors.g5 : AppColors.white,
+                color: selectedEntrepreneur == "전체"
+                    ? AppColors.g5
+                    : AppColors.white,
               ),
             ),
             Gaps.h4,

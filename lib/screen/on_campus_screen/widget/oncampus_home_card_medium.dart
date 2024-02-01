@@ -24,7 +24,18 @@ class _OnCampusCardMediumState extends State<OnCampusCardMedium> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: null,
+      //      onTap: () {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => WebViewScreen(
+      //         url: thisUrl,
+      //         id: thisId,
+      //       ),
+      //     ),
+      //   );
+      // },
+
       onLongPressStart: (details) => _handlePress(true),
       onLongPressEnd: (details) => _handlePress(false),
       child: FractionallySizedBox(
