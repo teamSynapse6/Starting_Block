@@ -148,4 +148,24 @@ class OnCampusAPI {
       throw Error();
     }
   }
+
+  static Future<List<OnCampusNotifyModel>> getOnCampusHomeNotify() async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotify');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCampusNotifyModel> notifyList =
+          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
+
+      // 결과 리스트에서 처음 10개의 항목만 반환
+      return notifyList.take(5).toList();
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
 }

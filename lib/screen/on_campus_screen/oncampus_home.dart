@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
@@ -16,12 +16,14 @@ class OnCampusHome extends StatefulWidget {
 class _OnCampusHomeState extends State<OnCampusHome> {
   String _schoolName = "";
   String _svgLogo = ""; // SVG 데이터를 저장할 변수
+  List<OnCampusNotifyModel> _notifyList = [];
 
   @override
   void initState() {
     super.initState();
     _loadSchoolName();
     _loadSvgLogo();
+    _loadOnCampusHomeNotify();
   }
 
   Future<void> _loadSchoolName() async {
@@ -39,6 +41,18 @@ class _OnCampusHomeState extends State<OnCampusHome> {
       });
     } catch (e) {
       print('SVG 로고 로드 실패: $e');
+    }
+  }
+
+  Future<void> _loadOnCampusHomeNotify() async {
+    try {
+      List<OnCampusNotifyModel> notifyList =
+          await OnCampusAPI.getOnCampusHomeNotify();
+      setState(() {
+        _notifyList = notifyList;
+      });
+    } catch (e) {
+      print('최신 교내 지원 사업 정보 로드 실패: $e');
     }
   }
 
@@ -129,10 +143,30 @@ class _OnCampusHomeState extends State<OnCampusHome> {
               ),
             ),
           ),
-          Gaps.v48,
-          Text(
-            '최신 교내 지원 사업',
-            style: AppTextStyles.st2.copyWith(color: AppColors.g6),
+          Gaps.v46,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Text(
+              '최신 교내 지원 사업',
+              style: AppTextStyles.st2.copyWith(color: AppColors.g6),
+            ),
+          ),
+          Gaps.v24,
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              itemCount: _notifyList.length,
+              itemBuilder: (context, index) {
+                OnCampusNotifyModel notify = _notifyList[index];
+                return OnCampusNotifyListCard(
+                  thisProgramText: notify.type,
+                  thisId: notify.id,
+                  thisTitle: notify.title,
+                  thisStartDate: notify.stardate,
+                  thisUrl: notify.detailurl,
+                );
+              },
+            ),
           ),
         ],
       ),

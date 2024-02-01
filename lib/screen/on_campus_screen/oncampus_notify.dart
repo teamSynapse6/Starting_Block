@@ -1,9 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/oncampus_filter/onca_resetbutton.dart';
 import 'package:starting_block/screen/manage/api/oncampus_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/screen/on_campus_screen/widget/oncampus_notify_delegate.dart';
 
 class OnCampusNotify extends StatefulWidget {
   const OnCampusNotify({super.key});
@@ -112,7 +114,59 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                   );
                 },
               ),
-            )
+            ),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: OnCampusNotifyDelegate(
+                child: Container(
+                  color: AppColors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        const OnCaIntergrateFilter(),
+                        Gaps.v12,
+                        Container(
+                          height: 32,
+                          decoration: const BoxDecoration(
+                            border: BorderDirectional(
+                              top: BorderSide(width: 2, color: AppColors.g1),
+                              bottom: BorderSide(width: 2, color: AppColors.g1),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '24개의 공고',
+                                style: AppTextStyles.bd6
+                                    .copyWith(color: AppColors.g4),
+                              ),
+                              const Spacer(), // 왼쪽 텍스트와 오른쪽 버튼 사이의 공간을 만듦
+                              GestureDetector(
+                                onTap: null,
+                                child: Row(
+                                  children: [
+                                    const Text(
+                                      '최신순',
+                                      style: TextStyle(
+                                          fontFamily: 'pretendard',
+                                          fontSize: 14,
+                                          color: AppColors.g4),
+                                    ), // 현재 선택된 값으로 텍스트 업데이트
+                                    AppIcon.down,
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ];
         },
         body: SingleChildScrollView(
@@ -120,43 +174,6 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
-                const OnCaIntergrateFilter(),
-                Gaps.v12,
-                Container(
-                  height: 32,
-                  decoration: const BoxDecoration(
-                    border: BorderDirectional(
-                      top: BorderSide(width: 2, color: AppColors.g1),
-                      bottom: BorderSide(width: 2, color: AppColors.g1),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '24개의 공고',
-                        style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
-                      ),
-                      const Spacer(), // 왼쪽 텍스트와 오른쪽 버튼 사이의 공간을 만듦
-                      GestureDetector(
-                        onTap: null,
-                        child: Row(
-                          children: [
-                            const Text(
-                              '최신순',
-                              style: TextStyle(
-                                  fontFamily: 'pretendard',
-                                  fontSize: 14,
-                                  color: AppColors.g4),
-                            ), // 현재 선택된 값으로 텍스트 업데이트
-                            AppIcon.down,
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Gaps.v20,
                 ListView.builder(
                   shrinkWrap: true, // 내부 스크롤 없이 전체 높이를 표시
                   physics:
