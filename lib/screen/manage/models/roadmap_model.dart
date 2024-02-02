@@ -132,6 +132,7 @@ class RoadMapModel extends ChangeNotifier {
       prefs.setString(key, encodedItems);
 
       // 저장된 키와 값 출력
+      print('저장된 리스트: $savedItems');
     }
     notifyListeners(); // UI 업데이트를 위해 호출
     _hasUpdated = true;

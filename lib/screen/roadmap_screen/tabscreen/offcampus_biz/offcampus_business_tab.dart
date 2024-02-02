@@ -75,8 +75,9 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
       for (var item in allItems) {
         int? itemId = int.tryParse(item['id']);
         if (itemId != null) {
-          var matchingItem = jsonData.firstWhere(
-              (offCampusItem) => offCampusItem.id == itemId.toString());
+          var matchingItem = jsonData.firstWhere((offCampusItem) =>
+              offCampusItem.id == itemId.toString() &&
+              offCampusItem.classification == '교외사업');
 
           matchingData.add(matchingItem);
         }

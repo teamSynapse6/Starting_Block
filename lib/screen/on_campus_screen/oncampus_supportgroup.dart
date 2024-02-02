@@ -5,16 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/api/oncampus_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:starting_block/screen/on_campus_screen/widget/oncampus_supportgroup_delegate.dart';
-
-const List<Tab> myTabs = [
-  Tab(text: '멘토링'),
-  Tab(text: '동아리'),
-  Tab(text: '특강'),
-  Tab(text: '경진대회 및 캠프'),
-  Tab(text: '공간'),
-  Tab(text: '기타'),
-];
 
 class OnCampusSupportGroup extends StatefulWidget {
   const OnCampusSupportGroup({super.key});
@@ -24,18 +16,40 @@ class OnCampusSupportGroup extends StatefulWidget {
 }
 
 class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   String _svgLogo = ""; // SVG 데이터를 저장할 변수
   String _schoolName = "";
   late TabController _tabController; // TabController 추가
+  List<Tab> myTabs = [];
 
   @override
   void initState() {
     super.initState();
     _loadSchoolName();
     _loadSvgLogo();
-    _tabController =
-        TabController(length: myTabs.length, vsync: this); // TabController 초기화
+
+    _loadTabs(); // 서버로부터 탭 데이터를 로드하는 메서드 호출
+  }
+
+  Future<void> _loadTabs() async {
+    try {
+      List<String> tabTitles = await OnCampusAPI.getSupportTabList();
+      List<Tab> tabs = tabTitles.map((tabText) => Tab(text: tabText)).toList();
+
+      setState(() {
+        // try-catch 블록을 사용하여 _tabController의 초기화 여부를 확인
+        try {
+          _tabController.dispose();
+        } catch (_) {
+          // _tabController가 초기화되지 않았으면 여기서 에러가 발생합니다.
+          // 이 경우 특별히 해야 할 작업이 없으므로 무시합니다.
+        }
+        myTabs = tabs;
+        _tabController = TabController(length: myTabs.length, vsync: this);
+      });
+    } catch (e) {
+      print("탭 데이터 로드 실패: $e");
+    }
   }
 
   Future<void> _loadSchoolName() async {
@@ -136,6 +150,7 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
             SliverPersistentHeader(
               delegate: OnCampusSupprtGroupDelegate(
                 TabBar(
+                  tabAlignment: TabAlignment.start,
                   isScrollable: true,
                   unselectedLabelColor: AppColors.g3,
                   labelColor: AppColors.g6,
@@ -159,13 +174,12 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
         body: TabBarView(
           controller: _tabController,
           children: [
-            if (isTabPresent('멘토링')) const Center(child: Text('Tab 1 내용')),
-            if (isTabPresent('동아리')) const Center(child: Text('Tab 2 내용')),
-            if (isTabPresent('특강')) const Center(child: Text('Tab 3 내용')),
-            if (isTabPresent('경진대회 및 캠프'))
-              const Center(child: Text('Tab 4 내용')),
-            if (isTabPresent('공간')) const Center(child: Text('Tab 5 내용')),
-            if (isTabPresent('기타')) const Center(child: Text('Tab 6 내용')),
+            if (isTabPresent('멘토링')) const OnCaGroupMentoring(),
+            if (isTabPresent('동아리')) const OnCaGroupClub(),
+            if (isTabPresent('특강')) const OnCaGroupLecture(),
+            if (isTabPresent('경진대회 및 캠프')) const OnCaGroupCompetition(),
+            if (isTabPresent('공간')) const OnCaGroupSpace(),
+            if (isTabPresent('기타')) const OnCaGroupEtc(),
           ],
         ),
       ),

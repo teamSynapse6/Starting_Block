@@ -53,119 +53,120 @@ int getSchoolNumber(String schoolName) {
   return schoolNameToNumber[schoolName] ?? -1; // 학교명이 없을 경우 -1을 반환
 }
 
-class OnCampusAPI {
+class OnCampusGroupApi {
   static String baseUrl = 'http://10.0.2.2:5000';
-  static String schoolUrl = 'url';
-  static String schoolLogo = 'logo';
-  static String schoolSystem = 'system';
-  static String schoolClass = 'class';
-  static String schoolNotify = 'notify';
-  static String schoolTabList = 'supportgroup/tablist';
+  static String groupMentoring = 'supportgroup/mentoring';
+  static String groupClub = 'supportgroup/club';
+  static String groupLecture = 'supportgroup/lecture';
+  static String groupCompetition = 'supportgroup/competition';
+  static String groupSpace = 'supportgroup/space';
+  static String groupEtc = 'supportgroup/etc';
 
-  static Future<String> onCampusLogo() async {
+  static Future<List<OnCaMentoringModel>> getOnCaMentoring() async {
     String schoolName =
         await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
     int schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolLogo');
-
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      // SVG 이미지 데이터를 문자열로 반환
-      String svgData = response.body;
-      return svgData;
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
-  }
-
-  static Future<List<OnCampusSystemModel>> getOnCampusSystem() async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    int schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolSystem');
+    final url = Uri.parse('$baseUrl/$schoolNumber/$groupMentoring');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusSystemModel> systemList =
-          jsonData.map((item) => OnCampusSystemModel.fromJson(item)).toList();
-      return systemList;
+      List<OnCaMentoringModel> mentoringList =
+          jsonData.map((item) => OnCaMentoringModel.fromJson(item)).toList();
+      return mentoringList; // 모든 항목을 반환합니다.
     } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
+      print('멘토링 데이터 에러: ${response.statusCode}.');
+      throw Exception('Failed to load mentoring list');
     }
   }
 
-  static Future<List<OnCampusClassModel>> getOnCampusClass() async {
+  static Future<List<OnCaClubModel>> getOnCaClub() async {
     String schoolName =
         await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
     int schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolClass');
+    final url = Uri.parse('$baseUrl/$schoolNumber/$groupClub');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusClassModel> classList =
-          jsonData.map((item) => OnCampusClassModel.fromJson(item)).toList();
-      return classList;
+      List<OnCaClubModel> clubList =
+          jsonData.map((item) => OnCaClubModel.fromJson(item)).toList();
+      return clubList; // 모든 항목을 반환합니다.
     } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
+      print('동아리 데이터 에러: ${response.statusCode}.');
+      throw Exception('Failed to load mentoring list');
     }
   }
 
-  static Future<List<OnCampusNotifyModel>> getOnCampusNotify() async {
+  static Future<List<OnCaLectureModel>> getOnCaLecture() async {
     String schoolName =
         await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
     int schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotify');
+    final url = Uri.parse('$baseUrl/$schoolNumber/$groupLecture');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusNotifyModel> notifyList =
-          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-      return notifyList;
+      List<OnCaLectureModel> lectureList =
+          jsonData.map((item) => OnCaLectureModel.fromJson(item)).toList();
+      return lectureList; // 모든 항목을 반환합니다.
     } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
+      print('특강 데이터 에러: ${response.statusCode}.');
+      throw Exception('Failed to load mentoring list');
     }
   }
 
-  static Future<List<OnCampusNotifyModel>> getOnCampusHomeNotify() async {
+  static Future<List<OnCaCompetitionModel>> getOnCaCompetition() async {
     String schoolName =
         await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
     int schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotify');
+    final url = Uri.parse('$baseUrl/$schoolNumber/$groupCompetition');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusNotifyModel> notifyList =
-          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-
-      // 결과 리스트에서 처음 10개의 항목만 반환
-      return notifyList.take(5).toList();
+      List<OnCaCompetitionModel> competitionList =
+          jsonData.map((item) => OnCaCompetitionModel.fromJson(item)).toList();
+      return competitionList; // 모든 항목을 반환합니다.
     } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
+      print('경진대회/캠프 데이터 에러: ${response.statusCode}.');
+      throw Exception('Failed to load mentoring list');
     }
   }
 
-  static Future<List<String>> getSupportTabList() async {
+  static Future<List<OnCaSpaceModel>> getOnCaSpace() async {
     String schoolName =
         await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
     int schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolTabList');
+    final url = Uri.parse('$baseUrl/$schoolNumber/$groupSpace');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      // 서버 응답의 body 내용을 바로 List<String>으로 파싱하여 반환
-      return List<String>.from(jsonDecode(response.body));
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCaSpaceModel> spaceList =
+          jsonData.map((item) => OnCaSpaceModel.fromJson(item)).toList();
+      return spaceList; // 모든 항목을 반환합니다.
     } else {
-      print('에러: ${response.statusCode}.');
-      throw Exception('Failed to load tab list');
+      print('공간 데이터 에러: ${response.statusCode}.');
+      throw Exception('Failed to load mentoring list');
+    }
+  }
+
+  static Future<List<OnCaEtcModel>> getOnCaEtc() async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$groupEtc');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCaEtcModel> etcList =
+          jsonData.map((item) => OnCaEtcModel.fromJson(item)).toList();
+      return etcList; // 모든 항목을 반환합니다.
+    } else {
+      print('기타 데이터 에러: ${response.statusCode}.');
+      throw Exception('Failed to load mentoring list');
     }
   }
 }

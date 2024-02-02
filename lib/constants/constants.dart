@@ -51,3 +51,4 @@ export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_syst
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_class_chips.dart'; //교내지원사업_교내 강의 chips
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampuss_class_listcard.dart'; //교내지원사업_교내 강의 리스트 카드
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_notify_listcard.dart'; //교내지원사업_지원공고 리스트 카드
+export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_supportgroup_list.dart'; //교내지원사업_창업지원단 통합 리스트 카드

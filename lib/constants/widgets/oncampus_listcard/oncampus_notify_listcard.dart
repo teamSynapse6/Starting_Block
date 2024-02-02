@@ -39,7 +39,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
               children: [
                 OrganizeChip(text: thisProgramText),
                 const Spacer(),
-                BookMarkButton(id: thisId, classification: '교내지원')
+                BookMarkButton(id: thisId, classification: '교내사업')
               ],
             ),
             Gaps.v12,

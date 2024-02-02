@@ -32,7 +32,7 @@ class OnCampusSysListCard extends StatelessWidget {
                   style: AppTextStyles.bd1.copyWith(color: AppColors.black),
                 ),
                 const Spacer(),
-                BookMarkButton(id: thisId, classification: '교내 제도'),
+                BookMarkButton(id: thisId, classification: '창업제도'),
               ],
             ),
             Gaps.v8,

@@ -84,30 +84,31 @@ class _OnCampusClassState extends State<OnCampusClass> {
                       paddingTopRange * ((appBarHeight - 56) / heightRange);
 
                   return FlexibleSpaceBar(
-                      expandedTitleScale: 1,
-                      titlePadding: EdgeInsets.only(
-                        bottom: paddingBottom,
-                        left: 60,
+                    expandedTitleScale: 1,
+                    titlePadding: EdgeInsets.only(
+                      bottom: paddingBottom,
+                      left: 60,
+                    ),
+                    title: Text(
+                      '창업 강의',
+                      style: AppTextStyles.st2.copyWith(color: AppColors.g6),
+                    ),
+                    background: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Gaps.v74,
+                          _svgLogo.isNotEmpty
+                              ? SvgPicture.string(
+                                  _svgLogo,
+                                  fit: BoxFit.scaleDown,
+                                )
+                              : Container(),
+                        ],
                       ),
-                      title: Text(
-                        '창업 강의',
-                        style: AppTextStyles.st2.copyWith(color: AppColors.g6),
-                      ),
-                      background: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Gaps.v74,
-                            _svgLogo.isNotEmpty
-                                ? SvgPicture.string(
-                                    _svgLogo,
-                                    fit: BoxFit.scaleDown,
-                                  )
-                                : Container(),
-                          ],
-                        ),
-                      ));
+                    ),
+                  );
                 },
               ),
             )
