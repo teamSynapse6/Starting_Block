@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/oncampus_group_manage.dart';
+import 'package:starting_block/screen/manage/api/oncampus_api_group_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 
 class OnCaGroupCompetition extends StatefulWidget {

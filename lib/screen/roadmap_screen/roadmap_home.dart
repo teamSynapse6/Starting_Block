@@ -58,8 +58,6 @@ class _RoadmapHomeState extends State<RoadmapHome>
 
   @override
   Widget build(BuildContext context) {
-    double backgroundOpacity = 1; // sliverappbar의 투명도 조절
-
     return Scaffold(
       backgroundColor: AppColors.secondaryBG,
       appBar: PreferredSize(
@@ -97,11 +95,11 @@ class _RoadmapHomeState extends State<RoadmapHome>
                     final double bottomPadding =
                         math.max(0, 16 + (32 * expansionRatio));
                     // AppBar의 현재 높이에 따라 backgroundOpacity를 계산합니다.
-                    if (appBarHeight > 85) {
-                      backgroundOpacity = ((appBarHeight - 85) / (152 - 85));
-                    } else {
-                      backgroundOpacity = 0.0; // 85 이하일 때 투명도를 0으로 설정
-                    }
+                    // if (appBarHeight > 85) {
+                    //   backgroundOpacity = ((appBarHeight - 85) / (152 - 85));
+                    // } else {
+                    //   backgroundOpacity = 0.0; // 85 이하일 때 투명도를 0으로 설정
+                    // }
                     // print('앱바높이: $appBarHeight');
                     // print('투명도: $backgroundOpacity');
                     return Padding(
@@ -113,37 +111,32 @@ class _RoadmapHomeState extends State<RoadmapHome>
                     );
                   },
                 ),
-                background: Opacity(
-                  opacity: backgroundOpacity,
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Gaps.v36,
-                          Text(
-                            '$_nickName님의 현재 단계는',
-                            style: AppTextStyles.bd6
-                                .copyWith(color: AppColors.white),
-                          ),
-                          Gaps.v46,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Spacer(),
-                              _isCurrentStageSelected
-                                  ? NextStep(
-                                      onResetToCurrentStage:
-                                          resetToCurrentStage)
-                                  : GoBackToStep(
-                                      onResetToCurrentStage:
-                                          resetToCurrentStage),
-                            ],
-                          ),
-                        ],
-                      ),
+                background: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Gaps.v36,
+                        Text(
+                          '$_nickName님의 현재 단계는',
+                          style: AppTextStyles.bd6
+                              .copyWith(color: AppColors.white),
+                        ),
+                        Gaps.v46,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            _isCurrentStageSelected
+                                ? NextStep(
+                                    onResetToCurrentStage: resetToCurrentStage)
+                                : GoBackToStep(
+                                    onResetToCurrentStage: resetToCurrentStage),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -172,7 +165,6 @@ class _RoadmapHomeState extends State<RoadmapHome>
                 controller: _tabController,
                 children: [
                   TabScreenOfCaBiz(
-                    key: ValueKey(_selectedRoadmapText),
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
                   ),

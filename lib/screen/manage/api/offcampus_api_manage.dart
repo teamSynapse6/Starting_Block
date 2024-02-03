@@ -8,6 +8,7 @@ import 'package:starting_block/screen/manage/models/offcampus_recommend_model.da
 class OffCampusApiService {
   static String baseUrl = 'http://10.0.2.2:5000';
   static String offCampus = 'offcampus';
+  static String requestID = 'offcampus/ids';
 
   static Future<List<OffCampusModel>> getOffCampusData() async {
     final offCampusUrl = Uri.parse('$baseUrl/$offCampus');
@@ -54,6 +55,26 @@ class OffCampusApiService {
 
       offCampusList.shuffle(); // 리스트를 무작위로 섞기
       return offCampusList.take(3).toList(); // 상위 3개 항목 반환
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  // ID 목록에 해당하는 OffCampusModel 데이터를 서버로부터 받아오는 메소드
+  static Future<List<OffCampusModel>> getOffCampusDataByIds(
+      List<int> ids) async {
+    final url = Uri.parse('$baseUrl/$requestID'); // POST 요청을 보낼 URL
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'}, // 요청 헤더에 Content-Type 지정
+      body: jsonEncode({'ids': ids}), // ID 목록을 JSON 형식으로 인코딩하여 요청 본문에 포함
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = jsonDecode(response.body);
+      List<OffCampusModel> dataList =
+          responseData.map((data) => OffCampusModel.fromJson(data)).toList();
+      return dataList;
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
     }

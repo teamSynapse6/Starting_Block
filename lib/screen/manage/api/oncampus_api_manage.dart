@@ -60,6 +60,7 @@ class OnCampusAPI {
   static String schoolSystem = 'system';
   static String schoolClass = 'class';
   static String schoolNotify = 'notify';
+  static String schoolNotifyByID = 'notify/ids';
   static String schoolTabList = 'supportgroup/tablist';
 
   static Future<String> onCampusLogo() async {
@@ -147,6 +148,30 @@ class OnCampusAPI {
 
       // 결과 리스트에서 처음 10개의 항목만 반환
       return notifyList.take(5).toList();
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
+
+  //ID를 반환해서 데이터를 받아오는 메소드
+  static Future<List<OnCampusNotifyModel>> getOnCampusNotifyByIds(
+      List<int> ids) async {
+    String schoolName = await UserInfo.getSchoolName();
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotifyByID');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'ids': ids}),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCampusNotifyModel> notifyList =
+          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
+      return notifyList;
     } else {
       print('에러: ${response.statusCode}.');
       throw Error();

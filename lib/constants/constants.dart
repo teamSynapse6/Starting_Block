@@ -40,7 +40,8 @@ export 'package:starting_block/screen/roadmap_screen/widget/roadmap_nextstep.dar
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_backtostep.dart'; // 현 단계로 돌아가기
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_sliverappbar.dart'; //SliverAppBar 관리
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_card.dart'; //로드맵_교외사업의 카드
-export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_list.dart'; //로드맵_교외사업의 카드
+export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_list.dart'; //로드맵_교외사업의 리스트
+export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_list.dart'; //로드맵_교외사업의 리스트
 
 //교내지원사업 컴포넌트 관리
 export 'package:starting_block/screen/on_campus_screen/widget/oncampus_home_card_large.dart'; //교내지원사업_Home_Large카드
