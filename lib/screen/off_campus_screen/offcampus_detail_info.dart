@@ -16,15 +16,16 @@ String formatDate(String date) {
 }
 
 class OffCampusDetailBody extends StatelessWidget {
-  final String organize;
-  final String title;
-  final String startDate;
-  final String endDate;
-  final String age;
-  final String type;
-  final String link;
-  final String thisID;
-  final String classification;
+  final String organize,
+      title,
+      content,
+      startDate,
+      endDate,
+      target,
+      type,
+      link,
+      thisID,
+      classification;
 
   const OffCampusDetailBody({
     super.key,
@@ -32,11 +33,12 @@ class OffCampusDetailBody extends StatelessWidget {
     required this.title,
     required this.startDate,
     required this.endDate,
-    required this.age,
+    required this.target,
     required this.type,
     required this.link,
     required this.thisID,
     required this.classification,
+    required this.content,
   });
 
   @override
@@ -75,7 +77,7 @@ class OffCampusDetailBody extends StatelessWidget {
           Gaps.v16,
           Text('지원 대상', style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
           Gaps.v4,
-          Text(age, style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
+          Text(target, style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
           Gaps.v20,
           Text('지원 유형', style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
           Gaps.v4,
@@ -83,8 +85,7 @@ class OffCampusDetailBody extends StatelessWidget {
           Gaps.v20,
           Text('지원 혜택', style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
           Gaps.v4,
-          Text('여기는 아직 데이터 없음', //수정필요
-              style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
+          Text(content, style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
           Gaps.v40,
           Row(
             children: [

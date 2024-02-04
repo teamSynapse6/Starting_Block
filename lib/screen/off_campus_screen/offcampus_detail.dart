@@ -22,11 +22,12 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   String thisTitle = 'N/A';
   String thisStartDate = 'N/A';
   String thisEndDate = 'N/A';
-  String thisAge = 'N/A';
+  String thisTarget = 'N/A';
   String thisType = 'N/A';
   String thisLink = 'N/A';
   String thisID = 'N/A';
   String thisClassification = 'N/A';
+  String thisContent = 'N/A';
   late Future<List<OffCampusRecommendModel>> futureRecommendations;
 
   @override
@@ -49,11 +50,12 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
       thisTitle = detailData.title;
       thisStartDate = detailData.startDate;
       thisEndDate = detailData.endDate;
-      thisAge = detailData.age;
+      thisTarget = detailData.target;
       thisType = detailData.type;
       thisLink = detailData.link;
       thisID = detailData.id;
       thisClassification = detailData.classification;
+      thisContent = detailData.content;
     });
   }
 
@@ -76,11 +78,12 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
               title: thisTitle,
               startDate: thisStartDate,
               endDate: thisEndDate,
-              age: thisAge,
+              target: thisTarget,
               type: thisType,
               link: thisLink,
               thisID: widget.thisID,
               classification: thisClassification,
+              content: thisContent,
             ),
             Container(
               height: 8,

@@ -163,6 +163,9 @@ class AppIcon {
   static Widget get onschool_system =>
       SvgPicture.asset('assets/icon/other/onschool_home_system.svg',
           fit: BoxFit.scaleDown);
+  static Widget get next_rightsorted_g4 =>
+      SvgPicture.asset('assets/icon/other/next_rigthsorted_g4.svg',
+          fit: BoxFit.scaleDown);
 
   // Exceptional Image
   static Widget get kako_icon =>

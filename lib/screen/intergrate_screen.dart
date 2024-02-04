@@ -10,7 +10,7 @@ class IntergrateScreen extends StatefulWidget {
     this.resetIndex = false,
   });
 
-  // 외부에서 접근 가능한 함수를 정의
+  // 외부에서 접근 가능한 함수를 정의_교외지원사업 탭
   static void setSelectedIndexToZero(BuildContext context) {
     final state = context.findAncestorStateOfType<_OffCampusState>();
     state?.setSelectedIndexToZero();

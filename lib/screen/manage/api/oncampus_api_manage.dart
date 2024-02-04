@@ -58,7 +58,9 @@ class OnCampusAPI {
   static String schoolUrl = 'url';
   static String schoolLogo = 'logo';
   static String schoolSystem = 'system';
+  static String schoolSystemByID = 'system/ids';
   static String schoolClass = 'class';
+  static String schoolClassByID = 'class/ids';
   static String schoolNotify = 'notify';
   static String schoolNotifyByID = 'notify/ids';
   static String schoolTabList = 'supportgroup/tablist';
@@ -98,6 +100,30 @@ class OnCampusAPI {
     }
   }
 
+  // ID를 반환해서 데이터를 받아오는 메소드
+  static Future<List<OnCampusSystemModel>> getOnCampusSystemByIds(
+      List<int> ids) async {
+    String schoolName = await UserInfo.getSchoolName();
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolSystemByID');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'ids': ids}),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCampusSystemModel> systemList =
+          jsonData.map((item) => OnCampusSystemModel.fromJson(item)).toList();
+      return systemList;
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
+
   static Future<List<OnCampusClassModel>> getOnCampusClass() async {
     String schoolName =
         await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
@@ -105,6 +131,30 @@ class OnCampusAPI {
     final url = Uri.parse('$baseUrl/$schoolNumber/$schoolClass');
 
     final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      List<OnCampusClassModel> classList =
+          jsonData.map((item) => OnCampusClassModel.fromJson(item)).toList();
+      return classList;
+    } else {
+      print('에러: ${response.statusCode}.');
+      throw Error();
+    }
+  }
+
+  //ID를 반환해서 데이터를 받아오는 메소드
+  static Future<List<OnCampusClassModel>> getOnCampusClassByIds(
+      List<int> ids) async {
+    String schoolName = await UserInfo.getSchoolName();
+    int schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolClassByID');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'ids': ids}),
+    );
+
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
       List<OnCampusClassModel> classList =

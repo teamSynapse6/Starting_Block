@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-class OnCaList extends StatelessWidget {
+class OnCaListNotify extends StatelessWidget {
   final String thisProgramType, thisID, thisClassification, thisTitle, thisUrl;
 
-  const OnCaList({
+  const OnCaListNotify({
     super.key,
     required this.thisProgramType,
     required this.thisID,

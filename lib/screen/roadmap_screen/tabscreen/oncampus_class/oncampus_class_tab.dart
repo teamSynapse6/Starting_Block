@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart'; // Import 수정
+import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-const List<String> validTextsNotify = [
+const List<String> validTextsClass = [
   '창업 교육',
   '아이디어 창출',
   '공간 마련',
@@ -19,24 +19,23 @@ const List<String> validTextsNotify = [
   '사업화',
 ];
 
-class TabScreenOnCaNotify extends StatefulWidget {
+class TabScreenOnCaClass extends StatefulWidget {
   final String thisSelectedText;
   final bool thisCurrentStage;
 
-  const TabScreenOnCaNotify({
+  const TabScreenOnCaClass({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
   });
 
   @override
-  State<TabScreenOnCaNotify> createState() => _TabScreenOnCaNotifyState();
+  State<TabScreenOnCaClass> createState() => _TabScreenOnCaClassState();
 }
 
-class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
+class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
   List<int> savedIds = [];
-  List<OnCampusNotifyModel> onCampusNotifyData =
-      []; // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
+  List<OnCampusClassModel> onCampusClassData = [];
 
   @override
   void initState() {
@@ -45,7 +44,7 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
   }
 
   @override
-  void didUpdateWidget(TabScreenOnCaNotify oldWidget) {
+  void didUpdateWidget(TabScreenOnCaClass oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.thisSelectedText != widget.thisSelectedText) {
       _loadSavedIds();
@@ -56,12 +55,11 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
     final ids = await getIdsForSelectedText();
     setState(() {
       savedIds = ids;
-      onCampusNotifyData =
-          ids.isNotEmpty ? onCampusNotifyData : []; // 이전 데이터를 클리어함
+      onCampusClassData = ids.isNotEmpty ? onCampusClassData : [];
     });
 
     if (ids.isNotEmpty) {
-      _loadOnCampusNotifyDataByIds(); // 변경: _loadOffCampusDataByIds()를 _loadOnCampusNotifyDataByIds()로 변경
+      _loadOnCampusClassDataByIds();
     }
   }
 
@@ -73,7 +71,7 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
     if (savedDataString != null) {
       List<dynamic> savedDataList = json.decode(savedDataString);
       List<int> ids = savedDataList
-          .where((data) => data['classification'] == '교내사업')
+          .where((data) => data['classification'] == '창업강의')
           .map((data) => int.tryParse(data['id'].toString()) ?? 0)
           .toList();
       return ids;
@@ -82,20 +80,19 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
     }
   }
 
-  void _loadOnCampusNotifyDataByIds() async {
+  void _loadOnCampusClassDataByIds() async {
     if (savedIds.isNotEmpty) {
       try {
-        final data = await OnCampusAPI.getOnCampusNotifyByIds(
-            savedIds); // 변경: OffCampusApiService.getOffCampusDataByIds()를 OnCampusAPI.getOnCampusNotifyByIds()로 변경
+        final data = await OnCampusAPI.getOnCampusClassByIds(savedIds);
         setState(() {
-          onCampusNotifyData = data;
+          onCampusClassData = data;
         });
       } catch (e) {
         // 에러 처리 로직
       }
     } else {
       setState(() {
-        onCampusNotifyData = [];
+        onCampusClassData = [];
       });
     }
   }
@@ -111,7 +108,7 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Gaps.v24,
-                if (validTextsNotify.contains(widget.thisSelectedText))
+                if (validTextsClass.contains(widget.thisSelectedText))
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
@@ -148,35 +145,31 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
           Consumer<RoadMapModel>(
             builder: (context, roadmapModel, child) {
               if (roadmapModel.hasUpdated) {
-                // RoadMapModel이 업데이트 되었다면 다시 아이디를 불러오고
-                // API를 통해 데이터를 불러오는 메소드를 실행
-                _loadSavedIds().then((_) => _loadOnCampusNotifyDataByIds());
-                roadmapModel.resetUpdateFlag(); // 플래그 리셋
+                _loadSavedIds().then((_) => _loadOnCampusClassDataByIds());
+                roadmapModel.resetUpdateFlag();
               }
               if (savedIds.isNotEmpty) {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final item = onCampusNotifyData[
-                          index]; // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
-                      // ListTile로 반환하여 title만 표시
+                      final item = onCampusClassData[index];
                       return Container(
                         decoration: const BoxDecoration(
                           color: AppColors.white,
-                          borderRadius:
-                              BorderRadius.zero, // 조건부 BorderRadius 적용
+                          borderRadius: BorderRadius.zero,
                         ),
                         margin: const EdgeInsets.symmetric(horizontal: 24),
                         child: Column(
                           children: [
-                            OnCaListNotify(
-                              thisProgramType: item.type,
-                              thisID: item.id,
-                              thisClassification: item.classification,
+                            OnCaListClass(
                               thisTitle: item.title,
-                              thisUrl: item.detailurl,
+                              thisId: item.id,
+                              thisLiberal: item.liberal,
+                              thisCredit: item.credit,
+                              thisContent: item.content,
+                              thisSession: item.session,
                             ),
-                            if (index < onCampusNotifyData.length - 1)
+                            if (index < onCampusClassData.length - 1)
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16),
                                 child: CustomDivider(),
@@ -185,12 +178,10 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
                         ),
                       );
                     },
-                    childCount: onCampusNotifyData
-                        .length, // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
+                    childCount: onCampusClassData.length,
                   ),
                 );
               } else {
-                // 업데이트가 없으면 여기서 처리
                 return SliverToBoxAdapter(
                   child: GotoSaveItem(
                     tapAction: () {

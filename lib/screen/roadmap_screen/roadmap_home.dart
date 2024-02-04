@@ -172,8 +172,14 @@ class _RoadmapHomeState extends State<RoadmapHome>
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
                   ),
-                  const Center(child: Text('창업강의')),
-                  const Center(child: Text('창업제도')),
+                  TabScreenOnCaClass(
+                    thisSelectedText: _selectedRoadmapText,
+                    thisCurrentStage: _isCurrentStageSelected,
+                  ),
+                  TabScreenOnCaSystem(
+                    thisSelectedText: _selectedRoadmapText,
+                    thisCurrentStage: _isCurrentStageSelected,
+                  ),
                 ],
               ),
             ),

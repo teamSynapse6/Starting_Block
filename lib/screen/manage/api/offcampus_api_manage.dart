@@ -9,6 +9,7 @@ class OffCampusApiService {
   static String baseUrl = 'http://10.0.2.2:5000';
   static String offCampus = 'offcampus';
   static String requestID = 'offcampus/ids';
+  static String requestFilter = 'offcampus/filtered';
 
   static Future<List<OffCampusModel>> getOffCampusData() async {
     final offCampusUrl = Uri.parse('$baseUrl/$offCampus');
@@ -75,6 +76,37 @@ class OffCampusApiService {
       List<OffCampusModel> dataList =
           responseData.map((data) => OffCampusModel.fromJson(data)).toList();
       return dataList;
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  // 필터링된 OffCampusModel 데이터를 서버로부터 받아오는 메소드
+  static Future<List<OffCampusModel>> getOffCampusDataFiltered({
+    String supporttype = '전체',
+    String region = '전체',
+    String posttarget = '전체',
+  }) async {
+    final url =
+        Uri.parse('$baseUrl/$requestFilter'); // 필터링된 데이터를 받아오는 서버의 endpoint
+
+    // POST 요청을 보내는 부분
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'}, // 요청 헤더에 Content-Type 지정
+      body: jsonEncode({
+        'supporttype': supporttype,
+        'region': region,
+        'posttarget': posttarget, // 필터 조건을 JSON 형식으로 인코딩하여 요청 본문에 포함
+      }),
+    );
+
+    // 서버 응답 처리 부분
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = jsonDecode(response.body);
+      List<OffCampusModel> dataList =
+          responseData.map((data) => OffCampusModel.fromJson(data)).toList();
+      return dataList; // 필터링된 데이터 리스트를 반환
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
     }

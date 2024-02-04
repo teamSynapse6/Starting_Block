@@ -55,6 +55,8 @@ class FilterModel extends ChangeNotifier {
     String filterList =
         '$_selectedSupportType,$_selectedResidence,$_selectedEntrepreneur';
     await prefs.setString('filterlist', filterList);
+
+    print('필터리스트: $filterList');
   }
 
   // 모든 선택 사항을 "전체"로 초기화하는 메서드

@@ -30,6 +30,8 @@ export 'package:starting_block/screen/roadmap_screen/widget/roadmap_list.dart'; 
 //로드맵 탭 화면
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/offcampus_business_tab.dart';
 export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/oncampus_notify_tab.dart';
+export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/oncampus_class_tab.dart';
+export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_system/oncampus_system_tab.dart';
 
 //교내지원사업 페이지
 export 'package:starting_block/screen/on_campus_screen/oncampus_home.dart';

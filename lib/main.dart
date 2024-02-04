@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:provider/provider.dart';
@@ -7,8 +8,12 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => RoadMapModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => RoadMapModel()),
+        ChangeNotifierProvider(
+            create: (context) => FilterModel()), // FilterModel 추가
+      ],
       child: const StartingBlock(),
     ),
   );
