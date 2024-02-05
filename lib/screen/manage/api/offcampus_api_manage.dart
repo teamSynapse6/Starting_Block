@@ -5,11 +5,12 @@ import 'package:starting_block/screen/manage/models/offcampus_model.dart';
 import 'package:starting_block/screen/manage/models/offcampus_recommend_model.dart';
 
 // OffCampusModel을 반환하는 새로운 메서드
-class OffCampusApiService {
+class OffCampusApi {
   static String baseUrl = 'http://10.0.2.2:5000';
   static String offCampus = 'offcampus';
   static String requestID = 'offcampus/ids';
   static String requestFilter = 'offcampus/filtered';
+  static String popularKeyword = 'offcampus/popular';
 
   static Future<List<OffCampusModel>> getOffCampusData() async {
     final offCampusUrl = Uri.parse('$baseUrl/$offCampus');
@@ -20,6 +21,23 @@ class OffCampusApiService {
       List<OffCampusModel> offCampusList =
           offCampusJson.map((json) => OffCampusModel.fromJson(json)).toList();
       return offCampusList;
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  // 인기 키워드를 반환하는 새로운 메서드
+  static Future<List<String>> getOffCampusPopularKeyword() async {
+    final offCampusUrl = Uri.parse('$baseUrl/$popularKeyword');
+    final response = await http.get(offCampusUrl);
+
+    if (response.statusCode == 200) {
+      // 서버 응답에서 JSON 배열을 디코드하여 List<String>으로 변환
+      final List<dynamic> keywordsJson = jsonDecode(response.body);
+      // List<dynamic>을 List<String>으로 변환
+      List<String> keywordsList =
+          keywordsJson.map((keyword) => keyword.toString()).toList();
+      return keywordsList;
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
     }

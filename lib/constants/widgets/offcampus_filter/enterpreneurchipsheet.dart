@@ -71,6 +71,7 @@ class _EnterPreneurChipsSheetState extends State<EnterPreneurChipsSheet> {
                                     .setSelectedEntrepreneur(entrepreneur);
                               });
                               _saveSelectedEntrepreneur(entrepreneur);
+                              Navigator.pop(context); // 바텀 시트 닫기
                             },
                           );
                         },

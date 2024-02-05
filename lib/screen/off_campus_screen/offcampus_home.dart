@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
@@ -14,6 +15,50 @@ class OffCampusHome extends StatefulWidget {
 }
 
 class _OffCampusHomeState extends State<OffCampusHome> {
+  List<OffCampusModel> _offcampusList = [];
+  Map<String, String> filterValues = {}; // 필터 값 상태를 저장할 변수
+  bool isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFilterValues();
+  }
+
+  Future<void> _fetchFilterValues() async {
+    final prefs = await SharedPreferences.getInstance();
+    Map<String, String> fetchedFilterValues = {
+      'selectedSupportType': prefs.getString('selectedSupportType') ?? "전체",
+      'selectedResidence': prefs.getString('selectedResidence') ?? "전체",
+      'selectedEntrepreneur': prefs.getString('selectedEntrepreneur') ?? "전체",
+    };
+
+    setState(() {
+      filterValues = fetchedFilterValues; // 상태 업데이트
+    });
+
+    // 필터 값이 설정된 후 필터링된 데이터를 불러옵니다.
+    _fetchOffCampusDataWithFilters();
+  }
+
+  Future<void> _fetchOffCampusDataWithFilters() async {
+    if (filterValues.isNotEmpty) {
+      try {
+        List<OffCampusModel> offcampusList =
+            await OffCampusApi.getOffCampusDataFiltered(
+          supporttype: filterValues['selectedSupportType']!,
+          region: filterValues['selectedResidence']!,
+          posttarget: filterValues['selectedEntrepreneur']!,
+        );
+        setState(() {
+          _offcampusList = offcampusList;
+        });
+      } catch (e) {
+        // 에러 처리 로직
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +66,8 @@ class _OffCampusHomeState extends State<OffCampusHome> {
         searchTapScreen: OffCampusSearch(),
       ),
       body: Consumer<FilterModel>(
-        // Consumer를 사용하여 FilterModel의 변화를 감지
         builder: (context, filterModel, child) {
+          // FilterModel의 변화를 감지하여 필요한 경우 데이터를 다시 로드
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -57,21 +102,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                                 AppTextStyles.bd6.copyWith(color: AppColors.g4),
                           ),
                           const Spacer(),
-                          GestureDetector(
-                            onTap: null,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  '최신순',
-                                  style: TextStyle(
-                                      fontFamily: 'pretendard',
-                                      fontSize: 14,
-                                      color: AppColors.g4),
-                                ),
-                                AppIcon.down,
-                              ],
-                            ),
-                          ),
+                          const OffCampusSortingButton(),
                         ],
                       ),
                     ),
@@ -79,36 +110,27 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                 ),
               ),
               Expanded(
-                child: FutureBuilder<List<OffCampusModel>>(
-                  future: OffCampusApiService.getOffCampusDataFiltered(
-                    supporttype: filterModel.selectedSupportType,
-                    region: filterModel.selectedResidence,
-                    posttarget: filterModel.selectedEntrepreneur,
-                  ),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
-                      List<OffCampusModel> data = snapshot.data ?? [];
-                      return ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        itemCount: data.length,
-                        itemBuilder: (context, index) {
-                          OffCampusModel offCampusData = data[index];
-                          return ItemList(
-                            thisID: offCampusData.id,
-                            thisOrganize: offCampusData.organize,
-                            thisTitle: offCampusData.title,
-                            thisStartDate: offCampusData.startDate,
-                            thisEndDate: offCampusData.endDate,
-                            thisClassification: '교외사업',
-                          );
-                        },
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
+                child: Consumer<FilterModel>(
+                  builder: (context, filterModel, child) {
+                    if (filterModel.hasChanged) {
+                      _fetchFilterValues()
+                          .then((_) => filterModel.resetChangeFlag());
                     }
+                    return ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      itemCount: _offcampusList.length,
+                      itemBuilder: (context, index) {
+                        final item = _offcampusList[index];
+                        return ItemList(
+                          thisID: item.id,
+                          thisOrganize: item.organize,
+                          thisTitle: item.title,
+                          thisStartDate: item.startDate,
+                          thisEndDate: item.endDate,
+                          thisClassification: '교외사업',
+                        );
+                      },
+                    );
                   },
                 ),
               ),

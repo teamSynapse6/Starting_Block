@@ -80,6 +80,7 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
                                 filterModel.setSelectedResidence(thisResidence);
                               });
                               _saveSelectedResidence(thisResidence);
+                              Navigator.pop(context); // 바텀 시트 닫기
                             },
                           );
                         },

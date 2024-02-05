@@ -190,6 +190,7 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Expanded(
             child: TextField(
+              style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
               controller: controller,
               onSubmitted: (query) => _onSearchSubmitted(context, query),
               decoration: InputDecoration(

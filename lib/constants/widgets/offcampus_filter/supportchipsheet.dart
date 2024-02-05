@@ -71,6 +71,7 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
                                 filterModel.setSelectedSupportType(supportType);
                               });
                               _saveSelectedSupportType(supportType);
+                              Navigator.pop(context); // 바텀 시트 닫기
                             },
                           );
                         },

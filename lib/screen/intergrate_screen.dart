@@ -21,7 +21,7 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _OffCampusState extends State<IntergrateScreen> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 0;
 
   @override
   void initState() {

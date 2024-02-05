@@ -134,8 +134,8 @@ class RoadMapModel extends ChangeNotifier {
       // 저장된 키와 값 출력
       print('저장된 리스트: $savedItems');
     }
-    notifyListeners(); // UI 업데이트를 위해 호출
     _hasUpdated = true;
+    notifyListeners(); // UI 업데이트를 위해 호출
   }
 
 // 로드맵 리스트에 아이템이 이미 저장되었는지 확인하는 메소드
@@ -163,8 +163,8 @@ class RoadMapModel extends ChangeNotifier {
         (item) => item['id'] == id && item['classification'] == classification);
 
     await prefs.setString(itemName, json.encode(items));
-    notifyListeners();
     _hasUpdated = true;
+    notifyListeners();
   }
 
 // 특정 id를 포함하는 roadmapList 항목이 있는지 확인하는 메소드

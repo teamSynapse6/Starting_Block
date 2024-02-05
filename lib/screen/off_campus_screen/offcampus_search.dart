@@ -1,24 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
 import 'package:starting_block/screen/manage/recentsearch_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
-
-const interests = [
-  "Daily Life",
-  "Comedy",
-  "Entertainment",
-  "Animals",
-  "Food",
-  "Beauty & Style",
-  "Drama",
-  "Learning",
-  "Talent",
-  "Sports",
-  "Auto",
-  "Family",
-  "Fitness & Health",
-  "DIY & Life Hacks",
-];
 
 class OffCampusSearch extends StatefulWidget {
   const OffCampusSearch({super.key});
@@ -30,12 +14,14 @@ class OffCampusSearch extends StatefulWidget {
 class _OffCampusSearchState extends State<OffCampusSearch> {
   final TextEditingController _controller = TextEditingController();
   List<String> recentSearches = [];
+  List<String> popularKeywords = []; // 인기 검색어 목록을 저장할 리스트
   final RecentSearchManager recentSearchManager = RecentSearchManager();
 
   @override
   void initState() {
     super.initState();
     loadRecentSearches();
+    loadPopularKeywords(); // 인기 검색어를 로드하는 메소드 호출
     recentSearchManager.onSearchUpdate = loadRecentSearches;
   }
 
@@ -72,6 +58,12 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
   Future<void> deleteAllSearch() async {
     await recentSearchManager.deleteAllSearches();
     loadRecentSearches();
+  }
+
+  Future<void> loadPopularKeywords() async {
+    popularKeywords =
+        await OffCampusApi.getOffCampusPopularKeyword(); // 인기 검색어 로드
+    setState(() {});
   }
 
   @override
@@ -155,14 +147,14 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
               Wrap(
                 runSpacing: 12,
                 spacing: 12,
-                children: [
-                  for (var interest in interests)
-                    InputChupsSharp(
-                      text: interest,
-                      chipTap: () => navigateToSearchResult(interest),
-                    )
-                ],
-              )
+                children: popularKeywords.map((keyword) {
+                  // 인기 검색어 목록을 바탕으로 동적으로 위젯 생성
+                  return InputChupsSharp(
+                    text: keyword,
+                    chipTap: () => navigateToSearchResult(keyword),
+                  );
+                }).toList(),
+              ),
             ],
           ),
         ),

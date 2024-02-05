@@ -11,8 +11,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => RoadMapModel()),
-        ChangeNotifierProvider(
-            create: (context) => FilterModel()), // FilterModel 추가
+        ChangeNotifierProvider(create: (context) => FilterModel()),
       ],
       child: const StartingBlock(),
     ),

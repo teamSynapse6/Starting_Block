@@ -58,13 +58,11 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
       // 새로운 thisSelectedText에 대한 반환된 ID가 없는 경우
       // offCampusData를 빈 리스트로 초기화하여 이전 데이터를 클리어함
       offCampusData = ids.isNotEmpty ? offCampusData : [];
-      print('기본 ID:$ids');
     });
 
     if (ids.isNotEmpty) {
       _loadOffCampusDataByIds();
     }
-    print('반환된 ID: $savedIds');
   }
 
   Future<List<int>> getIdsForSelectedText() async {
@@ -87,7 +85,7 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
   void _loadOffCampusDataByIds() async {
     if (savedIds.isNotEmpty) {
       try {
-        final data = await OffCampusApiService.getOffCampusDataByIds(savedIds);
+        final data = await OffCampusApi.getOffCampusDataByIds(savedIds);
         setState(() {
           offCampusData = data;
         });
@@ -149,8 +147,6 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
           Consumer<RoadMapModel>(
             builder: (context, roadmapModel, child) {
               if (roadmapModel.hasUpdated) {
-                // RoadMapModel이 업데이트 되었다면 다시 아이디를 불러오고
-                // API를 통해 데이터를 불러오는 메소드를 실행
                 _loadSavedIds().then((_) => _loadOffCampusDataByIds());
                 roadmapModel.resetUpdateFlag(); // 플래그 리셋
               }

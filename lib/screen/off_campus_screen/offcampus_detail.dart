@@ -34,14 +34,14 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   void initState() {
     super.initState();
     loadoffCampusDetailData();
-    futureRecommendations = OffCampusApiService.getOffCampusRecData(
+    futureRecommendations = OffCampusApi.getOffCampusRecData(
       widget.thisID,
     ); // Updated to use OffCampusApiService
   }
 
   Future<void> loadoffCampusDetailData() async {
     List<OffCampusDetailModel> data =
-        await OffCampusApiService.getOffCampusDetailData();
+        await OffCampusApi.getOffCampusDetailData();
     setState(() {
       var detailData = data.firstWhere(
         (element) => element.id == widget.thisID,
