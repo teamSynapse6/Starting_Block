@@ -57,9 +57,7 @@ class _ProgramChipsSheetState extends State<ProgramChipsSheet> {
                                 ? AppColors.g1
                                 : AppColors.white,
                             thisTapAction: () {
-                              setStateBottomSheet(() {
-                                filterModel.setSelectedProgram(program);
-                              });
+                              filterModel.setSelectedProgram(program);
                               Navigator.pop(context); // 모달 닫기
                             },
                           );

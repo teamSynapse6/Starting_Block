@@ -31,6 +31,9 @@ class _OffCampusHomeState extends State<OffCampusHome> {
       'selectedSupportType': prefs.getString('selectedSupportType') ?? "전체",
       'selectedResidence': prefs.getString('selectedResidence') ?? "전체",
       'selectedEntrepreneur': prefs.getString('selectedEntrepreneur') ?? "전체",
+      // selectedSorting 값을 불러와서 저장합니다.
+      'selectedSorting':
+          prefs.getString('selectedSorting') ?? "latest", // 기본값을 "latest"로 설정
     };
 
     setState(() {
@@ -49,12 +52,17 @@ class _OffCampusHomeState extends State<OffCampusHome> {
           supporttype: filterValues['selectedSupportType']!,
           region: filterValues['selectedResidence']!,
           posttarget: filterValues['selectedEntrepreneur']!,
+          sorting: filterValues['selectedSorting']!, // 정렬 조건을 API 호출에 포함
         );
         setState(() {
           _offcampusList = offcampusList;
+          isLoaded = true; // 데이터가 로드된 후 상태를 업데이트
         });
       } catch (e) {
         // 에러 처리 로직
+        setState(() {
+          isLoaded = false; // 데이터 로딩 실패 상태 업데이트
+        });
       }
     }
   }

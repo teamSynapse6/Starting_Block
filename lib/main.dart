@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +11,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => RoadMapModel()),
         ChangeNotifierProvider(create: (context) => FilterModel()),
+        ChangeNotifierProvider(create: (context) => OnCaFilterModel()),
       ],
       child: const StartingBlock(),
     ),

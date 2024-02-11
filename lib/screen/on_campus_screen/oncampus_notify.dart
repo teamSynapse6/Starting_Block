@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
 import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/on_campus_screen/widget/oncampus_notify_delegate.dart';
@@ -15,14 +18,14 @@ class OnCampusNotify extends StatefulWidget {
 }
 
 class _OnCampusNotifyState extends State<OnCampusNotify> {
-  String _svgLogo = ""; // SVG 데이터를 저장할 변수
-  List<OnCampusNotifyModel> _notifyList = []; // 공고 데이터를 저장할 리스트
+  String _svgLogo = "";
+  List<OnCampusNotifyModel> _notifyList = [];
 
   @override
   void initState() {
     super.initState();
     _loadSvgLogo();
-    _loadOnCampusNotify();
+    _loadFilteredOnCampusNotify();
   }
 
   Future<void> _loadSvgLogo() async {
@@ -36,11 +39,21 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
     }
   }
 
-  // 공고 데이터를 불러오는 새로운 메서드
-  Future<void> _loadOnCampusNotify() async {
+  Future<void> _loadFilteredOnCampusNotify() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      String selectedProgram = prefs.getString('selectedProgram') ?? "전체";
+      String selectedSorting =
+          prefs.getString('selectedOnCaSorting') ?? "latest";
+
+      print('프로그램: $selectedProgram');
+      print('정렬: $selectedSorting');
+
       List<OnCampusNotifyModel> notifyList =
-          await OnCampusAPI.getOnCampusNotify();
+          await OnCampusAPI.getOnCampusNotifyFiltered(
+        program: selectedProgram,
+        sorting: selectedSorting,
+      );
       setState(() {
         _notifyList = notifyList;
       });
@@ -143,21 +156,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                                     .copyWith(color: AppColors.g4),
                               ),
                               const Spacer(), // 왼쪽 텍스트와 오른쪽 버튼 사이의 공간을 만듦
-                              GestureDetector(
-                                onTap: null,
-                                child: Row(
-                                  children: [
-                                    const Text(
-                                      '최신순',
-                                      style: TextStyle(
-                                          fontFamily: 'pretendard',
-                                          fontSize: 14,
-                                          color: AppColors.g4),
-                                    ), // 현재 선택된 값으로 텍스트 업데이트
-                                    AppIcon.down,
-                                  ],
-                                ),
-                              ),
+                              const OnCampusSortingButton()
                             ],
                           ),
                         ),
@@ -169,30 +168,38 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
             ),
           ];
         },
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                ListView.builder(
-                  shrinkWrap: true, // 내부 스크롤 없이 전체 높이를 표시
-                  physics:
-                      const NeverScrollableScrollPhysics(), // 부모 스크롤과의 충돌 방지
-                  itemCount: _notifyList.length,
-                  itemBuilder: (context, index) {
-                    OnCampusNotifyModel notify = _notifyList[index];
-                    return OnCampusNotifyListCard(
-                      thisProgramText: notify.type,
-                      thisId: notify.id,
-                      thisTitle: notify.title,
-                      thisStartDate: notify.stardate,
-                      thisUrl: notify.detailurl,
-                    );
-                  },
+        body: Consumer<OnCaFilterModel>(
+          builder: (context, filterModel, child) {
+            if (filterModel.hasChanged) {
+              _loadFilteredOnCampusNotify()
+                  .then((_) => filterModel.resetChangeFlag());
+            }
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    ListView.builder(
+                      shrinkWrap: true, // 내부 스크롤 없이 전체 높이를 표시
+                      physics:
+                          const NeverScrollableScrollPhysics(), // 부모 스크롤과의 충돌 방지
+                      itemCount: _notifyList.length,
+                      itemBuilder: (context, index) {
+                        OnCampusNotifyModel notify = _notifyList[index];
+                        return OnCampusNotifyListCard(
+                          thisProgramText: notify.type,
+                          thisId: notify.id,
+                          thisTitle: notify.title,
+                          thisStartDate: notify.startdate,
+                          thisUrl: notify.detailurl,
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

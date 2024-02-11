@@ -2,32 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
+// 초기 선택 인덱스를 정의하는 enum 추가
+enum SwitchIndex {
+  toZero,
+  toOne,
+  none,
+}
+
 class IntergrateScreen extends StatefulWidget {
-  final bool resetIndex;
+  final SwitchIndex switchIndex;
 
   const IntergrateScreen({
     super.key,
-    this.resetIndex = false,
+    this.switchIndex = SwitchIndex.none,
   });
 
   // 외부에서 접근 가능한 함수를 정의_교외지원사업 탭
   static void setSelectedIndexToZero(BuildContext context) {
-    final state = context.findAncestorStateOfType<_OffCampusState>();
+    final state = context.findAncestorStateOfType<_IntergrateScreenState>();
     state?.setSelectedIndexToZero();
   }
 
+  // 외부에서 접근 가능한 함수를 정의_교내지원사업 탭
+  static void setSelectedIndexToOne(BuildContext context) {
+    final state = context.findAncestorStateOfType<_IntergrateScreenState>();
+    state?.setSelectedIndexToOne();
+  }
+
   @override
-  State<IntergrateScreen> createState() => _OffCampusState();
+  State<IntergrateScreen> createState() => _IntergrateScreenState();
 }
 
-class _OffCampusState extends State<IntergrateScreen> {
-  int _selectedIndex = 0;
+class _IntergrateScreenState extends State<IntergrateScreen> {
+  int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    if (widget.resetIndex) {
-      setSelectedIndexToZero();
+    // switchIndex 값을 기반으로 초기 선택 인덱스 설정
+    switch (widget.switchIndex) {
+      case SwitchIndex.toZero:
+        setSelectedIndexToZero();
+        break;
+      case SwitchIndex.toOne:
+        setSelectedIndexToOne();
+        break;
+      case SwitchIndex.none:
+        // 초기 설정이 필요 없는 경우
+        break;
     }
   }
 
@@ -40,6 +62,12 @@ class _OffCampusState extends State<IntergrateScreen> {
   void setSelectedIndexToZero() {
     setState(() {
       _selectedIndex = 0;
+    });
+  }
+
+  void setSelectedIndexToOne() {
+    setState(() {
+      _selectedIndex = 1;
     });
   }
 

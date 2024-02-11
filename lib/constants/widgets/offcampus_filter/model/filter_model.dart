@@ -6,6 +6,7 @@ class FilterModel extends ChangeNotifier {
   String _selectedResidence = "전체";
   String _selectedEntrepreneur = "전체";
   String _selectedSorting = "최신순"; // 정렬 상태 추가
+  String get selectedSorting => _selectedSorting;
   bool _hasChanged = false; // 변화 감지 플래그 추가
   bool get hasChanged => _hasChanged; // 변화가 있는지 확인하는 메서드
 
@@ -24,6 +25,10 @@ class FilterModel extends ChangeNotifier {
     _selectedSupportType = prefs.getString('selectedSupportType') ?? "전체";
     _selectedResidence = prefs.getString('selectedResidence') ?? "전체";
     _selectedEntrepreneur = prefs.getString('selectedEntrepreneur') ?? "전체";
+    // 정렬 상태 불러오기
+    String storedSorting =
+        prefs.getString('selectedSorting') ?? "latest"; // 기본값은 "latest"
+    _selectedSorting = storedSorting == "latest" ? "최신순" : "로드맵에 저장 많은 순";
     notifyListeners();
   }
 
@@ -65,12 +70,19 @@ class FilterModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // 정렬 상태에 대한 Getter와 Setter 추가
-  String get selectedSorting => _selectedSorting;
+  // 정렬 상태 저장 메서드
+  Future<void> saveSortingPreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    String sortingValue = _selectedSorting == "최신순" ? "latest" : "savedLot";
+    await prefs.setString('selectedSorting', sortingValue);
+  }
+
+  // 기존의 setter에서 saveSortingPreference 호출 추가
   set selectedSorting(String newValue) {
     if (_selectedSorting != newValue) {
       _selectedSorting = newValue;
       _hasChanged = true;
+      saveSortingPreference(); // 정렬 상태 저장
       notifyListeners();
     }
   }

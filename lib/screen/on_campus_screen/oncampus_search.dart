@@ -4,14 +4,14 @@ import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
 import 'package:starting_block/screen/manage/recentsearch_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-class OffCampusSearch extends StatefulWidget {
-  const OffCampusSearch({super.key});
+class OnCampusSearch extends StatefulWidget {
+  const OnCampusSearch({super.key});
 
   @override
-  State<OffCampusSearch> createState() => _OffCampusSearchState();
+  State<OnCampusSearch> createState() => _OnCampusSearchState();
 }
 
-class _OffCampusSearchState extends State<OffCampusSearch> {
+class _OnCampusSearchState extends State<OnCampusSearch> {
   final TextEditingController _controller = TextEditingController();
   List<String> recentSearches = [];
   List<String> popularKeywords = []; // 인기 검색어 목록을 저장할 리스트
@@ -45,7 +45,7 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
     final bool? isUpdated = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OffCampusSearchResult(searchWord: query),
+        builder: (context) => OnCampusSearchResult(searchWord: query),
       ),
     );
 
@@ -82,7 +82,7 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
               context,
               MaterialPageRoute(
                   builder: (context) => const IntergrateScreen(
-                        switchIndex: SwitchIndex.toZero,
+                        switchIndex: SwitchIndex.toOne,
                       )),
               (Route<dynamic> route) => false,
             );

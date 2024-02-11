@@ -3,24 +3,25 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
+import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
 import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart'; // 가정한 API 파일 경로
 import 'package:starting_block/screen/manage/models/offcampus_model.dart';
 import 'package:starting_block/screen/manage/recentsearch_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-class OffCampusSearchResult extends StatefulWidget {
+class OnCampusSearchResult extends StatefulWidget {
   final String searchWord; // 검색어를 저장할 변수
 
-  const OffCampusSearchResult({
+  const OnCampusSearchResult({
     super.key,
     required this.searchWord,
   });
 
   @override
-  State<OffCampusSearchResult> createState() => _OffCampusSearchResultState();
+  State<OnCampusSearchResult> createState() => _OnCampusSearchResultState();
 }
 
-class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
+class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
   final TextEditingController _controller = TextEditingController();
   final RecentSearchManager recentSearchManager = RecentSearchManager();
   List<OffCampusModel> _offcampusList = [];
@@ -30,10 +31,10 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
     super.initState();
     _controller.text = widget.searchWord;
     recentSearchManager.addSearch(widget.searchWord);
-    _fetchOffCampusSearchResults();
+    _fetchOnCampusSearchResults();
   }
 
-  Future<void> _fetchOffCampusSearchResults() async {
+  Future<void> _fetchOnCampusSearchResults() async {
     final prefs = await SharedPreferences.getInstance();
     String supporttype = prefs.getString('selectedSupportType') ?? "전체";
     String region = prefs.getString('selectedResidence') ?? "전체";
@@ -68,7 +69,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
         onBackTap: () {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const OffCampusSearch()),
+            MaterialPageRoute(builder: (context) => const OnCampusSearch()),
             (Route<dynamic> route) => false,
           );
         },
@@ -80,10 +81,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
             child: Column(
               children: [
                 Gaps.v12,
-                const SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntergrateFilter(),
-                ),
+                const OnCaIntergrateFilter(),
                 Gaps.v12,
                 Container(
                   height: 32,
@@ -101,7 +99,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
                         style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                       ),
                       const Spacer(),
-                      const OffCampusSortingButton(),
+                      const OnCampusSortingButton(),
                     ],
                   ),
                 ),
@@ -112,7 +110,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
             child: Consumer<FilterModel>(
               builder: (context, filterModel, child) {
                 if (filterModel.hasChanged) {
-                  _fetchOffCampusSearchResults().then((_) {
+                  _fetchOnCampusSearchResults().then((_) {
                     filterModel.resetChangeFlag();
                   });
                 }

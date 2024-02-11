@@ -63,6 +63,7 @@ class OnCampusAPI {
   static String schoolClassByID = 'class/ids';
   static String schoolNotify = 'notify';
   static String schoolNotifyByID = 'notify/ids';
+  static String schoolNotifyFiltered = 'supportgroup/notify/filtered';
   static String schoolTabList = 'supportgroup/tablist';
 
   static Future<String> onCampusLogo() async {
@@ -225,6 +226,77 @@ class OnCampusAPI {
     } else {
       print('에러: ${response.statusCode}.');
       throw Error();
+    }
+  }
+
+  // 필터링된 공지사항 데이터를 서버로부터 받아오는 메소드
+  static Future<List<OnCampusNotifyModel>> getOnCampusNotifyFiltered({
+    required String program, // 필터링할 프로그램
+    required String sorting, // 정렬 조건
+  }) async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    int schoolNumber = getSchoolNumber(schoolName); // 학교 번호를 가져옵니다.
+    final url =
+        Uri.parse('$baseUrl/$schoolNumber/notify/filtered'); // URL 구성 수정
+
+    // POST 요청을 보냅니다.
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'type': program, // 요청 본문에 'type' 필드를 포함
+        'sorting': sorting, // 'sorting' 필드도 포함
+      }),
+    );
+
+    // 서버 응답 처리
+    if (response.statusCode == 200) {
+      // 응답 데이터를 JSON 배열로 디코딩
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      // JSON 배열을 OnCampusNotifyModel 리스트로 변환
+      List<OnCampusNotifyModel> notifyList =
+          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
+      return notifyList;
+    } else {
+      print('서버 에러: ${response.statusCode}');
+      throw Exception('Failed to load filtered notify data');
+    }
+  }
+
+  // 필터링 및 검색된 공지사항 데이터를 서버로부터 받아오는 메소드
+  static Future<List<OnCampusNotifyModel>> getOnCampusNotifySearch({
+    required String program, // 필터링할 프로그램
+    required String sorting, // 정렬 조건
+    required String keyword, // 검색 키워드
+  }) async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    int schoolNumber = getSchoolNumber(schoolName); // 학교 번호를 가져옵니다.
+    final url = Uri.parse('$baseUrl/$schoolNumber/notify/search'); // URL 구성
+
+    // POST 요청을 보냅니다.
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'type': program, // 요청 본문에 'type' 필드를 포함
+        'sorting': sorting, // 'sorting' 필드도 포함
+        'keyword': keyword, // 'keyword' 필드도 포함
+      }),
+    );
+
+    // 서버 응답 처리
+    if (response.statusCode == 200) {
+      // 응답 데이터를 JSON 배열로 디코딩
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      // JSON 배열을 OnCampusNotifyModel 리스트로 변환
+      List<OnCampusNotifyModel> notifyList =
+          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
+      return notifyList;
+    } else {
+      print('서버 에러: ${response.statusCode}');
+      throw Exception('Failed to load search notify data');
     }
   }
 
