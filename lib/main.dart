@@ -12,6 +12,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => RoadMapModel()),
         ChangeNotifierProvider(create: (context) => FilterModel()),
         ChangeNotifierProvider(create: (context) => OnCaFilterModel()),
+        ChangeNotifierProvider(create: (context) => UserInfo()),
       ],
       child: const StartingBlock(),
     ),

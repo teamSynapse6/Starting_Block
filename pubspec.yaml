@@ -71,6 +71,7 @@ flutter:
     - assets/icon/24/
     - assets/icon/24/gnb_part/
     - assets/icon/other/
+    - assets/icon/profile_image/
     - assets/onboard_image/
     - assets/logo/
     - lib/data_manage/

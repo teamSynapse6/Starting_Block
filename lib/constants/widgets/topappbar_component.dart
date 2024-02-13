@@ -51,20 +51,17 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 24,
-        right: 12,
-      ),
-      child: AppBar(
-        actions: <Widget>[
-          SizedBox(
+    return AppBar(
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: SizedBox(
             height: 48,
             width: 48,
             child: AppIcon.settings,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

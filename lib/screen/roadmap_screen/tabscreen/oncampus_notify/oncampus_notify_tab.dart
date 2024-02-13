@@ -194,7 +194,7 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
                 return SliverToBoxAdapter(
                   child: GotoSaveItem(
                     tapAction: () {
-                      IntergrateScreen.setSelectedIndexToZero(context);
+                      IntergrateScreen.setSelectedIndexToOne(context);
                     },
                   ),
                 );

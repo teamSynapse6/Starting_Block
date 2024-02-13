@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-// 초기 선택 인덱스를 정의하는 enum 추가
 enum SwitchIndex {
   toZero,
   toOne,
@@ -34,18 +33,17 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _IntergrateScreenState extends State<IntergrateScreen> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 4;
 
   @override
   void initState() {
     super.initState();
-    // switchIndex 값을 기반으로 초기 선택 인덱스 설정
     switch (widget.switchIndex) {
       case SwitchIndex.toZero:
-        setSelectedIndexToZero();
+        _selectedIndex = 0;
         break;
       case SwitchIndex.toOne:
-        setSelectedIndexToOne();
+        _selectedIndex = 1;
         break;
       case SwitchIndex.none:
         // 초기 설정이 필요 없는 경우
@@ -71,41 +69,30 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     });
   }
 
+  Widget _getCurrentScreen() {
+    switch (_selectedIndex) {
+      case 0:
+        return const OffCampusHome();
+      case 1:
+        return const OnCampusHome();
+      case 2:
+        return const Center(child: Text('홈'));
+      case 3:
+        return const RoadmapHome();
+      case 4:
+      default:
+        return const MyProfileHome();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Offstage(
-            offstage: _selectedIndex != 0,
-            child: const OffCampusHome(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 1,
-            child: const OnCampusHome(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 2,
-            child: const Center(
-              child: Text('홈'),
-            ),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 3,
-            child: const RoadmapHome(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 4,
-            child: const Center(
-              child: Text('마이페이지'),
-            ),
-          ),
-        ],
-      ),
+      body: _getCurrentScreen(),
       bottomNavigationBar: BottomAppBar(
         height: 56 + 15,
         elevation: 0,
-        color: Colors.transparent, // BottomAppBar의 배경색을 투명하게 설정
+        color: Colors.transparent,
         child: Column(
           children: [
             Gaps.v8,
@@ -113,7 +100,7 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Gaps.v8,
+                // 각 탭 구성
                 GnbTap(
                   text: '교외 지원',
                   isSelected: _selectedIndex == 0,
@@ -153,7 +140,7 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
                   selectedIndex: _selectedIndex,
                   selecetedIcon: AppIcon.myProfile_active,
                   unselecetedIcon: AppIcon.myProfile_inactive,
-                )
+                ),
               ],
             ),
           ],

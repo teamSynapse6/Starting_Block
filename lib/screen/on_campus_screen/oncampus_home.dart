@@ -33,26 +33,18 @@ class _OnCampusHomeState extends State<OnCampusHome> {
   }
 
   Future<void> _loadSvgLogo() async {
-    try {
-      String svgData = await OnCampusAPI.onCampusLogo();
-      setState(() {
-        _svgLogo = svgData;
-      });
-    } catch (e) {
-      print('SVG 로고 로드 실패: $e');
-    }
+    String svgData = await OnCampusAPI.onCampusLogo();
+    setState(() {
+      _svgLogo = svgData;
+    });
   }
 
   Future<void> _loadOnCampusHomeNotify() async {
-    try {
-      List<OnCampusNotifyModel> notifyList =
-          await OnCampusAPI.getOnCampusHomeNotify();
-      setState(() {
-        _notifyList = notifyList;
-      });
-    } catch (e) {
-      print('최신 교내 지원 사업 정보 로드 실패: $e');
-    }
+    List<OnCampusNotifyModel> notifyList =
+        await OnCampusAPI.getOnCampusHomeNotify();
+    setState(() {
+      _notifyList = notifyList;
+    });
   }
 
   @override
@@ -88,6 +80,7 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                   children: [
                     Gaps.v16,
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         _svgLogo.isNotEmpty
                             ? SvgPicture.string(

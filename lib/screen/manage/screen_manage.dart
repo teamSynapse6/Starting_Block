@@ -50,6 +50,11 @@ export 'package:starting_block/screen/on_campus_screen/supportgroup_tab_screen/l
 export 'package:starting_block/screen/on_campus_screen/supportgroup_tab_screen/space.dart'; //공가 화면
 export 'package:starting_block/screen/on_campus_screen/supportgroup_tab_screen/etc.dart'; //기타 화면
 
+//마이프로필 페이지
+export 'package:starting_block/screen/myprofile_screen/myprofile_home.dart'; //마이페이지 홈 화면
+export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_home.dart'; //프로필 수정_홈 화면
+export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_school.dart'; //프로필 수정_학교 변경 화면
+
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰
 export 'package:starting_block/screen/webview_screen/oncampus_home_webview.dart'; //교내지원사업 웹뷰 기본
