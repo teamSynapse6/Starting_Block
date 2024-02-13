@@ -70,6 +70,7 @@ class OnCampusAPI {
         await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
     String schoolNumber = getSchoolNumber(schoolName);
     final url = Uri.parse('$baseUrl/$schoolNumber/$schoolLogo');
+    print('로고: $url');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {

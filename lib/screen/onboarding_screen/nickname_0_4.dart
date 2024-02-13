@@ -3,6 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/api/system_api_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class NickNameScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class NickNameScreen extends StatefulWidget {
 class _NickNameScreenState extends State<NickNameScreen> {
   final TextEditingController _nicknameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<String> _nicknames = [];
+  final List<String> _nicknames = [];
   String _nickname = "";
   bool _isNicknameAvailable = false;
   String _nicknameAvailabilityMessage = "";
@@ -31,7 +32,6 @@ class _NickNameScreenState extends State<NickNameScreen> {
   @override
   void initState() {
     super.initState();
-    _loadNicknames();
     _nicknameController.addListener(() {
       final currentText = _nicknameController.text;
       if (!_isInputStarted && currentText.isNotEmpty) {
@@ -82,33 +82,34 @@ class _NickNameScreenState extends State<NickNameScreen> {
     return null;
   }
 
-  void _onCheckNickname() {
-    final isAvailable = !_nicknames.contains(_nickname);
-    setState(() {
-      _isNicknameChecked = true; // 중복 확인이 완료되었다고 표시
-      _isNicknameAvailable = isAvailable;
-      _nicknameAvailabilityMessage =
-          isAvailable ? "사용 가능한 닉네임입니다" : "이미 사용 중인 닉네임입니다";
-    });
-  }
+  void _onCheckNickname() async {
+    if (_nickname.isEmpty) {
+      return;
+    }
 
-  void _loadNicknames() async {
-    final String response =
-        await rootBundle.loadString('lib/data_manage/user_nickname.json');
-    final data = json.decode(response);
-    setState(() {
-      _nicknames = List<String>.from(data["nicknames"]);
-    });
+    // 서버에 닉네임 중복 검사 요청
+    try {
+      final isAvailable = await SystemApiManage.getNickNameCheck(_nickname);
+      setState(() {
+        _isNicknameChecked = true; // 중복 확인 완료
+        _isNicknameAvailable = isAvailable;
+        _nicknameAvailabilityMessage =
+            isAvailable ? "사용 가능한 닉네임입니다" : "이미 사용 중인 닉네임입니다";
+      });
+    } catch (e) {
+      // 에러 처리
+      setState(() {
+        _nicknameAvailabilityMessage = "닉네임 중복 검사 중 오류가 발생했습니다";
+      });
+    }
   }
 
   void _onNextTap() async {
     if (_nickname.isEmpty || !_isNicknameAvailable || !_isNicknameChecked) {
       return;
     }
-
     // 닉네임을 SharedPreferences에 저장
     await _saveNickname();
-
     // Navigator 호출 전에 현재 위젯이 위젯 트리에 여전히 있는지 확인
     if (!mounted) return;
     Navigator.of(context).push(
@@ -120,13 +121,13 @@ class _NickNameScreenState extends State<NickNameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const BackAppBar(),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        appBar: const BackAppBar(),
+        body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 24),
           child: Form(
             key: _formKey,

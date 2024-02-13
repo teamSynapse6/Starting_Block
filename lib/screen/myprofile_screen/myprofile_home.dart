@@ -82,6 +82,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
       body: Consumer<UserInfo>(
         builder: (context, userInfo, child) {
           if (userInfo.hasChanged) {
+            _loadSvgLogo();
             _loadNickName();
             _loadSchoolName();
             _loadEntrepreneurCheck();

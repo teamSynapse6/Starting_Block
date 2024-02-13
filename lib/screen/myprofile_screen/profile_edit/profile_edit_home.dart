@@ -58,8 +58,8 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(),
-      body: SingleChildScrollView(
-        child: Consumer<UserInfo>(builder: (context, userInfo, child) {
+      body: Consumer<UserInfo>(
+        builder: (context, userInfo, child) {
           if (userInfo.hasChanged) {
             _loadNickName();
             _loadSchoolName();
@@ -70,80 +70,89 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Gaps.v24,
-                    Text(
-                      '프로필 수정',
-                      style: AppTextStyles.st1.copyWith(color: AppColors.black),
-                    ),
-                    Gaps.v32,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              height: 140,
-                              width: 140,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.g1,
-                              ),
-                              child: AppIcon.profile_image_3,
-                            ),
-                            Positioned(
-                              top: 122,
-                              left: 45,
-                              child: Container(
-                                width: 49,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  color: AppColors.white,
-                                  borderRadius: BorderRadius.circular(2),
-                                  border: Border.all(
-                                    color: AppColors.g2,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '변경',
-                                    style: AppTextStyles.btn1.copyWith(
-                                      color: AppColors.blue,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Gaps.v24,
-                    Text(
-                      '닉네임',
-                      style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
-                    ),
-                    Gaps.v16,
-                    Container(
-                      height: 52,
-                      width: MediaQuery.of(context).size.width,
-                      color: AppColors.bluedark,
-                    ),
-                    Gaps.v32,
-                  ],
-                ),
-              ),
-              const CustomeDividerH5(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Gaps.v24,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(
+                      '프로필 수정',
+                      style: AppTextStyles.st1.copyWith(color: AppColors.black),
+                    ),
+                  ),
                   Gaps.v32,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: 140,
+                      width: 140,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.g1,
+                      ),
+                      child: AppIcon.profile_image_3,
+                    ),
+                  ),
+                  Gaps.v4,
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: 88,
+                      height: 32,
+                      child: Center(
+                        child: Text(
+                          "아이콘 변경",
+                          style: AppTextStyles.btn1.copyWith(
+                            color: AppColors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Gaps.v24,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(
+                      '닉네임',
+                      style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SchoolNameEdit()),
+                      );
+                    },
+                    child: SizedBox(
+                      height: 56,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              _nickName,
+                              style: AppTextStyles.bd2
+                                  .copyWith(color: AppColors.g6),
+                            ),
+                            const Spacer(),
+                            AppIcon.next_20,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Gaps.v8,
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: CustomDividerH1G1(),
+                  ),
+                  Gaps.v16,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
@@ -183,7 +192,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   Gaps.v8,
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: CustomDivider(),
+                    child: CustomDividerH1G1(),
                   ),
                   Gaps.v16,
                   Padding(
@@ -219,7 +228,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   Gaps.v8,
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: CustomDivider(),
+                    child: CustomDividerH1G1(),
                   ),
                   Gaps.v16,
                   Padding(
@@ -248,14 +257,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                       ),
                     ),
                   ),
-                  Gaps.v8,
+                  Gaps.v8
                 ],
-              )
+              ),
             ],
           );
-        }),
+        },
       ),
-      bottomNavigationBar: const BottomAppBar(),
     );
   }
 }

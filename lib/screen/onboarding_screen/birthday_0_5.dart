@@ -35,14 +35,13 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const BackAppBar(),
-      body: GestureDetector(
-        onTap: () {
-          // 여기에서 키보드를 숨깁니다.
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        appBar: const BackAppBar(),
+        body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
