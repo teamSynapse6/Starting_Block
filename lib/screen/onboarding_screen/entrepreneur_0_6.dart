@@ -53,45 +53,7 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gaps.v12,
-              const Row(
-                children: [
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.blue,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                ],
-              ),
+              const OnBoardingState(thisState: 3),
               Gaps.v32,
               Text(
                 "사업자 등록을 완료하셨나요?",
@@ -134,7 +96,7 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
                                   color: AppColors.g6),
                             ),
                             const Text(
-                              '완료했습니다,',
+                              '완료했습니다',
                               style: TextStyle(
                                   fontFamily: 'pretendard',
                                   fontWeight: FontWeight.w400,
@@ -175,7 +137,7 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
                                   color: AppColors.g6),
                             ),
                             const Text(
-                              '준비중입니다,',
+                              '준비중입니다',
                               style: TextStyle(
                                   fontFamily: 'pretendard',
                                   fontWeight: FontWeight.w400,

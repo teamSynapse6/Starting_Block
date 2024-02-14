@@ -17,6 +17,7 @@ class UserInfo extends ChangeNotifier {
     });
   }
 
+  //닉네임 메소드
   Future<void> setNickName(String nickName) async {
     await _prefs.setString('userNickName', nickName);
     _hasChanged = true;
@@ -28,6 +29,19 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getString('userNickName') ?? "";
   }
 
+  // 생일 메소드
+  Future<void> setUserBirthday(String birthday) async {
+    await _prefs.setString('userBirthday', birthday);
+    _hasChanged = true;
+    notifyListeners(); // 생일 정보 변경 후 리스너에게 알림
+  }
+
+  static Future<String> getUserBirthday() async {
+    await initialize(); // SharedPreferences 인스턴스를 초기화합니다.
+    return _prefs.getString('userBirthday') ?? "";
+  }
+
+  //사업자 등록 메소드
   Future<void> setEntrepreneurCheck(bool isEntrepreneur) async {
     await _prefs.setBool('enterpreneurCheck', isEntrepreneur);
     _hasChanged = true;
@@ -39,6 +53,7 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getBool('enterpreneurCheck') ?? false;
   }
 
+  //거주지 메소드
   Future<void> setResidence(String residence) async {
     await _prefs.setString('userResidence', residence);
     _hasChanged = true;
@@ -50,6 +65,7 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getString('userResidence') ?? "";
   }
 
+  //학교명 메소드
   Future<void> setSchoolName(String schoolName) async {
     await _prefs.setString('userSchoolName', schoolName);
     _hasChanged = true;

@@ -18,6 +18,7 @@ export 'package:starting_block/constants/widgets/bookmark/bookmark_button.dart';
 export 'package:starting_block/constants/widgets/reorder_list.dart'; //로드맵 순서 변경 리스트
 export 'package:starting_block/constants/widgets/bottom_gradiant.dart'; //하단 투명 Gradient
 export 'package:starting_block/constants/widgets/ofca_sorting_textbuttonsheet.dart'; //정렬_(최신순, 저장순)정렬 설정
+export 'package:starting_block/constants/widgets/onboarding_state.dart'; //온보딩 화면 상단 현재 단계
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트

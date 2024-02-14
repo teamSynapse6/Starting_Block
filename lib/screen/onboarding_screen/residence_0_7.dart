@@ -137,45 +137,7 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gaps.v12,
-              const Row(
-                children: [
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.blue,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                ],
-              ),
+              const OnBoardingState(thisState: 4),
               Gaps.v36,
               Text(
                 "거주지를 선택해주세요",

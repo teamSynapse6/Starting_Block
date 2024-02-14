@@ -93,45 +93,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gaps.v12,
-              const Row(
-                children: [
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.blue,
-                  ),
-                  Gaps.h4,
-                  Icon(
-                    Icons.circle,
-                    size: Sizes.size8,
-                    color: AppColors.g2,
-                  ),
-                ],
-              ),
+              const OnBoardingState(thisState: 5),
               Gaps.v36,
               Text(
                 "대학교(원)을 선택해주세요",

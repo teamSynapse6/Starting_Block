@@ -3,9 +3,16 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:provider/provider.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
+
+//kakao login
+  KakaoSdk.init(
+    nativeAppKey: '49b9cdd5c3366e805ef2180657040178',
+    javaScriptAppKey: '5e1919efb19e574a2d9929e51b51c5a7',
+  );
   runApp(
     MultiProvider(
       providers: [

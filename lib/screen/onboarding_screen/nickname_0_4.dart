@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
@@ -17,7 +15,6 @@ class NickNameScreen extends StatefulWidget {
 class _NickNameScreenState extends State<NickNameScreen> {
   final TextEditingController _nicknameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final List<String> _nicknames = [];
   String _nickname = "";
   bool _isNicknameAvailable = false;
   String _nicknameAvailabilityMessage = "";
@@ -100,6 +97,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
       // 에러 처리
       setState(() {
         _nicknameAvailabilityMessage = "닉네임 중복 검사 중 오류가 발생했습니다";
+        _isNicknameAvailable = false;
       });
     }
   }
@@ -135,45 +133,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Gaps.v12,
-                const Row(
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: Sizes.size8,
-                      color: AppColors.blue,
-                    ),
-                    Gaps.h4,
-                    Icon(
-                      Icons.circle,
-                      size: Sizes.size8,
-                      color: AppColors.g2,
-                    ),
-                    Gaps.h4,
-                    Icon(
-                      Icons.circle,
-                      size: Sizes.size8,
-                      color: AppColors.g2,
-                    ),
-                    Gaps.h4,
-                    Icon(
-                      Icons.circle,
-                      size: Sizes.size8,
-                      color: AppColors.g2,
-                    ),
-                    Gaps.h4,
-                    Icon(
-                      Icons.circle,
-                      size: Sizes.size8,
-                      color: AppColors.g2,
-                    ),
-                    Gaps.h4,
-                    Icon(
-                      Icons.circle,
-                      size: Sizes.size8,
-                      color: AppColors.g2,
-                    ),
-                  ],
-                ),
+                const OnBoardingState(thisState: 1),
                 Gaps.v36,
                 Text(
                   "닉네임을 설정해 주세요",

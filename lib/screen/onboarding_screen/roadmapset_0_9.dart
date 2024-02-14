@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/api/system_api_manage.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // JSON 인코딩/디코딩을 위해 추가
@@ -13,6 +15,7 @@ class RoadmapScreen extends StatefulWidget {
 
 class _RoadmapScreenState extends State<RoadmapScreen> {
   int? draggingIndex = -1;
+  String? userNickname; // 사용자 닉네임을 저장할 변수 추가
 
   // 항상 초기 리스트를 사용합니다.
   List<String> roadmapItems = [
@@ -27,6 +30,17 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     '사업화',
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadUserNickname(); // 닉네임 불러오기
+  }
+
+  // 사용자 닉네임 불러오기 메소드
+  Future<void> _loadUserNickname() async {
+    userNickname = await UserInfo.getNickName();
+  }
+
   Future<void> _saveRoadmapItems() async {
     final prefs = await SharedPreferences.getInstance();
     String roadmapItemsString = json.encode(roadmapItems);
@@ -35,6 +49,15 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
 
   void _onNextTap() async {
     await _saveRoadmapItems();
+
+    // 닉네임과 함께 사용자 정보 생성 요청
+    if (userNickname != null && userNickname!.isNotEmpty) {
+      final uuid = await SystemApiManage.getCreateUserInfo(userNickname!);
+
+      // SharedPreferences에 UUID 저장
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userUuid', uuid);
+    }
 
     // Navigator.of(context) 호출 전에 현재 위젯이 위젯 트리에 여전히 있는지 확인
     if (!mounted) return;
@@ -68,45 +91,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        size: Sizes.size8,
-                        color: AppColors.g2,
-                      ),
-                      Gaps.h4,
-                      Icon(
-                        Icons.circle,
-                        size: Sizes.size8,
-                        color: AppColors.g2,
-                      ),
-                      Gaps.h4,
-                      Icon(
-                        Icons.circle,
-                        size: Sizes.size8,
-                        color: AppColors.g2,
-                      ),
-                      Gaps.h4,
-                      Icon(
-                        Icons.circle,
-                        size: Sizes.size8,
-                        color: AppColors.g2,
-                      ),
-                      Gaps.h4,
-                      Icon(
-                        Icons.circle,
-                        size: Sizes.size8,
-                        color: AppColors.g2,
-                      ),
-                      Gaps.h4,
-                      Icon(
-                        Icons.circle,
-                        size: Sizes.size8,
-                        color: AppColors.blue,
-                      ),
-                    ],
-                  ),
+                  const OnBoardingState(thisState: 6),
                   Gaps.v36,
                   Text(
                     "로드맵을 설정해보세요",
