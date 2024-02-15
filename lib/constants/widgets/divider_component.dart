@@ -42,3 +42,17 @@ class CustomDividerH1G1 extends StatelessWidget {
     );
   }
 }
+
+class CustomDividerH8G2 extends StatelessWidget {
+  const CustomDividerH8G2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 8,
+      decoration: const BoxDecoration(
+        color: AppColors.g2,
+      ),
+    );
+  }
+}

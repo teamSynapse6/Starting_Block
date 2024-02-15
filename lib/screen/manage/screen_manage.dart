@@ -54,10 +54,18 @@ export 'package:starting_block/screen/on_campus_screen/supportgroup_tab_screen/e
 export 'package:starting_block/screen/myprofile_screen/myprofile_home.dart'; //마이페이지 홈 화면
 export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_home.dart'; //프로필 수정_홈 화면
 export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_school.dart'; //프로필 수정_학교 변경 화면
+export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_nickname.dart'; //프로필 수정_닉네임 변경 화면
+export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_birthday.dart'; //프로필 수정_생일 변경 화면
+export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_residence.dart'; //프로필 수정_거주지 변경 화면
+export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_enterpreneur.dart'; //프로필 수정_사업자 형태 수정
+export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_profileicon.dart'; //프로필 수정_프로필 아이콘 수정
+export 'package:starting_block/screen/myprofile_screen/setting/setting_home.dart'; //설정_홈 화면
+export 'package:starting_block/screen/myprofile_screen/setting/setting_alarm.dart'; //설정_알람 화면
 
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰
 export 'package:starting_block/screen/webview_screen/oncampus_home_webview.dart'; //교내지원사업 웹뷰 기본
+export 'package:starting_block/screen/webview_screen/setting_term_webview.dart'; //개인정보처리방침 및 이용약관 웹뷰
 
 //데이터 파일 관리용
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';

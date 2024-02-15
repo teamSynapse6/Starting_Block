@@ -20,6 +20,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
   String _schoolName = "";
   String _entrepreneurCheck = "사업자 등록 미완료"; // 사업자 등록 여부를 저장할 변수
   String _residenceName = ""; // 거주지 정보를 저장할 변수
+  Widget _selectedProfileIcon = Container(); // 현재 선택된 프로필 아이콘을 저장하는 위젯 변수
   late TabController _tabController;
 
   @override
@@ -30,6 +31,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
     _loadSchoolName();
     _loadEntrepreneurCheck();
     _loadResidenceName();
+    _loadSelectedProfileIcon(); // 프로필 아이콘 로드
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -63,7 +65,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
   Future<void> _loadEntrepreneurCheck() async {
     bool isEntrepreneur = await UserInfo.getEntrepreneurCheck();
     setState(() {
-      _entrepreneurCheck = isEntrepreneur ? "등록 완료" : "등록 미완료";
+      _entrepreneurCheck = isEntrepreneur ? "사업자 등록 완료" : "사업자 등록 미완료";
     });
   }
 
@@ -71,6 +73,25 @@ class _MyProfileHomeState extends State<MyProfileHome>
     String residenceName = await UserInfo.getResidence();
     setState(() {
       _residenceName = residenceName;
+    });
+  }
+
+  Future<void> _loadSelectedProfileIcon() async {
+    int selectedIconIndex = await UserInfo.getSelectedIconIndex();
+    setState(() {
+      switch (selectedIconIndex) {
+        case 1:
+          _selectedProfileIcon = AppIcon.profile_image_1;
+          break;
+        case 2:
+          _selectedProfileIcon = AppIcon.profile_image_2;
+          break;
+        case 3:
+          _selectedProfileIcon = AppIcon.profile_image_3;
+          break;
+        default:
+          _selectedProfileIcon = Container();
+      }
     });
   }
 
@@ -87,6 +108,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
             _loadSchoolName();
             _loadEntrepreneurCheck();
             _loadResidenceName();
+            _loadSelectedProfileIcon(); // 프로필 아이콘 로드
             userInfo.resetChangeFlag(); // 데이터 로딩 후 플래그 리셋
           }
           return Column(
@@ -187,7 +209,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
                               color: AppColors.g2,
                             ),
                           ),
-                          child: AppIcon.profile_image_3,
+                          child: _selectedProfileIcon,
                         ),
                       ),
                     ],

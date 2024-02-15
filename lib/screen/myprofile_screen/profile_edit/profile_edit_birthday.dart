@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:intl/intl.dart';
 
-class BirthdayScreen extends StatefulWidget {
-  const BirthdayScreen({super.key});
+class BirthdayEdit extends StatefulWidget {
+  const BirthdayEdit({super.key});
 
   @override
-  State<BirthdayScreen> createState() => _BirthdayScreenState();
+  State<BirthdayEdit> createState() => _BirthdayEditState();
 }
 
-class _BirthdayScreenState extends State<BirthdayScreen> {
+class _BirthdayEditState extends State<BirthdayEdit> {
   final TextEditingController _birthdayController = TextEditingController();
   String _birthday = "";
   bool _isInputValid = false;
@@ -40,18 +41,17 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   }
 
   Future<void> _saveBirthday() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userBirthday', _birthday);
+    // Provider를 사용하여 UserInfo 인스턴스에 접근
+    final userInfo = Provider.of<UserInfo>(context, listen: false);
+
+    // UserInfo 인스턴스의 setUserBirthday 메소드를 호출하여 생년월일 저장
+    await userInfo.setUserBirthday(_birthday.replaceAll('.', ''));
   }
 
   void _onNextTap() {
     if (!_isInputValid) return;
     _saveBirthday();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const EnterprenutScreen(),
-      ),
-    );
+    Navigator.of(context).pop();
   }
 
   @override
@@ -67,9 +67,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gaps.v12,
-              const OnBoardingState(thisState: 2),
-              Gaps.v36,
+              Gaps.v32,
               Text(
                 "생년월일을 입력해주세요",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
@@ -99,7 +97,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                 child: GestureDetector(
                   onTap: _isInputValid ? _onNextTap : null,
                   child: NextContained(
-                    text: "다음",
+                    text: "저장",
                     disabled: !_isInputValid,
                   ),
                 ),
@@ -112,7 +110,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   }
 }
 
-class BirthdayInputFormatter extends TextInputFormatter {
+class BirthdayInputFormatterEdit extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {

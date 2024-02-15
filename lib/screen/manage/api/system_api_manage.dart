@@ -7,6 +7,7 @@ class SystemApiManage {
   static String baseUrl = 'http://10.0.2.2:5000';
   static String nickNameCheck = 'getUserNickName';
   static String createUserInfo = 'createuserinfo';
+  static String changeNickName = 'changeNickName';
 
   //닉네임 중복확인 메소드
   static Future<bool> getNickNameCheck(String nickname) async {
@@ -52,6 +53,28 @@ class SystemApiManage {
       // 에러 처리
       print('서버 에러: ${response.statusCode}.');
       throw Exception('Server error with status code: ${response.statusCode}');
+    }
+  }
+
+  // 닉네임 변경 메소드
+  static Future<bool> getChangeNickName(String uuid, String newNickname) async {
+    final url = Uri.parse('$baseUrl/$changeNickName');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({'uuid': uuid, 'nickname': newNickname}),
+    );
+
+    if (response.statusCode == 200) {
+      // 닉네임 변경이 성공적으로 이루어졌을 때
+      return true;
+    } else {
+      // 변경 실패 또는 기타 에러 처리
+      print(
+          '서버 에러 또는 닉네임 변경 실패: ${response.statusCode}. ${jsonDecode(response.body)}');
+      return false;
     }
   }
 }

@@ -55,10 +55,20 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 4),
-          child: SizedBox(
-            height: 48,
-            width: 48,
-            child: AppIcon.settings,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingHome(),
+                ),
+              );
+            },
+            child: SizedBox(
+              height: 48,
+              width: 48,
+              child: AppIcon.settings,
+            ),
           ),
         ),
       ],
@@ -382,6 +392,45 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class TermAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final state, thisBgColor;
+
+  const TermAppBar({
+    super.key,
+    this.state,
+    this.thisBgColor,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(128);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: thisBgColor ?? AppColors.white,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context, state);
+        },
+        child: AppIcon.back,
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(76),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 24, left: 24),
+            child: Text(
+              '개인정보처리방침 및 이용약관',
+              style: AppTextStyles.st1.copyWith(color: AppColors.g6),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

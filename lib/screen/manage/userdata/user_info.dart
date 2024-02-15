@@ -76,4 +76,21 @@ class UserInfo extends ChangeNotifier {
     await initialize();
     return _prefs.getString('userSchoolName') ?? "";
   }
+
+  // UUID 메소드
+  static Future<String> getUserUUID() async {
+    await initialize();
+    return _prefs.getString('userUuid') ?? "";
+  }
+
+  // 아이콘 메소드
+  Future<void> setSelectedIconIndex(int index) async {
+    await _prefs.setInt('selectedIconIndex', index);
+    _hasChanged = true;
+    notifyListeners(); // 아이콘 인덱스 변경 후 리스너에게 알림
+  }
+
+  static Future<int> getSelectedIconIndex() async {
+    return _prefs.getInt('selectedIconIndex') ?? 0;
+  }
 }

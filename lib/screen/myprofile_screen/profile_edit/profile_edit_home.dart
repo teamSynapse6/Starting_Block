@@ -15,17 +15,25 @@ class ProfileEditHome extends StatefulWidget {
 
 class _ProfileEditHomeState extends State<ProfileEditHome> {
   String _nickName = "";
+  String _birthDay = "";
   String _schoolName = "";
-  String _entrepreneurCheck = "사업자 등록 미완료"; // 사업자 등록 여부를 저장할 변수
-  String _residenceName = ""; // 거주지 정보를 저장할 변수
+  String _entrepreneurCheck = "사업자 등록 미완료";
+  String _residenceName = "";
+  Widget _selectedProfileIcon = Container(); // 현재 선택된 프로필 아이콘을 저장하는 위젯 변수
 
   @override
   void initState() {
     super.initState();
+    _loadUserInfo();
+  }
+
+  void _loadUserInfo() {
     _loadNickName();
+    _loadBirthDay();
     _loadSchoolName();
     _loadEntrepreneurCheck();
     _loadResidenceName();
+    _loadSelectedProfileIcon(); // 프로필 아이콘 로드
   }
 
   Future<void> _loadNickName() async {
@@ -33,6 +41,21 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
     setState(() {
       _nickName = nickName;
     });
+  }
+
+  Future<void> _loadBirthDay() async {
+    String birthDay = await UserInfo.getUserBirthday();
+    if (birthDay.length == 8) {
+      String formattedBirthDay =
+          "${birthDay.substring(0, 4)}.${birthDay.substring(4, 6)}.${birthDay.substring(6, 8)}";
+      setState(() {
+        _birthDay = formattedBirthDay;
+      });
+    } else {
+      setState(() {
+        _birthDay = birthDay;
+      });
+    }
   }
 
   Future<void> _loadSchoolName() async {
@@ -56,49 +79,71 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
     });
   }
 
+  Future<void> _loadSelectedProfileIcon() async {
+    int selectedIconIndex = await UserInfo.getSelectedIconIndex();
+    setState(() {
+      switch (selectedIconIndex) {
+        case 1:
+          _selectedProfileIcon = AppIcon.profile_image_1;
+          break;
+        case 2:
+          _selectedProfileIcon = AppIcon.profile_image_2;
+          break;
+        case 3:
+          _selectedProfileIcon = AppIcon.profile_image_3;
+          break;
+        default:
+          _selectedProfileIcon = Container();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(),
-      body: Consumer<UserInfo>(
-        builder: (context, userInfo, child) {
-          if (userInfo.hasChanged) {
-            _loadNickName();
-            _loadSchoolName();
-            _loadEntrepreneurCheck();
-            _loadResidenceName();
-            userInfo.resetChangeFlag(); // 데이터 로딩 후 플래그 리셋
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Gaps.v24,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      '프로필 수정',
-                      style: AppTextStyles.st1.copyWith(color: AppColors.black),
-                    ),
+      body: SingleChildScrollView(
+        child: Consumer<UserInfo>(
+          builder: (context, userInfo, child) {
+            if (userInfo.hasChanged) {
+              _loadUserInfo();
+              userInfo.resetChangeFlag(); // 데이터 로딩 후 플래그 리셋
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gaps.v24,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '프로필 수정',
+                    style: AppTextStyles.st1.copyWith(color: AppColors.black),
                   ),
-                  Gaps.v32,
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: 140,
-                      width: 140,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.g1,
-                      ),
-                      child: AppIcon.profile_image_3,
+                ),
+                Gaps.v32,
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: 140,
+                    width: 140,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.g1,
                     ),
+                    child: _selectedProfileIcon,
                   ),
-                  Gaps.v4,
-                  Align(
-                    alignment: Alignment.center,
+                ),
+                Gaps.v4,
+                Align(
+                  alignment: Alignment.center,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfileIconEdit()),
+                      );
+                    },
                     child: SizedBox(
                       width: 88,
                       height: 32,
@@ -112,135 +157,24 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                       ),
                     ),
                   ),
-                  Gaps.v24,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      '닉네임',
-                      style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
-                    ),
+                ),
+                Gaps.v24,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '닉네임',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SchoolNameEdit()),
-                      );
-                    },
-                    child: SizedBox(
-                      height: 56,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              _nickName,
-                              style: AppTextStyles.bd2
-                                  .copyWith(color: AppColors.g6),
-                            ),
-                            const Spacer(),
-                            AppIcon.next_20,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Gaps.v8,
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: CustomDividerH1G1(),
-                  ),
-                  Gaps.v16,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      '학교',
-                      style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SchoolNameEdit()),
-                      );
-                    },
-                    child: SizedBox(
-                      height: 56,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              _schoolName,
-                              style: AppTextStyles.bd2
-                                  .copyWith(color: AppColors.g6),
-                            ),
-                            const Spacer(),
-                            AppIcon.next_20,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Gaps.v8,
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: CustomDividerH1G1(),
-                  ),
-                  Gaps.v16,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      '주민등록상 거주지',
-                      style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: null,
-                    child: SizedBox(
-                      height: 56,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              _residenceName,
-                              style: AppTextStyles.bd2
-                                  .copyWith(color: AppColors.g6),
-                            ),
-                            const Spacer(),
-                            AppIcon.next_20,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Gaps.v8,
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: CustomDividerH1G1(),
-                  ),
-                  Gaps.v16,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      '사업자 등록 여부',
-                      style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
-                    ),
-                  ),
-                  SizedBox(
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NickNameEdit()),
+                    );
+                  },
+                  child: SizedBox(
                     height: 56,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -250,21 +184,190 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                       child: Row(
                         children: [
                           Text(
-                            '등록 완료',
+                            _nickName,
                             style:
                                 AppTextStyles.bd2.copyWith(color: AppColors.g6),
                           ),
                           const Spacer(),
+                          AppIcon.next_20,
                         ],
                       ),
                     ),
                   ),
-                  Gaps.v8
-                ],
-              ),
-            ],
-          );
-        },
+                ),
+                Gaps.v8,
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: CustomDividerH1G1(),
+                ),
+                Gaps.v16,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '생년월일',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BirthdayEdit()),
+                    );
+                  },
+                  child: SizedBox(
+                    height: 56,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            _birthDay,
+                            style:
+                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                          ),
+                          const Spacer(),
+                          AppIcon.next_20,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Gaps.v8,
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: CustomDividerH1G1(),
+                ),
+                Gaps.v16,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '학교',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SchoolNameEdit()),
+                    );
+                  },
+                  child: SizedBox(
+                    height: 56,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            _schoolName,
+                            style:
+                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                          ),
+                          const Spacer(),
+                          AppIcon.next_20,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Gaps.v8,
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: CustomDividerH1G1(),
+                ),
+                Gaps.v16,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '주민등록상 거주지',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ResidenceEdit()),
+                    );
+                  },
+                  child: SizedBox(
+                    height: 56,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            _residenceName,
+                            style:
+                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                          ),
+                          const Spacer(),
+                          AppIcon.next_20,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Gaps.v8,
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: CustomDividerH1G1(),
+                ),
+                Gaps.v16,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '사업자 등록 여부',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const EnterprenutEdit()),
+                    );
+                  },
+                  child: SizedBox(
+                    height: 56,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            _entrepreneurCheck,
+                            style:
+                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                          ),
+                          const Spacer(),
+                          AppIcon.next_20,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Gaps.v20
+              ],
+            );
+          },
+        ),
       ),
     );
   }
