@@ -50,9 +50,14 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   void _onNextTap() async {
     await _saveRoadmapItems();
 
+    // kakaoUserID 가져오기
+    int kakaoUserID = await UserInfo.getKakaoUserID(); // kakaoUserID를 가져옵니다.
+
     // 닉네임과 함께 사용자 정보 생성 요청
     if (userNickname != null && userNickname!.isNotEmpty) {
-      final uuid = await SystemApiManage.getCreateUserInfo(userNickname!);
+      // kakaoUserID를 String으로 변환 (API 요구사항에 따라 타입을 조정하세요)
+      final uuid = await SystemApiManage.getCreateUserInfo(
+          userNickname!, kakaoUserID.toString());
 
       // SharedPreferences에 UUID 저장
       final prefs = await SharedPreferences.getInstance();

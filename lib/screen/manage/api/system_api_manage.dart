@@ -34,15 +34,17 @@ class SystemApiManage {
     }
   }
 
-  // 사용자 정보 생성 메소드
-  static Future<String> getCreateUserInfo(String nickname) async {
+  // 사용자 정보 생성 메소드 수정
+  static Future<String> getCreateUserInfo(
+      String nickname, String kakaoUserID) async {
     final url = Uri.parse('$baseUrl/$createUserInfo');
     final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({'nickname': nickname}),
+      // nickname과 kakaoUserID 둘 다 포함하여 요청 본문(body) 구성
+      body: jsonEncode({'nickname': nickname, 'kakaoUserID': kakaoUserID}),
     );
 
     if (response.statusCode == 200) {
@@ -51,7 +53,7 @@ class SystemApiManage {
       return data['uuid'];
     } else {
       // 에러 처리
-      print('서버 에러: ${response.statusCode}.');
+      print('서버 에러: ${response.statusCode}. ${jsonDecode(response.body)}');
       throw Exception('Server error with status code: ${response.statusCode}');
     }
   }

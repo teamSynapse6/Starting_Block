@@ -37,7 +37,7 @@ class UserInfo extends ChangeNotifier {
   }
 
   static Future<String> getUserBirthday() async {
-    await initialize(); // SharedPreferences 인스턴스를 초기화합니다.
+    await initialize();
     return _prefs.getString('userBirthday') ?? "";
   }
 
@@ -91,6 +91,13 @@ class UserInfo extends ChangeNotifier {
   }
 
   static Future<int> getSelectedIconIndex() async {
-    return _prefs.getInt('selectedIconIndex') ?? 0;
+    await initialize();
+    return _prefs.getInt('selectedIconIndex') ?? 1;
+  }
+
+  // kakaoUserID 가져오기
+  static Future<int> getKakaoUserID() async {
+    await initialize(); // SharedPreferences 인스턴스를 초기화합니다.
+    return _prefs.getInt('kakaoUserID') ?? 0; // 기본값으로 0을 반환하도록 설정
   }
 }
