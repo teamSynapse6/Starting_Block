@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:starting_block/screen/manage/models/offcampus_detail_model.dart';
@@ -12,6 +14,7 @@ class OffCampusApi {
   static String requestFilter = 'offcampus/filtered';
   static String popularKeyword = 'offcampus/popular';
   static String offcampusSearch = 'offcampus/search';
+  static String roadMapRecommend = 'offcampus/roadmapRec';
 
   static Future<List<OffCampusModel>> getOffCampusData() async {
     final offCampusUrl = Uri.parse('$baseUrl/$offCampus');
@@ -164,6 +167,35 @@ class OffCampusApi {
       return dataList; // 필터링 및 검색된 데이터 리스트를 반환
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  static Future<List<OffCampusModel>> getOffCampusRoadmapRec({
+    bool? posttarget,
+    String? region,
+    int? age,
+    List<String>? supporttypes,
+  }) async {
+    final url = Uri.parse('$baseUrl/$roadMapRecommend');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'posttarget': posttarget,
+        'region': region,
+        'age': age,
+        'supporttype': supporttypes,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = jsonDecode(response.body);
+      List<OffCampusModel> roadmapRecList =
+          responseData.map((data) => OffCampusModel.fromJson(data)).toList();
+      return roadmapRecList;
+    } else {
+      throw Exception(
+          'Failed to load roadmap recommendations. 서버 오류: ${response.statusCode}');
     }
   }
 }

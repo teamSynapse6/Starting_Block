@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-class OnCaListNotify extends StatelessWidget {
+class OnCaNotifyCard extends StatelessWidget {
   final String thisProgramType,
       thisID,
       thisClassification,
@@ -10,7 +10,7 @@ class OnCaListNotify extends StatelessWidget {
       thisUrl,
       thisStartDate;
 
-  const OnCaListNotify({
+  const OnCaNotifyCard({
     super.key,
     required this.thisProgramType,
     required this.thisID,

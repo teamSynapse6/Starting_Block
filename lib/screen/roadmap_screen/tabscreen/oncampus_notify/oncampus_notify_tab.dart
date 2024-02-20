@@ -6,6 +6,7 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart'; // Import 수정
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_recommend.dart';
 
 const List<String> validTextsNotify = [
   '창업 교육',
@@ -112,20 +113,10 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
               children: [
                 Gaps.v24,
                 if (validTextsNotify.contains(widget.thisSelectedText))
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Row(
-                      children: [
-                        Text('추천 사업',
-                            style: AppTextStyles.st2
-                                .copyWith(color: AppColors.blue)),
-                        Text('이 도착했습니다',
-                            style: AppTextStyles.st2
-                                .copyWith(color: AppColors.g6)),
-                      ],
-                    ),
+                  OnCaNotifyRecommend(
+                    thisSelectedText: widget.thisSelectedText,
+                    thisCurrentStage: widget.thisCurrentStage,
                   ),
-                Gaps.v28,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
@@ -133,11 +124,11 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
                     children: [
                       Text('저장한 사업으로 도약하기',
                           style:
-                              AppTextStyles.st2.copyWith(color: AppColors.g6)),
+                              AppTextStyles.bd1.copyWith(color: AppColors.g6)),
                       Gaps.v4,
                       Text('신청 완료한 사업은 도약 완료 버튼으로 진행도 확인하기',
-                          style: AppTextStyles.caption
-                              .copyWith(color: AppColors.g5)),
+                          style:
+                              AppTextStyles.bd6.copyWith(color: AppColors.g5)),
                       Gaps.v18,
                     ],
                   ),
@@ -175,6 +166,7 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
                               thisClassification: item.classification,
                               thisTitle: item.title,
                               thisUrl: item.detailurl,
+                              thisStartDate: item.startdate,
                             ),
                             if (index < onCampusNotifyData.length - 1)
                               const Padding(

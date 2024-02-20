@@ -60,8 +60,10 @@ class OnCampusAPI {
   static String schoolSystemByID = 'system/ids';
   static String schoolClass = 'class';
   static String schoolClassByID = 'class/ids';
+  static String schoolClassRoadmapRec = 'class/roadmapRec';
   static String schoolNotify = 'notify';
   static String schoolNotifyByID = 'notify/ids';
+  static String schoolNotifyRoadmapRec = 'notify/roadmapRec';
   static String schoolNotifyFiltered = 'supportgroup/notify/filtered';
   static String schoolTabList = 'supportgroup/tablist';
 
@@ -164,6 +166,25 @@ class OnCampusAPI {
     } else {
       print('에러: ${response.statusCode}.');
       throw Error();
+    }
+  }
+
+  //로드맵_추천메소드
+  static Future<OnCampusClassModel> getOnCampusClassRec() async {
+    String schoolName = await UserInfo.getSchoolName();
+    String schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolClassRoadmapRec');
+    final response = await http.get(url);
+
+    // 응답 상태 코드 확인
+    if (response.statusCode == 200) {
+      // 서버가 200 OK로 응답하면, JSON 응답을 디코드
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return OnCampusClassModel.fromJson(data);
+    } else {
+      // 서버가 에러로 응답하면, 에러 상태 코드를 출력하고 예외 발생
+      print('서버 에러: ${response.statusCode}');
+      throw Exception('클래스별 추천 데이터 로드 실패');
     }
   }
 
@@ -314,6 +335,72 @@ class OnCampusAPI {
     } else {
       print('에러: ${response.statusCode}.');
       throw Exception('Failed to load tab list');
+    }
+  }
+
+  // //교내지원사업(notify)_추천 메소드
+  // static Future<List<OnCampusNotifyModel>> getOnCampusRoadmapRec({
+  //   required List<String> types, // 필터링할 타입 목록
+  // }) async {
+  //   String schoolName =
+  //       await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+  //   String schoolNumber = getSchoolNumber(schoolName);
+  //   final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotifyRoadmapRec');
+
+  //   // POST 요청을 보냅니다.
+  //   final response = await http.post(
+  //     url,
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: jsonEncode({'types': types}),
+  //   );
+
+  //   // 서버 응답 처리
+  //   if (response.statusCode == 200) {
+  //     // 응답 데이터를 JSON 배열로 디코딩
+  //     final List<dynamic> jsonData = jsonDecode(response.body);
+  //     // JSON 배열을 OnCampusNotifyModel 리스트로 변환
+  //     List<OnCampusNotifyModel> notifyList =
+  //         jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
+  //     return notifyList;
+  //   } else {
+  //     print('서버 에러: ${response.statusCode}');
+  //     throw Exception('Failed to load roadmap recommendation data');
+  //   }
+  // }
+//교내지원사업(notify)_추천 메소드
+  static Future<List<OnCampusNotifyModel>> getOnCampusRoadmapRec({
+    required List<String> types, // 필터링할 타입 목록
+  }) async {
+    String schoolName =
+        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
+    String schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotifyRoadmapRec');
+
+    // 요청 본문
+    String requestBody = jsonEncode({'types': types});
+
+    // 요청 정보 출력
+    print('POST 요청을 보냅니다. URL: $url');
+    print('요청 본문: $requestBody');
+
+    // POST 요청을 보냅니다.
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: requestBody,
+    );
+
+    // 서버 응답 처리
+    if (response.statusCode == 200) {
+      // 응답 데이터를 JSON 배열로 디코딩
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      // JSON 배열을 OnCampusNotifyModel 리스트로 변환
+      List<OnCampusNotifyModel> notifyList =
+          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
+      return notifyList;
+    } else {
+      print('서버 에러: ${response.statusCode}');
+      throw Exception('Failed to load roadmap recommendation data');
     }
   }
 }

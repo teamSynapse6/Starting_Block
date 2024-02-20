@@ -47,7 +47,6 @@ class OfCaCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
         width: 312,
         decoration: BoxDecoration(
           color: AppColors.white,
@@ -73,11 +72,11 @@ class OfCaCard extends StatelessWidget {
               Gaps.v10,
               Text(
                 thisTitle,
-                style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              Gaps.v4,
+              Gaps.v8,
               Text(
                 dDay,
                 style: AppTextStyles.bd6.copyWith(color: AppColors.g5),

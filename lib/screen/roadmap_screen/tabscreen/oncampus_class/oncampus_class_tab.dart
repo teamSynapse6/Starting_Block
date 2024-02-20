@@ -6,6 +6,7 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/onca_class_recommend.dart';
 
 const List<String> validTextsClass = [
   '창업 교육',
@@ -109,18 +110,9 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
               children: [
                 Gaps.v24,
                 if (validTextsClass.contains(widget.thisSelectedText))
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Row(
-                      children: [
-                        Text('추천 사업',
-                            style: AppTextStyles.st2
-                                .copyWith(color: AppColors.blue)),
-                        Text('이 도착했습니다',
-                            style: AppTextStyles.st2
-                                .copyWith(color: AppColors.g6)),
-                      ],
-                    ),
+                  OnCaClassRecommend(
+                    thisSelectedText: widget.thisSelectedText,
+                    thisCurrentStage: widget.thisCurrentStage,
                   ),
                 Gaps.v28,
                 Padding(

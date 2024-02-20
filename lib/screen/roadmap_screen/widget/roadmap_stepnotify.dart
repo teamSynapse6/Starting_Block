@@ -6,28 +6,18 @@ class RoadMapStepNotify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          children: [
-            const Spacer(),
-            Container(
-              height: 44,
-              width: 312,
-              decoration: const BoxDecoration(color: AppColors.g3),
-              child: Center(
-                child: Text(
-                  '단계 도달 후 추천 지원 사업을 받아보세요',
-                  style: AppTextStyles.bd3.copyWith(color: AppColors.white),
-                ),
-              ),
-            ),
-            const Spacer(),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.g4,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Text(
+          '도약하고 추천사업 받아보기',
+          style: AppTextStyles.btn2.copyWith(color: AppColors.white),
         ),
-        Gaps.v36,
-      ],
+      ),
     );
   }
 }
