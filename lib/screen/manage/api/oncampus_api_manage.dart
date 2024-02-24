@@ -58,6 +58,7 @@ class OnCampusAPI {
   static String schoolLogo = 'logo';
   static String schoolSystem = 'system';
   static String schoolSystemByID = 'system/ids';
+  static String schoolSystemRoadmapRec = 'system/roadmapRec';
   static String schoolClass = 'class';
   static String schoolClassByID = 'class/ids';
   static String schoolClassRoadmapRec = 'class/roadmapRec';
@@ -124,6 +125,33 @@ class OnCampusAPI {
     } else {
       print('에러: ${response.statusCode}.');
       throw Error();
+    }
+  }
+
+  // 시스템 로드맵 추천 데이터를 서버로부터 받아오는 메소드
+  static Future<OnCampusSystemModel> getOnCampusSystemRec(
+      List<String> types) async {
+    String schoolName = await UserInfo.getSchoolName();
+    String schoolNumber = getSchoolNumber(schoolName);
+    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolSystemRoadmapRec');
+
+    // POST 요청을 보냅니다.
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'type': types}),
+    );
+
+    // 서버 응답 처리
+    if (response.statusCode == 200) {
+      // 응답 데이터를 JSON 객체로 디코딩
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      // JSON 객체를 OnCampusSystemModel로 변환
+      return OnCampusSystemModel.fromJson(data);
+    } else {
+      // 서버가 에러로 응답하면, 에러 상태 코드를 출력하고 예외 발생
+      print('서버 에러: ${response.statusCode}');
+      throw Exception('Failed to load system roadmap recommendation data');
     }
   }
 

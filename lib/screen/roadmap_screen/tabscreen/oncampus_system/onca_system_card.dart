@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class OnCaClassCard extends StatefulWidget {
-  final String thisTitle,
-      thisId,
-      thisLiberal,
-      thisCredit,
-      thisContent,
-      thisInstructor;
-  final List<String> thisSession;
+class OnCaSystemCard extends StatefulWidget {
+  final String thisTitle, thisId, thisContent, thisTarget;
 
-  const OnCaClassCard({
+  const OnCaSystemCard({
     super.key,
     required this.thisTitle,
     required this.thisId,
-    required this.thisLiberal,
-    required this.thisCredit,
     required this.thisContent,
-    required this.thisSession,
-    required this.thisInstructor,
+    required this.thisTarget,
   });
 
   @override
-  State<OnCaClassCard> createState() => _OnCaClassCardState();
+  State<OnCaSystemCard> createState() => _OnCaSystemCardState();
 }
 
-class _OnCaClassCardState extends State<OnCaClassCard> {
+class _OnCaSystemCardState extends State<OnCaSystemCard> {
   bool _isExpanded = false;
   bool _isExpandable = false;
 
@@ -53,7 +44,7 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
         return Container(
           color: AppColors.white,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -61,49 +52,28 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
                   children: [
                     Text(
                       widget.thisTitle,
-                      style: AppTextStyles.bd1.copyWith(color: AppColors.black),
-                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
                     ),
                     const Spacer(),
-                    BookMarkButton(
-                      id: widget.thisId,
-                      classification: '창업강의',
-                    ),
+                    BookMarkButton(id: widget.thisId, classification: '창업제도'),
                   ],
                 ),
-                Gaps.v20,
+                Gaps.v10,
                 const CustomDivider(),
-                Gaps.v12,
-                Row(
-                  children: [
-                    ClassLiberalChips(thisText: widget.thisLiberal),
-                    Gaps.h8,
-                    ClassCreditsChips(thisTextNum: widget.thisCredit),
-                    Gaps.h8,
-                    Wrap(
-                      spacing: 8,
-                      children: widget.thisSession
-                          .map((session) =>
-                              ClassSessionChips(thisTextSession: session))
-                          .toList(),
-                    ),
-                  ],
-                ),
-                Gaps.v12,
+                Gaps.v10,
                 Text(
-                  '교강사',
+                  '지원 대상',
                   style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
                 ),
                 Gaps.v4,
                 Text(
-                  widget.thisInstructor,
+                  widget.thisTarget,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
                 ),
-                Gaps.v12,
                 Text(
-                  '강의 개요',
+                  '내용',
                   style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
                 ),
                 Gaps.v4,
@@ -114,7 +84,7 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
                 ),
                 Gaps.v10,
-                if (_isExpandable)
+                if (_isExpandable) // '_isExpandable' 상태에 따라 '더보기'/'접기' 버튼 표시
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(

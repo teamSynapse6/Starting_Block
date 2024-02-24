@@ -322,12 +322,12 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.thisTextStyle,
     required this.text,
-    this.onPress,
+    this.thisOnTap,
   });
 
   final thisTextStyle;
   final String text;
-  final onPress;
+  final thisOnTap;
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -345,7 +345,7 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: const EdgeInsets.only(right: 12.0),
           child: GestureDetector(
-            onTap: onPress,
+            onTap: thisOnTap,
             child: SizedBox(
               width: 73,
               height: 32,

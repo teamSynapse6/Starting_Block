@@ -28,6 +28,8 @@ class AppIcon {
       SvgPicture.asset('assets/icon/20/school.svg', fit: BoxFit.scaleDown);
   static Widget get next_20 =>
       SvgPicture.asset('assets/icon/20/next_20.svg', fit: BoxFit.scaleDown);
+  static Widget get question =>
+      SvgPicture.asset('assets/icon/20/question.svg', fit: BoxFit.scaleDown);
 
   // Size 24 Icons
   static Widget get back =>
@@ -170,6 +172,15 @@ class AppIcon {
           fit: BoxFit.scaleDown);
   static Widget get next_right_16 =>
       SvgPicture.asset('assets/icon/other/next_right_16.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get arrow_down_18 =>
+      SvgPicture.asset('assets/icon/other/arrow_down_18.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get arrow_up_18 =>
+      SvgPicture.asset('assets/icon/other/arrow_up_18.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get arrow_next_14_blue =>
+      SvgPicture.asset('assets/icon/other/arrow_next_14_blue.svg',
           fit: BoxFit.scaleDown);
 
   // Profile Image

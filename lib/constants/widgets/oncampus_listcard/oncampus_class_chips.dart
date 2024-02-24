@@ -14,11 +14,7 @@ class ClassLiberalChips extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: AppColors.white,
-        border: Border.all(
-          color: AppColors.blue,
-          width: 1,
-        ),
+        color: AppColors.bluebg,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -49,11 +45,7 @@ class ClassCreditsChips extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: AppColors.white,
-        border: Border.all(
-          color: AppColors.blue,
-          width: 1,
-        ),
+        color: AppColors.bluebg,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(

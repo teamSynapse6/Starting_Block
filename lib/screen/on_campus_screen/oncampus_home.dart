@@ -94,24 +94,6 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                           style:
                               AppTextStyles.st2.copyWith(color: AppColors.g6),
                         ),
-                        Gaps.h8,
-                        Container(
-                          height: 24,
-                          width: 151,
-                          decoration: const BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "교내 창업 지원의 통합 확인",
-                              style: AppTextStyles.bd6
-                                  .copyWith(color: AppColors.bluedeep),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                     Gaps.v28,

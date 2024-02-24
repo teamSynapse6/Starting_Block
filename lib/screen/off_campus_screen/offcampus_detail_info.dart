@@ -89,15 +89,24 @@ class OffCampusDetailBody extends StatelessWidget {
           Gaps.v40,
           Row(
             children: [
-              const DeatailContainButton(
+              DeatailContainButton(
                 filledcolor: AppColors.white,
                 text: '질문하기 24',
-                textcolor: AppColors.bluedark,
-                onTapAction: null,
+                textcolor: AppColors.blue,
+                onTapAction: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuestionHome(
+                        thisID: thisID,
+                      ),
+                    ),
+                  );
+                },
               ),
               Gaps.h8,
               DeatailContainButton(
-                filledcolor: AppColors.bluedark,
+                filledcolor: AppColors.blue,
                 text: '자세히 보기',
                 textcolor: AppColors.white,
                 onTapAction: () {

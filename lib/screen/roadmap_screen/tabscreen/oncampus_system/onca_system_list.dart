@@ -35,18 +35,6 @@ class OnCaListSystem extends StatelessWidget {
             const CustomDivider(),
             Gaps.v10,
             Text(
-              '내용',
-              style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-            ),
-            Gaps.v4,
-            Text(
-              thisContent,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-            ),
-            Gaps.v10,
-            Text(
               '지원 대상',
               style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
             ),
@@ -57,11 +45,23 @@ class OnCaListSystem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
             ),
+            Text(
+              '내용',
+              style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+            ),
+            Gaps.v4,
+            Text(
+              thisContent,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+            ),
+            Gaps.v10,
             Row(
               children: [
                 const Spacer(),
                 Text(
-                  '상세 내용 확인하기',
+                  '더보기',
                   style: AppTextStyles.btn2.copyWith(color: AppColors.g4),
                 ),
                 Gaps.h4,

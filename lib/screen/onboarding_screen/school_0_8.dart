@@ -85,7 +85,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
             color: AppColors.g5,
           ),
           text: '건너뛰기',
-          onPress: null,
+          thisOnTap: null,
         ),
         body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 24),

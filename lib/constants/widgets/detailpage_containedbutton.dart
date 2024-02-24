@@ -17,7 +17,7 @@ class DeatailContainButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
         onTap: onTapAction,
         child: Container(
           height: 44,
@@ -26,7 +26,7 @@ class DeatailContainButton extends StatelessWidget {
               color: filledcolor,
               border: Border.all(
                 width: 1,
-                color: AppColors.bluedark,
+                color: AppColors.blue,
               )),
           child: Center(
             child: Text(

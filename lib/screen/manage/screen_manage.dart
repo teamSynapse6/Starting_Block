@@ -67,6 +67,10 @@ export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; /
 export 'package:starting_block/screen/webview_screen/oncampus_home_webview.dart'; //교내지원사업 웹뷰 기본
 export 'package:starting_block/screen/webview_screen/setting_term_webview.dart'; //개인정보처리방침 및 이용약관 웹뷰
 
+//질문하기 페이지
+export 'package:starting_block/screen/question_screen/question_home.dart'; //질문_홈 화면
+export 'package:starting_block/screen/question_screen/question_write.dart'; //질문_홈 화면
+
 //데이터 파일 관리용
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';
 

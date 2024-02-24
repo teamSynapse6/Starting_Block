@@ -20,6 +20,7 @@ export 'package:starting_block/constants/widgets/bottom_gradiant.dart'; //하단
 export 'package:starting_block/constants/widgets/ofca_sorting_textbuttonsheet.dart'; //정렬_(최신순, 저장순)정렬 설정
 export 'package:starting_block/constants/widgets/onboarding_state.dart'; //온보딩 화면 상단 현재 단계
 export 'package:starting_block/constants/widgets/setting_widget/setting_list.dart'; //설정_리스트 위젯
+export 'package:starting_block/constants/widgets/question_widget/question_list.dart'; //질문 홈_리스트 위젯
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트

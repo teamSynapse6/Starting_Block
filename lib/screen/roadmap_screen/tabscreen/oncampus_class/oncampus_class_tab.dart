@@ -114,7 +114,6 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
                     thisSelectedText: widget.thisSelectedText,
                     thisCurrentStage: widget.thisCurrentStage,
                   ),
-                Gaps.v28,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
@@ -122,11 +121,11 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
                     children: [
                       Text('저장한 사업으로 도약하기',
                           style:
-                              AppTextStyles.st2.copyWith(color: AppColors.g6)),
+                              AppTextStyles.bd1.copyWith(color: AppColors.g6)),
                       Gaps.v4,
                       Text('신청 완료한 사업은 도약 완료 버튼으로 진행도 확인하기',
-                          style: AppTextStyles.caption
-                              .copyWith(color: AppColors.g5)),
+                          style:
+                              AppTextStyles.bd6.copyWith(color: AppColors.g5)),
                       Gaps.v18,
                     ],
                   ),
