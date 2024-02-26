@@ -61,6 +61,8 @@ class SystemApiManage {
   // 닉네임 변경 메소드
   static Future<bool> getChangeNickName(String uuid, String newNickname) async {
     final url = Uri.parse('$baseUrl/$changeNickName');
+
+    print('요청형태: $url with uuid: $uuid and nickname: $newNickname');
     final response = await http.post(
       url,
       headers: {

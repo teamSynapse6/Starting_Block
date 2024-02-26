@@ -69,7 +69,9 @@ export 'package:starting_block/screen/webview_screen/setting_term_webview.dart';
 
 //질문하기 페이지
 export 'package:starting_block/screen/question_screen/question_home.dart'; //질문_홈 화면
-export 'package:starting_block/screen/question_screen/question_write.dart'; //질문_홈 화면
+export 'package:starting_block/screen/question_screen/question_write.dart'; //질문 작성 화면
+export 'package:starting_block/screen/question_screen/question_detail.dart'; //질문 상세 화면
+export 'package:starting_block/screen/question_screen/question_detail_info.dart'; //질문 상세 화면_질문영역
 
 //데이터 파일 관리용
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';

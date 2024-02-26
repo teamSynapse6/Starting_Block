@@ -6,8 +6,9 @@ class QuestionModel {
   final int like;
   final int answerCount;
   final bool contactAnswer;
-  final int date;
+  final String date;
   final bool forContact;
+  final int profileNum;
 
   QuestionModel.fromJson(Map<String, dynamic> json)
       : userUUID = json['userUUID'].toString(),
@@ -18,5 +19,6 @@ class QuestionModel {
         answerCount = json['answerCount'],
         contactAnswer = json['contactAnswer'],
         date = json['date'],
-        forContact = json['forContact'];
+        forContact = json['forContact'],
+        profileNum = json['profileNum'] ?? 1;
 }

@@ -43,7 +43,9 @@ class _QuestionHomeState extends State<QuestionHome> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const QuestionWrite(),
+              builder: (context) => QuestionWrite(
+                thisID: widget.thisID,
+              ),
             ),
           );
         },
@@ -71,6 +73,14 @@ class _QuestionHomeState extends State<QuestionHome> {
                       thisLike: item.like,
                       thisAnswerCount: item.answerCount,
                       thisContactAnswer: item.contactAnswer,
+                      thisOnTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  QuestionDetail(qid: item.qid)),
+                        );
+                      },
                     );
                   }),
             ),
