@@ -79,7 +79,9 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
                                 : AppColors.g2,
                             width: selectedCard == 1 ? 3 : 1),
                       ),
-                      color: AppColors.white,
+                      color: selectedCard == 1
+                          ? AppColors.bluebg
+                          : AppColors.white,
                       child: SizedBox(
                         width: 148,
                         height: 148,
@@ -120,7 +122,9 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
                                 : AppColors.g2,
                             width: selectedCard == 2 ? 3 : 1),
                       ),
-                      color: AppColors.white,
+                      color: selectedCard == 2
+                          ? AppColors.bluebg
+                          : AppColors.white,
                       child: SizedBox(
                         width: 148,
                         height: 148,

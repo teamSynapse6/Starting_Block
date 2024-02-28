@@ -15,7 +15,6 @@ class SchoolScreen extends StatefulWidget {
 class _SchoolScreenState extends State<SchoolScreen> {
   final TextEditingController _schoolInfoController = TextEditingController();
   List<String> filteredSchoolList = [];
-
   String _schoolInfo = "";
 
   @override
@@ -27,7 +26,6 @@ class _SchoolScreenState extends State<SchoolScreen> {
         filterSearchResults(_schoolInfo);
       });
     });
-
     filteredSchoolList = List.from(schoolList);
   }
 
@@ -50,7 +48,6 @@ class _SchoolScreenState extends State<SchoolScreen> {
     setState(() {
       _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
-      filteredSchoolList = List.from(schoolList);
     });
   }
 
@@ -61,11 +58,17 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
   void _onNextTap() async {
     if (_schoolInfo.isEmpty) return;
-
     // 대학교명을 SharedPreferences에 저장
     await _saveSchoolName();
-
     // 다음 화면으로 이동
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const RoadmapScreen(),
+      ),
+    );
+  }
+
+  void _onSkipTap() async {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const RoadmapScreen(),
@@ -85,7 +88,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
             color: AppColors.g5,
           ),
           text: '건너뛰기',
-          thisOnTap: null,
+          thisOnTap: _onSkipTap,
         ),
         body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -106,9 +109,14 @@ class _SchoolScreenState extends State<SchoolScreen> {
               ),
               Gaps.v32,
               TextField(
+                style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
                 controller: _schoolInfoController,
-                decoration: const InputDecoration(hintText: "학교명을 입력해주세요"),
+                decoration: InputDecoration(
+                  hintText: "학교명을 입력해주세요",
+                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                ),
               ),
+              Gaps.v20,
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
@@ -116,13 +124,21 @@ class _SchoolScreenState extends State<SchoolScreen> {
                       ? 3
                       : filteredSchoolList.length, // 최대 3개만 표시
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      contentPadding: const EdgeInsets.all(0),
-                      title: Text(
-                        filteredSchoolList[index],
-                        style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+                    return SizedBox(
+                      height: 32,
+                      child: InkWell(
+                        onTap: () => _onSchoolTap(filteredSchoolList[index]),
+                        highlightColor: AppColors.bluebg,
+                        splashColor: AppColors.bluebg,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            filteredSchoolList[index],
+                            style:
+                                AppTextStyles.bd4.copyWith(color: AppColors.g6),
+                          ),
+                        ),
                       ),
-                      onTap: () => _onSchoolTap(filteredSchoolList[index]),
                     );
                   },
                 ),
