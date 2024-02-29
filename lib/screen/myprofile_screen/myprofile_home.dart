@@ -116,10 +116,10 @@ class _MyProfileHomeState extends State<MyProfileHome>
             children: [
               Container(
                 color: AppColors.white,
-                height: 152,
+                height: 166,
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 22),
+                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 22),
                   child: Stack(
                     children: [
                       Column(
@@ -152,20 +152,40 @@ class _MyProfileHomeState extends State<MyProfileHome>
                           Gaps.v8,
                           Row(
                             children: [
-                              Text(
-                                _entrepreneurCheck,
-                                style: AppTextStyles.bd4
-                                    .copyWith(color: AppColors.g5),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  color: AppColors.bluebg,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4,
+                                    horizontal: 6,
+                                  ),
+                                  child: Text(
+                                    '$_residenceName 거주',
+                                    style: AppTextStyles.btn2
+                                        .copyWith(color: AppColors.blue),
+                                  ),
+                                ),
                               ),
-                              Text(
-                                ' · ',
-                                style: AppTextStyles.bd4
-                                    .copyWith(color: AppColors.g5),
-                              ),
-                              Text(
-                                '$_residenceName 거주',
-                                style: AppTextStyles.bd4
-                                    .copyWith(color: AppColors.g5),
+                              Gaps.h8,
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  color: AppColors.bluebg,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4,
+                                    horizontal: 6,
+                                  ),
+                                  child: Text(
+                                    _entrepreneurCheck,
+                                    style: AppTextStyles.btn2
+                                        .copyWith(color: AppColors.blue),
+                                  ),
+                                ),
                               ),
                             ],
                           ),

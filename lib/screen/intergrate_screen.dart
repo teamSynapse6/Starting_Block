@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 enum SwitchIndex {
@@ -33,11 +35,20 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _IntergrateScreenState extends State<IntergrateScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 4;
+  String _schoolName = "";
+
+  Future<void> _loadSchoolName() async {
+    String schoolName = await UserInfo.getSchoolName(); // 비동기 호출
+    setState(() {
+      _schoolName = schoolName;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    _loadSchoolName();
     switch (widget.switchIndex) {
       case SwitchIndex.toZero:
         _selectedIndex = 0;
@@ -74,7 +85,11 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
       case 0:
         return const OffCampusHome();
       case 1:
-        return const OnCampusHome();
+        if (_schoolName == '') {
+          return const OnCampusSchoolSet();
+        } else {
+          return const OnCampusHome();
+        }
       case 2:
         return const Center(child: Text('홈'));
       case 3:
@@ -88,7 +103,15 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _getCurrentScreen(),
+      body: Consumer<UserInfo>(
+        builder: (context, userInfo, child) {
+          if (userInfo.hasChanged) {
+            _loadSchoolName();
+            userInfo.resetChangeFlag();
+          }
+          return _getCurrentScreen();
+        },
+      ),
       bottomNavigationBar: BottomAppBar(
         height: 56 + 15,
         elevation: 0,

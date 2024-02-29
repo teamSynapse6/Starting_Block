@@ -16,6 +16,33 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
   int? _selectedIconIndex;
   bool _isButtonDisabled = true;
 
+  List<Map<String, dynamic>> iconStageData = [
+    {
+      "icon": AppIcon.profile_image_1,
+      "title": "준비",
+      "subtitle": "(출발선)", // 올바르게 수정된 키
+      "content": "스트레칭을 하며 준비에 임하기",
+    },
+    {
+      "icon": AppIcon.profile_image_2,
+      "title": "사교적 달리기",
+      "subtitle": "(출발 ~ 15km)", // 올바르게 수정된 키
+      "content": "천천히 주위를 돌아보며 달리기에 적응",
+    },
+    {
+      "icon": AppIcon.profile_image_3,
+      "title": "과도",
+      "subtitle": "(15~32km)", // 올바르게 수정된 키
+      "content": "자신에 몰두하며, 힘을 낼 수 있는 태세 갖추기",
+    },
+    {
+      "icon": AppIcon.profile_image_4,
+      "title": "집중",
+      "subtitle": "(32~42.195km)", // 올바르게 수정된 키
+      "content": "본격적으로 달리기, 스피치를 올리며 집중",
+    },
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -38,41 +65,10 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
     await userInfo.setSelectedIconIndex(_selectedIconIndex!); // 수정된 부분
   }
 
-  void _onIconTap(int index) {
-    setState(() {
-      if (_selectedIconIndex != index) {
-        _selectedIconIndex = index;
-        _isButtonDisabled = false;
-      }
-    });
-  }
-
   void _onNextTap() async {
     if (_selectedIconIndex == null) return;
     await _saveSelectedIcon();
     Navigator.of(context).pop();
-  }
-
-  Widget _iconSelection(int index, Widget icon) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(48),
-      onTap: () => _onIconTap(index),
-      child: Container(
-        width: 96,
-        height: 96,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.g1,
-          border: Border.all(
-            color: _selectedIconIndex == index
-                ? AppColors.blue
-                : Colors.transparent,
-            width: 4,
-          ),
-        ),
-        child: icon,
-      ),
-    );
   }
 
   @override
@@ -80,7 +76,8 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
     final icons = [
       AppIcon.profile_image_1,
       AppIcon.profile_image_2,
-      AppIcon.profile_image_3
+      AppIcon.profile_image_3,
+      AppIcon.profile_image_4,
     ];
     final selectedIcon = _selectedIconIndex != null
         ? icons[_selectedIconIndex! - 1]
@@ -88,88 +85,132 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
 
     return Scaffold(
       appBar: const BackAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Gaps.v32,
-                Text(
-                  "프로필 아이콘 수정",
-                  style: AppTextStyles.h5.copyWith(color: AppColors.g6),
-                ),
-                Gaps.v32,
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: 140,
-                    width: 140,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.g1,
-                    ),
-                    child: selectedIcon,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v32,
+                  Text(
+                    "프로필 아이콘 수정",
+                    style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
-                ),
-                Gaps.v48,
-              ],
-            ),
-          ),
-          const CustomDividerH8G2(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Gaps.v32,
-                Text(
-                  '스타터님!',
-                  style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
-                ),
-                Text(
-                  '프로필 아이콘으로 자신의 단계를 표현해 보세요!',
-                  style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
-                ),
-                Gaps.v24,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    icons.length,
-                    (index) => SizedBox(
-                      width: 96,
-                      height: 125,
-                      child: Column(
-                        children: [
-                          _iconSelection(index + 1, icons[index]),
-                          Gaps.v11,
-                          Text(
-                            '${index + 1}단계',
-                            style:
-                                AppTextStyles.bd5.copyWith(color: AppColors.g5),
-                          ),
-                        ],
+                  Gaps.v8,
+                  Text(
+                    "프로필 아이콘으로 자신의 단계를 표현해 보세요",
+                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v24,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: 140,
+                      width: 140,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.g1,
                       ),
+                      child: selectedIcon,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-            child: GestureDetector(
-              onTap: _isButtonDisabled ? null : _onNextTap,
-              child: NextContained(
-                text: "저장",
-                disabled: _isButtonDisabled,
+                  Gaps.v16,
+                  Align(
+                    alignment: Alignment.center,
+                    child: _selectedIconIndex != null
+                        ? Column(
+                            children: [
+                              Text(
+                                iconStageData[_selectedIconIndex! - 1]
+                                    ['title'], // 현재 선택된 아이템의 title
+                                style: AppTextStyles.bd3
+                                    .copyWith(color: AppColors.g6),
+                              ),
+                              Text(
+                                iconStageData[_selectedIconIndex! - 1]
+                                    ['subtitle'], // 현재 선택된 아이템의 subtitle
+                                style: AppTextStyles.bd3
+                                    .copyWith(color: AppColors.g6),
+                              ),
+                            ],
+                          )
+                        : Container(), // _selectedIconIndex가 null인 경우 빈 컨테이너 표시
+                  ),
+                  Gaps.v40,
+                ],
               ),
             ),
+            const CustomDividerH8G2(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v32,
+                  Text(
+                    '스타터님!',
+                    style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
+                  ),
+                  Text(
+                    '프로필 아이콘으로 자신의 단계를 표현해 보세요!',
+                    style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v24,
+                ],
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics:
+                  const NeverScrollableScrollPhysics(), // 리스트가 스크롤되지 않도록 설정
+              itemCount: iconStageData.length,
+              itemBuilder: (context, index) {
+                Map<String, dynamic> item = iconStageData[index];
+                return Column(
+                  children: <Widget>[
+                    InkWell(
+                      onTap: () => setState(() {
+                        _selectedIconIndex = index + 1;
+                        _isButtonDisabled = false;
+                      }),
+                      child: ProfileEditIconList(
+                        thisIcon: item['icon'],
+                        thisTitle: item['title'],
+                        thisSubTitle: item['subtitle'],
+                        thisContent: item['content'],
+                      ),
+                    ),
+                    if (index !=
+                        iconStageData.length - 1) // 마지막 아이템이 아니면 Divider 추가
+                      const Padding(
+                        padding: EdgeInsets.only(
+                          left: 88,
+                          right: 24,
+                        ),
+                        child: CustomDividerG2(),
+                      ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 92,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+          child: GestureDetector(
+            onTap: _isButtonDisabled ? null : _onNextTap,
+            child: NextContained(
+              text: "저장",
+              disabled: _isButtonDisabled,
+            ),
           ),
-        ],
+        ),
       ),
     );
   }

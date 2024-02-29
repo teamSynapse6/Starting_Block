@@ -56,6 +56,11 @@ class _SchoolScreenState extends State<SchoolScreen> {
     await prefs.setString('userSchoolName', _schoolInfo);
   }
 
+  Future<void> _skipSchoolName() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userSchoolName', '');
+  }
+
   void _onNextTap() async {
     if (_schoolInfo.isEmpty) return;
     // 대학교명을 SharedPreferences에 저장
@@ -69,6 +74,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
   }
 
   void _onSkipTap() async {
+    await _skipSchoolName();
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const RoadmapScreen(),
@@ -117,32 +123,33 @@ class _SchoolScreenState extends State<SchoolScreen> {
                 ),
               ),
               Gaps.v20,
-              Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: filteredSchoolList.length > 3
-                      ? 3
-                      : filteredSchoolList.length, // 최대 3개만 표시
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                      height: 32,
-                      child: InkWell(
-                        onTap: () => _onSchoolTap(filteredSchoolList[index]),
-                        highlightColor: AppColors.bluebg,
-                        splashColor: AppColors.bluebg,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            filteredSchoolList[index],
-                            style:
-                                AppTextStyles.bd4.copyWith(color: AppColors.g6),
+              if (_schoolInfo.isNotEmpty) // 조건 추가
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: filteredSchoolList.length > 3
+                        ? 3
+                        : filteredSchoolList.length, // 최대 3개만 표시
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        height: 32,
+                        child: InkWell(
+                          onTap: () => _onSchoolTap(filteredSchoolList[index]),
+                          highlightColor: AppColors.bluebg,
+                          splashColor: AppColors.bluebg,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              filteredSchoolList[index],
+                              style: AppTextStyles.bd4
+                                  .copyWith(color: AppColors.g6),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
