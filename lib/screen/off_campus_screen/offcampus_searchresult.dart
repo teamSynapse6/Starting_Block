@@ -78,12 +78,10 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Gaps.v12,
-                const SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntergrateFilter(),
-                ),
+                const IntergrateFilter(),
                 Gaps.v12,
                 Container(
                   height: 32,

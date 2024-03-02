@@ -107,14 +107,8 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
       child: Container(
         height: 32,
         decoration: BoxDecoration(
-          color:
-              selectedResidence == "전체" ? AppColors.white : AppColors.bluedark,
-          borderRadius: BorderRadius.circular(46),
-          border: Border.all(
-              color: selectedResidence == "전체"
-                  ? AppColors.chipsColor
-                  : AppColors.bluedark,
-              width: 1),
+          color: selectedResidence == "전체" ? AppColors.g1 : AppColors.blue,
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -125,11 +119,11 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
               selectedResidence == "전체" ? '지역' : selectedResidence,
               style: AppTextStyles.btn2.copyWith(
                 color:
-                    selectedResidence == "전체" ? AppColors.g5 : AppColors.white,
+                    selectedResidence == "전체" ? AppColors.g4 : AppColors.white,
               ),
             ),
             Gaps.h4,
-            AppIcon.down,
+            selectedResidence == "전체" ? AppIcon.down_g3 : AppIcon.down_g1,
             Gaps.h8,
           ],
         ),

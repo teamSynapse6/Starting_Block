@@ -106,7 +106,7 @@ class _ProgramChipsSheetState extends State<ProgramChipsSheet> {
               ),
             ),
             Gaps.h4,
-            AppIcon.down,
+            AppIcon.down_g3,
             Gaps.h8,
           ],
         ),

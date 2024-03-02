@@ -88,10 +88,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                     Text('교외 지원 사업',
                         style: AppTextStyles.st1.copyWith(color: AppColors.g6)),
                     Gaps.v24,
-                    const SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: IntergrateFilter(),
-                    ),
+                    const IntergrateFilter(),
                     Gaps.v12,
                     Container(
                       height: 32,
@@ -105,7 +102,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '24개의 공고',
+                            '${_offcampusList.length.toString()}개의 공고',
                             style:
                                 AppTextStyles.bd6.copyWith(color: AppColors.g4),
                           ),

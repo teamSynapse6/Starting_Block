@@ -98,15 +98,8 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
       child: Container(
         height: 32,
         decoration: BoxDecoration(
-          color: selectedSupportType == "전체"
-              ? AppColors.white
-              : AppColors.bluedark,
-          borderRadius: BorderRadius.circular(46),
-          border: Border.all(
-              color: selectedSupportType == "전체"
-                  ? AppColors.chipsColor
-                  : AppColors.bluedark,
-              width: 1),
+          color: selectedSupportType == "전체" ? AppColors.g1 : AppColors.blue,
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -117,12 +110,12 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
               selectedSupportType == "전체" ? '지원 분야' : selectedSupportType,
               style: AppTextStyles.btn2.copyWith(
                 color: selectedSupportType == "전체"
-                    ? AppColors.g5
+                    ? AppColors.g4
                     : AppColors.white,
               ),
             ),
             Gaps.h4,
-            AppIcon.down,
+            selectedSupportType == "전체" ? AppIcon.down_g3 : AppIcon.down_g1,
             Gaps.h8,
           ],
         ),

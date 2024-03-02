@@ -62,14 +62,6 @@ class FilterModel extends ChangeNotifier {
     }
   }
 
-  void resetFilters() {
-    _selectedSupportType = "전체";
-    _selectedResidence = "전체";
-    _selectedEntrepreneur = "전체";
-    _hasChanged = true; // 플래그 업데이트
-    notifyListeners();
-  }
-
   // 정렬 상태 저장 메서드
   Future<void> saveSortingPreference() async {
     final prefs = await SharedPreferences.getInstance();

@@ -51,7 +51,7 @@ class InputChipsDelete extends StatelessWidget {
 
 class InputChupsSharp extends StatelessWidget {
   final String text;
-  final chipTap;
+  final VoidCallback? chipTap; // 타입을 명확하게 VoidCallback으로 변경
 
   const InputChupsSharp({
     super.key,
@@ -61,33 +61,34 @@ class InputChupsSharp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: chipTap,
-      child: Container(
+    return Material(
+      color: Colors.transparent, // Material의 기본 배경색을 투명하게 설정
+      child: Ink(
         height: 32,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(46),
-          border: Border.all(color: AppColors.g3, width: 1),
+          borderRadius: BorderRadius.circular(16),
+          color: AppColors.g1,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Gaps.h12,
-            Text(
-              '#',
-              style: AppTextStyles.btn1.copyWith(
-                color: AppColors.blue,
-              ),
+        child: InkWell(
+          onTap: chipTap,
+          borderRadius: BorderRadius.circular(16), // InkWell의 borderRadius도 설정
+          highlightColor: AppColors.g2, // 탭하고 있는 동안의 색상 설정
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 12), // Gaps.h12를 Padding으로 변경
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '#$text',
+                  style: AppTextStyles.btn1.copyWith(
+                    color: AppColors.blue,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              text,
-              style: AppTextStyles.btn1.copyWith(
-                color: AppColors.g5,
-              ),
-            ),
-            Gaps.h12,
-          ],
+          ),
         ),
       ),
     );

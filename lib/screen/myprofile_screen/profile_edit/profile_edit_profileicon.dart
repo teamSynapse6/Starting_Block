@@ -15,7 +15,6 @@ class ProfileIconEdit extends StatefulWidget {
 class _ProfileIconEditState extends State<ProfileIconEdit> {
   int? _selectedIconIndex;
   bool _isButtonDisabled = true;
-  String _nickName = '';
 
   List<Map<String, dynamic>> iconStageData = [
     {
@@ -48,7 +47,6 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
   void initState() {
     super.initState();
     _loadSelectedIcon();
-    _loadNickName();
   }
 
   void _loadSelectedIcon() async {
@@ -58,13 +56,6 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
       _selectedIconIndex = index;
       // 인덱스가 0이 아니면 선택된 것으로 간주하고 버튼을 활성화합니다.
       _isButtonDisabled = index == 0;
-    });
-  }
-
-  Future<void> _loadNickName() async {
-    String nickName = await UserInfo.getNickName();
-    setState(() {
-      _nickName = nickName;
     });
   }
 

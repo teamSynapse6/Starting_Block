@@ -27,7 +27,6 @@ export 'package:starting_block/constants/widgets/question_widget/question_list.d
 export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트
 export 'package:starting_block/constants/widgets/offcampus_filter/residencechipsheet.dart'; //지역 리스트 및 칩스 컴포넌트
 export 'package:starting_block/constants/widgets/offcampus_filter/supportchipsheet.dart'; //지원유형 리스트 및 칩스 컴포넌트
-export 'package:starting_block/constants/widgets/offcampus_filter/resetbutton.dart'; //필터 리셋 위젯
 export 'package:starting_block/constants/widgets/offcampus_filter/bottomsheet_list.dart'; //bottomsheet 리스트 컴포넌트_교내지원사업과 함께 공유됨
 
 //교외지원사업 바텀시트

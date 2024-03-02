@@ -81,7 +81,6 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
 
   Future<void> _loadSelectedProfileIcon() async {
     int selectedIconIndex = await UserInfo.getSelectedIconIndex();
-    print('선택 아이콘: $selectedIconIndex');
     setState(() {
       switch (selectedIconIndex) {
         case 1:

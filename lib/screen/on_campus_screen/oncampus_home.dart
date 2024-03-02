@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class OnCampusHome extends StatefulWidget {
   const OnCampusHome({super.key});
@@ -50,9 +49,11 @@ class _OnCampusHomeState extends State<OnCampusHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const OnCampusSearchAppBar(
-        searchTapScreen: OnCampusSearch(),
-        thisBackGroundColor: AppColors.bluebg,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: Container(
+          color: AppColors.bluebg,
+        ),
       ),
       body: SingleChildScrollView(
         // 스크롤 가능한 전체 페이지
@@ -121,7 +122,7 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                 ),
               ),
             ),
-            Gaps.v46,
+            Gaps.v44,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
