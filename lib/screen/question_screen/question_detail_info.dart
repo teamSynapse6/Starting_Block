@@ -67,6 +67,7 @@ class QuestionDetailInfo extends StatelessWidget {
             thisQuestion,
             style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
           ),
+          Gaps.v4,
           SizedBox(
             height: 32,
             child: Row(

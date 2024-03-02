@@ -103,19 +103,27 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<UserInfo>(
-        builder: (context, userInfo, child) {
-          if (userInfo.hasChanged) {
-            _loadSchoolName();
-            userInfo.resetChangeFlag();
-          }
-          return _getCurrentScreen();
-        },
+      body: Stack(
+        children: [
+          Consumer<UserInfo>(
+            builder: (context, userInfo, child) {
+              if (userInfo.hasChanged) {
+                _loadSchoolName();
+                userInfo.resetChangeFlag();
+              }
+              return _getCurrentScreen();
+            },
+          ),
+          const Positioned(
+            bottom: 0,
+            child: BottomGradient(),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         height: 56 + 15,
         elevation: 0,
-        color: Colors.transparent,
+        color: const Color.fromRGBO(0, 0, 0, 0),
         child: Column(
           children: [
             Gaps.v8,
