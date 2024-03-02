@@ -54,6 +54,7 @@ String getSchoolNumber(String schoolName) {
 
 class OnCampusAPI {
   static String baseUrl = 'http://10.0.2.2:5000';
+  // static String baseUrl = 'https://leeyuchul.pythonanywhere.com';
   static String schoolUrl = 'url';
   static String schoolLogo = 'logo';
   static String schoolSystem = 'system';

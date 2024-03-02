@@ -4,6 +4,7 @@ import 'package:starting_block/screen/manage/model_manage.dart';
 
 class QuestionAnswerApi {
   static String baseUrl = 'http://10.0.2.2:5000';
+  // static String baseUrl = 'https://leeyuchul.pythonanywhere.com';
 
   //질문 가져오는 메소드
   static Future<List<QuestionModel>> getQuestionData(String questionId) async {

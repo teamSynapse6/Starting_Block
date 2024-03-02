@@ -34,7 +34,7 @@ class StartingBlock extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeManage.theme,
-      home: const IntergrateScreen(),
+      home: const SplashScreen(),
     );
   }
 }

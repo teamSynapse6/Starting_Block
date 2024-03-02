@@ -5,6 +5,7 @@ import 'dart:convert';
 
 class SystemApiManage {
   static String baseUrl = 'http://10.0.2.2:5000';
+  // static String baseUrl = 'https://leeyuchul.pythonanywhere.com';
   static String nickNameCheck = 'getUserNickName';
   static String createUserInfo = 'createuserinfo';
   static String changeNickName = 'changeNickName';
@@ -34,10 +35,10 @@ class SystemApiManage {
     }
   }
 
-  // 사용자 정보 생성 메소드 수정
+// 사용자 정보 생성 메소드 수정
   static Future<String> getCreateUserInfo(
       String nickname, String kakaoUserID) async {
-    final url = Uri.parse('$baseUrl/$createUserInfo');
+    final url = Uri.parse('$baseUrl/$createUserInfo'); // URL 확인 및 조정
     final response = await http.post(
       url,
       headers: {
@@ -49,11 +50,13 @@ class SystemApiManage {
 
     if (response.statusCode == 200) {
       // 서버로부터 정상적인 응답을 받았을 때, 생성된 사용자의 uuid 반환
-      final data = jsonDecode(response.body);
-      return data['uuid'];
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      // JSON 객체에서 'uuid' 키를 사용하여 uuid 값을 추출
+      String uuid = data['uuid'];
+      return uuid;
     } else {
       // 에러 처리
-      print('서버 에러: ${response.statusCode}. ${jsonDecode(response.body)}');
+      print('서버 에러: ${response.statusCode}. ${response.body}');
       throw Exception('Server error with status code: ${response.statusCode}');
     }
   }

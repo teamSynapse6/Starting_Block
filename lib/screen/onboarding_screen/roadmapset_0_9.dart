@@ -48,29 +48,37 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   }
 
   void _onNextTap() async {
-    await _saveRoadmapItems();
+    await _saveRoadmapItems(); // 로드맵 아이템을 SharedPreferences에 저장합니다.
 
     // kakaoUserID 가져오기
-    int kakaoUserID = await UserInfo.getKakaoUserID(); // kakaoUserID를 가져옵니다.
+    int kakaoUserID = await UserInfo.getKakaoUserID();
 
     // 닉네임과 함께 사용자 정보 생성 요청
     if (userNickname != null && userNickname!.isNotEmpty) {
-      // kakaoUserID를 String으로 변환 (API 요구사항에 따라 타입을 조정하세요)
-      final uuid = await SystemApiManage.getCreateUserInfo(
-          userNickname!, kakaoUserID.toString());
+      try {
+        // kakaoUserID를 String으로 변환하여 API 요청
+        final String uuid = await SystemApiManage.getCreateUserInfo(
+            userNickname!, kakaoUserID.toString());
 
-      // SharedPreferences에 UUID 저장
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('userUuid', uuid);
+        // SharedPreferences에 UUID 저장
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userUuid', uuid);
+
+        // 성공적으로 UUID를 저장한 후 다음 화면으로 네비게이션
+        if (!mounted) return;
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const IntergrateScreen()),
+          (Route<dynamic> route) => false,
+        );
+      } catch (e) {
+        if (!mounted) return;
+        // 오류 처리: 사용자에게 실패 메시지를 표시합니다.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('사용자 정보 생성에 실패했습니다. 오류: $e')),
+        );
+      }
     }
-
-    // Navigator.of(context) 호출 전에 현재 위젯이 위젯 트리에 여전히 있는지 확인
-    if (!mounted) return;
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const IntergrateScreen()),
-      (Route<dynamic> route) => false,
-    );
   }
 
   @override
