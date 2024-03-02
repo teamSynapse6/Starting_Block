@@ -118,7 +118,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
                     '프로필 수정',
-                    style: AppTextStyles.st1.copyWith(color: AppColors.black),
+                    style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
                 ),
                 Gaps.v32,
@@ -127,9 +127,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   child: Container(
                     height: 140,
                     width: 140,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppColors.g1,
+                      border: Border.all(
+                        width: 1,
+                        color: AppColors.g2,
+                      ),
                     ),
                     child: _selectedProfileIcon,
                   ),
@@ -268,11 +272,17 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                       ),
                       child: Row(
                         children: [
-                          Text(
-                            _schoolName,
-                            style:
-                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
-                          ),
+                          _schoolName.isNotEmpty
+                              ? Text(
+                                  _schoolName,
+                                  style: AppTextStyles.bd2
+                                      .copyWith(color: AppColors.g6),
+                                )
+                              : Text(
+                                  "미등록",
+                                  style: AppTextStyles.bd2
+                                      .copyWith(color: AppColors.g4),
+                                ),
                           const Spacer(),
                           AppIcon.next_20,
                         ],

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart'; // schoolList가 여기에 정의되어 있다고 가정
+import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class SchoolNameEdit extends StatefulWidget {
   const SchoolNameEdit({super.key});
@@ -16,7 +16,6 @@ class SchoolNameEdit extends StatefulWidget {
 class _SchoolNameEditState extends State<SchoolNameEdit> {
   final TextEditingController _schoolInfoController = TextEditingController();
   List<String> filteredSchoolList = [];
-
   String _schoolInfo = "";
 
   @override
@@ -28,7 +27,6 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
         filterSearchResults(_schoolInfo);
       });
     });
-
     filteredSchoolList = List.from(schoolList);
   }
 
@@ -51,7 +49,6 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
     setState(() {
       _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
-      filteredSchoolList = List.from(schoolList);
     });
   }
 
@@ -71,18 +68,18 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const BackAppBar(),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        appBar: const BackAppBar(),
+        body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gaps.v40,
+              Gaps.v20,
               Text(
                 "대학교(원)을 선택해주세요",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
@@ -94,34 +91,48 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
               ),
               Gaps.v32,
               TextField(
+                style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
                 controller: _schoolInfoController,
-                decoration: const InputDecoration(hintText: "학교명을 입력해주세요"),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: filteredSchoolList.length > 3
-                      ? 3
-                      : filteredSchoolList.length, // 최대 3개만 표시
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      contentPadding: const EdgeInsets.all(0),
-                      title: Text(
-                        filteredSchoolList[index],
-                        style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-                      ),
-                      onTap: () => _onSchoolTap(filteredSchoolList[index]),
-                    );
-                  },
+                decoration: InputDecoration(
+                  hintText: "학교명을 입력해주세요",
+                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
                 ),
               ),
+              Gaps.v20,
+              if (_schoolInfo.isNotEmpty) // 조건 추가
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: filteredSchoolList.length > 3
+                        ? 3
+                        : filteredSchoolList.length, // 최대 3개만 표시
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        height: 32,
+                        child: InkWell(
+                          onTap: () => _onSchoolTap(filteredSchoolList[index]),
+                          highlightColor: AppColors.bluebg,
+                          splashColor: AppColors.bluebg,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              filteredSchoolList[index],
+                              style: AppTextStyles.bd4
+                                  .copyWith(color: AppColors.g6),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: GestureDetector(
                   onTap: _onNextTap,
                   child: NextContained(
-                    text: "저장",
+                    text: "다음",
                     disabled: _schoolInfo.isEmpty,
                   ),
                 ),

@@ -67,7 +67,7 @@ class _BirthdayEditState extends State<BirthdayEdit> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gaps.v32,
+              Gaps.v20,
               Text(
                 "생년월일을 입력해주세요",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),

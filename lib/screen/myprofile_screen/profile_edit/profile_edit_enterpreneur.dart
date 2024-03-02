@@ -47,7 +47,7 @@ class _EnterprenutEditState extends State<EnterprenutEdit> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gaps.v32,
+              Gaps.v20,
               Text(
                 "사업자 등록을 완료하셨나요?",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
@@ -72,7 +72,9 @@ class _EnterprenutEditState extends State<EnterprenutEdit> {
                                 : AppColors.g2,
                             width: selectedCard == 1 ? 3 : 1),
                       ),
-                      color: AppColors.white,
+                      color: selectedCard == 1
+                          ? AppColors.bluebg
+                          : AppColors.white,
                       child: SizedBox(
                         width: 148,
                         height: 148,
@@ -113,7 +115,9 @@ class _EnterprenutEditState extends State<EnterprenutEdit> {
                                 : AppColors.g2,
                             width: selectedCard == 2 ? 3 : 1),
                       ),
-                      color: AppColors.white,
+                      color: selectedCard == 2
+                          ? AppColors.bluebg
+                          : AppColors.white,
                       child: SizedBox(
                         width: 148,
                         height: 148,

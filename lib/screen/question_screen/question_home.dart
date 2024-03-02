@@ -63,27 +63,36 @@ class _QuestionHomeState extends State<QuestionHome> {
               ),
             ),
             Gaps.v20,
-            Expanded(
-              child: ListView.builder(
-                  itemCount: _questionData.length,
-                  itemBuilder: (context, index) {
-                    final item = _questionData[index];
-                    return QuestionList(
-                      thisQuestion: item.question,
-                      thisLike: item.like,
-                      thisAnswerCount: item.answerCount,
-                      thisContactAnswer: item.contactAnswer,
-                      thisOnTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  QuestionDetail(qid: item.qid)),
-                        );
-                      },
-                    );
-                  }),
-            ),
+            _questionData.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                        itemCount: _questionData.length,
+                        itemBuilder: (context, index) {
+                          final item = _questionData[index];
+                          return QuestionList(
+                            thisQuestion: item.question,
+                            thisLike: item.like,
+                            thisAnswerCount: item.answerCount,
+                            thisContactAnswer: item.contactAnswer,
+                            thisOnTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        QuestionDetail(qid: item.qid)),
+                              );
+                            },
+                          );
+                        }),
+                  )
+                : Center(
+                    child: Text(
+                      '등록된 질문이 없습니다',
+                      style: AppTextStyles.bd4.copyWith(
+                        color: AppColors.g6,
+                      ),
+                    ),
+                  )
           ],
         ),
       ),

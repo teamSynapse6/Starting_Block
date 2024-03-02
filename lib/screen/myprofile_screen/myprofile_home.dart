@@ -130,25 +130,25 @@ class _MyProfileHomeState extends State<MyProfileHome>
                             style: AppTextStyles.st2
                                 .copyWith(color: AppColors.black),
                           ),
-                          Gaps.v8,
-                          Row(
-                            children: [
-                              _svgLogo.isNotEmpty
-                                  ? SvgPicture.string(
+                          _svgLogo.isNotEmpty ? Gaps.v8 : Container(),
+                          _svgLogo.isNotEmpty
+                              ? Row(
+                                  children: [
+                                    SvgPicture.string(
                                       _svgLogo,
                                       fit: BoxFit.scaleDown,
                                       width: 18,
                                       height: 18,
-                                    )
-                                  : Container(),
-                              Gaps.h5,
-                              Text(
-                                _schoolName,
-                                style: AppTextStyles.bd4
-                                    .copyWith(color: AppColors.g6),
-                              ),
-                            ],
-                          ),
+                                    ),
+                                    Gaps.h5,
+                                    Text(
+                                      _schoolName,
+                                      style: AppTextStyles.bd4
+                                          .copyWith(color: AppColors.g6),
+                                    ),
+                                  ],
+                                )
+                              : Container(),
                           Gaps.v8,
                           Row(
                             children: [

@@ -33,71 +33,85 @@ class _ResidenceEditState extends State<ResidenceEdit> {
     '경북',
     '경남',
     '제주',
+    '',
   ];
 
-  Widget buildGrid() {
-    List<Widget> rows = [];
-    for (int i = 0; i < regions.length; i += 2) {
-      List<Widget> rowChildren = [];
-      for (int j = i; j < i + 2 && j < regions.length; j++) {
-        rowChildren.add(
-          Expanded(
-            child: Container(
-              height: 44,
-              decoration: BoxDecoration(
-                color: selectedRegion == regions[j]
-                    ? AppColors.g2
-                    : AppColors.white,
-                border: Border(
-                  top: const BorderSide(width: 1, color: AppColors.g1),
-                  right: j % 2 == 0
-                      ? const BorderSide(width: 0.5, color: AppColors.g1)
-                      : BorderSide.none,
-                ),
-              ),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero),
-                  backgroundColor: selectedRegion == regions[j]
-                      ? AppColors.g2
-                      : AppColors.white,
-                ),
-                onPressed: () => _onRegionTap(regions[j]),
-                child: Text(
-                  regions[j],
-                  style: const TextStyle(
-                    color: AppColors.g6,
-                    fontFamily: 'pretendard',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+  Widget residenceGrid() {
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(), // 스크롤 방지
+
+      shrinkWrap: true, // 내용물 크기에 맞게 축소
+      itemCount: regions.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // 2열로 나열
+        childAspectRatio: 156 / 44, // 아이템의 너비와 높이의 비율 조정
+      ),
+      itemBuilder: (context, index) {
+        // 마지막 항목 이전의 가장 오른쪽 아래에 있는 항목인지 확인
+        bool isSecondLastItemInOddRow =
+            index == regions.length - 2 && regions.length % 2 != 0;
+        // 모든 셀에 상단 경계선 추가
+        BorderSide topBorder = const BorderSide(width: 1, color: AppColors.g1);
+
+        return Container(
+          decoration: BoxDecoration(
+            color: selectedRegion == regions[index]
+                ? AppColors.bluebg
+                : AppColors.white,
+            border: Border(
+              top: topBorder,
+              bottom: isSecondLastItemInOddRow
+                  ? const BorderSide(width: 1, color: AppColors.g1)
+                  : BorderSide.none,
+            ),
+          ),
+          child: Stack(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.all(0),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero),
+                    backgroundColor: selectedRegion == regions[index]
+                        ? AppColors.bluebg
+                        : AppColors.white,
+                  ),
+                  onPressed: regions[index].isNotEmpty
+                      ? () => _onRegionTap(regions[index])
+                      : null,
+                  child: Text(
+                    regions[index],
+                    style: TextStyle(
+                      color: selectedRegion == regions[index]
+                          ? AppColors.blue
+                          : AppColors.g6,
+                      fontFamily: 'pretendard',
+                      fontSize: 14,
+                      fontWeight: selectedRegion == regions[index]
+                          ? FontWeight.bold
+                          : FontWeight.w400,
+                    ),
                   ),
                 ),
               ),
-            ),
+              if (index % 2 == 0) // 첫 번째 열의 오른쪽에만 선을 그립니다.
+                Positioned(
+                  top: 0.31 * 44, // 여기서 44는 셀의 높이입니다.
+                  bottom: 0.31 * 44,
+                  right: 0,
+                  child: Container(
+                    width: 0.5,
+                    color: AppColors.g2,
+                  ),
+                ),
+            ],
           ),
         );
-
-        // 중간의 수직 선 추가
-        if (j % 2 == 0 && j + 1 < regions.length) {
-          rowChildren.add(
-            const VerticalDivider(
-              width: 0.5,
-              color: AppColors.g1,
-              indent: 14,
-              endIndent: 14,
-            ),
-          );
-        }
-      }
-
-      if (i + 2 > regions.length) {
-        rowChildren.add(const Expanded(child: SizedBox()));
-      }
-
-      rows.add(Row(children: rowChildren));
-    }
-    return Column(children: rows);
+      },
+    );
   }
 
   void _onRegionTap(String region) {
@@ -131,7 +145,7 @@ class _ResidenceEditState extends State<ResidenceEdit> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gaps.v32,
+              Gaps.v20,
               Text(
                 "거주지를 선택해주세요",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
@@ -142,14 +156,14 @@ class _ResidenceEditState extends State<ResidenceEdit> {
                 style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
               ),
               Gaps.v32,
-              buildGrid(),
+              residenceGrid(),
               const Spacer(), // 나머지 공간을 채우는 위젯
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: GestureDetector(
                   onTap: _onNextTap,
                   child: NextContained(
-                    text: "저장",
+                    text: "다음",
                     disabled: selectedRegion == null,
                   ),
                 ),

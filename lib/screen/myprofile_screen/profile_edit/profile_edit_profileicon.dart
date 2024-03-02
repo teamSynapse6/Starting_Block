@@ -15,6 +15,7 @@ class ProfileIconEdit extends StatefulWidget {
 class _ProfileIconEditState extends State<ProfileIconEdit> {
   int? _selectedIconIndex;
   bool _isButtonDisabled = true;
+  String _nickName = '';
 
   List<Map<String, dynamic>> iconStageData = [
     {
@@ -47,6 +48,7 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
   void initState() {
     super.initState();
     _loadSelectedIcon();
+    _loadNickName();
   }
 
   void _loadSelectedIcon() async {
@@ -56,6 +58,13 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
       _selectedIconIndex = index;
       // 인덱스가 0이 아니면 선택된 것으로 간주하고 버튼을 활성화합니다.
       _isButtonDisabled = index == 0;
+    });
+  }
+
+  Future<void> _loadNickName() async {
+    String nickName = await UserInfo.getNickName();
+    setState(() {
+      _nickName = nickName;
     });
   }
 
@@ -94,7 +103,7 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gaps.v32,
+                  Gaps.v20,
                   Text(
                     "프로필 아이콘 수정",
                     style: AppTextStyles.h5.copyWith(color: AppColors.g6),
@@ -110,10 +119,13 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
                     child: Container(
                       height: 140,
                       width: 140,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.g1,
-                      ),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.g1,
+                          border: Border.all(
+                            width: 1,
+                            color: AppColors.g2,
+                          )),
                       child: selectedIcon,
                     ),
                   ),
@@ -144,24 +156,6 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
               ),
             ),
             const CustomDividerH8G2(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Gaps.v32,
-                  Text(
-                    '스타터님!',
-                    style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
-                  ),
-                  Text(
-                    '프로필 아이콘으로 자신의 단계를 표현해 보세요!',
-                    style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
-                  ),
-                  Gaps.v24,
-                ],
-              ),
-            ),
             ListView.builder(
               shrinkWrap: true,
               physics:
