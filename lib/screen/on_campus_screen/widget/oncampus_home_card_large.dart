@@ -12,74 +12,70 @@ class OnCampusCardLarge extends StatefulWidget {
 }
 
 class _OnCampusCardLargeState extends State<OnCampusCardLarge> {
-  bool isPressed = false;
-
-  void _handlePress(bool pressed) {
-    setState(() {
-      isPressed = pressed;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const OnCampusNotify(),
-          ),
-        );
-      },
-      onLongPressStart: (details) => _handlePress(true),
-      onLongPressEnd: (details) => _handlePress(false),
-      child: FractionallySizedBox(
-        widthFactor: 1,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: Material(
+        color: Colors.transparent, // Material의 기본 배경색을 투명하게 설정
+        child: Ink(
           height: 104,
-          decoration: BoxDecoration(
-            color: isPressed ? AppColors.oncampusLargePressed : AppColors.blue,
-            borderRadius: const BorderRadius.all(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
               Radius.circular(4),
             ),
+            color: AppColors.blue,
           ),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 12,
-                top: 29,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "창업 지원 공고",
-                      style: AppTextStyles.st2.copyWith(color: AppColors.white),
-                    ),
-                    Gaps.v4,
-                    Text(
-                      "비교과 지원 확인!",
-                      style: AppTextStyles.bd6.copyWith(color: AppColors.g2),
-                    )
-                  ],
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const OnCampusNotify(),
                 ),
-              ),
-              Positioned(
-                right: 12,
-                top: 15,
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  height: 74,
-                  width: 74,
-                  decoration: BoxDecoration(
-                    color: AppColors.oncampusDeepBlue,
-                    borderRadius: BorderRadius.circular(37),
+              );
+            },
+            splashColor: AppColors.oncampusLargePressed,
+            highlightColor: AppColors.oncampusLargePressed,
+            borderRadius: BorderRadius.circular(4),
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 12,
+                  top: 29,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "창업 지원 공고",
+                        style:
+                            AppTextStyles.st2.copyWith(color: AppColors.white),
+                      ),
+                      Gaps.v4,
+                      Text(
+                        "비교과 지원 확인!",
+                        style: AppTextStyles.bd6.copyWith(color: AppColors.g2),
+                      )
+                    ],
                   ),
-                  child: Transform.translate(
-                      offset: const Offset(0, 19),
-                      child: AppIcon.onschool_notice),
                 ),
-              ),
-            ],
+                Positioned(
+                  right: 12,
+                  top: 15,
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    height: 74,
+                    width: 74,
+                    decoration: BoxDecoration(
+                      color: AppColors.oncampusDeepBlue,
+                      borderRadius: BorderRadius.circular(37),
+                    ),
+                    child: Transform.translate(
+                        offset: const Offset(0, 19),
+                        child: AppIcon.onschool_notice),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

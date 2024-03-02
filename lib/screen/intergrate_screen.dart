@@ -121,7 +121,7 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        height: 56 + 15,
+        height: 56,
         elevation: 0,
         color: const Color.fromRGBO(0, 0, 0, 0),
         child: Column(

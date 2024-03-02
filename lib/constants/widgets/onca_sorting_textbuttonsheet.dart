@@ -89,7 +89,7 @@ class _OnCampusSortingButtonState extends State<OnCampusSortingButton> {
           ),
         ),
         Gaps.h4,
-        AppIcon.down,
+        AppIcon.down_g3,
       ],
     );
   }

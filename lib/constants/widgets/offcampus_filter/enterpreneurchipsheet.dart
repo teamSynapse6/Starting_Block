@@ -98,15 +98,8 @@ class _EnterPreneurChipsSheetState extends State<EnterPreneurChipsSheet> {
       child: Container(
         height: 32,
         decoration: BoxDecoration(
-          color: selectedEntrepreneur == "전체"
-              ? AppColors.white
-              : AppColors.bluedark,
+          color: selectedEntrepreneur == "전체" ? AppColors.g1 : AppColors.blue,
           borderRadius: BorderRadius.circular(46),
-          border: Border.all(
-              color: selectedEntrepreneur == "전체"
-                  ? AppColors.chipsColor
-                  : AppColors.bluedark,
-              width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -117,12 +110,12 @@ class _EnterPreneurChipsSheetState extends State<EnterPreneurChipsSheet> {
               selectedEntrepreneur == "전체" ? '사업자 형태' : selectedEntrepreneur,
               style: AppTextStyles.btn2.copyWith(
                 color: selectedEntrepreneur == "전체"
-                    ? AppColors.g5
+                    ? AppColors.g4
                     : AppColors.white,
               ),
             ),
             Gaps.h4,
-            AppIcon.down,
+            selectedEntrepreneur == "전체" ? AppIcon.down_g3 : AppIcon.down_g1,
             Gaps.h8,
           ],
         ),

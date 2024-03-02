@@ -71,23 +71,21 @@ class _OffCampusSortingButtonState extends State<OffCampusSortingButton> {
   @override
   Widget build(BuildContext context) {
     final filterModel = Provider.of<FilterModel>(context);
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => onSortingBottom(context, filterModel),
-          child: Text(
-            filterModel.selectedSorting, // 선택된 정렬 옵션 표시
-            style: const TextStyle(
-              fontFamily: 'pretendard',
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-              color: AppColors.g4,
-            ),
-          ),
+    return InkWell(
+      onTap: () => onSortingBottom(context, filterModel),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 2, 4, 2),
+        child: Row(
+          children: [
+            Text(filterModel.selectedSorting, // 선택된 정렬 옵션 표시
+                style: AppTextStyles.btn1.copyWith(
+                  color: AppColors.g5,
+                )),
+            Gaps.h4,
+            AppIcon.down_g3,
+          ],
         ),
-        Gaps.h4,
-        AppIcon.down,
-      ],
+      ),
     );
   }
 }

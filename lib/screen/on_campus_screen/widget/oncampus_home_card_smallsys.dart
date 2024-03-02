@@ -13,60 +13,52 @@ class OnCampusCardSmallSystem extends StatefulWidget {
 }
 
 class _OnCampusCardSmallSystemState extends State<OnCampusCardSmallSystem> {
-  bool isPressed = false;
-
-  void _handlePress(bool pressed) {
-    setState(() {
-      isPressed = pressed;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const OnCampusSystem(),
-          ),
-        );
-      },
-      onLongPressStart: (details) => _handlePress(true),
-      onLongPressEnd: (details) => _handlePress(false),
-      child: FractionallySizedBox(
-        widthFactor: 1,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: Material(
+        color: Colors.transparent, // Material의 기본 배경색을 투명하게 설정
+        child: Ink(
           height: 88,
-          decoration: BoxDecoration(
-            color: isPressed
-                ? AppColors.oncampusSmallSysPressed
-                : AppColors.oncampusSmallSys,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(4),
-            ),
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 8,
-                top: 12,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '창업 제도',
-                      style: AppTextStyles.bd3.copyWith(color: AppColors.white),
-                    ),
-                  ],
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(4),
+              ),
+              color: AppColors.oncampusSmallSys),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const OnCampusSystem(),
                 ),
-              ),
-              Positioned(
-                right: 8,
-                bottom: 12,
-                child: AppIcon.onschool_system,
-              ),
-            ],
+              );
+            },
+            splashColor: AppColors.oncampusSmallSysPressed,
+            highlightColor: AppColors.oncampusSmallSysPressed,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 8,
+                  top: 12,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '창업 제도',
+                        style:
+                            AppTextStyles.bd3.copyWith(color: AppColors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  right: 8,
+                  bottom: 12,
+                  child: AppIcon.onschool_system,
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -9,8 +9,10 @@ class AppIcon {
       SvgPicture.asset('assets/icon/20/close.svg', fit: BoxFit.scaleDown);
   static Widget get delete =>
       SvgPicture.asset('assets/icon/20/delete.svg', fit: BoxFit.scaleDown);
-  static Widget get down =>
-      SvgPicture.asset('assets/icon/20/down.svg', fit: BoxFit.scaleDown);
+  static Widget get down_g1 =>
+      SvgPicture.asset('assets/icon/20/down_g1.svg', fit: BoxFit.scaleDown);
+  static Widget get down_g3 =>
+      SvgPicture.asset('assets/icon/20/down_g3.svg', fit: BoxFit.scaleDown);
   static Widget get like_actived =>
       SvgPicture.asset('assets/icon/20/like_actived.svg',
           fit: BoxFit.scaleDown);
