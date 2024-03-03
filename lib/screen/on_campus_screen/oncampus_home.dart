@@ -50,24 +50,23 @@ class _OnCampusHomeState extends State<OnCampusHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
+        preferredSize: const Size.fromHeight(0),
         child: Container(
           color: AppColors.bluebg,
         ),
       ),
       body: SingleChildScrollView(
-        // 스크롤 가능한 전체 페이지
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 274,
+              height: 332,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: [244 / 272, 244 / 272],
+                  stops: [302 / 328, 302 / 328],
                   colors: [
                     AppColors.bluebg,
                     AppColors.white,
@@ -79,7 +78,7 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Gaps.v16,
+                    Gaps.v76,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

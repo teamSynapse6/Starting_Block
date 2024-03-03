@@ -187,6 +187,15 @@ class AppIcon {
   static Widget get onschool_set_notify =>
       SvgPicture.asset('assets/icon/other/onschool_set_notify.svg',
           fit: BoxFit.scaleDown);
+  static Widget get character_main =>
+      SvgPicture.asset('assets/icon/other/character_main.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get stepper_actived =>
+      SvgPicture.asset('assets/icon/other/stepper_actived.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get stepper_inactived =>
+      SvgPicture.asset('assets/icon/other/stepper_inactived.svg',
+          fit: BoxFit.scaleDown);
 
   // Profile Image
   static Widget get profile_image_1 =>

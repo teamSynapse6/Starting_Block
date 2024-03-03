@@ -5,8 +5,8 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/recentsearch_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MainAppBar({
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const HomeAppBar({
     super.key,
     required this.newAlarm,
   });
@@ -24,18 +24,27 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         right: 12,
       ),
       child: AppBar(
-        leading: Transform.scale(
-          scale: 0.625,
-          alignment: Alignment.centerLeft,
-          child: AppIcon.topapplogo,
-        ),
+        backgroundColor: AppColors.g1,
+        leadingWidth: 38,
+        leading: AppIcon.topapplogo,
         actions: <Widget>[
-          SizedBox(
-            height: 48,
-            width: 48,
-            child: !newAlarm
-                ? AppIcon.notification_inactived
-                : AppIcon.notification_actived,
+          InkWell(
+            borderRadius: BorderRadius.circular(24),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeAlarmScreen(),
+                ),
+              );
+            },
+            child: SizedBox(
+              height: 48,
+              width: 48,
+              child: !newAlarm
+                  ? AppIcon.notification_inactived
+                  : AppIcon.notification_actived,
+            ),
           ),
         ],
       ),

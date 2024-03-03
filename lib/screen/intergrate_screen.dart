@@ -35,7 +35,7 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _IntergrateScreenState extends State<IntergrateScreen> {
-  int _selectedIndex = 4;
+  int _selectedIndex = 2;
   String _schoolName = "";
 
   Future<void> _loadSchoolName() async {
@@ -91,7 +91,7 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
           return const OnCampusHome();
         }
       case 2:
-        return const Center(child: Text('홈'));
+        return const HomeScreen();
       case 3:
         return const RoadmapHome();
       case 4:

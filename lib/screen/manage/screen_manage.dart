@@ -64,6 +64,13 @@ export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit
 export 'package:starting_block/screen/myprofile_screen/setting/setting_home.dart'; //설정_홈 화면
 export 'package:starting_block/screen/myprofile_screen/setting/setting_alarm.dart'; //설정_알람 화면
 
+//홈_페이지
+export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면
+export 'package:starting_block/screen/home_screen/home_question_step.dart'; //홈_질문 단계
+export 'package:starting_block/screen/home_screen/home_notify_recommend.dart'; //홈_공고 추천 영역
+export 'package:starting_block/screen/home_screen/home_question_recommend.dart'; //홈_질문 추천 영역
+export 'package:starting_block/screen/home_screen/home_alarm_screen.dart'; //홈_알림 화면
+
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰
 export 'package:starting_block/screen/webview_screen/oncampus_home_webview.dart'; //교내지원사업 웹뷰 기본

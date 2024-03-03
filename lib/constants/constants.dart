@@ -37,6 +37,13 @@ export 'package:starting_block/constants/widgets/oncampus_filter/onca_resetbutto
 export 'package:starting_block/constants/widgets/offcampus_filter/intergrate_filter.dart'; //교외지원사업_통합 필터 시스템
 export 'package:starting_block/constants/widgets/oncampus_filter/onca_intergrate_filter.dart'; //교내지원사업_통합 필터 시스템
 
+//홈 컴포넌트 관리
+export 'package:starting_block/constants/widgets/home_widget/question_stepper.dart'; //질문 단계 스텝퍼 위젯
+export 'package:starting_block/constants/widgets/home_widget/dash_stroke.dart'; //질문 단계_dash 위젯
+export 'package:starting_block/constants/widgets/home_widget/notify_recommend_list.dart'; //공고 추천 위젯
+export 'package:starting_block/constants/widgets/home_widget/question_recommend_list.dart'; //질문 추천 위젯
+export 'package:starting_block/constants/widgets/home_widget/ofca_onca_chip.dart'; //교내교외 구분 칩
+
 //로드맵 컴포넌트 관리
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_gotosave.dart'; //로드맵_지원사업 저장하러 가기
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_stepnotify.dart'; //단계 알리미
