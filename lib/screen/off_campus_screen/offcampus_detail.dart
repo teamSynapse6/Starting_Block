@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
+import 'package:starting_block/screen/manage/api/question_answer_api_manage.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
-import 'package:starting_block/screen/manage/models/offcampus_detail_model.dart';
-import 'package:starting_block/screen/manage/models/offcampus_recommend_model.dart';
 
 class OffCampusDetail extends StatefulWidget {
   final String thisID;
@@ -29,11 +29,13 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   String thisClassification = 'N/A';
   String thisContent = 'N/A';
   late Future<List<OffCampusRecommendModel>> futureRecommendations;
+  int _questionCount = 0;
 
   @override
   void initState() {
     super.initState();
     loadoffCampusDetailData();
+    loadQuestionData();
     futureRecommendations = OffCampusApi.getOffCampusRecData(
       widget.thisID,
     ); // Updated to use OffCampusApiService
@@ -56,6 +58,14 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
       thisID = detailData.id;
       thisClassification = detailData.classification;
       thisContent = detailData.content;
+    });
+  }
+
+  Future<void> loadQuestionData() async {
+    List<QuestionModel> questionData =
+        await QuestionAnswerApi.getQuestionData(widget.thisID);
+    setState(() {
+      _questionCount = questionData.length;
     });
   }
 
@@ -84,6 +94,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
               thisID: widget.thisID,
               classification: thisClassification,
               content: thisContent,
+              questionCount: _questionCount.toString(),
             ),
             Container(
               height: 8,

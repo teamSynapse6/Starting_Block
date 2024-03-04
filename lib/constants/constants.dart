@@ -15,6 +15,7 @@ export 'package:starting_block/constants/widgets/detailpage_containedbutton.dart
 export 'package:starting_block/constants/widgets/inputchips_component.dart'; //인풋칩버튼
 export 'package:starting_block/constants/widgets/dialog_component.dart'; //다이얼로그(alert창) 컴포넌트
 export 'package:starting_block/constants/widgets/bookmark/bookmark_button.dart'; //로드맵에 저장 버튼
+export 'package:starting_block/constants/widgets/bookmark/web_bookmark.dart'; //인앱웹뷰_북마크 버튼
 export 'package:starting_block/constants/widgets/reorder_list.dart'; //로드맵 순서 변경 리스트
 export 'package:starting_block/constants/widgets/bottom_gradiant.dart'; //하단 투명 Gradient
 export 'package:starting_block/constants/widgets/ofca_sorting_textbuttonsheet.dart'; //정렬_(최신순, 저장순)정렬 설정

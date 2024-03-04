@@ -16,6 +16,16 @@ class RoadMapModel extends ChangeNotifier {
     _loadRoadmapListCheck(); // 추가된 로드맵 리스트 체크 로드
   }
 
+  // 비동기 메소드를 통해 _roadmapList를 초기화
+  static Future<bool> loadRoadmapListIsEmpty() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? roadmapListString = prefs.getString('roadmapList');
+    if (roadmapListString != '') {
+      return false;
+    }
+    return true;
+  }
+
   Future<void> _loadRoadmapList() async {
     final prefs = await SharedPreferences.getInstance();
     String? roadmapListString = prefs.getString('roadmapList');

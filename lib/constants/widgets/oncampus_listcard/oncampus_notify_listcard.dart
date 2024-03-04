@@ -28,6 +28,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
               builder: (context) => WebViewScreen(
                 url: thisUrl,
                 id: thisId,
+                classification: '교내사업',
               ),
             ),
           );

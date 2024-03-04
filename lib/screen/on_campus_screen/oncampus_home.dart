@@ -61,7 +61,7 @@ class _OnCampusHomeState extends State<OnCampusHome> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 332,
+              height: 334,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,

@@ -25,7 +25,8 @@ class OffCampusDetailBody extends StatelessWidget {
       type,
       link,
       thisID,
-      classification;
+      classification,
+      questionCount;
 
   const OffCampusDetailBody({
     super.key,
@@ -39,6 +40,7 @@ class OffCampusDetailBody extends StatelessWidget {
     required this.thisID,
     required this.classification,
     required this.content,
+    required this.questionCount,
   });
 
   @override
@@ -91,7 +93,7 @@ class OffCampusDetailBody extends StatelessWidget {
             children: [
               DeatailContainButton(
                 filledcolor: AppColors.white,
-                text: '질문하기 24',
+                text: '질문하기 $questionCount',
                 textcolor: AppColors.blue,
                 onTapAction: () {
                   Navigator.push(
@@ -116,6 +118,7 @@ class OffCampusDetailBody extends StatelessWidget {
                       builder: (context) => WebViewScreen(
                         url: link,
                         id: thisID,
+                        classification: '교외사업',
                       ),
                     ),
                   );

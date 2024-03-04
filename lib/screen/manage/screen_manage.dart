@@ -32,6 +32,8 @@ export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/off
 export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/oncampus_notify_tab.dart';
 export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/oncampus_class_tab.dart';
 export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_system/oncampus_system_tab.dart';
+//로드맵 미설정 시 설정화면
+export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadmap_list_set.dart';
 
 //교내지원사업 페이지
 export 'package:starting_block/screen/on_campus_screen/oncampus_home.dart';
@@ -41,8 +43,8 @@ export 'package:starting_block/screen/on_campus_screen/oncampus_notify.dart'; //
 export 'package:starting_block/screen/on_campus_screen/oncampus_supportgroup.dart'; //교내창업지원단 화면
 export 'package:starting_block/screen/on_campus_screen/oncampus_search.dart'; //교내 검색 화면
 export 'package:starting_block/screen/on_campus_screen/oncampus_searchresult.dart'; //교내 검색 화면
-export 'package:starting_block/screen/on_campus_screen/school_nonset_screen.dart/oncampus_school_set.dart'; //학교 설정없을 시 화면
-export 'package:starting_block/screen/on_campus_screen/school_nonset_screen.dart/oncampus_set_notify.dart'; //학교 설정 안내 화면
+export 'package:starting_block/screen/on_campus_screen/school_nonset_screen/oncampus_school_set.dart'; //학교 설정없을 시 화면
+export 'package:starting_block/screen/on_campus_screen/school_nonset_screen/oncampus_set_notify.dart'; //학교 설정 안내 화면
 
 //교내지원사업_창업지원단_페이지
 export 'package:starting_block/screen/on_campus_screen/supportgroup_tab_screen/metoring.dart'; //멘토링 화면
@@ -73,7 +75,6 @@ export 'package:starting_block/screen/home_screen/home_alarm_screen.dart'; //홈
 
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰
-export 'package:starting_block/screen/webview_screen/oncampus_home_webview.dart'; //교내지원사업 웹뷰 기본
 export 'package:starting_block/screen/webview_screen/setting_term_webview.dart'; //개인정보처리방침 및 이용약관 웹뷰
 
 //질문하기 페이지

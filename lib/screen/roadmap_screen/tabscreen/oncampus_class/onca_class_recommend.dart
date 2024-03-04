@@ -56,15 +56,11 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
   Future<void> loadClassData() async {
     // boolToClass에서 현재 선택된 텍스트에 대한 값이 true인지 확인
     if (boolToClass[widget.thisSelectedText] ?? false) {
-      try {
-        final OnCampusClassModel classData =
-            await OnCampusAPI.getOnCampusClassRec();
-        setState(() {
-          classList = [classData];
-        });
-      } catch (e) {
-        print("클래스 데이터 로딩 중 오류 발생: $e");
-      }
+      final OnCampusClassModel classData =
+          await OnCampusAPI.getOnCampusClassRec();
+      setState(() {
+        classList = [classData];
+      });
     } else {
       setState(() {
         classList = [];

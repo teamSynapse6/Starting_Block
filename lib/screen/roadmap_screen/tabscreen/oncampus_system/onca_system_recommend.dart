@@ -57,15 +57,11 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
     var types = textToType[widget.thisSelectedText];
     // 'Na'를 체크하여 메소드 호출을 건너뛰거나 빈 리스트 할당
     if (types != 'Na' && types is List<String>) {
-      try {
-        var data = await OnCampusAPI.getOnCampusSystemRec(types);
-        setState(() {
-          systemList = [data]; // 결과를 리스트에 할당
-        });
-      } catch (e) {
-        print("시스템 데이터 로딩 중 오류 발생: $e");
-      }
-    } else {
+      var data = await OnCampusAPI.getOnCampusSystemRec(types);
+      setState(() {
+        systemList = [data]; // 결과를 리스트에 할당
+      });
+
       setState(() {
         systemList = []; // Na인 경우 빈 리스트 할당
       });

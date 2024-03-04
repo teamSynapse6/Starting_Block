@@ -56,11 +56,24 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
+    // SplashScreen에서 시스템 네비게이션 바 색상 설정
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: AppColors.blue, // 네비게이션 바 색상
+      ),
+    );
+
     Future.delayed(
       const Duration(milliseconds: 2000),
       () {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.white, // 다른 화면의 네비게이션 바 색상
+        ));
       },
     );
   }
