@@ -35,20 +35,71 @@ class _QuestionDetailState extends State<QuestionDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const BackAppBar(),
-      body: Column(
-        children: [
-          _questionData.isNotEmpty
-              ? QuestionDetailInfo(
-                  thisUserName: _questionData[0].userName,
-                  thisQuestion: _questionData[0].question,
-                  thisDate: _questionData[0].date,
-                  thisLike: _questionData[0].like,
-                )
-              : Container(),
-          const CustomDividerH8G1(),
-        ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: const BackAppBar(),
+        body: Column(
+          children: [
+            _questionData.isNotEmpty
+                ? QuestionDetailInfo(
+                    thisUserName: _questionData[0].userName,
+                    thisQuestion: _questionData[0].question,
+                    thisDate: _questionData[0].date,
+                    thisLike: _questionData[0].like,
+                  )
+                : Container(),
+            const CustomDividerH8G1(),
+          ],
+        ),
+        bottomNavigationBar: Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: BottomAppBar(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 10,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1.5,
+                          color: AppColors.g2,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: TextFormField(
+                        cursorColor: AppColors.g5,
+                        cursorHeight: 20,
+                        style: AppTextStyles.bd2.copyWith(
+                          color: AppColors.g5,
+                        ),
+                        decoration: const InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: "Enter your text here",
+                        ),
+                        minLines: 1,
+                        maxLines: null,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
