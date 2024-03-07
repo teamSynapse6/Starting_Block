@@ -9,6 +9,7 @@ import 'package:starting_block/screen/manage/models/offcampus_recommend_model.da
 // OffCampusModel을 반환하는 새로운 메서드
 class OffCampusApi {
   static String baseUrl = 'http://10.0.2.2:5000';
+  static String apiBaseUrl = 'https://api.startingblock.co.kr';
   // static String baseUrl = 'https://leeyuchul.pythonanywhere.com';
   static String offCampus = 'offcampus';
   static String requestID = 'offcampus/ids';

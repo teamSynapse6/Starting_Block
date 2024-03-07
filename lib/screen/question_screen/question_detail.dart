@@ -18,11 +18,33 @@ class QuestionDetail extends StatefulWidget {
 
 class _QuestionDetailState extends State<QuestionDetail> {
   List<QuestionModel> _questionData = [];
+  final TextEditingController _controller = TextEditingController();
+  bool _isTyped = false;
 
   @override
   void initState() {
     super.initState();
     loadQuestionData(); // 위젯이 초기화될 때 질문 데이터를 가져옵니다.
+
+    _controller.addListener(() {
+      if (_controller.text.isNotEmpty && !_isTyped) {
+        // TextField에 값이 있고, _isTyped가 false인 경우
+        setState(() {
+          _isTyped = true; // _isTyped를 true로 설정합니다.
+        });
+      } else if (_controller.text.isEmpty && _isTyped) {
+        // TextField가 비어있고, _isTyped가 true인 경우
+        setState(() {
+          _isTyped = false; // _isTyped를 false로 설정합니다.
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // 리소스를 정리합니다.
+    super.dispose();
   }
 
   void loadQuestionData() async {
@@ -41,6 +63,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
         resizeToAvoidBottomInset: true,
         appBar: const BackAppBar(),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _questionData.isNotEmpty
                 ? QuestionDetailInfo(
@@ -51,11 +74,13 @@ class _QuestionDetailState extends State<QuestionDetail> {
                   )
                 : Container(),
             const CustomDividerH8G1(),
+            const QuestionUserComment(),
           ],
         ),
         bottomNavigationBar: Padding(
           padding: MediaQuery.of(context).viewInsets,
           child: BottomAppBar(
+            height: 52,
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 24,
@@ -75,26 +100,29 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         ),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: TextFormField(
-                        cursorColor: AppColors.g5,
-                        cursorHeight: 20,
-                        style: AppTextStyles.bd2.copyWith(
-                          color: AppColors.g5,
-                        ),
+                      child: TextField(
+                        controller: _controller,
+                        cursorColor: AppColors.g6,
+                        minLines: 1,
+                        maxLines: null,
+                        style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
                         decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                            bottom: 9,
+                            top: -9,
+                          ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
-                          hintText: "Enter your text here",
                         ),
-                        minLines: 1,
-                        maxLines: null,
                       ),
                     ),
                   ),
+                  Gaps.h8,
+                  _isTyped ? AppIcon.send_actived : AppIcon.send_inactived,
                 ],
               ),
             ),
