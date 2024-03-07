@@ -1,10 +1,11 @@
 //Model 파일 관리용
-export 'package:starting_block/screen/manage/models/offcampus_detail_model.dart';
 export 'package:starting_block/screen/manage/models/offcampus_model.dart';
 export 'package:starting_block/screen/manage/models/offcampus_recommend_model.dart';
 export 'package:starting_block/screen/manage/models/oncampus_class_model.dart';
 export 'package:starting_block/screen/manage/models/oncampus_system_model.dart';
-export 'package:starting_block/screen/manage/models/oncmapus_notify_model.dart';
+export 'package:starting_block/screen/manage/models/oncmapus_notify_model.dart'; // <- 여기까지 이전 모델 ->
+export 'package:starting_block/screen/manage/models/offcampus_models/offcampus_list_model.dart'; //교외지원사업 리스트 모델
+export 'package:starting_block/screen/manage/models/offcampus_models/offcampus_detail_model.dart';
 
 //교내지원사업_창업지원단 Model파일 관리용
 export 'package:starting_block/screen/manage/models/oncampus_supportgroup/onca_mentoring_model.dart'; //멘토링 모델

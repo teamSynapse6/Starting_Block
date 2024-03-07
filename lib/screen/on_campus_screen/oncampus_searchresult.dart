@@ -24,7 +24,7 @@ class OnCampusSearchResult extends StatefulWidget {
 class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
   final TextEditingController _controller = TextEditingController();
   final RecentSearchManager recentSearchManager = RecentSearchManager();
-  List<OffCampusModel> _offcampusList = [];
+  final List<OffCampusModel> _offcampusList = [];
 
   @override
   void initState() {
@@ -35,28 +35,28 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
   }
 
   Future<void> _fetchOnCampusSearchResults() async {
-    final prefs = await SharedPreferences.getInstance();
-    String supporttype = prefs.getString('selectedSupportType') ?? "전체";
-    String region = prefs.getString('selectedResidence') ?? "전체";
-    String posttarget = prefs.getString('selectedEntrepreneur') ?? "전체";
-    String sorting = prefs.getString('selectedSorting') ?? "latest";
+    // final prefs = await SharedPreferences.getInstance();
+    // String supporttype = prefs.getString('selectedSupportType') ?? "전체";
+    // String region = prefs.getString('selectedResidence') ?? "전체";
+    // String posttarget = prefs.getString('selectedEntrepreneur') ?? "전체";
+    // String sorting = prefs.getString('selectedSorting') ?? "latest";
 
-    try {
-      List<OffCampusModel> offcampusList =
-          await OffCampusApi.getOffCampusSearch(
-        supporttype: supporttype,
-        region: region,
-        posttarget: posttarget,
-        sorting: sorting,
-        keyword: widget.searchWord,
-      );
-      setState(() {
-        _offcampusList = offcampusList;
-      });
-    } catch (e) {
-      setState(() {});
-      // 에러 처리 로직
-    }
+    // try {
+    //   List<OffCampusModel> offcampusList =
+    //       await OffCampusApi.getOffCampusSearch(
+    //     supporttype: supporttype,
+    //     region: region,
+    //     posttarget: posttarget,
+    //     sorting: sorting,
+    //     keyword: widget.searchWord,
+    //   );
+    //   setState(() {
+    //     _offcampusList = offcampusList;
+    //   });
+    // } catch (e) {
+    //   setState(() {});
+    //   // 에러 처리 로직
+    // }
   }
 
   @override

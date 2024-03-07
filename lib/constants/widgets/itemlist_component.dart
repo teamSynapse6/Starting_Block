@@ -4,13 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-String formatDate(String date) {
+String formatedStartDate(String date) {
   // '20240102'와 같은 문자열을 '2024-01-02' 형식으로 변환
-  String year = date.substring(0, 4);
-  String month = date.substring(4, 6);
-  String day = date.substring(6, 8);
+  String startDate = date.substring(0, 10);
+  return startDate;
+}
 
-  return '$year-$month-$day';
+String formatedEndDate(String date) {
+  // 정규 표현식을 사용하여 날짜 형식 (예: 2024-01-01 00:00:00)인지 확인합니다.
+  RegExp datePattern = RegExp(r'^\d{4}-\d{2}-\d{2}');
+
+  // 문자열이 정규 표현식 패턴에 매치되는 경우
+  if (datePattern.hasMatch(date)) {
+    // '2024-01-02 00:00:00.000000'와 같은 문자열을 '2024-01-02' 형식으로 변환
+    return date.substring(0, 10);
+  } else {
+    // 패턴에 매치되지 않는 경우, 원본 문자열을 그대로 반환
+    return date;
+  }
 }
 
 class ItemList extends StatelessWidget {
@@ -33,8 +44,8 @@ class ItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedStartDate = formatDate(thisStartDate);
-    String formattedEndDate = formatDate(thisEndDate);
+    String formattedStartDate = formatedStartDate(thisStartDate);
+    String formattedEndDate = formatedEndDate(thisEndDate);
 
     return GestureDetector(
       onTap: () {

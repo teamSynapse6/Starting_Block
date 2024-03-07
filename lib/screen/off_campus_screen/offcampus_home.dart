@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
-import 'package:starting_block/screen/manage/models/offcampus_model.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class OffCampusHome extends StatefulWidget {
@@ -15,14 +14,52 @@ class OffCampusHome extends StatefulWidget {
 }
 
 class _OffCampusHomeState extends State<OffCampusHome> {
-  List<OffCampusModel> _offcampusList = [];
+  final List<OffCampusListModel> _offcampusList = [];
   Map<String, String> filterValues = {}; // 필터 값 상태를 저장할 변수
-  bool isLoaded = false;
+  final ScrollController _scrollController = ScrollController();
+  int _pageNumber = 0; // 현재 페이지 번호
+  bool _hasMoreData = true; // 더 불러올 데이터가 있는지 여부
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     _fetchFilterValues();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      if (_hasMoreData) {
+        _loadMoreData();
+      }
+    }
+  }
+
+  Future<void> _loadMoreData() async {
+    // 페이지 번호를 증가시킵니다.
+    _pageNumber++;
+    List<OffCampusListModel> moreOffcampusList =
+        await OffCampusApi.getOffCampusHomeList(
+      page: _pageNumber,
+    );
+    if (moreOffcampusList.isEmpty) {
+      setState(() {
+        _hasMoreData = false;
+      });
+    } else {
+      setState(() {
+        _offcampusList.addAll(moreOffcampusList);
+      });
+    }
   }
 
   Future<void> _fetchFilterValues() async {
@@ -31,40 +68,22 @@ class _OffCampusHomeState extends State<OffCampusHome> {
       'selectedSupportType': prefs.getString('selectedSupportType') ?? "전체",
       'selectedResidence': prefs.getString('selectedResidence') ?? "전체",
       'selectedEntrepreneur': prefs.getString('selectedEntrepreneur') ?? "전체",
-      // selectedSorting 값을 불러와서 저장합니다.
-      'selectedSorting':
-          prefs.getString('selectedSorting') ?? "latest", // 기본값을 "latest"로 설정
+      'selectedSorting': prefs.getString('selectedSorting') ?? "latest",
     };
 
     setState(() {
       filterValues = fetchedFilterValues; // 상태 업데이트
     });
-
-    // 필터 값이 설정된 후 필터링된 데이터를 불러옵니다.
-    _fetchOffCampusDataWithFilters();
+    _loadOffCampusList();
   }
 
-  Future<void> _fetchOffCampusDataWithFilters() async {
-    if (filterValues.isNotEmpty) {
-      try {
-        List<OffCampusModel> offcampusList =
-            await OffCampusApi.getOffCampusDataFiltered(
-          supporttype: filterValues['selectedSupportType']!,
-          region: filterValues['selectedResidence']!,
-          posttarget: filterValues['selectedEntrepreneur']!,
-          sorting: filterValues['selectedSorting']!, // 정렬 조건을 API 호출에 포함
-        );
-        setState(() {
-          _offcampusList = offcampusList;
-          isLoaded = true; // 데이터가 로드된 후 상태를 업데이트
-        });
-      } catch (e) {
-        // 에러 처리 로직
-        setState(() {
-          isLoaded = false; // 데이터 로딩 실패 상태 업데이트
-        });
-      }
-    }
+  Future<void> _loadOffCampusList() async {
+    List<OffCampusListModel> offcampusList =
+        await OffCampusApi.getOffCampusHomeList();
+    setState(() {
+      _offcampusList.clear(); // 기존 목록을 지우고 새 데이터로 채웁니다.
+      _offcampusList.addAll(offcampusList);
+    });
   }
 
   @override
@@ -118,17 +137,18 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                 child: Consumer<FilterModel>(
                   builder: (context, filterModel, child) {
                     if (filterModel.hasChanged) {
-                      _fetchFilterValues()
+                      _loadOffCampusList()
                           .then((_) => filterModel.resetChangeFlag());
                     }
                     return ListView.builder(
+                      controller: _scrollController,
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       itemCount: _offcampusList.length,
                       itemBuilder: (context, index) {
                         final item = _offcampusList[index];
                         return ItemList(
-                          thisID: item.id,
-                          thisOrganize: item.organize,
+                          thisID: item.announcementId.toString(),
+                          thisOrganize: item.departmentName,
                           thisTitle: item.title,
                           thisStartDate: item.startDate,
                           thisEndDate: item.endDate,

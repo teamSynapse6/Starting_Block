@@ -22,14 +22,8 @@ class FilterModel extends ChangeNotifier {
   // SharedPreferences에서 필터 값을 로드하는 메서드
   Future<void> _loadFilterValues() async {
     final prefs = await SharedPreferences.getInstance();
-    _selectedSupportType = prefs.getString('selectedSupportType') ?? "전체";
-    _selectedResidence = prefs.getString('selectedResidence') ?? "전체";
-    _selectedEntrepreneur = prefs.getString('selectedEntrepreneur') ?? "전체";
-    // 정렬 상태 불러오기
-    String storedSorting =
-        prefs.getString('selectedSorting') ?? "latest"; // 기본값은 "latest"
-    _selectedSorting = storedSorting == "latest" ? "최신순" : "로드맵에 저장 많은 순";
-    notifyListeners();
+    _selectedSorting =
+        prefs.getString('selectedSorting') ?? "최신순"; // 직접 저장된 값으로 로드합니다.
   }
 
   // Getter 메서드
@@ -65,8 +59,7 @@ class FilterModel extends ChangeNotifier {
   // 정렬 상태 저장 메서드
   Future<void> saveSortingPreference() async {
     final prefs = await SharedPreferences.getInstance();
-    String sortingValue = _selectedSorting == "최신순" ? "latest" : "savedLot";
-    await prefs.setString('selectedSorting', sortingValue);
+    await prefs.setString('selectedSorting', _selectedSorting);
   }
 
   // 기존의 setter에서 saveSortingPreference 호출 추가

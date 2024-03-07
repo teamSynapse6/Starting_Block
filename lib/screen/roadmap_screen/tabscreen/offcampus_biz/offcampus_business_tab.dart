@@ -84,20 +84,20 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
   }
 
   void _loadOffCampusDataByIds() async {
-    if (savedIds.isNotEmpty) {
-      try {
-        final data = await OffCampusApi.getOffCampusDataByIds(savedIds);
-        setState(() {
-          offCampusData = data;
-        });
-      } catch (e) {
-        // 에러 처리 로직
-      }
-    } else {
-      setState(() {
-        offCampusData = [];
-      });
-    }
+    // if (savedIds.isNotEmpty) {
+    //   try {
+    //     final data = await OffCampusApi.getOffCampusDataByIds(savedIds);
+    //     setState(() {
+    //       offCampusData = data;
+    //     });
+    //   } catch (e) {
+    //     // 에러 처리 로직
+    //   }
+    // } else {
+    //   setState(() {
+    //     offCampusData = [];
+    //   });
+    // }
   }
 
   @override

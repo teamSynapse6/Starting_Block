@@ -61,9 +61,9 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
   }
 
   Future<void> loadPopularKeywords() async {
-    popularKeywords =
-        await OffCampusApi.getOffCampusPopularKeyword(); // 인기 검색어 로드
-    setState(() {});
+    // popularKeywords =
+    //     await OffCampusApi.getOffCampusPopularKeyword(); // 인기 검색어 로드
+    // setState(() {});
   }
 
   @override

@@ -18,17 +18,7 @@ class OffCampusDetail extends StatefulWidget {
 }
 
 class _OffCampusDetailState extends State<OffCampusDetail> {
-  String thisOrganize = 'N/A';
-  String thisTitle = 'N/A';
-  String thisStartDate = 'N/A';
-  String thisEndDate = 'N/A';
-  String thisTarget = 'N/A';
-  String thisType = 'N/A';
-  String thisLink = 'N/A';
-  String thisID = 'N/A';
-  String thisClassification = 'N/A';
-  String thisContent = 'N/A';
-  late Future<List<OffCampusRecommendModel>> futureRecommendations;
+  final List<OffCampusDetailModel> _offcampusDetail = [];
   int _questionCount = 0;
 
   @override
@@ -36,28 +26,16 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
     super.initState();
     loadoffCampusDetailData();
     loadQuestionData();
-    futureRecommendations = OffCampusApi.getOffCampusRecData(
-      widget.thisID,
-    ); // Updated to use OffCampusApiService
   }
 
   Future<void> loadoffCampusDetailData() async {
-    List<OffCampusDetailModel> data =
-        await OffCampusApi.getOffCampusDetailData();
+    int id = int.parse(widget.thisID);
+    // API 호출을 통해 상세 데이터를 가져옵니다.
+    OffCampusDetailModel detailData =
+        await OffCampusApi.getOffcampusDetailInfo(id);
     setState(() {
-      var detailData = data.firstWhere(
-        (element) => element.id == widget.thisID,
-      );
-      thisOrganize = detailData.organize;
-      thisTitle = detailData.title;
-      thisStartDate = detailData.startDate;
-      thisEndDate = detailData.endDate;
-      thisTarget = detailData.target;
-      thisType = detailData.type;
-      thisLink = detailData.link;
-      thisID = detailData.id;
-      thisClassification = detailData.classification;
-      thisContent = detailData.content;
+      _offcampusDetail.clear();
+      _offcampusDetail.add(detailData);
     });
   }
 
@@ -74,36 +52,36 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
     return Scaffold(
       appBar: SaveAppBar(
         thisBookMark: BookMarkButton(
-          id: thisID,
-          classification: thisClassification,
+          id: widget.thisID,
+          classification: '교외사업',
         ),
       ),
       body: SingleChildScrollView(
-        // SingleChildScrollView로 감싸기
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            OffCampusDetailBody(
-              organize: thisOrganize,
-              title: thisTitle,
-              startDate: thisStartDate,
-              endDate: thisEndDate,
-              target: thisTarget,
-              type: thisType,
-              link: thisLink,
-              thisID: widget.thisID,
-              classification: thisClassification,
-              content: thisContent,
-              questionCount: _questionCount.toString(),
-            ),
+            if (_offcampusDetail.isNotEmpty)
+              OffCampusDetailInfo(
+                organize: _offcampusDetail[0].organization,
+                title: _offcampusDetail[0].title,
+                startDate: _offcampusDetail[0].startDate,
+                endDate: _offcampusDetail[0].endDate,
+                target: _offcampusDetail[0].target,
+                type: _offcampusDetail[0].supportType,
+                link: _offcampusDetail[0].link,
+                thisID: _offcampusDetail[0].id.toString(),
+                classification: "교외사업",
+                content: _offcampusDetail[0].content,
+                questionCount: _questionCount.toString(),
+              ),
             Container(
               height: 8,
               decoration: const BoxDecoration(color: AppColors.g1),
             ),
-            Recommendation(
-              futureRecommendations: futureRecommendations,
-              thisID: thisID,
-            )
+            // Recommendation(
+            //   futureRecommendations: futureRecommendations,
+            //   thisID: thisID,
+            // )
           ],
         ),
       ),

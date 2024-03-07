@@ -15,7 +15,7 @@ String formatDate(String date) {
   return '$year-$month-$day';
 }
 
-class OffCampusDetailBody extends StatelessWidget {
+class OffCampusDetailInfo extends StatelessWidget {
   final String organize,
       title,
       content,
@@ -28,7 +28,7 @@ class OffCampusDetailBody extends StatelessWidget {
       classification,
       questionCount;
 
-  const OffCampusDetailBody({
+  const OffCampusDetailInfo({
     super.key,
     required this.organize,
     required this.title,

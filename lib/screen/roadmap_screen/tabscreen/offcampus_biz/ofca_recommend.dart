@@ -54,19 +54,19 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
   }
 
   void _loadOffCampusData() async {
-    isEntrepreneur = await UserInfo.getEntrepreneurCheck();
-    residence = await UserInfo.getResidence();
-    userBirthday = await UserInfo.getUserBirthday();
-    int age = calculateAge(userBirthday); // 만 나이 계산
+    // isEntrepreneur = await UserInfo.getEntrepreneurCheck();
+    // residence = await UserInfo.getResidence();
+    // userBirthday = await UserInfo.getUserBirthday();
+    // int age = calculateAge(userBirthday); // 만 나이 계산
 
-    List<String>? supportTypes = textToSupportType[widget.thisSelectedText];
-    offCampusData = await OffCampusApi.getOffCampusRoadmapRec(
-      posttarget: isEntrepreneur,
-      region: residence,
-      age: age,
-      supporttypes: supportTypes,
-    );
-    setState(() {}); // 상태 업데이트
+    // List<String>? supportTypes = textToSupportType[widget.thisSelectedText];
+    // offCampusData = await OffCampusApi.getOffCampusRoadmapRec(
+    //   posttarget: isEntrepreneur,
+    //   region: residence,
+    //   age: age,
+    //   supporttypes: supportTypes,
+    // );
+    // setState(() {}); // 상태 업데이트
   }
 
   int calculateAge(String birthday) {
