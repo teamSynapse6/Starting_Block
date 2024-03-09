@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/models/offcampus_recommend_model.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
 
 class Recommendation extends StatelessWidget {
-  final Future<List<OffCampusRecommendModel>> futureRecommendations;
+  final Future<List<OffCampusListModel>> futureRecommendations;
   final String thisID;
 
   const Recommendation({
@@ -26,16 +26,15 @@ class Recommendation extends StatelessWidget {
             '이런 공고는 어떠세요?',
             style: AppTextStyles.st2.copyWith(color: AppColors.g6),
           ),
-          FutureBuilder<List<OffCampusRecommendModel>>(
+          FutureBuilder<List<OffCampusListModel>>(
             future: futureRecommendations,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   // thisID를 제외한 데이터만 필터링
                   var filteredData = snapshot.data!
-                      .where((item) => item.id != thisID)
+                      .where((item) => item.announcementId != thisID)
                       .toList();
-
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -43,12 +42,12 @@ class Recommendation extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var item = filteredData[index];
                       return ItemList(
-                        thisID: item.id,
-                        thisOrganize: item.organize,
+                        thisID: item.announcementId.toString(),
+                        thisOrganize: item.departmentName,
                         thisTitle: item.title,
                         thisStartDate: item.startDate,
                         thisEndDate: item.endDate,
-                        thisClassification: item.classification,
+                        thisClassification: '교외사업',
                       );
                     },
                   );

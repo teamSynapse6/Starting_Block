@@ -11,14 +11,27 @@ class OffCampusApi {
 
   static String baseUrl = 'https://api.startingblock.co.kr';
   static String offCampusListEndpoint = 'api/v1/announcements/list';
+  static String offCampusRecEndpoint = 'api/v1/announcements/random';
 
   // 공고리스트 불러오기, 페이지 번호를 인자로 받습니다.
-  static Future<List<OffCampusListModel>> getOffCampusHomeList(
-      {int page = 0, String sorting = '최신순'}) async {
-    // 페이지 번호를 사용하여 요청 URL을 구성합니다.
-    final offCampusUrl = Uri.parse(
-      '$baseUrl/$offCampusListEndpoint?page=$page&sorting=$sorting',
-    );
+  static Future<Map<String, dynamic>> getOffCampusHomeList({
+    int page = 0,
+    String sorting = '최신순',
+    String postTarget = '',
+    String region = '',
+    String supportType = '',
+    String search = '',
+  }) async {
+    // 쿼리 파라미터 문자열 직접 생성
+    String queryParams = 'page=$page&sorting=$sorting';
+    if (postTarget != '') queryParams += '&postTarget=$postTarget';
+    if (region != '') queryParams += '&region=$region';
+    if (supportType != '') queryParams += '&supportType=$supportType';
+    if (search != '') queryParams += '&search=$search';
+
+    // URL에 쿼리 파라미터 문자열 추가
+    final offCampusUrl =
+        Uri.parse('$baseUrl/$offCampusListEndpoint?$queryParams');
     final response = await http.get(offCampusUrl, headers: headers);
 
     if (response.statusCode == 200) {
@@ -27,7 +40,11 @@ class OffCampusApi {
       final List<dynamic> content = jsonResponse['content'];
       List<OffCampusListModel> offCampusList =
           content.map((json) => OffCampusListModel.fromJson(json)).toList();
-      return offCampusList;
+      final bool last = jsonResponse['last'];
+      return {
+        'offCampusList': offCampusList,
+        'last': last,
+      };
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
     }
@@ -45,6 +62,24 @@ class OffCampusApi {
       OffCampusDetailModel offCampusDetail =
           OffCampusDetailModel.fromJson(jsonResponse);
       return offCampusDetail;
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+// 공고 3개 랜덤 리턴 메서드
+  static Future<List<OffCampusListModel>> getOffcampusRecommend() async {
+    final offCampusDetailUrl = Uri.parse('$baseUrl/$offCampusRecEndpoint');
+    final response = await http.get(offCampusDetailUrl, headers: headers);
+
+    if (response.statusCode == 200) {
+      final String responseBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> jsonResponse = jsonDecode(responseBody);
+      // 여러 개의 공고 데이터를 리스트로 반환합니다.
+      List<OffCampusListModel> recommendations = jsonResponse
+          .map((json) => OffCampusListModel.fromJson(json))
+          .toList();
+      return recommendations;
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
     }

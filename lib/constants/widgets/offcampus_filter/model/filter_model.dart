@@ -6,9 +6,14 @@ class FilterModel extends ChangeNotifier {
   String _selectedResidence = "전체";
   String _selectedEntrepreneur = "전체";
   String _selectedSorting = "최신순"; // 정렬 상태 추가
-  String get selectedSorting => _selectedSorting;
   bool _hasChanged = false; // 변화 감지 플래그 추가
   bool get hasChanged => _hasChanged; // 변화가 있는지 확인하는 메서드
+
+  // Getter 메서드
+  String get selectedSupportType => _selectedSupportType;
+  String get selectedResidence => _selectedResidence;
+  String get selectedEntrepreneur => _selectedEntrepreneur;
+  String get selectedSorting => _selectedSorting;
 
   // 변화 플래그를 리셋하는 메서드
   void resetChangeFlag() {
@@ -25,11 +30,6 @@ class FilterModel extends ChangeNotifier {
     _selectedSorting =
         prefs.getString('selectedSorting') ?? "최신순"; // 직접 저장된 값으로 로드합니다.
   }
-
-  // Getter 메서드
-  String get selectedSupportType => _selectedSupportType;
-  String get selectedResidence => _selectedResidence;
-  String get selectedEntrepreneur => _selectedEntrepreneur;
 
   // Setter 메서드
   void setSelectedSupportType(String newValue) {

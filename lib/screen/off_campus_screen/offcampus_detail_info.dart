@@ -2,17 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
-String formatDate(String date) {
-  // 문자열 길이가 8이 아니면 원래 날짜 문자열을 반환
-  if (date.length != 8) {
+String formatedStartDate(String date) {
+  // '20240102'와 같은 문자열을 '2024-01-02' 형식으로 변환
+  String startDate = date.substring(0, 10);
+  return startDate;
+}
+
+String formatedEndDate(String date) {
+  // 정규 표현식을 사용하여 날짜 형식 (예: 2024-01-01 00:00:00)인지 확인합니다.
+  RegExp datePattern = RegExp(r'^\d{4}-\d{2}-\d{2}');
+
+  // 문자열이 정규 표현식 패턴에 매치되는 경우
+  if (datePattern.hasMatch(date)) {
+    // '2024-01-02 00:00:00.000000'와 같은 문자열을 '2024-01-02' 형식으로 변환
+    return date.substring(0, 10);
+  } else {
+    // 패턴에 매치되지 않는 경우, 원본 문자열을 그대로 반환
     return date;
   }
-
-  String year = date.substring(0, 4);
-  String month = date.substring(4, 6);
-  String day = date.substring(6, 8);
-
-  return '$year-$month-$day';
 }
 
 class OffCampusDetailInfo extends StatelessWidget {
@@ -45,8 +52,8 @@ class OffCampusDetailInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedStartDate = formatDate(startDate);
-    String formattedEndDate = formatDate(endDate);
+    String formattedStartDate = formatedStartDate(startDate);
+    String formattedEndDate = formatedEndDate(endDate);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),

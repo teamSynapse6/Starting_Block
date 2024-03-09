@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
 import 'package:starting_block/screen/manage/recentsearch_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
@@ -14,8 +13,12 @@ class OffCampusSearch extends StatefulWidget {
 class _OffCampusSearchState extends State<OffCampusSearch> {
   final TextEditingController _controller = TextEditingController();
   List<String> recentSearches = [];
-  List<String> popularKeywords = []; // 인기 검색어 목록을 저장할 리스트
   final RecentSearchManager recentSearchManager = RecentSearchManager();
+  final List<String> _popularKeywords = [
+    '서울',
+    '창업',
+    '청년창업지원'
+  ]; // 인기 검색어 목록을 저장할 리스트
 
   @override
   void initState() {
@@ -61,9 +64,12 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
   }
 
   Future<void> loadPopularKeywords() async {
-    // popularKeywords =
+    // List<String> popularKeyword =
     //     await OffCampusApi.getOffCampusPopularKeyword(); // 인기 검색어 로드
-    // setState(() {});
+    // setState(() {
+    //   _popularKeywords.clear();
+    //   _popularKeywords.addAll(popularKeyword);
+    // });
   }
 
   @override
@@ -147,7 +153,7 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
               Wrap(
                 runSpacing: 12,
                 spacing: 12,
-                children: popularKeywords.map((keyword) {
+                children: _popularKeywords.map((keyword) {
                   // 인기 검색어 목록을 바탕으로 동적으로 위젯 생성
                   return InputChupsSharp(
                     text: keyword,

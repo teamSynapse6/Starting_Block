@@ -20,12 +20,15 @@ class OffCampusDetail extends StatefulWidget {
 class _OffCampusDetailState extends State<OffCampusDetail> {
   final List<OffCampusDetailModel> _offcampusDetail = [];
   int _questionCount = 0;
+  Future<List<OffCampusListModel>>? futureRecommendations; // 추천 공고 데이터를 저장할 필드
 
+  @override
   @override
   void initState() {
     super.initState();
     loadoffCampusDetailData();
     loadQuestionData();
+    loadRecommendations(); // 추천 공고 데이터를 로드하는 메소드 호출
   }
 
   Future<void> loadoffCampusDetailData() async {
@@ -45,6 +48,11 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
     setState(() {
       _questionCount = questionData.length;
     });
+  }
+
+  // 추천 공고 데이터를 로드하는 메소드
+  void loadRecommendations() {
+    futureRecommendations = OffCampusApi.getOffcampusRecommend();
   }
 
   @override
@@ -78,10 +86,10 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
               height: 8,
               decoration: const BoxDecoration(color: AppColors.g1),
             ),
-            // Recommendation(
-            //   futureRecommendations: futureRecommendations,
-            //   thisID: thisID,
-            // )
+            Recommendation(
+              futureRecommendations: futureRecommendations!,
+              thisID: widget.thisID,
+            ),
           ],
         ),
       ),
