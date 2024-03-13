@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
-import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart'; // 가정한 API 파일 경로
 import 'package:starting_block/screen/manage/models/offcampus_model.dart';
 import 'package:starting_block/screen/manage/recentsearch_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';

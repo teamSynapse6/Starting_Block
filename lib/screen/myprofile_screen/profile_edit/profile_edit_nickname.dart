@@ -48,34 +48,33 @@ class _NickNameEditState extends State<NickNameEdit> {
   }
 
   void _updateNicknameValidation() {
+    if (_nickname.isEmpty) {
+      setState(() {
+        _isNicknameAvailable = false;
+        _nicknameAvailabilityMessage = '닉네임을 입력해주세요';
+      });
+      return;
+    }
+
     final isValidLength = _nickname.length >= 2 && _nickname.length <= 10;
     final hasNoSpaces = !_nickname.contains(' ');
     final isValidCharacters = RegExp(r'^[가-힣a-zA-Z0-9]+$').hasMatch(_nickname);
 
+    String message = '';
+    if (!isValidLength) {
+      message = '닉네임은 2자에서 10자 사이로 입력해주세요';
+    } else if (!hasNoSpaces) {
+      message = '띄어쓰기 없이 입력해주세요';
+    } else if (!isValidCharacters) {
+      message = '닉네임은 한글, 영문, 숫자만 사용 가능합니다';
+    } else {
+      message = '';
+    }
+
     setState(() {
       _isNicknameAvailable = isValidLength && hasNoSpaces && isValidCharacters;
-      _nicknameAvailabilityMessage =
-          isValidLength && hasNoSpaces && isValidCharacters
-              ? ""
-              : "닉네임은 한글, 영문, 숫자만 사용 가능하며, 2자에서 10자 사이로 입력해주세요";
+      _nicknameAvailabilityMessage = message;
     });
-  }
-
-  String? _validateNickname(String? value) {
-    if (value == null || value.isEmpty) {
-      return '닉네임을 입력해주세요';
-    }
-    if (value.contains(' ')) {
-      return '띄어쓰기 없이 입력해주세요';
-    }
-    if (!RegExp(r'^[가-힣a-zA-Z0-9]+$').hasMatch(value)) {
-      return '닉네임은 한글, 영문, 숫자만 사용 가능합니다';
-    }
-    if (value.length < 2 || value.length > 10) {
-      return '닉네임은 2자에서 10자 사이로 입력해주세요';
-    }
-    // 중복 확인은 여기서 하지 않음
-    return null;
   }
 
   void _onCheckNickname() async {
@@ -207,7 +206,6 @@ class _NickNameEditState extends State<NickNameEdit> {
                       ),
                     ),
                   ),
-                  validator: _validateNickname,
                 ),
                 if (_nickname.isNotEmpty) // 닉네임 입력 중 메시지 표시
                   Padding(

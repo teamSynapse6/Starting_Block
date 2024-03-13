@@ -124,7 +124,7 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
                 height: _cardHeight,
                 child: ClipRRect(
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                     child: Container(
                       height: 140,
                       width: MediaQuery.of(context).size.width,

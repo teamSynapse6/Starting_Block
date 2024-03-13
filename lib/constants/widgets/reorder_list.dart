@@ -6,11 +6,13 @@ import 'package:starting_block/constants/constants.dart';
 class ReorderCustomTile extends StatelessWidget {
   final String thisText;
   final TextStyle thisTextStyle;
+  final bool? isComlete;
 
   const ReorderCustomTile({
     super.key,
     required this.thisText,
     required this.thisTextStyle,
+    this.isComlete,
   });
 
   @override
@@ -29,11 +31,12 @@ class ReorderCustomTile extends StatelessWidget {
                 style: thisTextStyle,
               ),
               const Spacer(),
-              SizedBox(
-                height: 24,
-                width: 24,
-                child: AppIcon.sort_actived,
-              ),
+              if (isComlete == false)
+                SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: AppIcon.sort_actived,
+                ),
             ],
           ),
         ),

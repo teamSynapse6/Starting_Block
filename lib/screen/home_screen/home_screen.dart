@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               HomeQuestionStep(
-                thisStage: 3,
+                thisStage: 1,
                 thisUserName: _nickName,
               ),
               Gaps.v28,

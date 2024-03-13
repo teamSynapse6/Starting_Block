@@ -148,6 +148,7 @@ class RoadMapEditState extends State<RoadMapEdit> {
                               thisText: _tempRoadmapList[index],
                               thisTextStyle: AppTextStyles.bd1
                                   .copyWith(color: AppColors.g6),
+                              isComlete: _tempRoadmapListCheck[index] == '도약완료',
                             ),
                           );
                         }
@@ -193,6 +194,7 @@ class RoadMapEditState extends State<RoadMapEdit> {
                               ? AppTextStyles.bd2.copyWith(color: AppColors.g4)
                               : AppTextStyles.bd2
                                   .copyWith(color: AppColors.g6)),
+                          isComlete: _tempRoadmapListCheck[index] == '도약완료',
                         ),
                       ),
                   ],
