@@ -200,6 +200,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
                         thisStartDate: item.startDate,
                         thisEndDate: item.endDate,
                         thisClassification: '교외사업',
+                        isSaved: item.isBookmarked,
                       );
                     },
                   ),

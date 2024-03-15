@@ -31,7 +31,9 @@ class ReorderCustomTile extends StatelessWidget {
                 style: thisTextStyle,
               ),
               const Spacer(),
-              if (isComlete == false)
+              if (isComlete == true)
+                Container()
+              else
                 SizedBox(
                   height: 24,
                   width: 24,

@@ -197,6 +197,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                         thisStartDate: item.startDate,
                         thisEndDate: item.endDate,
                         thisClassification: '교외사업',
+                        isSaved: item.isBookmarked,
                       );
                     },
                   ),

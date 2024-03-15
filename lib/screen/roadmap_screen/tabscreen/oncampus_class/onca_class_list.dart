@@ -31,10 +31,10 @@ class OnCaListClass extends StatelessWidget {
                   style: AppTextStyles.bd1.copyWith(color: AppColors.black),
                 ),
                 const Spacer(),
-                BookMarkButton(
-                  id: thisId,
-                  classification: '창업강의',
-                ),
+                // BookMarkButton(
+                //   id: thisId,
+                //   classification: '창업강의',
+                // ),
               ],
             ),
             Gaps.v20,

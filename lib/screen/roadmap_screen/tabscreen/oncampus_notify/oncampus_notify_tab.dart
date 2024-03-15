@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart'; // Import 수정
 import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_recommend.dart';
 
 const List<String> validTextsNotify = [
@@ -104,9 +102,8 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondaryBG,
-      body: CustomScrollView(
-        slivers: <Widget>[
+        backgroundColor: AppColors.secondaryBG,
+        body: CustomScrollView(slivers: <Widget>[
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,65 +133,51 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
               ],
             ),
           ),
-          Consumer<RoadMapModel>(
-            builder: (context, roadmapModel, child) {
-              if (roadmapModel.hasUpdated) {
-                // RoadMapModel이 업데이트 되었다면 다시 아이디를 불러오고
-                // API를 통해 데이터를 불러오는 메소드를 실행
-                _loadSavedIds().then((_) => _loadOnCampusNotifyDataByIds());
-                roadmapModel.resetUpdateFlag(); // 플래그 리셋
-              }
-              if (savedIds.isNotEmpty) {
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final item = onCampusNotifyData[
-                          index]; // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
-                      // ListTile로 반환하여 title만 표시
-                      return Container(
-                        decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius:
-                              BorderRadius.zero, // 조건부 BorderRadius 적용
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final item = onCampusNotifyData[
+                    index]; // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
+                // ListTile로 반환하여 title만 표시
+                return Container(
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.zero, // 조건부 BorderRadius 적용
+                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    children: [
+                      OnCaListNotify(
+                        thisProgramType: item.type,
+                        thisID: item.id,
+                        thisClassification: item.classification,
+                        thisTitle: item.title,
+                        thisUrl: item.detailurl,
+                        thisStartDate: item.startdate,
+                      ),
+                      if (index < onCampusNotifyData.length - 1)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: CustomDivider(),
                         ),
-                        margin: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            OnCaListNotify(
-                              thisProgramType: item.type,
-                              thisID: item.id,
-                              thisClassification: item.classification,
-                              thisTitle: item.title,
-                              thisUrl: item.detailurl,
-                              thisStartDate: item.startdate,
-                            ),
-                            if (index < onCampusNotifyData.length - 1)
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: CustomDivider(),
-                              ),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: onCampusNotifyData
-                        .length, // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
+                    ],
                   ),
                 );
-              } else {
-                // 업데이트가 없으면 여기서 처리
-                return SliverToBoxAdapter(
-                  child: GotoSaveItem(
-                    tapAction: () {
-                      IntergrateScreen.setSelectedIndexToOne(context);
-                    },
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );
+              },
+              childCount: onCampusNotifyData
+                  .length, // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
+            ),
+          )
+        ]));
   }
+  // else {
+  //   // 업데이트가 없으면 여기서 처리
+  //   return SliverToBoxAdapter(
+  //     child: GotoSaveItem(
+  //       tapAction: () {
+  //         IntergrateScreen.setSelectedIndexToOne(context);
+  //       },
+  //     ),
+  //   );
+  // }
 }

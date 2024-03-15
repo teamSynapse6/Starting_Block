@@ -28,7 +28,7 @@ class OnCaListSystem extends StatelessWidget {
                   style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
                 ),
                 const Spacer(),
-                BookMarkButton(id: thisId, classification: '창업제도'),
+                // BookMarkButton(id: thisId, classification: '창업제도'),
               ],
             ),
             Gaps.v10,

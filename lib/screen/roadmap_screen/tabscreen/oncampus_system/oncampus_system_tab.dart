@@ -1,11 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_system/onca_system_recommend.dart';
 
 const List<String> validTextsSystem = [
@@ -41,69 +36,19 @@ class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
   @override
   void initState() {
     super.initState();
-    _loadSavedIds();
   }
 
   @override
   void didUpdateWidget(TabScreenOnCaSystem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.thisSelectedText != widget.thisSelectedText) {
-      _loadSavedIds();
-    }
-  }
-
-  Future<void> _loadSavedIds() async {
-    final ids = await getIdsForSelectedText();
-    setState(() {
-      savedIds = ids;
-      onCampusSystemData = ids.isNotEmpty ? onCampusSystemData : [];
-    });
-
-    if (ids.isNotEmpty) {
-      _loadOnCampusSystemDataByIds();
-    }
-  }
-
-  Future<List<int>> getIdsForSelectedText() async {
-    final prefs = await SharedPreferences.getInstance();
-    String key = widget.thisSelectedText;
-    String? savedDataString = prefs.getString(key);
-
-    if (savedDataString != null) {
-      List<dynamic> savedDataList = json.decode(savedDataString);
-      List<int> ids = savedDataList
-          .where((data) => data['classification'] == '창업제도')
-          .map((data) => int.tryParse(data['id'].toString()) ?? 0)
-          .toList();
-      return ids;
-    } else {
-      return [];
-    }
-  }
-
-  void _loadOnCampusSystemDataByIds() async {
-    if (savedIds.isNotEmpty) {
-      try {
-        final data = await OnCampusAPI.getOnCampusSystemByIds(savedIds);
-        setState(() {
-          onCampusSystemData = data;
-        });
-      } catch (e) {
-        // Error handling logic
-      }
-    } else {
-      setState(() {
-        onCampusSystemData = [];
-      });
-    }
+    if (oldWidget.thisSelectedText != widget.thisSelectedText) {}
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondaryBG,
-      body: CustomScrollView(
-        slivers: <Widget>[
+        backgroundColor: AppColors.secondaryBG,
+        body: CustomScrollView(slivers: <Widget>[
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,56 +78,45 @@ class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
               ],
             ),
           ),
-          Consumer<RoadMapModel>(
-            builder: (context, roadmapModel, child) {
-              if (roadmapModel.hasUpdated) {
-                _loadSavedIds().then((_) => _loadOnCampusSystemDataByIds());
-                roadmapModel.resetUpdateFlag();
-              }
-              if (savedIds.isNotEmpty) {
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final item = onCampusSystemData[index];
-                      return Container(
-                        decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.zero,
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final item = onCampusSystemData[index];
+                return Container(
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    children: [
+                      OnCaListSystem(
+                        thisTitle: item.title,
+                        thisId: item.id,
+                        thisContent: item.content,
+                        thisTarget: item.target,
+                      ),
+                      if (index < onCampusSystemData.length - 1)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: CustomDivider(),
                         ),
-                        margin: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            OnCaListSystem(
-                              thisTitle: item.title,
-                              thisId: item.id,
-                              thisContent: item.content,
-                              thisTarget: item.target,
-                            ),
-                            if (index < onCampusSystemData.length - 1)
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: CustomDivider(),
-                              ),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: onCampusSystemData.length,
+                    ],
                   ),
                 );
-              } else {
-                return SliverToBoxAdapter(
-                  child: GotoSaveItem(
-                    tapAction: () {
-                      IntergrateScreen.setSelectedIndexToOne(context);
-                    },
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );
+              },
+              childCount: onCampusSystemData.length,
+            ),
+          )
+        ]));
   }
+  // else {
+  //   return SliverToBoxAdapter(
+  //     child: GotoSaveItem(
+  //       tapAction: () {
+  //         IntergrateScreen.setSelectedIndexToOne(context);
+  //       },
+  //     ),
+  //   );
+  // }
 }

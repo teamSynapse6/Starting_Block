@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
-import 'package:starting_block/screen/manage/models/offcampus_model.dart';
 import 'package:starting_block/screen/manage/recentsearch_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
@@ -22,7 +19,6 @@ class OnCampusSearchResult extends StatefulWidget {
 class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
   final TextEditingController _controller = TextEditingController();
   final RecentSearchManager recentSearchManager = RecentSearchManager();
-  final List<OffCampusModel> _offcampusList = [];
 
   @override
   void initState() {
@@ -93,7 +89,7 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${_offcampusList.length}개의 공고',
+                        '개의 공고',
                         style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                       ),
                       const Spacer(),
@@ -104,32 +100,32 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
               ],
             ),
           ),
-          Expanded(
-            child: Consumer<FilterModel>(
-              builder: (context, filterModel, child) {
-                if (filterModel.hasChanged) {
-                  _fetchOnCampusSearchResults().then((_) {
-                    filterModel.resetChangeFlag();
-                  });
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  itemCount: _offcampusList.length,
-                  itemBuilder: (context, index) {
-                    final item = _offcampusList[index];
-                    return ItemList(
-                      thisID: item.id,
-                      thisOrganize: item.organize,
-                      thisTitle: item.title,
-                      thisStartDate: item.startDate,
-                      thisEndDate: item.endDate,
-                      thisClassification: item.classification,
-                    );
-                  },
-                );
-              },
-            ),
-          ),
+          // Expanded(
+          //   child: Consumer<FilterModel>(
+          //     builder: (context, filterModel, child) {
+          //       if (filterModel.hasChanged) {
+          //         _fetchOnCampusSearchResults().then((_) {
+          //           filterModel.resetChangeFlag();
+          //         });
+          //       }
+          //       return ListView.builder(
+          //         padding: const EdgeInsets.symmetric(horizontal: 24),
+          //         itemCount: _offcampusList.length,
+          //         itemBuilder: (context, index) {
+          //           final item = _offcampusList[index];
+          //           return ItemList(
+          //             thisID: item.id,
+          //             thisOrganize: item.organize,
+          //             thisTitle: item.title,
+          //             thisStartDate: item.startDate,
+          //             thisEndDate: item.endDate,
+          //             thisClassification: item.classification,
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );

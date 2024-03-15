@@ -22,7 +22,6 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => RoadMapModel()),
         ChangeNotifierProvider(create: (context) => FilterModel()),
         ChangeNotifierProvider(create: (context) => OnCaFilterModel()),
         ChangeNotifierProvider(create: (context) => UserInfo()),

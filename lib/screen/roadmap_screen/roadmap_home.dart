@@ -15,8 +15,8 @@ class _RoadmapHomeState extends State<RoadmapHome>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _nickName = "";
-  String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
-  bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
+  final String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
+  final bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
 
   @override
   void initState() {
@@ -26,27 +26,10 @@ class _RoadmapHomeState extends State<RoadmapHome>
     // _selectedRoadmapText를 로드하는 논리를 여기에 추가합니다
   }
 
-  final GlobalKey<State<RoadMapList>> roadMapListKey = GlobalKey();
-
-  void resetToCurrentStage() {
-    RoadMapList.resetToCurrentStage(roadMapListKey);
-  }
-
   Future<void> _loadNickName() async {
     String nickName = await UserInfo.getNickName();
     setState(() {
       _nickName = nickName;
-    });
-  }
-
-  // 콜백 함수 구현
-  void _onSelectedRoadmapChanged(
-      String selectedText, int selectedIndex, bool isCurrentStage) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _selectedRoadmapText = selectedText;
-        _isCurrentStageSelected = isCurrentStage;
-      });
     });
   }
 
@@ -104,10 +87,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
                     // print('투명도: $backgroundOpacity');
                     return Padding(
                       padding: EdgeInsets.only(bottom: bottomPadding),
-                      child: RoadMapList(
-                        key: roadMapListKey,
-                        onSelectedRoadmapChanged: _onSelectedRoadmapChanged,
-                      ),
+                      child: const RoadMapList(),
                     );
                   },
                 ),
@@ -125,15 +105,12 @@ class _RoadmapHomeState extends State<RoadmapHome>
                               .copyWith(color: AppColors.white),
                         ),
                         Gaps.v46,
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Spacer(),
-                            _isCurrentStageSelected
-                                ? NextStep(
-                                    onResetToCurrentStage: resetToCurrentStage)
-                                : GoBackToStep(
-                                    onResetToCurrentStage: resetToCurrentStage),
+                            Spacer(),
+                            // GoBackToStep(
+                            //     onResetToCurrentStage: resetToCurrentStage),
                           ],
                         ),
                       ],

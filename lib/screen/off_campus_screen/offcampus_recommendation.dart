@@ -48,6 +48,7 @@ class Recommendation extends StatelessWidget {
                         thisStartDate: item.startDate,
                         thisEndDate: item.endDate,
                         thisClassification: '교외사업',
+                        isSaved: item.isBookmarked,
                       );
                     },
                   );

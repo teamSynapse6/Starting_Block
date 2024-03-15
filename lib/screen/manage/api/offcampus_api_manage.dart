@@ -6,7 +6,7 @@ class OffCampusApi {
   static Map<String, String> headers = {
     'accept': 'application/json',
     'Authorization':
-        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzA5Nzk3Njc5LCJleHAiOjIwNjk3OTc2Nzl9.jA8iQGPWxvK5VZnu4hQk_bJ02htop4Vvf4pbYNHBMsglHTlvENCA9hKA_Fi9aVH8GoOcnBOW-mdWWxxkSQgt6g'
+        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzA4Nzg5MjE5LCJleHAiOjIwNjg3ODkyMTl9.QfNiocS_CBaiDrKqK93hfl03MAMJ_Pm9Fy-IibpT37CVlz2RN-SdaUQk9VkGMJcsVNsTIyBrROlQA4eXLk02Pg'
   };
 
   static String baseUrl = 'https://api.startingblock.co.kr';
