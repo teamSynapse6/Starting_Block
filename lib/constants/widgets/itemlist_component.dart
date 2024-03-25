@@ -74,9 +74,7 @@ class ItemList extends StatelessWidget {
               children: [
                 OrganizeChip(text: thisOrganize),
                 const Spacer(),
-                // BookMarkButton(isSaved: ,
-
-                // ),
+                BookMarkButton(isSaved: isSaved)
               ],
             ),
             Gaps.v12,

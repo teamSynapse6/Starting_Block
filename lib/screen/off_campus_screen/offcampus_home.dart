@@ -60,7 +60,6 @@ class _OffCampusHomeState extends State<OffCampusHome> {
     // 결과에서 공고 리스트와 'last' 값을 추출합니다.
     List<OffCampusListModel> moreOffcampusList = result['offCampusList'];
     bool last = result['last'];
-    print('마지막?: $last');
 
     setState(() {
       _offcampusList.addAll(moreOffcampusList);

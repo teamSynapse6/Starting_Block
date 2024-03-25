@@ -58,4 +58,32 @@ class RoadMapApi {
       throw Exception('로드맵을 삭제하는 데 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }
+
+// 로드맵에 공고 저장 메소드
+  static Future<void> addAnnouncementToRoadMap(
+      String roadmapId, int announcementId) async {
+    final url = Uri.parse(
+        '$baseUrl/api/v1/roadmaps/$roadmapId/announcement?announcementId=$announcementId');
+    final response = await http.post(url, headers: headers);
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      print('공고가 로드맵에 성공적으로 추가되었습니다.');
+    } else {
+      throw Exception('공고를 로드맵에 추가하는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  // 로드맵에서 공고 삭제 메소드
+  static Future<void> deleteAnnouncementFromRoadMap(
+      String roadmapId, int announcementId) async {
+    final url = Uri.parse(
+        '$baseUrl/api/v1/roadmaps/$roadmapId/announcement?announcementId=$announcementId');
+    final response = await http.delete(url, headers: headers);
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      print('공고가 로드맵에서 성공적으로 삭제되었습니다.');
+    } else {
+      throw Exception('공고를 로드맵에서 삭제하는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
 }

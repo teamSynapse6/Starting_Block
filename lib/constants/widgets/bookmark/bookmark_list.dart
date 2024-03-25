@@ -17,8 +17,7 @@ class BookMarkList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
+    return InkWell(
       onTap: thisTapAction,
       child: Container(
         height: 48,

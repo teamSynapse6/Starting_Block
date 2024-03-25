@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/constants/widgets/bookmark/bookmark_list.dart';
 import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 
@@ -18,6 +19,12 @@ class BookMarkButton extends StatefulWidget {
 class _BookMarkButtonState extends State<BookMarkButton> {
   List<RoadMapModel>? roadMaps;
 
+  @override
+  void initState() {
+    super.initState();
+    loadRoadMaps();
+  }
+
   void loadRoadMaps() async {
     final roadMapList = await RoadMapApi.getRoadMapList();
     roadMapList
@@ -26,6 +33,8 @@ class _BookMarkButtonState extends State<BookMarkButton> {
       roadMaps = roadMapList;
     });
   }
+
+  void _SaveAction() {}
 
   void _bookMarkTap(BuildContext context) async {
     await showModalBottomSheet(
@@ -47,11 +56,21 @@ class _BookMarkButtonState extends State<BookMarkButton> {
                   ),
                 ),
                 Gaps.v8,
-                // Expanded(
-                //   child: ListView.builder(
-                //     itemBuilder: itemBuilder,
-                //   ),
-                // ),
+                roadMaps == null
+                    ? const CircularProgressIndicator()
+                    : Expanded(
+                        child: ListView.builder(
+                            itemCount: roadMaps!.length,
+                            itemBuilder: (context, index) {
+                              final roadMap = roadMaps![index];
+                              return BookMarkList(
+                                thisText: roadMap.title,
+                                thisColor: AppColors.white,
+                                thisTapAction: _SaveAction,
+                                thisIcon: AppIcon.plus_inactived,
+                              );
+                            }),
+                      )
               ],
             ),
           );
