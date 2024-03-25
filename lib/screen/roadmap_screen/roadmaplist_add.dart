@@ -51,10 +51,12 @@ class _RoadMapAddState extends State<RoadMapAdd> {
 
   void _onCompleteTap() {
     if (_isNextButtonEnabled) {
+      // 사용자가 선택하거나 입력한 값
       String valueToAdd = _selectedChip ?? _textController.text;
-      Map<String, String> roadMapData = {"title": valueToAdd};
 
-      RoadMapApi.addRoadMap(roadMapData).then((_) {
+      // addRoadMap 메소드에 String 타입으로 roadmapTitle을 직접 전달
+      RoadMapApi.addRoadMap(valueToAdd).then((_) {
+        // 성공 시, 현재 화면을 닫습니다.
         Navigator.pop(context);
       }).catchError((error) {
         // 오류 발생 시 사용자에게 알림

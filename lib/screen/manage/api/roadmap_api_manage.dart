@@ -33,20 +33,22 @@ class RoadMapApi {
     }
   }
 
-  // 로드맵 리스트 추가 메소드
-  static Future<void> addRoadMap(Map<String, String> roadMapData) async {
-    final url = Uri.parse('$baseUrl/$addRDList');
-    final response =
-        await http.post(url, headers: headers, body: jsonEncode(roadMapData));
+  // 로드맵 단계 추가 메소드
+// 로드맵 단계 추가 메소드
+  static Future<void> addRoadMap(String roadmapTitle) async {
+    // URL에 쿼리 파라미터를 추가합니다.
+    final url = Uri.parse('$baseUrl/$addRDList?roadmapTitle=$roadmapTitle');
+    final response = await http.post(url, headers: headers);
 
     if (response.statusCode == 200) {
       print('로드맵이 성공적으로 추가되었습니다.');
     } else {
-      throw Exception('${response.statusCode}');
+      // 오류 메시지에서 상태 코드를 함께 출력합니다.
+      throw Exception('로드맵 추가에 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }
 
-  // 로드맵 삭제 메소드
+  // 로드맵 단계 삭제 메소드
   static Future<void> deleteRoadMap(String roadmapId) async {
     final url = Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId');
     final response = await http.delete(url, headers: headers);
@@ -61,7 +63,7 @@ class RoadMapApi {
 
 // 로드맵에 공고 저장 메소드
   static Future<void> addAnnouncementToRoadMap(
-      String roadmapId, int announcementId) async {
+      int roadmapId, String announcementId) async {
     final url = Uri.parse(
         '$baseUrl/api/v1/roadmaps/$roadmapId/announcement?announcementId=$announcementId');
     final response = await http.post(url, headers: headers);
@@ -75,7 +77,7 @@ class RoadMapApi {
 
   // 로드맵에서 공고 삭제 메소드
   static Future<void> deleteAnnouncementFromRoadMap(
-      String roadmapId, int announcementId) async {
+      int roadmapId, String announcementId) async {
     final url = Uri.parse(
         '$baseUrl/api/v1/roadmaps/$roadmapId/announcement?announcementId=$announcementId');
     final response = await http.delete(url, headers: headers);
@@ -84,6 +86,26 @@ class RoadMapApi {
       print('공고가 로드맵에서 성공적으로 삭제되었습니다.');
     } else {
       throw Exception('공고를 로드맵에서 삭제하는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  //로드맵의 해당 ID가 저장되어 있는지 확인하는 메소드
+  static Future<List<RoadMapAnnounceModel>> getRoadMapAnnounceList(
+      String announcementId) async {
+    final url =
+        Uri.parse('$baseUrl/api/v1/roadmaps/announcement/$announcementId');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      // UTF-8로 명시적으로 디코딩
+      String utf8Body = utf8.decode(response.bodyBytes);
+      List<dynamic> body = jsonDecode(utf8Body);
+      List<RoadMapAnnounceModel> announces = body
+          .map((dynamic item) => RoadMapAnnounceModel.fromJson(item))
+          .toList();
+      return announces;
+    } else {
+      throw Exception('로드맵 공고를 불러오는 데 실패했습니다.');
     }
   }
 }
