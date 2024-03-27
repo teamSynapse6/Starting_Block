@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class GoBackToStep extends StatefulWidget {
-  final VoidCallback onResetToCurrentStage;
-
   const GoBackToStep({
     super.key,
-    required this.onResetToCurrentStage,
   });
 
   @override
@@ -17,7 +14,7 @@ class _GoBackToStepState extends State<GoBackToStep> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onResetToCurrentStage,
+      onTap: null,
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.white.withOpacity(0.08),

@@ -34,7 +34,6 @@ class RoadMapApi {
   }
 
   // 로드맵 단계 추가 메소드
-// 로드맵 단계 추가 메소드
   static Future<void> addRoadMap(String roadmapTitle) async {
     // URL에 쿼리 파라미터를 추가합니다.
     final url = Uri.parse('$baseUrl/$addRDList?roadmapTitle=$roadmapTitle');
@@ -106,6 +105,18 @@ class RoadMapApi {
       return announces;
     } else {
       throw Exception('로드맵 공고를 불러오는 데 실패했습니다.');
+    }
+  }
+
+  // 로드맵 도약하기 메소드
+  static Future<void> roadMapLeap() async {
+    final url = Uri.parse('$baseUrl/api/v1/roadmaps/leap');
+    final response = await http.post(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      print('로드맵 도약이 성공적으로 수행되었습니다.');
+    } else {
+      throw Exception('로드맵 도약에 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }
 }

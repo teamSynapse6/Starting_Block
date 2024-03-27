@@ -18,12 +18,14 @@ const List<String> validTextsBiz = [
 
 class TabScreenOfCaBiz extends StatefulWidget {
   final String thisSelectedText;
+  final int thisSelectedId;
   final bool thisCurrentStage;
 
   const TabScreenOfCaBiz({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
+    required this.thisSelectedId,
   });
 
   @override

@@ -15,8 +15,9 @@ class _RoadmapHomeState extends State<RoadmapHome>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _nickName = "";
-  final String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
-  final bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
+  String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
+  bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
+  int _roadMapId = 0;
 
   @override
   void initState() {
@@ -77,17 +78,26 @@ class _RoadmapHomeState extends State<RoadmapHome>
                     // bottomPadding이 음수가 되지 않도록 보장합니다.
                     final double bottomPadding =
                         math.max(0, 16 + (32 * expansionRatio));
-                    // AppBar의 현재 높이에 따라 backgroundOpacity를 계산합니다.
-                    // if (appBarHeight > 85) {
-                    //   backgroundOpacity = ((appBarHeight - 85) / (152 - 85));
-                    // } else {
-                    //   backgroundOpacity = 0.0; // 85 이하일 때 투명도를 0으로 설정
-                    // }
-                    // print('앱바높이: $appBarHeight');
-                    // print('투명도: $backgroundOpacity');
+
                     return Padding(
                       padding: EdgeInsets.only(bottom: bottomPadding),
-                      child: const RoadMapList(),
+                      child: RoadMapList(
+                        selectedRoadMapTitle: (String title) {
+                          setState(() {
+                            _selectedRoadmapText = title;
+                          });
+                        },
+                        selectedRoadMapId: (int id) {
+                          setState(() {
+                            _roadMapId = id;
+                          });
+                        },
+                        isCurrentStage: (bool currentStage) {
+                          setState(() {
+                            _isCurrentStageSelected = currentStage;
+                          });
+                        },
+                      ),
                     );
                   },
                 ),
@@ -105,12 +115,13 @@ class _RoadmapHomeState extends State<RoadmapHome>
                               .copyWith(color: AppColors.white),
                         ),
                         Gaps.v46,
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Spacer(),
-                            // GoBackToStep(
-                            //     onResetToCurrentStage: resetToCurrentStage),
+                            const Spacer(),
+                            _isCurrentStageSelected
+                                ? const NextStep()
+                                : const GoBackToStep()
                           ],
                         ),
                       ],
@@ -144,18 +155,22 @@ class _RoadmapHomeState extends State<RoadmapHome>
                   TabScreenOfCaBiz(
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
+                    thisSelectedId: _roadMapId,
                   ),
                   TabScreenOnCaNotify(
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
+                    thisSelectedId: _roadMapId,
                   ),
                   TabScreenOnCaClass(
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
+                    thisSelectedId: _roadMapId,
                   ),
                   TabScreenOnCaSystem(
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
+                    thisSelectedId: _roadMapId,
                   ),
                 ],
               ),

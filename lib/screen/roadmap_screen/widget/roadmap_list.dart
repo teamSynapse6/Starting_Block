@@ -6,12 +6,14 @@ import 'package:starting_block/screen/manage/screen_manage.dart';
 
 class RoadMapList extends StatefulWidget {
   final Function(String)? selectedRoadMapTitle;
-  final Function(dynamic)? selectedRoadMapId;
+  final Function(int)? selectedRoadMapId;
+  final Function(bool)? isCurrentStage;
 
   const RoadMapList({
     super.key,
-    this.selectedRoadMapTitle,
-    this.selectedRoadMapId,
+    required this.selectedRoadMapTitle,
+    required this.selectedRoadMapId,
+    required this.isCurrentStage,
   });
 
   @override
@@ -21,8 +23,8 @@ class RoadMapList extends StatefulWidget {
 class _RoadMapListState extends State<RoadMapList> {
   List<RoadMapModel>? roadMaps;
   String selectedRoadMapTitle = ''; // 선택된 RoadMap의 제목을 저장할 변수
-  dynamic
-      selectedRoadMapId; // 선택된 RoadMap의 ID를 저장할 변수, RoadMapModel의 구조에 따라 타입 조정 필요
+  int? selectedRoadMapId;
+  bool? isCurrentStage;
 
   @override
   void initState() {
@@ -44,8 +46,14 @@ class _RoadMapListState extends State<RoadMapList> {
         );
         if (inProgressOrLastRoadMap != null) {
           selectedRoadMapTitle = inProgressOrLastRoadMap.title;
-          selectedRoadMapId = inProgressOrLastRoadMap
-              .roadmapId; // 가정: RoadMapModel에 id 필드가 있다고 가정
+          selectedRoadMapId = inProgressOrLastRoadMap.roadmapId;
+          isCurrentStage =
+              inProgressOrLastRoadMap.roadmapStatus == "IN_PROGRESS";
+
+          widget.selectedRoadMapTitle?.call(inProgressOrLastRoadMap.title);
+          widget.selectedRoadMapId?.call(inProgressOrLastRoadMap.roadmapId);
+          widget.isCurrentStage
+              ?.call(inProgressOrLastRoadMap.roadmapStatus == "IN_PROGRESS");
         }
       });
     }
@@ -122,11 +130,15 @@ class _RoadMapListState extends State<RoadMapList> {
                                             selectedRoadMapId = roadMap
                                                 .roadmapId; // 선택한 항목의 ID를 업데이트
                                           });
-                                          if (widget.selectedRoadMapTitle !=
-                                              null) {
-                                            widget.selectedRoadMapTitle!(
-                                                roadMap.title);
-                                          }
+
+                                          widget.selectedRoadMapTitle
+                                              ?.call(roadMap.title);
+                                          widget.selectedRoadMapId
+                                              ?.call(roadMap.roadmapId);
+                                          widget.isCurrentStage?.call(
+                                              roadMap.roadmapStatus ==
+                                                  "IN_PROGRESS");
+
                                           Navigator.pop(context); // 바텀 시트 닫기
                                         },
                                         child: Padding(
@@ -228,9 +240,7 @@ class _RoadMapListState extends State<RoadMapList> {
           },
         );
       },
-    ).then((result) {
-      loadRoadMaps();
-    });
+    );
   }
 
   @override

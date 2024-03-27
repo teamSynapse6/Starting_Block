@@ -17,12 +17,15 @@ const List<String> validTextsSystem = [
 
 class TabScreenOnCaSystem extends StatefulWidget {
   final String thisSelectedText;
+  final int thisSelectedId;
+
   final bool thisCurrentStage;
 
   const TabScreenOnCaSystem({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
+    required this.thisSelectedId,
   });
 
   @override

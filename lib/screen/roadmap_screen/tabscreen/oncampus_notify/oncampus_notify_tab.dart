@@ -20,12 +20,15 @@ const List<String> validTextsNotify = [
 
 class TabScreenOnCaNotify extends StatefulWidget {
   final String thisSelectedText;
+  final int thisSelectedId;
+
   final bool thisCurrentStage;
 
   const TabScreenOnCaNotify({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
+    required this.thisSelectedId,
   });
 
   @override
