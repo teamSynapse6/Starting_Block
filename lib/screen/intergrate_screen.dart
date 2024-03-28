@@ -5,9 +5,12 @@ import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 
 enum SwitchIndex {
+  none,
   toZero,
   toOne,
-  none,
+  toTwo,
+  toThree,
+  toFour,
 }
 
 class IntergrateScreen extends StatefulWidget {
@@ -37,22 +40,31 @@ class IntergrateScreen extends StatefulWidget {
 class _IntergrateScreenState extends State<IntergrateScreen> {
   int _selectedIndex = 0;
   String _schoolName = "";
-  bool _isRoadMapEmpty = false;
+  final bool _isRoadMapEmpty = false;
 
   @override
   void initState() {
     super.initState();
-    _loadRoadmapList();
+
     _loadSchoolName();
     switch (widget.switchIndex) {
+      case SwitchIndex.none:
+        // 초기 설정이 필요 없는 경우
+        break;
       case SwitchIndex.toZero:
         _selectedIndex = 0;
         break;
       case SwitchIndex.toOne:
         _selectedIndex = 1;
         break;
-      case SwitchIndex.none:
-        // 초기 설정이 필요 없는 경우
+      case SwitchIndex.toTwo:
+        _selectedIndex = 2;
+        break;
+      case SwitchIndex.toThree:
+        _selectedIndex = 3;
+        break;
+      case SwitchIndex.toFour:
+        _selectedIndex = 4;
         break;
     }
   }
@@ -61,14 +73,6 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     String schoolName = await UserInfo.getSchoolName(); // 비동기 호출
     setState(() {
       _schoolName = schoolName;
-    });
-  }
-
-  Future<void> _loadRoadmapList() async {
-    bool roadmapListIsEmpty =
-        await RoadMapModel.loadRoadmapListIsEmpty(); // 비동기 호출
-    setState(() {
-      _isRoadMapEmpty = roadmapListIsEmpty;
     });
   }
 

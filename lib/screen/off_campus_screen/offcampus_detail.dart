@@ -59,10 +59,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SaveAppBar(
-        thisBookMark: BookMarkButton(
-          id: widget.thisID,
-          classification: '교외사업',
-        ),
+        thisBookMark: Container(),
       ),
       body: SingleChildScrollView(
         child: Column(

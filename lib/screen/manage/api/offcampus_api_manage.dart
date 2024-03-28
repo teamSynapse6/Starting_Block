@@ -6,7 +6,7 @@ class OffCampusApi {
   static Map<String, String> headers = {
     'accept': 'application/json',
     'Authorization':
-        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzA5Nzk3Njc5LCJleHAiOjIwNjk3OTc2Nzl9.jA8iQGPWxvK5VZnu4hQk_bJ02htop4Vvf4pbYNHBMsglHTlvENCA9hKA_Fi9aVH8GoOcnBOW-mdWWxxkSQgt6g'
+        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzA4Nzg5MjE5LCJleHAiOjIwNjg3ODkyMTl9.QfNiocS_CBaiDrKqK93hfl03MAMJ_Pm9Fy-IibpT37CVlz2RN-SdaUQk9VkGMJcsVNsTIyBrROlQA4eXLk02Pg'
   };
 
   static String baseUrl = 'https://api.startingblock.co.kr';
@@ -21,6 +21,7 @@ class OffCampusApi {
     String region = '',
     String supportType = '',
     String search = '',
+    int size = 0,
   }) async {
     // 쿼리 파라미터 문자열 직접 생성
     String queryParams = 'page=$page&sorting=$sorting';
@@ -28,6 +29,7 @@ class OffCampusApi {
     if (region != '') queryParams += '&region=$region';
     if (supportType != '') queryParams += '&supportType=$supportType';
     if (search != '') queryParams += '&search=$search';
+    if (size != 0) queryParams += '&size=$size';
 
     // URL에 쿼리 파라미터 문자열 추가
     final offCampusUrl =

@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/onca_class_recommend.dart';
 
 const List<String> validTextsClass = [
@@ -22,12 +19,15 @@ const List<String> validTextsClass = [
 
 class TabScreenOnCaClass extends StatefulWidget {
   final String thisSelectedText;
+  final int thisSelectedId;
+
   final bool thisCurrentStage;
 
   const TabScreenOnCaClass({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
+    required this.thisSelectedId,
   });
 
   @override
@@ -41,27 +41,12 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
   @override
   void initState() {
     super.initState();
-    _loadSavedIds();
   }
 
   @override
   void didUpdateWidget(TabScreenOnCaClass oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.thisSelectedText != widget.thisSelectedText) {
-      _loadSavedIds();
-    }
-  }
-
-  Future<void> _loadSavedIds() async {
-    final ids = await getIdsForSelectedText();
-    setState(() {
-      savedIds = ids;
-      onCampusClassData = ids.isNotEmpty ? onCampusClassData : [];
-    });
-
-    if (ids.isNotEmpty) {
-      _loadOnCampusClassDataByIds();
-    }
+    if (oldWidget.thisSelectedText != widget.thisSelectedText) {}
   }
 
   Future<List<int>> getIdsForSelectedText() async {
@@ -81,29 +66,11 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
     }
   }
 
-  void _loadOnCampusClassDataByIds() async {
-    if (savedIds.isNotEmpty) {
-      try {
-        final data = await OnCampusAPI.getOnCampusClassByIds(savedIds);
-        setState(() {
-          onCampusClassData = data;
-        });
-      } catch (e) {
-        // 에러 처리 로직
-      }
-    } else {
-      setState(() {
-        onCampusClassData = [];
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondaryBG,
-      body: CustomScrollView(
-        slivers: <Widget>[
+        backgroundColor: AppColors.secondaryBG,
+        body: CustomScrollView(slivers: <Widget>[
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,58 +100,47 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
               ],
             ),
           ),
-          Consumer<RoadMapModel>(
-            builder: (context, roadmapModel, child) {
-              if (roadmapModel.hasUpdated) {
-                _loadSavedIds().then((_) => _loadOnCampusClassDataByIds());
-                roadmapModel.resetUpdateFlag();
-              }
-              if (savedIds.isNotEmpty) {
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final item = onCampusClassData[index];
-                      return Container(
-                        decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.zero,
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final item = onCampusClassData[index];
+                return Container(
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    children: [
+                      OnCaListClass(
+                        thisTitle: item.title,
+                        thisId: item.id,
+                        thisLiberal: item.liberal,
+                        thisCredit: item.credit,
+                        thisContent: item.content,
+                        thisSession: item.session,
+                      ),
+                      if (index < onCampusClassData.length - 1)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: CustomDivider(),
                         ),
-                        margin: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            OnCaListClass(
-                              thisTitle: item.title,
-                              thisId: item.id,
-                              thisLiberal: item.liberal,
-                              thisCredit: item.credit,
-                              thisContent: item.content,
-                              thisSession: item.session,
-                            ),
-                            if (index < onCampusClassData.length - 1)
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: CustomDivider(),
-                              ),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: onCampusClassData.length,
+                    ],
                   ),
                 );
-              } else {
-                return SliverToBoxAdapter(
-                  child: GotoSaveItem(
-                    tapAction: () {
-                      IntergrateScreen.setSelectedIndexToOne(context);
-                    },
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );
+              },
+              childCount: onCampusClassData.length,
+            ),
+          )
+        ]));
   }
+  // else {
+  //   return SliverToBoxAdapter(
+  //     child: GotoSaveItem(
+  //       tapAction: () {
+  //         IntergrateScreen.setSelectedIndexToOne(context);
+  //       },
+  //     ),
+  //   );
+  // }
 }

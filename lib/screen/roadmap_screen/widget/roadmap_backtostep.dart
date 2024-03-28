@@ -1,23 +1,20 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class GoBackToStep extends StatefulWidget {
-  final VoidCallback onResetToCurrentStage;
+class GoBackToStep extends StatelessWidget {
+  final thisTap;
 
   const GoBackToStep({
     super.key,
-    required this.onResetToCurrentStage,
+    required this.thisTap,
   });
 
   @override
-  State<GoBackToStep> createState() => _GoBackToStepState();
-}
-
-class _GoBackToStepState extends State<GoBackToStep> {
-  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.onResetToCurrentStage,
+    return InkWell(
+      onTap: thisTap,
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.white.withOpacity(0.08),

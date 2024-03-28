@@ -1,14 +1,14 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
 
 class NextStep extends StatefulWidget {
-  final VoidCallback onResetToCurrentStage;
+  final thisRightActionTap;
 
   const NextStep({
     super.key,
-    required this.onResetToCurrentStage,
+    this.thisRightActionTap,
   });
   @override
   State<NextStep> createState() => _NextStepState();
@@ -23,11 +23,7 @@ class _NextStepState extends State<NextStep> {
           title: '단계를 도약하시겠습니까?',
           description: '단계 도약 후에는 이전 단계로 되돌아갈 수 없습니다',
           rightActionText: '도약하기',
-          rightActionTap: () {
-            Provider.of<RoadMapModel>(context, listen: false).moveToNextStage();
-            Navigator.of(context).pop(); // 다이얼로그 닫기
-            widget.onResetToCurrentStage();
-          },
+          rightActionTap: widget.thisRightActionTap,
         );
       },
     );
@@ -35,7 +31,7 @@ class _NextStepState extends State<NextStep> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: _thisNextTap,
       child: Container(
         decoration: BoxDecoration(

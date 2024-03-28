@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
 
 const existing = [
   "창업 교육",
@@ -50,6 +49,19 @@ class _RoadMapAddState extends State<RoadMapAdd> {
     });
   }
 
+  void _onCompleteTap() {
+    if (_isNextButtonEnabled) {
+      String valueToAdd = _selectedChip ?? _textController.text;
+      RoadMapApi.addRoadMap(valueToAdd).then((_) {
+        Navigator.pop(context);
+      }).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('추가하는 데 실패했습니다: $error')),
+        );
+      });
+    }
+  }
+
   @override
   void dispose() {
     _textController.dispose();
@@ -71,12 +83,17 @@ class _RoadMapAddState extends State<RoadMapAdd> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gaps.v22,
+              Gaps.v20,
               Text(
                 '단계를 추가해 보세요',
                 style: AppTextStyles.h5.copyWith(color: AppColors.black),
               ),
-              Gaps.v34,
+              Gaps.v10,
+              Text(
+                '기존 단계 선택이 아닌 직접 추가 시, 추천 지원사업은 제외됩니다',
+                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
+              ),
+              Gaps.v24,
               TextField(
                 controller: _textController,
                 maxLength: 20,
@@ -123,19 +140,9 @@ class _RoadMapAddState extends State<RoadMapAdd> {
               Padding(
                 padding: const EdgeInsets.only(bottom: Sizes.size24),
                 child: GestureDetector(
-                  onTap: _isNextButtonEnabled
-                      ? () {
-                          final roadmapModel =
-                              Provider.of<RoadMapModel>(context, listen: false);
-                          String newItem =
-                              _selectedChip ?? _textController.text;
-                          roadmapModel.addNewItem(newItem);
-                          Navigator.pop(
-                              context, true); // 현재 화면을 스택에서 제거하고 이전 화면으로 돌아갑니다.
-                        }
-                      : null,
+                  onTap: _onCompleteTap,
                   child: NextContained(
-                    text: "다음",
+                    text: "완료하기",
                     disabled: !_isNextButtonEnabled,
                   ),
                 ),

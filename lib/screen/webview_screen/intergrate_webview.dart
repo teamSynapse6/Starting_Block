@@ -71,7 +71,7 @@ class WebViewScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                WebBookMarkButton(id: id, classification: classification)
+                // WebBookMarkButton(id: id, classification: classification)
               ],
             ),
           ),

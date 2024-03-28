@@ -55,7 +55,7 @@ class _OnCaSystemCardState extends State<OnCaSystemCard> {
                       style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
                     ),
                     const Spacer(),
-                    BookMarkButton(id: widget.thisId, classification: '창업제도'),
+                    // BookMarkButton(id: widget.thisId, classification: '창업제도'),
                   ],
                 ),
                 Gaps.v10,

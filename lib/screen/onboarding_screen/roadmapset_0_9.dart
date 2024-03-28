@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/system_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert'; // JSON 인코딩/디코딩을 위해 추가
 
 class RoadmapScreen extends StatefulWidget {
   const RoadmapScreen({super.key});
@@ -41,95 +37,10 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     userNickname = await UserInfo.getNickName();
   }
 
-  Future<void> _saveRoadmapItems() async {
-    final prefs = await SharedPreferences.getInstance();
-    String roadmapItemsString = json.encode(roadmapItems);
-    await prefs.setString('roadmapList', roadmapItemsString);
-  }
-
-  void _onNextTap() async {
-    await _saveRoadmapItems(); // 로드맵 아이템을 SharedPreferences에 저장합니다.
-
-    // kakaoUserID 가져오기
-    int kakaoUserID = await UserInfo.getKakaoUserID();
-
-    // 닉네임과 함께 사용자 정보 생성 요청
-    if (userNickname != null && userNickname!.isNotEmpty) {
-      try {
-        // kakaoUserID를 String으로 변환하여 API 요청
-        final String uuid = await SystemApiManage.getCreateUserInfo(
-            userNickname!, kakaoUserID.toString());
-
-        // SharedPreferences에 UUID 저장
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('userUuid', uuid);
-
-        // 성공적으로 UUID를 저장한 후 다음 화면으로 네비게이션
-        if (!mounted) return;
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const IntergrateScreen()),
-          (Route<dynamic> route) => false,
-        );
-      } catch (e) {
-        if (!mounted) return;
-        // 오류 처리: 사용자에게 실패 메시지를 표시합니다.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('사용자 정보 생성에 실패했습니다. 오류: $e')),
-        );
-      }
-    }
-  }
-
-  Future<void> _saveRoadmapItemsNull() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('roadmapList', '');
-  }
-
-  void _onSkipTap() async {
-    await _saveRoadmapItemsNull(); // 로드맵 아이템을 SharedPreferences에 저장합니다.
-
-    // kakaoUserID 가져오기
-    int kakaoUserID = await UserInfo.getKakaoUserID();
-
-    // 닉네임과 함께 사용자 정보 생성 요청
-    if (userNickname != null && userNickname!.isNotEmpty) {
-      try {
-        // kakaoUserID를 String으로 변환하여 API 요청
-        final String uuid = await SystemApiManage.getCreateUserInfo(
-            userNickname!, kakaoUserID.toString());
-
-        // SharedPreferences에 UUID 저장
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('userUuid', uuid);
-
-        // 성공적으로 UUID를 저장한 후 다음 화면으로 네비게이션
-        if (!mounted) return;
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const IntergrateScreen()),
-          (Route<dynamic> route) => false,
-        );
-      } catch (e) {
-        if (!mounted) return;
-        // 오류 처리: 사용자에게 실패 메시지를 표시합니다.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('사용자 정보 생성에 실패했습니다. 오류: $e')),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackTitleAppBar(
-        thisTextStyle: AppTextStyles.btn1.copyWith(
-          color: AppColors.g5,
-        ),
-        text: '건너뛰기',
-        thisOnTap: _onSkipTap,
-      ),
+      appBar: const BackAppBar(),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -228,7 +139,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                 right: 24,
               ),
               child: GestureDetector(
-                onTap: _onNextTap,
+                onTap: null,
                 child: const NextContained(
                   text: "시작하기",
                   disabled: false,

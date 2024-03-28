@@ -1,17 +1,20 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/bookmark/bookmark_list.dart';
-import 'package:starting_block/screen/manage/models/roadmap_model.dart';
+import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
+import 'package:starting_block/screen/manage/model_manage.dart';
 
 class BookMarkButton extends StatefulWidget {
-  final String id;
-  final String classification;
+  final bool isSaved;
+  final String thisID;
 
   const BookMarkButton({
     super.key,
-    required this.id,
-    required this.classification,
+    required this.isSaved,
+    required this.thisID,
   });
 
   @override
@@ -19,33 +22,72 @@ class BookMarkButton extends StatefulWidget {
 }
 
 class _BookMarkButtonState extends State<BookMarkButton> {
-  late ScrollController _scrollController;
+  List<RoadMapAnnounceModel>? roadMaps;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    loadRoadMaps();
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+  void loadRoadMaps() async {
+    // widget.thisID를 통해 announcementId를 받아오고, API를 호출합니다.
+    final roadMapAnnounceList =
+        await RoadMapApi.getRoadMapAnnounceList(widget.thisID);
+    // 받아온 데이터로 상태를 업데이트합니다.
+    setState(() {
+      roadMaps = roadMapAnnounceList;
+    });
+  }
+
+  void _saveAction(int roadmapId, StateSetter setStateModal) async {
+    try {
+      await RoadMapApi.addAnnouncementToRoadMap(roadmapId, widget.thisID);
+      // 성공적으로 추가된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
+      print('공고가 성공적으로 추가되었습니다.');
+      _updateRoadMapsModal(setStateModal);
+      if (mounted) {
+        Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
+      }
+    } catch (e) {
+      print('공고 추가에 실패했습니다: $e');
+      // 실패 시 사용자에게 알림을 제공할 수 있습니다.
+    }
+  }
+
+  void _deleteAction(int roadmapId, StateSetter setStateModal) async {
+    try {
+      await RoadMapApi.deleteAnnouncementFromRoadMap(roadmapId, widget.thisID);
+      // 성공적으로 삭제된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
+      print('공고가 성공적으로 삭제되었습니다.');
+      _updateRoadMapsModal(setStateModal);
+      if (mounted) {
+        Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
+      }
+    } catch (e) {
+      print('공고 삭제에 실패했습니다: $e');
+      // 실패 시 사용자에게 알림을 제공할 수 있습니다.
+    }
+  }
+
+  void _updateRoadMapsModal(StateSetter setStateModal) async {
+    final roadMapAnnounceList =
+        await RoadMapApi.getRoadMapAnnounceList(widget.thisID);
+    setStateModal(() {
+      roadMaps = roadMapAnnounceList;
+    });
   }
 
   void _bookMarkTap(BuildContext context) async {
     await showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Consumer<RoadMapModel>(
-          // Consumer 사용
-          builder: (context, roadmapModel, child) {
-            final List<String> roadmapList = roadmapModel.roadmapList;
-
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setStateModal) {
             return Container(
-              color: AppColors.white,
               height: 400,
               width: MediaQuery.of(context).size.width,
+              color: AppColors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -58,48 +100,35 @@ class _BookMarkButtonState extends State<BookMarkButton> {
                     ),
                   ),
                   Gaps.v8,
-                  Expanded(
-                    child: ListView.builder(
-                      key: const PageStorageKey<String>(
-                          'bookmarkList'), // Key 추가
-                      controller: _scrollController,
-                      itemCount: roadmapList.length,
-                      itemBuilder: (context, index) {
-                        return FutureBuilder<bool>(
-                          future: roadmapModel.isItemSaved(widget.id,
-                              widget.classification, roadmapList[index]),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Container();
-                            }
-
-                            bool isSaved = snapshot.data ?? false;
-                            return BookMarkList(
-                              thisText: roadmapList[index],
-                              thisColor: AppColors.white,
-                              thisIcon: isSaved
-                                  ? AppIcon.plus_actived
-                                  : AppIcon.plus_inactived,
-                              thisTapAction: () {
-                                if (isSaved) {
-                                  roadmapModel.removeSavedItem(
-                                      widget.id,
-                                      widget.classification,
-                                      roadmapList[index]);
-                                } else {
-                                  roadmapModel.saveRoadmapItem(
-                                      widget.id,
-                                      widget.classification,
-                                      roadmapList[index]);
-                                }
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  )
+                  roadMaps == null
+                      ? const CircularProgressIndicator()
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: roadMaps!.length,
+                            itemBuilder: (context, index) {
+                              final roadMap = roadMaps![index];
+                              return BookMarkList(
+                                thisText: roadMap.title,
+                                thisColor: AppColors.white,
+                                thisTapAction: () async {
+                                  print('클릭이 되었습니다.');
+                                  if (roadMap.isAnnouncementSaved) {
+                                    _deleteAction(
+                                        roadMap.roadmapId, setStateModal);
+                                  } else {
+                                    _saveAction(
+                                        roadMap.roadmapId, setStateModal);
+                                  }
+                                  // 모달의 상태를 업데이트합니다.
+                                  _updateRoadMapsModal(setStateModal);
+                                },
+                                thisIcon: roadMap.isAnnouncementSaved
+                                    ? AppIcon.plus_actived
+                                    : AppIcon.plus_inactived,
+                              );
+                            },
+                          ),
+                        ),
                 ],
               ),
             );
@@ -111,33 +140,14 @@ class _BookMarkButtonState extends State<BookMarkButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RoadMapModel>(
-      builder: (context, roadmapModel, child) {
-        return FutureBuilder<bool>(
-          future: roadmapModel.hasSavedItems(widget.id),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            bool hasSavedItems = snapshot.data ?? false;
-            return GestureDetector(
-              onTap: () => _bookMarkTap(context),
-              child: SizedBox(
-                height: 24,
-                width: 24,
-                child: hasSavedItems
-                    ? AppIcon.bookmark_actived
-                    : AppIcon.bookmark_inactived,
-              ),
-            );
-          },
-        );
-      },
+    return InkWell(
+      onTap: () => _bookMarkTap(context),
+      child: SizedBox(
+          height: 24,
+          width: 24,
+          child: widget.isSaved
+              ? AppIcon.bookmark_actived
+              : AppIcon.bookmark_inactived),
     );
   }
 }
