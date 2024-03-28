@@ -100,4 +100,15 @@ class UserInfo extends ChangeNotifier {
     await initialize(); // SharedPreferences 인스턴스를 초기화합니다.
     return _prefs.getInt('kakaoUserID') ?? 0; // 기본값으로 0을 반환하도록 설정
   }
+
+  // gptThreadID 메소드
+  Future<void> setGptThreadID(String gptThreadID) async {
+    await _prefs.setString('gptThreadID', gptThreadID);
+    notifyListeners();
+  }
+
+  static Future<String> getGptThreadID() async {
+    await initialize();
+    return _prefs.getString('gptThreadID') ?? "";
+  }
 }

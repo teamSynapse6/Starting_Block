@@ -79,6 +79,11 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                 content: _offcampusDetail[0].content,
                 questionCount: _questionCount.toString(),
               ),
+            if (_offcampusDetail.isNotEmpty)
+              OffCampusDetailGptCard(
+                thisTitle: _offcampusDetail[0].title,
+                thisID: widget.thisID,
+              ),
             Container(
               height: 8,
               decoration: const BoxDecoration(color: AppColors.g1),

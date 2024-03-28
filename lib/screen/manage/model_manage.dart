@@ -17,6 +17,9 @@ export 'package:starting_block/screen/manage/models/oncampus_supportgroup/onca_c
 export 'package:starting_block/screen/manage/models/oncampus_supportgroup/onca_space_model.dart'; //공간 모델
 export 'package:starting_block/screen/manage/models/oncampus_supportgroup/onca_etc_model.dart'; //기타 모델
 
+//채팅 모델 관리용
+export 'package:starting_block/screen/manage/models/gpt_chta_models/message_model.dart'; //채팅 모델
+
 //질문&답변 Model파일 관리용
 export 'package:starting_block/screen/manage/models/question_answer/question_model.dart'; //질문 모델
 

@@ -17,9 +17,13 @@ export 'package:starting_block/constants/widgets/bottom_navigation/gnb_tap.dart'
 export 'package:starting_block/screen/off_campus_screen/offcampus_home.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_detail.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_detail_info.dart';
+export 'package:starting_block/screen/off_campus_screen/offcampus_detail_gpt_card.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_recommendation.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_search.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_searchresult.dart';
+
+//GPT 채팅 페이지
+export 'package:starting_block/screen/off_campus_screen/gpt_chat/offcampus_gpt_chat.dart';
 
 //로드맵 페이지
 export 'package:starting_block/screen/roadmap_screen/roadmap_home.dart';
