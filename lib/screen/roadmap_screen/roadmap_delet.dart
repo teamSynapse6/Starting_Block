@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/widget/delete_list.dart';
 
@@ -13,11 +13,25 @@ class RoadMapDelete extends StatefulWidget {
 
 class _RoadMapDeleteState extends State<RoadMapDelete> {
   int? selectedDeleteIndex; // 선택된 삭제 항목의 인덱스
+  List<RoadMapModel>? roadMaps;
 
-  void _thisDeleteTap(int index) {
+  @override
+  void initState() {
+    super.initState();
+    loadRoadMaps();
+  }
+
+  void loadRoadMaps() async {
+    final roadMapList = await RoadMapApi.getRoadMapList();
+    roadMapList
+        .sort((a, b) => a.sequence.compareTo(b.sequence)); // sequence에 따라 정렬
     setState(() {
-      selectedDeleteIndex = index;
+      roadMaps = roadMapList;
     });
+  }
+
+  void _thisDeleteTap(int roadmapId) {
+    // 다이얼로그를 표시
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -25,26 +39,31 @@ class _RoadMapDeleteState extends State<RoadMapDelete> {
           title: '단계를 삭제하겠습니까?',
           description: '단계 내에 저장한 지원 사업까지 삭제됩니다',
           rightActionText: '삭제',
-          rightActionTap: () {
-            final roadmapModel =
-                Provider.of<RoadMapModel>(context, listen: false);
-            roadmapModel.removeAt(selectedDeleteIndex!); // 삭제 로직
-            Navigator.pop(context, true); // Dialog 닫기
+          rightActionTap: () async {
+            Navigator.of(context).pop(); // 다이얼로그 닫기
+            try {
+              // 로드맵 삭제 실행
+              await RoadMapApi.deleteRoadMap(roadmapId.toString());
+              // 삭제 후 로드맵 리스트 재로딩
+              loadRoadMaps();
+            } catch (e) {
+              // 오류 발생 시 사용자에게 알림
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('로드맵 삭제 중 오류가 발생했습니다: $e')),
+              );
+            }
           },
         );
       },
     ).then((_) {
       setState(() {
-        selectedDeleteIndex = null;
+        selectedDeleteIndex = null; // 선택된 삭제 인덱스 초기화
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final roadmapModel = Provider.of<RoadMapModel>(context);
-    final roadmapList = roadmapModel.roadmapList;
-
     return Scaffold(
       appBar: const CloseAppBar(
         state: true,
@@ -67,18 +86,24 @@ class _RoadMapDeleteState extends State<RoadMapDelete> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: roadmapList.length,
-              itemBuilder: (context, index) {
-                return DeleteList(
-                  thisText: roadmapList[index],
-                  thisTap: () => _thisDeleteTap(index),
-                  thisBackgroundColor: selectedDeleteIndex == index
-                      ? AppColors.g2
-                      : AppColors.white,
-                );
-              },
-            ),
+            child: roadMaps != null
+                ? ListView.builder(
+                    itemCount: roadMaps!.length,
+                    itemBuilder: (context, index) {
+                      final roadMap = roadMaps![index];
+                      return DeleteList(
+                        thisText: roadMap.title,
+                        thisTap: () => _thisDeleteTap(roadMap.roadmapId),
+                        thisBackgroundColor:
+                            selectedDeleteIndex == roadMap.roadmapId
+                                ? AppColors.g2
+                                : AppColors.white,
+                      );
+                    },
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
           ),
         ],
       ),

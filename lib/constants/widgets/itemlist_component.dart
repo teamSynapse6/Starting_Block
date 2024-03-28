@@ -31,6 +31,7 @@ class ItemList extends StatelessWidget {
       thisStartDate,
       thisEndDate,
       thisClassification;
+  final bool isSaved;
 
   const ItemList({
     super.key,
@@ -40,6 +41,7 @@ class ItemList extends StatelessWidget {
     required this.thisStartDate,
     required this.thisEndDate,
     required this.thisClassification,
+    required this.isSaved,
   });
 
   @override
@@ -73,9 +75,9 @@ class ItemList extends StatelessWidget {
                 OrganizeChip(text: thisOrganize),
                 const Spacer(),
                 BookMarkButton(
-                  id: thisID,
-                  classification: thisClassification,
-                ),
+                  isSaved: isSaved,
+                  thisID: thisID,
+                )
               ],
             ),
             Gaps.v12,

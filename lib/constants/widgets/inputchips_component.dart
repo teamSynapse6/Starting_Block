@@ -114,12 +114,8 @@ class DefaultInputChip extends StatelessWidget {
       child: Container(
         height: 32,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.bluedark : AppColors.white,
+          color: isSelected ? AppColors.blue : AppColors.g1,
           borderRadius: BorderRadius.circular(46),
-          border: Border.all(
-            color: isSelected ? AppColors.bluedark : AppColors.g3,
-            width: 1,
-          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

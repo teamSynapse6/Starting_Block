@@ -65,10 +65,10 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const Spacer(),
-                    BookMarkButton(
-                      id: widget.thisId,
-                      classification: '창업강의',
-                    ),
+                    // BookMarkButton(
+                    //   id: widget.thisId,
+                    //   classification: '창업강의',
+                    // ),
                   ],
                 ),
                 Gaps.v20,

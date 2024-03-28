@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'dart:math' as math;
@@ -17,6 +18,9 @@ class _RoadmapHomeState extends State<RoadmapHome>
   String _nickName = "";
   String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
   bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
+  int _roadMapId = 0;
+  final GlobalKey<RoadMapListState> roadMapListKey =
+      GlobalKey<RoadMapListState>(); // RoadMapListState에 접근하기 위해 사용
 
   @override
   void initState() {
@@ -26,27 +30,10 @@ class _RoadmapHomeState extends State<RoadmapHome>
     // _selectedRoadmapText를 로드하는 논리를 여기에 추가합니다
   }
 
-  final GlobalKey<State<RoadMapList>> roadMapListKey = GlobalKey();
-
-  void resetToCurrentStage() {
-    RoadMapList.resetToCurrentStage(roadMapListKey);
-  }
-
   Future<void> _loadNickName() async {
     String nickName = await UserInfo.getNickName();
     setState(() {
       _nickName = nickName;
-    });
-  }
-
-  // 콜백 함수 구현
-  void _onSelectedRoadmapChanged(
-      String selectedText, int selectedIndex, bool isCurrentStage) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _selectedRoadmapText = selectedText;
-        _isCurrentStageSelected = isCurrentStage;
-      });
     });
   }
 
@@ -94,19 +81,26 @@ class _RoadmapHomeState extends State<RoadmapHome>
                     // bottomPadding이 음수가 되지 않도록 보장합니다.
                     final double bottomPadding =
                         math.max(0, 16 + (32 * expansionRatio));
-                    // AppBar의 현재 높이에 따라 backgroundOpacity를 계산합니다.
-                    // if (appBarHeight > 85) {
-                    //   backgroundOpacity = ((appBarHeight - 85) / (152 - 85));
-                    // } else {
-                    //   backgroundOpacity = 0.0; // 85 이하일 때 투명도를 0으로 설정
-                    // }
-                    // print('앱바높이: $appBarHeight');
-                    // print('투명도: $backgroundOpacity');
+
                     return Padding(
                       padding: EdgeInsets.only(bottom: bottomPadding),
                       child: RoadMapList(
                         key: roadMapListKey,
-                        onSelectedRoadmapChanged: _onSelectedRoadmapChanged,
+                        selectedRoadMapTitle: (String title) {
+                          setState(() {
+                            _selectedRoadmapText = title;
+                          });
+                        },
+                        selectedRoadMapId: (int id) {
+                          setState(() {
+                            _roadMapId = id;
+                          });
+                        },
+                        isCurrentStage: (bool currentStage) {
+                          setState(() {
+                            _isCurrentStageSelected = currentStage;
+                          });
+                        },
                       ),
                     );
                   },
@@ -131,9 +125,17 @@ class _RoadmapHomeState extends State<RoadmapHome>
                             const Spacer(),
                             _isCurrentStageSelected
                                 ? NextStep(
-                                    onResetToCurrentStage: resetToCurrentStage)
-                                : GoBackToStep(
-                                    onResetToCurrentStage: resetToCurrentStage),
+                                    thisRightActionTap: () async {
+                                      Navigator.of(context).pop();
+                                      await RoadMapApi.roadMapLeap();
+                                      roadMapListKey.currentState
+                                          ?.loadRoadMaps();
+                                    },
+                                  )
+                                : GoBackToStep(thisTap: () {
+                                    roadMapListKey.currentState
+                                        ?.selectInProgressRoadMap();
+                                  }),
                           ],
                         ),
                       ],
@@ -167,18 +169,22 @@ class _RoadmapHomeState extends State<RoadmapHome>
                   TabScreenOfCaBiz(
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
+                    thisSelectedId: _roadMapId,
                   ),
                   TabScreenOnCaNotify(
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
+                    thisSelectedId: _roadMapId,
                   ),
                   TabScreenOnCaClass(
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
+                    thisSelectedId: _roadMapId,
                   ),
                   TabScreenOnCaSystem(
                     thisSelectedText: _selectedRoadmapText,
                     thisCurrentStage: _isCurrentStageSelected,
+                    thisSelectedId: _roadMapId,
                   ),
                 ],
               ),
