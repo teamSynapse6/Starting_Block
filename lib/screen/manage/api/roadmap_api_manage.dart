@@ -35,14 +35,19 @@ class RoadMapApi {
 
   // 로드맵 단계 추가 메소드
   static Future<void> addRoadMap(String roadmapTitle) async {
-    // URL에 쿼리 파라미터를 추가합니다.
-    final url = Uri.parse('$baseUrl/$addRDList?roadmapTitle=$roadmapTitle');
-    final response = await http.post(url, headers: headers);
+    // roadmapTitle을 URL 인코딩합니다.
+    String encodedTitle = Uri.encodeComponent(roadmapTitle);
+    // 인코딩된 roadmapTitle을 URL 쿼리 파라미터로 추가합니다.
+    final url = Uri.parse('$baseUrl/$addRDList?roadmapTitle=$encodedTitle');
+
+    final response = await http.post(
+      url,
+      headers: headers,
+    );
 
     if (response.statusCode == 200) {
       print('로드맵이 성공적으로 추가되었습니다.');
     } else {
-      // 오류 메시지에서 상태 코드를 함께 출력합니다.
       throw Exception('로드맵 추가에 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }
@@ -117,6 +122,21 @@ class RoadMapApi {
       print('로드맵 도약이 성공적으로 수행되었습니다.');
     } else {
       throw Exception('로드맵 도약에 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  // 로드맵 순서 변경 메소드
+  static Future<void> roadMapReorder(List<int> roadmapIds) async {
+    final url = Uri.parse('$baseUrl/api/v1/roadmaps/swap');
+    final String requestBody = jsonEncode({
+      "roadmapIds": roadmapIds,
+    });
+    final response = await http.post(url, headers: headers, body: requestBody);
+
+    if (response.statusCode == 200) {
+      print('로드맵의 순서가 성공적으로 변경되었습니다.');
+    } else {
+      throw Exception('로드맵 순서 변경에 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }
 }

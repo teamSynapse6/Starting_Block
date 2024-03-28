@@ -1,9 +1,14 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class NextStep extends StatefulWidget {
+  final thisRightActionTap;
+
   const NextStep({
     super.key,
+    this.thisRightActionTap,
   });
   @override
   State<NextStep> createState() => _NextStepState();
@@ -18,7 +23,7 @@ class _NextStepState extends State<NextStep> {
           title: '단계를 도약하시겠습니까?',
           description: '단계 도약 후에는 이전 단계로 되돌아갈 수 없습니다',
           rightActionText: '도약하기',
-          rightActionTap: () {},
+          rightActionTap: widget.thisRightActionTap,
         );
       },
     );
@@ -26,7 +31,7 @@ class _NextStepState extends State<NextStep> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: _thisNextTap,
       child: Container(
         decoration: BoxDecoration(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_recommend.dart';
 
 const List<String> validTextsBiz = [
@@ -47,7 +46,7 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
     if (oldWidget.thisSelectedText != widget.thisSelectedText) {}
   }
 
-  void _loadOffCampusDataByIds() async {}
+  // void _loadOffCampusDataByIds() async {}
 
   @override
   Widget build(BuildContext context) {

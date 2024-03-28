@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
 import 'package:starting_block/screen/manage/screen_manage.dart';
 import 'dart:math' as math;
@@ -18,6 +19,8 @@ class _RoadmapHomeState extends State<RoadmapHome>
   String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
   bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
   int _roadMapId = 0;
+  final GlobalKey<RoadMapListState> roadMapListKey =
+      GlobalKey<RoadMapListState>(); // RoadMapListState에 접근하기 위해 사용
 
   @override
   void initState() {
@@ -82,6 +85,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
                     return Padding(
                       padding: EdgeInsets.only(bottom: bottomPadding),
                       child: RoadMapList(
+                        key: roadMapListKey,
                         selectedRoadMapTitle: (String title) {
                           setState(() {
                             _selectedRoadmapText = title;
@@ -120,8 +124,18 @@ class _RoadmapHomeState extends State<RoadmapHome>
                           children: [
                             const Spacer(),
                             _isCurrentStageSelected
-                                ? const NextStep()
-                                : const GoBackToStep()
+                                ? NextStep(
+                                    thisRightActionTap: () async {
+                                      Navigator.of(context).pop();
+                                      await RoadMapApi.roadMapLeap();
+                                      roadMapListKey.currentState
+                                          ?.loadRoadMaps();
+                                    },
+                                  )
+                                : GoBackToStep(thisTap: () {
+                                    roadMapListKey.currentState
+                                        ?.selectInProgressRoadMap();
+                                  }),
                           ],
                         ),
                       ],

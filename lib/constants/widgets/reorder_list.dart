@@ -7,12 +7,14 @@ class ReorderCustomTile extends StatelessWidget {
   final String thisText;
   final TextStyle thisTextStyle;
   final bool? isComlete;
+  final thisBGColor;
 
   const ReorderCustomTile({
     super.key,
     required this.thisText,
     required this.thisTextStyle,
     this.isComlete,
+    this.thisBGColor,
   });
 
   @override
@@ -21,7 +23,7 @@ class ReorderCustomTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Material(
         elevation: 0,
-        color: Colors.white,
+        color: thisBGColor ?? Colors.white,
         child: SizedBox(
           height: 48,
           child: Row(

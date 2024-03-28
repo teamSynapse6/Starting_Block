@@ -33,7 +33,7 @@ class Recommendation extends StatelessWidget {
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   // thisID를 제외한 데이터만 필터링
                   var filteredData = snapshot.data!
-                      .where((item) => item.announcementId != thisID)
+                      .where((item) => item.announcementId != int.parse(thisID))
                       .toList();
                   return ListView.builder(
                     shrinkWrap: true,

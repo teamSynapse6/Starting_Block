@@ -21,6 +21,7 @@ class OffCampusApi {
     String region = '',
     String supportType = '',
     String search = '',
+    int size = 0,
   }) async {
     // 쿼리 파라미터 문자열 직접 생성
     String queryParams = 'page=$page&sorting=$sorting';
@@ -28,6 +29,7 @@ class OffCampusApi {
     if (region != '') queryParams += '&region=$region';
     if (supportType != '') queryParams += '&supportType=$supportType';
     if (search != '') queryParams += '&search=$search';
+    if (size != 0) queryParams += '&size=$size';
 
     // URL에 쿼리 파라미터 문자열 추가
     final offCampusUrl =

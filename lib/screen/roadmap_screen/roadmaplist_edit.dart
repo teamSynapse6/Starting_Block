@@ -15,6 +15,8 @@ class RoadMapEdit extends StatefulWidget {
 
 class _RoadMapEditState extends State<RoadMapEdit> {
   List<RoadMapModel>? roadMaps;
+  int? draggingIndex;
+  bool _isDeactived = true; // 순서 변경 확인을 위한 플래그 추가
 
   @override
   void initState() {
@@ -32,10 +34,50 @@ class _RoadMapEditState extends State<RoadMapEdit> {
   }
 
   void onReorder(int oldIndex, int newIndex) {
+    // 'COMPLETED' 상태의 마지막 인덱스를 찾습니다.
+    int lastCompletedIndex = roadMaps!
+        .lastIndexWhere((roadMap) => roadMap.roadmapStatus == "COMPLETED");
+
+    // newIndex가 oldIndex보다 큰 경우, newIndex를 조정합니다.
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+
+    // 드래그하려는 아이템이 'COMPLETED' 상태인 항목 뒤에 있거나,
+    // 새 위치(newIndex)가 'COMPLETED' 상태의 마지막 인덱스보다 앞에 있을 경우,
+    // 재정렬을 허용하지 않습니다.
+    if (oldIndex <= lastCompletedIndex || newIndex <= lastCompletedIndex) {
+      return; // 변경 사항을 적용하지 않고 함수 종료
+    }
+
+    // 재정렬 로직을 실행합니다.
     setState(() {
       final RoadMapModel item = roadMaps!.removeAt(oldIndex);
-      roadMaps!.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, item);
+      roadMaps!.insert(newIndex, item);
+      _isDeactived = false;
     });
+  }
+
+  // '완료' 버튼을 눌렀을 때 실행되는 메소드
+  void _onCompleteTap() async {
+    if (_isDeactived) {
+      return;
+    }
+    List<int> roadmapIds =
+        roadMaps!.map((roadMap) => roadMap.roadmapId).toList();
+    await RoadMapApi.roadMapReorder(roadmapIds);
+    setState(() {
+      _isDeactived = true;
+    });
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const IntergrateScreen(
+                    switchIndex: SwitchIndex.toThree,
+                  )),
+          (route) => false);
+    }
   }
 
   @override
@@ -133,20 +175,67 @@ class _RoadMapEditState extends State<RoadMapEdit> {
                     itemCount: roadMaps!.length,
                     itemBuilder: (context, index) {
                       final roadMap = roadMaps![index];
-                      return ReorderCustomTile(
+                      return IgnorePointer(
+                        ignoring: roadMap.roadmapStatus == "COMPLETED",
                         key: ValueKey(roadMap.roadmapId),
-                        thisText: roadMap.title,
-                        thisTextStyle:
-                            AppTextStyles.bd2.copyWith(color: AppColors.g6),
-                        isComlete: roadMap.roadmapStatus == "COMPLETED",
+                        child: ReorderCustomTile(
+                          thisText: roadMap.title,
+                          thisTextStyle:
+                              AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                          isComlete: roadMap.roadmapStatus == "COMPLETED",
+                        ),
                       );
                     },
+                    onReorderStart: (int newIndex) {
+                      setState(() {
+                        draggingIndex = newIndex;
+                      });
+                    },
+                    onReorderEnd: (int oldIndex) {
+                      setState(() {
+                        draggingIndex = -1;
+                      });
+                    },
                     onReorder: onReorder,
+                    proxyDecorator:
+                        (Widget child, int index, Animation<double> animation) {
+                      return AnimatedBuilder(
+                          animation: animation,
+                          builder: (context, child) {
+                            double elevation =
+                                Tween<double>(begin: 0.0, end: 6.0)
+                                    .evaluate(animation);
+                            if (index == draggingIndex) {
+                              return Material(
+                                color: AppColors.g1,
+                                elevation: elevation,
+                                child: ReorderCustomTile(
+                                    thisBGColor: AppColors.g1,
+                                    thisText: roadMaps![index].title,
+                                    thisTextStyle: AppTextStyles.bd1),
+                              );
+                            }
+                            return Material(
+                              elevation: 0.0,
+                              child: child,
+                            );
+                          });
+                    },
                   )
                 : const Center(
                     child: CircularProgressIndicator(),
                   ),
           ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+            child: InkWell(
+              onTap: _onCompleteTap,
+              child: NextContained(
+                disabled: _isDeactived,
+                text: '완료',
+              ),
+            ),
+          )
         ],
       ),
     );

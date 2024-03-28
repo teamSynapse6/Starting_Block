@@ -16,11 +16,21 @@ class RoadMapList extends StatefulWidget {
     required this.isCurrentStage,
   });
 
+  static void setSelectedRoadMapTitle(BuildContext context) {
+    final state = context.findAncestorStateOfType<RoadMapListState>();
+    state?.selectInProgressRoadMap();
+  }
+
+  static void reloadRoadMapStatus(BuildContext context) {
+    final state = context.findAncestorStateOfType<RoadMapListState>();
+    state?.loadRoadMaps();
+  }
+
   @override
-  State<RoadMapList> createState() => _RoadMapListState();
+  State<RoadMapList> createState() => RoadMapListState();
 }
 
-class _RoadMapListState extends State<RoadMapList> {
+class RoadMapListState extends State<RoadMapList> {
   List<RoadMapModel>? roadMaps;
   String selectedRoadMapTitle = ''; // 선택된 RoadMap의 제목을 저장할 변수
   int? selectedRoadMapId;
@@ -55,6 +65,26 @@ class _RoadMapListState extends State<RoadMapList> {
           widget.isCurrentStage
               ?.call(inProgressOrLastRoadMap.roadmapStatus == "IN_PROGRESS");
         }
+      });
+    }
+  }
+
+  void selectInProgressRoadMap() {
+    final inProgressRoadMap = roadMaps?.firstWhere(
+      (roadMap) => roadMap.roadmapStatus == "IN_PROGRESS",
+      orElse: () => roadMaps!.last,
+    );
+
+    if (inProgressRoadMap != null) {
+      setState(() {
+        selectedRoadMapTitle = inProgressRoadMap.title;
+        selectedRoadMapId = inProgressRoadMap.roadmapId;
+        isCurrentStage = inProgressRoadMap.roadmapStatus == "IN_PROGRESS";
+
+        widget.selectedRoadMapTitle?.call(inProgressRoadMap.title);
+        widget.selectedRoadMapId?.call(inProgressRoadMap.roadmapId);
+        widget.isCurrentStage
+            ?.call(inProgressRoadMap.roadmapStatus == "IN_PROGRESS");
       });
     }
   }

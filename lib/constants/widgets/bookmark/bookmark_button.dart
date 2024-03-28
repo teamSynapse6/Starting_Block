@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/bookmark/bookmark_list.dart';
 import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
@@ -39,22 +40,30 @@ class _BookMarkButtonState extends State<BookMarkButton> {
     });
   }
 
-  void _saveAction(int roadmapId) async {
+  void _saveAction(int roadmapId, StateSetter setStateModal) async {
     try {
       await RoadMapApi.addAnnouncementToRoadMap(roadmapId, widget.thisID);
       // 성공적으로 추가된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
       print('공고가 성공적으로 추가되었습니다.');
+      _updateRoadMapsModal(setStateModal);
+      if (mounted) {
+        Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
+      }
     } catch (e) {
       print('공고 추가에 실패했습니다: $e');
       // 실패 시 사용자에게 알림을 제공할 수 있습니다.
     }
   }
 
-  void _deleteAction(int roadmapId) async {
+  void _deleteAction(int roadmapId, StateSetter setStateModal) async {
     try {
       await RoadMapApi.deleteAnnouncementFromRoadMap(roadmapId, widget.thisID);
       // 성공적으로 삭제된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
       print('공고가 성공적으로 삭제되었습니다.');
+      _updateRoadMapsModal(setStateModal);
+      if (mounted) {
+        Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
+      }
     } catch (e) {
       print('공고 삭제에 실패했습니다: $e');
       // 실패 시 사용자에게 알림을 제공할 수 있습니다.
@@ -73,10 +82,8 @@ class _BookMarkButtonState extends State<BookMarkButton> {
     await showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        // StatefulBuilder를 사용하여 상태를 관리합니다.
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setStateModal) {
-            // 여기서 setStateModal은 모달 내부에서 사용할 수 있는 setState 함수입니다.
             return Container(
               height: 400,
               width: MediaQuery.of(context).size.width,
@@ -104,10 +111,13 @@ class _BookMarkButtonState extends State<BookMarkButton> {
                                 thisText: roadMap.title,
                                 thisColor: AppColors.white,
                                 thisTapAction: () async {
+                                  print('클릭이 되었습니다.');
                                   if (roadMap.isAnnouncementSaved) {
-                                    _deleteAction(roadMap.roadmapId);
+                                    _deleteAction(
+                                        roadMap.roadmapId, setStateModal);
                                   } else {
-                                    _saveAction(roadMap.roadmapId);
+                                    _saveAction(
+                                        roadMap.roadmapId, setStateModal);
                                   }
                                   // 모달의 상태를 업데이트합니다.
                                   _updateRoadMapsModal(setStateModal);

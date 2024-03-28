@@ -25,6 +25,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => FilterModel()),
         ChangeNotifierProvider(create: (context) => OnCaFilterModel()),
         ChangeNotifierProvider(create: (context) => UserInfo()),
+        ChangeNotifierProvider(create: (context) => BookMarkNotifier()),
       ],
       child: const StartingBlock(),
     ),
