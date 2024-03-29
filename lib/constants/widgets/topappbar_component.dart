@@ -321,6 +321,7 @@ class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: thisBookMark, // 이 부분에서 위젯을 사용
           ),
         ],
+        toolbarHeight: 56, // Set the height of the AppBar to 56
       ),
     );
   }
