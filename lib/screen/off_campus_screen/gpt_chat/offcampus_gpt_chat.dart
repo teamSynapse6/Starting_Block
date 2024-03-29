@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print
 import 'dart:io';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/manage/api/gpt_api_manage.dart';
 import 'package:starting_block/screen/manage/model_manage.dart';
@@ -22,6 +24,7 @@ class OffCampusGptChat extends StatefulWidget {
 }
 
 class _OffCampusGptChatState extends State<OffCampusGptChat> {
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _controller = TextEditingController();
   bool _isTyped = false;
   String? _threadId;
@@ -36,6 +39,8 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
       _loadMessages().then((loadedMessages) {
         setState(() {
           _messages = loadedMessages;
+          _scrollToBottom();
+          print('메시지 리스트: $_messages');
         });
       });
     });
@@ -45,6 +50,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
   @override
   void dispose() {
     _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -96,14 +102,18 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
     }
   }
 
+  //메시지 보내기 메소드
   Future<void> _postGptChat(String message) async {
     setState(() {
       _isLoading = true; // Changed _isLoaded to _isLoading
     });
-    String thisMessage = '${widget.thisID}에서 찾아줘, $message';
+    // String thisMessage = '${widget.thisID}에서 찾아줘, $message';
+    String thisMessage = '1003에서 찾아줘, $message';
+
     if (_threadId != null) {
       String chatResponse =
-          await GptApi.postGptChat(_threadId!, widget.thisID, thisMessage);
+          // await GptApi.postGptChat(_threadId!, widget.thisID, thisMessage);
+          await GptApi.postGptChat(_threadId!, '1003', thisMessage);
       final currentTime = DateTime.now();
       final formattedTime = int.parse(
           '${currentTime.year}${currentTime.month.toString().padLeft(2, '0')}${currentTime.day.toString().padLeft(2, '0')}${currentTime.hour.toString().padLeft(2, '0')}${currentTime.minute.toString().padLeft(2, '0')}');
@@ -134,33 +144,32 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
     return File('${directory.path}/chat_data/${widget.thisID}.json');
   }
 
+// 메시지 목록을 SharedPreferences에 저장합니다.
   Future<void> _saveMessages(List<Message> messages) async {
-    final file = await _getLocalFile();
-    // 메시지 리스트를 JSON으로 변환하여 저장
-    final String encodedData =
-        json.encode(messages.map((msg) => msg.toJson()).toList());
-    await file.writeAsString(encodedData);
+    final prefs = await SharedPreferences.getInstance();
+    String encodedData =
+        jsonEncode(messages.map((msg) => msg.toJson()).toList());
+    await prefs.setString('chat_${widget.thisID}', encodedData);
   }
 
+// SharedPreferences에서 메시지 목록을 불러옵니다.
   Future<List<Message>> _loadMessages() async {
-    try {
-      final file = await _getLocalFile();
-      // 파일의 내용을 읽기
-      final String encodedData = await file.readAsString();
-      // JSON 데이터를 Dart 객체로 변환
-      final List<dynamic> jsonData = json.decode(encodedData);
-      return jsonData.map((data) => Message.fromJson(data)).toList();
-    } catch (e) {
-      // 파일이 존재하지 않거나 읽을 수 없는 경우 빈 리스트 반환
+    final prefs = await SharedPreferences.getInstance();
+    String? encodedData = prefs.getString('chat_${widget.thisID}');
+    if (encodedData == null) {
       return [];
     }
+    List<dynamic> jsonData = jsonDecode(encodedData);
+    return jsonData.map((data) => Message.fromJson(data)).toList();
   }
 
   // _buildSendMessageButton 메소드를 만들어서 '보내기' 버튼을 구성합니다.
   Widget _buildSendMessageButton() {
     return GestureDetector(
-      onTap: _isTyped
+      onTap: _isTyped && !_isLoading
           ? () async {
+              FocusScope.of(context).unfocus();
+              _scrollToBottom();
               final messageText = _controller.text;
               final currentTime = DateTime.now();
               final formattedTime = int.parse(
@@ -171,15 +180,16 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                 _messages.add(Message(
                     isUser: true, message: messageText, time: formattedTime));
               });
+              _controller.clear();
               // 메시지 전송
               await _postGptChat(messageText);
               // 입력 필드 초기화
-              _controller.clear();
               setState(() {
                 _isTyped = false;
               });
               // 대화 내용을 파일에 저장
               await _saveMessages(_messages);
+              _scrollToBottom();
             }
           : null,
       child: SizedBox(
@@ -188,6 +198,38 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
         child: _isTyped ? AppIcon.send_actived : AppIcon.send_inactived,
       ),
     );
+  }
+
+  /*스크롤 메소드*/
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+// 메시지의 시간을 형식화하는 함수
+  String _formatMessageTime(int messageTime) {
+    String dateTimeString = messageTime.toString();
+    String formattedString =
+        "${dateTimeString.substring(0, 4)}-${dateTimeString.substring(4, 6)}-${dateTimeString.substring(6, 8)} ${dateTimeString.substring(8, 10)}:${dateTimeString.substring(10, 12)}";
+    DateTime dateTime = DateTime.parse(formattedString);
+    String formattedTime = DateFormat('a h:mm', 'ko_KR').format(dateTime);
+    formattedTime = formattedTime.replaceAll('AM', '오전').replaceAll('PM', '오후');
+    return formattedTime;
+  }
+
+  //해당일의 첫 대화에 중앙 날짜 표시 메소드
+  DateTime _parseMessageDateTime(int messageTime) {
+    String dateTimeString = messageTime.toString();
+    String formattedString =
+        "${dateTimeString.substring(0, 4)}-${dateTimeString.substring(4, 6)}-${dateTimeString.substring(6, 8)} ${dateTimeString.substring(8, 10)}:${dateTimeString.substring(10, 12)}";
+    return DateTime.parse(formattedString);
   }
 
   @override
@@ -217,45 +259,195 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '청년 취창업 멘토링 시범운영 개시 및 멘티 모집',
+                  widget.thisTitle,
                   style: AppTextStyles.bd3.copyWith(color: AppColors.g5),
                 ),
               ),
             ),
           ),
         ),
-        body: StatefulBuilder(
-          builder: (context, setState) {
-            return ListView.builder(
-              itemCount: _messages.length +
-                  (_isLoading ? 1 : 0), // Changed _isLoaded to _isLoading
-
+        body: Stack(
+          children: [
+            ListView.builder(
+              controller: _scrollController,
+              itemCount: _messages.length + (_isLoading ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == _messages.length) {
                   // 마지막 아이템이 로딩 인디케이터
                   return const Center(child: CircularProgressIndicator());
                 }
                 final message = _messages[index];
-                return Align(
-                  alignment: message.isUser
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: message.isUser ? AppColors.blue : AppColors.white,
-                      borderRadius: BorderRadius.circular(4),
+                final isFirstItem = index == 0;
+                final isLastItem = index == _messages.length - 1;
+
+                final messageDate = _parseMessageDateTime(message.time);
+                bool isFirstMessageOfDay = false;
+                if (index == 0 ||
+                    _parseMessageDateTime(_messages[index - 1].time).day !=
+                        messageDate.day) {
+                  isFirstMessageOfDay = true;
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isFirstMessageOfDay)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 1,
+                                color: AppColors.g3,
+                              ),
+                            ),
+                            Gaps.h18,
+                            Text(
+                              DateFormat('yyyy년 MM월 dd일').format(messageDate),
+                              style: AppTextStyles.bd6
+                                  .copyWith(color: AppColors.g4),
+                            ),
+                            Gaps.h18,
+                            Expanded(
+                              child: Container(
+                                height: 1,
+                                color: AppColors.g3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: isFirstItem ? 10 : 0,
+                        bottom: isLastItem ? 10 : 0,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: Align(
+                        alignment: message.isUser
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: message.isUser
+                            ? Padding(
+                                padding: !message.isUser
+                                    ? const EdgeInsets.only(bottom: 22)
+                                    : const EdgeInsets.only(bottom: 12),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      _formatMessageTime(message.time),
+                                      style: AppTextStyles.caption
+                                          .copyWith(color: AppColors.g3),
+                                    ),
+                                    Gaps.h4,
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: 360 *
+                                            (232 /
+                                                MediaQuery.of(context)
+                                                    .size
+                                                    .width),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.blue,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 9),
+                                        child: Text(
+                                          message.message,
+                                          style: AppTextStyles.bd4
+                                              .copyWith(color: AppColors.g1),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Padding(
+                                padding: message.isUser
+                                    ? const EdgeInsets.only(bottom: 22)
+                                    : const EdgeInsets.only(bottom: 12),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: AppColors.blue,
+                                      child: AppIcon.starting_block_icon,
+                                    ),
+                                    Gaps.h4,
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '스타팅블록',
+                                          style: AppTextStyles.bd6
+                                              .copyWith(color: AppColors.g5),
+                                        ),
+                                        Gaps.v4,
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              constraints: BoxConstraints(
+                                                maxWidth: 360 *
+                                                    (232 /
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12,
+                                                        vertical: 9),
+                                                child: Text(
+                                                  message.message,
+                                                  style: AppTextStyles.bd4
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.black),
+                                                ),
+                                              ),
+                                            ),
+                                            Gaps.h4,
+                                            Text(
+                                              _formatMessageTime(message.time),
+                                              style: AppTextStyles.caption
+                                                  .copyWith(
+                                                      color: AppColors.g3),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                      ),
                     ),
-                    child: Text(
-                      message.message,
-                      style: message.isUser
-                          ? AppTextStyles.bd4.copyWith(color: AppColors.white)
-                          : AppTextStyles.bd4.copyWith(color: AppColors.black),
-                    ),
-                  ),
+                  ],
                 );
               },
-            );
-          },
+            ),
+            const Positioned(
+              bottom: 0,
+              child: BottomGradient(),
+            ),
+          ],
         ),
         bottomNavigationBar: Padding(
           padding: MediaQuery.of(context).viewInsets,
@@ -281,6 +473,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: TextField(
+                        enabled: !_isLoading,
                         controller: _controller,
                         cursorColor: AppColors.g6,
                         minLines: 1,
