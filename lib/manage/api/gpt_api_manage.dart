@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class GptApi {
-  static String baseUrl = 'https://gpt.startingblock.co.kr';
-  static String gptStart = 'start';
-  static String gptChat = 'chat';
-  static String gptEnd = 'end';
+  static String baseUrl = 'https://pdfgpt.startingblock.co.kr/';
+  static String gptStart = 'gpt/start';
+  static String gptChat = 'gpt/chat';
+  static String gptEnd = 'gpt/end';
 
   //대화를 위한 쓰레드 생성 메소드
   static Future<String> getGptStart() async {

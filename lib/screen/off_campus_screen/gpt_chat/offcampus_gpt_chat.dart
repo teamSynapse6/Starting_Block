@@ -6,8 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/gpt_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/api/gpt_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 
 class OffCampusGptChat extends StatefulWidget {
   final String thisTitle;

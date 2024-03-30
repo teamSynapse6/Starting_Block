@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/question_answer_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionDetail extends StatefulWidget {
   final String qid;
@@ -17,14 +16,14 @@ class QuestionDetail extends StatefulWidget {
 }
 
 class _QuestionDetailState extends State<QuestionDetail> {
-  List<QuestionModel> _questionData = [];
+  final List<QuestionModel> _questionData = [];
   final TextEditingController _controller = TextEditingController();
   bool _isTyped = false;
 
   @override
   void initState() {
     super.initState();
-    loadQuestionData(); // 위젯이 초기화될 때 질문 데이터를 가져옵니다.
+    // 위젯이 초기화될 때 질문 데이터를 가져옵니다.
 
     _controller.addListener(() {
       if (_controller.text.isNotEmpty && !_isTyped) {
@@ -45,14 +44,6 @@ class _QuestionDetailState extends State<QuestionDetail> {
   void dispose() {
     _controller.dispose(); // 리소스를 정리합니다.
     super.dispose();
-  }
-
-  void loadQuestionData() async {
-    final List<QuestionModel> questionData =
-        await QuestionAnswerApi.getQuestionDataByQid(widget.qid);
-    setState(() {
-      _questionData = questionData;
-    });
   }
 
   @override

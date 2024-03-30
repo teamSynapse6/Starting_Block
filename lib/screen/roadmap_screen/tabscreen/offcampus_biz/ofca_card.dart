@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 String calculateDDay(String endDate) {
   int year = int.parse(endDate.substring(0, 4));

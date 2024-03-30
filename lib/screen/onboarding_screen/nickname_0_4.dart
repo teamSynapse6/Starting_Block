@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/system_api_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/api/system_api_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class NickNameScreen extends StatefulWidget {
   //여기 스크린 중복확인 기능 개빡셈

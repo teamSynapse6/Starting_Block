@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:http/http.dart' as http;
 
 class RoadMapApi {

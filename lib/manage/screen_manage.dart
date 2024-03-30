@@ -92,6 +92,6 @@ export 'package:starting_block/screen/question_screen/comment_screen/user_commen
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';
 
 //설정 데이터 파일 관리용
-export 'package:starting_block/screen/manage/theme_manage.dart';
+export 'package:starting_block/manage/theme_manage.dart';
 
 //테스트용

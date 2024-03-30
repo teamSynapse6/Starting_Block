@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/recentsearch_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/recentsearch_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OffCampusSearch extends StatefulWidget {
   const OffCampusSearch({super.key});

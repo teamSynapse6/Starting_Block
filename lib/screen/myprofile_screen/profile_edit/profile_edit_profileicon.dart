@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 
 class ProfileIconEdit extends StatefulWidget {
   const ProfileIconEdit({super.key});

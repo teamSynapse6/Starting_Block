@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 
 class OffCampusApi {
   static Map<String, String> headers = {

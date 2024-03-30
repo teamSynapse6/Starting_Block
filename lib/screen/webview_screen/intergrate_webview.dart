@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
-import 'package:starting_block/screen/manage/api/question_answer_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/api/offcampus_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class WebViewScreen extends StatefulWidget {
   final String url, id, classification;
@@ -22,14 +21,13 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  int _questionCount = 0;
+  final int _questionCount = 0;
   final List<OffCampusDetailModel> _offcampusDetail = [];
 
   @override
   void initState() {
     super.initState();
     loadoffCampusDetailData();
-    loadQuestionData();
   }
 
   Future<void> loadoffCampusDetailData() async {
@@ -40,14 +38,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
     setState(() {
       _offcampusDetail.clear();
       _offcampusDetail.add(detailData);
-    });
-  }
-
-  Future<void> loadQuestionData() async {
-    List<QuestionModel> questionData =
-        await QuestionAnswerApi.getQuestionData(widget.id);
-    setState(() {
-      _questionCount = questionData.length;
     });
   }
 

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/question_answer_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionHome extends StatefulWidget {
   final String thisID;
@@ -17,20 +16,11 @@ class QuestionHome extends StatefulWidget {
 }
 
 class _QuestionHomeState extends State<QuestionHome> {
-  List<QuestionModel> _questionData = [];
+  final List<QuestionModel> _questionData = [];
 
   @override
   void initState() {
     super.initState();
-    loadQuestionData();
-  }
-
-  Future<void> loadQuestionData() async {
-    List<QuestionModel> questionData =
-        await QuestionAnswerApi.getQuestionData(widget.thisID);
-    setState(() {
-      _questionData = questionData;
-    });
   }
 
   @override

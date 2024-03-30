@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 
 const existing = [
   "창업 교육",

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 String formatedStartDate(String date) {
   // '20240102'와 같은 문자열을 '2024-01-02' 형식으로 변환

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
-import 'package:starting_block/screen/manage/api/question_answer_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/api/offcampus_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OffCampusDetail extends StatefulWidget {
   final String thisID;
@@ -20,14 +19,15 @@ class OffCampusDetail extends StatefulWidget {
 
 class _OffCampusDetailState extends State<OffCampusDetail> {
   final List<OffCampusDetailModel> _offcampusDetail = [];
-  int _questionCount = 0;
+  final int _questionCount = 0;
   Future<List<OffCampusListModel>>? futureRecommendations; // 추천 공고 데이터를 저장할 필드
 
   @override
   void initState() {
+    print('id: ${widget.thisID}');
     super.initState();
     loadoffCampusDetailData();
-    loadQuestionData();
+
     loadRecommendations(); // 추천 공고 데이터를 로드하는 메소드 호출
   }
 
@@ -39,14 +39,6 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
     setState(() {
       _offcampusDetail.clear();
       _offcampusDetail.add(detailData);
-    });
-  }
-
-  Future<void> loadQuestionData() async {
-    List<QuestionModel> questionData =
-        await QuestionAnswerApi.getQuestionData(widget.thisID);
-    setState(() {
-      _questionCount = questionData.length;
     });
   }
 

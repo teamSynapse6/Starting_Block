@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/intergrate_screen.dart';
-import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/roadmap_delet.dart';
 import 'package:starting_block/screen/roadmap_screen/roadmaplist_add.dart';
 
