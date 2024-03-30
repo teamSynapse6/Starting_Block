@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionHome extends StatefulWidget {
@@ -16,7 +15,7 @@ class QuestionHome extends StatefulWidget {
 }
 
 class _QuestionHomeState extends State<QuestionHome> {
-  final List<QuestionModel> _questionData = [];
+  final List _questionData = []; //변경필요
 
   @override
   void initState() {

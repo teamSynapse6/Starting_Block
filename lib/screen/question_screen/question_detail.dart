@@ -16,7 +16,7 @@ class QuestionDetail extends StatefulWidget {
 }
 
 class _QuestionDetailState extends State<QuestionDetail> {
-  final List<QuestionModel> _questionData = [];
+  final List _questionData = []; //변경필요
   final TextEditingController _controller = TextEditingController();
   bool _isTyped = false;
 

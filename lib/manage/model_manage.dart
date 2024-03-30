@@ -21,11 +21,10 @@ export 'package:starting_block/manage/models/oncampus_supportgroup/onca_etc_mode
 export 'package:starting_block/manage/models/gpt_chta_models/message_model.dart'; //채팅 모델
 
 //질문&답변 Model파일 관리용
-export 'package:starting_block/manage/models/question_answer/question_model.dart'; //질문 모델
+export 'package:starting_block/manage/models/question_answer_model/question_list_model.dart'; //질문 리스트(질문 메인화면) 모델
 
 //데이터 파일 관리용
 export 'package:starting_block/manage/userdata/user_info.dart'; //유저 데이터 관리용
-export 'package:starting_block/manage/models/roadmap_model.dart'; //로드맵 관리용
 
 //필터 관리용
 export 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart'; //교외지원사업 필터

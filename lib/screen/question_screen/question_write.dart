@@ -1,7 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
 
 class QuestionWrite extends StatefulWidget {
   final String thisID;
@@ -23,7 +22,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
   @override
   void initState() {
     super.initState();
-    // 리스너 추가
+
     _textController.addListener(() {
       setState(() {
         // 텍스트 필드에 텍스트가 있으면 true, 아니면 false
@@ -46,25 +45,40 @@ class _QuestionWriteState extends State<QuestionWrite> {
       builder: (context) {
         if (_isChecked) {
           // _isChecked가 true일 때의 DialogComponent
-          return const DialogComponent(
+          return DialogComponent(
             title: '문의처로 질문이 발송됩니다',
             description:
                 '답변을 받기까지 일정 시간이 소요됩니다.\n매너있고 상세한 질문은\n문의처의 빠른 답변으로 이어집니다',
             rightActionText: '발송',
-            rightActionTap: null, // 여기서 실제 발송 로직을 연결할 수 있습니다.
+            rightActionTap: _postQuestion, // 여기서 실제 발송 로직을 연결할 수 있습니다.
           );
         } else {
           // _isChecked가 false일 때의 DialogComponent
-          return const DialogComponent(
+          return DialogComponent(
             title: '질문 작성 확인',
             description:
                 '문의처에 질문하기 전에, 질문 내용을 다시 한번 확인해주세요.\n문의처에 질문하기를 선택하지 않았습니다.',
             rightActionText: '확인',
-            rightActionTap: null,
+            rightActionTap: _postQuestion,
           );
         }
       },
     );
+  }
+
+  void _postQuestion() async {
+    // API 호출을 통해 질문 게시
+    await QuestionAnswerApi.postQuestionWrite(
+      int.tryParse(widget.thisID) ?? 0, // thisID를 int로 변환, 실패 시 0 사용
+      _textController.text,
+      _isChecked,
+    );
+
+    // 질문이 성공적으로 게시된 후에는 화면을 닫거나 사용자에게 알림을 표시할 수 있습니다.
+    if (mounted) {
+      Navigator.of(context).pop(); // 다이얼로그 닫기
+    }
+    Navigator.of(context).pop();
   }
 
   @override
@@ -87,9 +101,30 @@ class _QuestionWriteState extends State<QuestionWrite> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gaps.v20,
-              Text(
-                '질문하기',
-                style: AppTextStyles.h5.copyWith(color: AppColors.g6),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                color: AppColors.g1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 12,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      // 기본 스타일을 정의합니다. 모든 TextSpan에 공통적으로 적용됩니다.
+                      style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
+                      children: <TextSpan>[
+                        const TextSpan(
+                            text:
+                                '질문하기를 작성 시, 다른 창업자들이 작성한 답변을 유지하기 위해, 댓글이 달린 이후에는 '),
+                        TextSpan(
+                            text: '글을 수정 및 삭제할 수 없습니다.',
+                            style: AppTextStyles.bd5
+                                .copyWith(color: AppColors.g4)),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               Gaps.v20,
               SizedBox(
@@ -117,22 +152,23 @@ class _QuestionWriteState extends State<QuestionWrite> {
                     );
                   },
 
-                  decoration: const InputDecoration(
-                    hintText: '여기에 질문을 작성하세요.',
+                  decoration: InputDecoration(
+                    hintText: '여기에 질문을 작성하세요',
+                    hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
                     enabledBorder:
-                        UnderlineInputBorder(borderSide: BorderSide.none),
+                        const UnderlineInputBorder(borderSide: BorderSide.none),
                     focusedBorder:
-                        UnderlineInputBorder(borderSide: BorderSide.none),
+                        const UnderlineInputBorder(borderSide: BorderSide.none),
                   ),
                   style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
                 ),
               ),
               const Spacer(),
               Text(
-                "문의처 이메일이 제공된 공고글에 한해,\n'문의처에 질문하기' 기능이 제공됩니다.\n주말(공휴일) 제외 오전 9시에 문의처에 메일이\n발송됩니다.",
-                style: AppTextStyles.bd2.copyWith(color: AppColors.g4),
+                "문의처 이메일이 제공된 공고글에 한해,\n'문의처에 질문하기' 기능이 제공됩니다.\n주말(공휴일) 제외 오전 9시에 문의처에 메일이 발송됩니다.",
+                style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
               ),
-              Gaps.v52,
+              Gaps.v24,
             ],
           ),
         ),
