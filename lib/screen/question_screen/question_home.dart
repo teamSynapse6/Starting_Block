@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionHome extends StatefulWidget {
@@ -15,11 +17,20 @@ class QuestionHome extends StatefulWidget {
 }
 
 class _QuestionHomeState extends State<QuestionHome> {
-  final List _questionData = []; //변경필요
+  List<QuestionListModel> _questionData = [];
 
   @override
   void initState() {
     super.initState();
+    loadQuestionData();
+  }
+
+  void loadQuestionData() async {
+    final questions = await QuestionAnswerApi.getQuestionList(
+        int.tryParse(widget.thisID) ?? 0);
+    setState(() {
+      _questionData = questions; // _questionData 업데이트
+    });
   }
 
   @override
@@ -58,19 +69,22 @@ class _QuestionHomeState extends State<QuestionHome> {
                         itemCount: _questionData.length,
                         itemBuilder: (context, index) {
                           final item = _questionData[index];
-                          return QuestionList(
-                            thisQuestion: item.question,
-                            thisLike: item.like,
-                            thisAnswerCount: item.answerCount,
-                            thisContactAnswer: item.contactAnswer,
-                            thisOnTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        QuestionDetail(qid: item.qid)),
-                              );
-                            },
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 32),
+                            child: QuestionList(
+                              thisQuestion: item.content,
+                              thisLike: item.heartCount,
+                              thisAnswerCount: item.answerCount,
+                              thisContactAnswer: false,
+                              thisOnTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => QuestionDetail(
+                                          questionID: item.questionId)),
+                                );
+                              },
+                            ),
                           );
                         }),
                   )

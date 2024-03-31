@@ -3,6 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/offcampus_api_manage.dart';
+import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -21,13 +22,17 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final int _questionCount = 0;
+  String _questionCount = '0';
   final List<OffCampusDetailModel> _offcampusDetail = [];
+  bool _isBottomAppBarVisible = true;
+  int _lastScrollY = 0;
+  bool _isScrollingDown = false;
 
   @override
   void initState() {
     super.initState();
     loadoffCampusDetailData();
+    loadQuestionData();
   }
 
   Future<void> loadoffCampusDetailData() async {
@@ -38,6 +43,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
     setState(() {
       _offcampusDetail.clear();
       _offcampusDetail.add(detailData);
+    });
+  }
+
+  void loadQuestionData() async {
+    final questions =
+        await QuestionAnswerApi.getQuestionList(int.tryParse(widget.id) ?? 0);
+    setState(() {
+      _questionCount = questions.length.toString(); // _questionData 업데이트
     });
   }
 
@@ -66,15 +79,33 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 initialUrlRequest:
                     URLRequest(url: WebUri(widget.url)), // 여기를 수정합니다
                 // 필요한 경우 추가 InAppWebView 설정을 여기에 추가할 수 있습니다.
+                onScrollChanged: (controller, x, y) {
+                  bool isScrollingDown = y > _lastScrollY;
+
+                  if (isScrollingDown != _isScrollingDown) {
+                    // 스크롤 방향이 바뀌면 상태 업데이트
+                    setState(() {
+                      _isBottomAppBarVisible = !isScrollingDown;
+                    });
+                    _isScrollingDown = isScrollingDown;
+                  }
+
+                  _lastScrollY = y; // 마지막 스크롤 위치 업데이트
+                },
               ),
-              const Positioned(
+              Positioned(
                 bottom: 0,
-                child: BottomGradient(),
+                child: AnimatedOpacity(
+                  opacity: _isBottomAppBarVisible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 100),
+                  child: const BottomGradient(),
+                ),
               ),
             ],
           ),
-          bottomNavigationBar: BottomAppBar(
-            height: 48,
+          bottomNavigationBar: AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            height: _isBottomAppBarVisible ? 48 : 0,
             child: Container(
               width: MediaQuery.of(context).size.width,
               color: AppColors.white,
@@ -112,7 +143,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                           ),
                           Gaps.h12,
                           Text(
-                            _questionCount.toString(),
+                            _questionCount,
                             style: AppTextStyles.btn1
                                 .copyWith(color: AppColors.white),
                           ),

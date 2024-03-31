@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/offcampus_api_manage.dart';
+import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -19,16 +20,16 @@ class OffCampusDetail extends StatefulWidget {
 
 class _OffCampusDetailState extends State<OffCampusDetail> {
   final List<OffCampusDetailModel> _offcampusDetail = [];
-  final int _questionCount = 0;
+  String _questionCount = '0';
+
   Future<List<OffCampusListModel>>? futureRecommendations; // 추천 공고 데이터를 저장할 필드
 
   @override
   void initState() {
-    print('id: ${widget.thisID}');
     super.initState();
     loadoffCampusDetailData();
-
     loadRecommendations(); // 추천 공고 데이터를 로드하는 메소드 호출
+    loadQuestionData();
   }
 
   Future<void> loadoffCampusDetailData() async {
@@ -45,6 +46,14 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   // 추천 공고 데이터를 로드하는 메소드
   void loadRecommendations() {
     futureRecommendations = OffCampusApi.getOffcampusRecommend();
+  }
+
+  void loadQuestionData() async {
+    final questions = await QuestionAnswerApi.getQuestionList(
+        int.tryParse(widget.thisID) ?? 0);
+    setState(() {
+      _questionCount = questions.length.toString(); // _questionData 업데이트
+    });
   }
 
   @override
@@ -80,7 +89,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                     thisID: _offcampusDetail[0].id.toString(),
                     classification: "교외사업",
                     content: _offcampusDetail[0].content,
-                    questionCount: _questionCount.toString(),
+                    questionCount: _questionCount,
                   ),
                 if (_offcampusDetail.isNotEmpty)
                   OffCampusDetailGptCard(

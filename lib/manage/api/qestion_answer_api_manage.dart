@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:starting_block/manage/model_manage.dart';
 
 class QuestionAnswerApi {
   static Map<String, String> headers = {
@@ -39,6 +40,29 @@ class QuestionAnswerApi {
     } catch (e) {
       // 요청 중 에러가 발생했을 때의 처리
       print('Error posting question: $e');
+    }
+  }
+
+  // getQuestionList 메소드 추가
+  static Future<List<QuestionListModel>> getQuestionList(
+      int announcementId) async {
+    final url = Uri.parse('$baseUrl/api/v1/question/$announcementId');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      // 응답의 바디를 UTF-8로 디코드
+      String body = utf8.decode(response.bodyBytes);
+      // 디코드된 문자열을 JSON으로 파싱
+      List<dynamic> jsonList = json.decode(body);
+      // 파싱된 JSON을 QuestionListModel 객체 리스트로 변환
+      List<QuestionListModel> questions = jsonList
+          .map((jsonItem) => QuestionListModel.fromJson(jsonItem))
+          .toList();
+      return questions;
+    } else {
+      // 에러 처리 또는 빈 리스트 반환
+      print('Failed to load questions. Status code: ${response.statusCode}');
+      return [];
     }
   }
 }

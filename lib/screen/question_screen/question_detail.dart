@@ -4,11 +4,11 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionDetail extends StatefulWidget {
-  final String qid;
+  final int questionID;
 
   const QuestionDetail({
     super.key,
-    required this.qid,
+    required this.questionID,
   });
 
   @override

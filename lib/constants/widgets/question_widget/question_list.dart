@@ -22,53 +22,50 @@ class QuestionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: thisOnTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 32),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppIcon.question,
-            Gaps.h8,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    thisQuestion,
-                    style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Gaps.v4,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppIcon.like_inactived,
-                      Gaps.h2,
-                      Text(
-                        thisLike.toString(),
-                        style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
-                      ),
-                      const Spacer(),
-                      thisContactAnswer
-                          ? Text(
-                              '담당처 답변 보러가기',
-                              style: AppTextStyles.bd4
-                                  .copyWith(color: AppColors.blue),
-                            )
-                          : Text(
-                              '답변 $thisAnswerCount개 보러가기',
-                              style: AppTextStyles.bd4
-                                  .copyWith(color: AppColors.blue),
-                            ),
-                      AppIcon.arrow_next_14_blue
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppIcon.question,
+          Gaps.h8,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  thisQuestion,
+                  style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Gaps.v4,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AppIcon.like_inactived,
+                    Gaps.h2,
+                    Text(
+                      thisLike.toString(),
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                    ),
+                    const Spacer(),
+                    thisContactAnswer
+                        ? Text(
+                            '담당처 답변 보러가기',
+                            style: AppTextStyles.bd4
+                                .copyWith(color: AppColors.blue),
+                          )
+                        : Text(
+                            '답변 $thisAnswerCount개 보러가기',
+                            style: AppTextStyles.bd4
+                                .copyWith(color: AppColors.blue),
+                          ),
+                    AppIcon.arrow_next_14_blue
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
