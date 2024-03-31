@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:starting_block/constants/color_table.dart';
 import 'package:starting_block/constants/font_table.dart';
 import 'package:starting_block/constants/gaps.dart';
@@ -17,17 +16,16 @@ class QuestionDetailInfo extends StatelessWidget {
     required this.thisLike,
   });
 
-  // 날짜 포맷 변경 함수
-  String _formatDate(String date) {
-    // 'yymmdd' 형식의 문자열을 DateTime 객체로 변환
-    final DateTime parsedDate = DateTime.parse('20$date');
-    // 'yyyy.MM.dd' 형식으로 날짜 포맷
-    return DateFormat('yyyy.MM.dd').format(parsedDate);
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    String formattedDate =
+        "${dateTime.year}.${dateTime.month.toString().padLeft(2, '0')}.${dateTime.day.toString().padLeft(2, '0')}";
+    return formattedDate;
   }
 
   @override
   Widget build(BuildContext context) {
-    final String formattedDate = _formatDate(thisDate);
+    String formattedDate = formatDate(thisDate);
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -39,10 +37,9 @@ class QuestionDetailInfo extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                color: AppColors.blue,
+              const CircleAvatar(
+                radius: 16,
+                backgroundColor: AppColors.g3,
               ),
               Gaps.h12,
               Column(

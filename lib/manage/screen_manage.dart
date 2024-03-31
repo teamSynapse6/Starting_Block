@@ -87,6 +87,7 @@ export 'package:starting_block/screen/question_screen/question_write.dart'; //�
 export 'package:starting_block/screen/question_screen/question_detail.dart'; //질문 상세 화면
 export 'package:starting_block/screen/question_screen/question_detail_info.dart'; //질문 상세 화면_질문영역
 export 'package:starting_block/screen/question_screen/comment_screen/user_comment.dart'; //유저 댓글 영역
+export 'package:starting_block/screen/question_screen/comment_screen/reply_comment.dart'; //유저 답글 영역
 
 //데이터 파일 관리용
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';

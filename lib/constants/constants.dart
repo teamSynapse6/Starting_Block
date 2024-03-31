@@ -67,3 +67,7 @@ export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_clas
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampuss_class_listcard.dart'; //교내지원사업_교내 강의 리스트 카드
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_notify_listcard.dart'; //교내지원사업_지원공고 리스트 카드
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_supportgroup_list.dart'; //교내지원사업_창업지원단 통합 리스트 카드
+
+//질문&답변 컴포넌트 관리
+export 'package:starting_block/constants/widgets/comment_widget/comment_list.dart'; //질문&답변_댓글 리스트
+export 'package:starting_block/constants/widgets/comment_widget/reply_list.dart'; //질문&답변_유저 답글 리스트

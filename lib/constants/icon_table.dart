@@ -175,6 +175,12 @@ class AppIcon {
   static Widget get next_right_16 =>
       SvgPicture.asset('assets/icon/other/next_right_16.svg',
           fit: BoxFit.scaleDown);
+  static Widget get arrow_down_16 =>
+      SvgPicture.asset('assets/icon/other/arrow_down_16.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get arrow_up_16 =>
+      SvgPicture.asset('assets/icon/other/arrow_up_16.svg',
+          fit: BoxFit.scaleDown);
   static Widget get arrow_down_18 =>
       SvgPicture.asset('assets/icon/other/arrow_down_18.svg',
           fit: BoxFit.scaleDown);

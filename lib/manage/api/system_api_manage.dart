@@ -4,8 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class SystemApiManage {
-  static String baseUrl = 'http://10.0.2.2:5000';
-  // static String baseUrl = 'https://leeyuchul.pythonanywhere.com';
+  static String baseUrl = 'https://simpleapi.startingblock.co.kr';
   static String nickNameCheck = 'getUserNickName';
   static String createUserInfo = 'createuserinfo';
   static String changeNickName = 'changeNickName';

@@ -22,6 +22,7 @@ export 'package:starting_block/manage/models/gpt_chta_models/message_model.dart'
 
 //질문&답변 Model파일 관리용
 export 'package:starting_block/manage/models/question_answer_model/question_list_model.dart'; //질문 리스트(질문 메인화면) 모델
+export 'package:starting_block/manage/models/question_answer_model/question_detail_model.dart'; //질문 상세(질문 상세화면) 모델
 
 //데이터 파일 관리용
 export 'package:starting_block/manage/userdata/user_info.dart'; //유저 데이터 관리용

@@ -54,8 +54,7 @@ int getSchoolNumber(String schoolName) {
 }
 
 class OnCampusGroupApi {
-  static String baseUrl = 'http://10.0.2.2:5000';
-  // static String baseUrl = 'https://leeyuchul.pythonanywhere.com';
+  static String baseUrl = 'https://simpleapi.startingblock.co.kr';
   static String groupMentoring = 'supportgroup/mentoring';
   static String groupClub = 'supportgroup/club';
   static String groupLecture = 'supportgroup/lecture';
