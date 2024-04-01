@@ -10,9 +10,9 @@ String formatDate(String date) {
 
 class CommentList extends StatefulWidget {
   final String thisUserName, thisAnswer, thisDate;
-  final int thisLike;
+  final int thisLike, thisAnswerId;
   final bool isMyHeart;
-  final VoidCallback thisTap;
+  final VoidCallback thisCommentTap;
 
   const CommentList({
     super.key,
@@ -21,7 +21,8 @@ class CommentList extends StatefulWidget {
     required this.thisDate,
     required this.thisLike,
     required this.isMyHeart,
-    required this.thisTap,
+    required this.thisCommentTap,
+    required this.thisAnswerId,
   });
 
   @override
@@ -57,19 +58,11 @@ class _CommentListState extends State<CommentList> {
                 ],
               ),
               const Spacer(),
-              Ink(
-                height: 32,
-                width: 66,
-                child: InkWell(
-                  onTap: widget.thisTap,
-                  child: Center(
-                    child: Text(
-                      '답글쓰기',
-                      style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
-                    ),
-                  ),
-                ),
-              )
+              widget.thisAnswerId != 0
+                  ? AnswerCommentDelete(
+                      thisId: widget.thisAnswerId,
+                    )
+                  : Container(),
             ],
           ),
           Gaps.h4,
@@ -86,23 +79,61 @@ class _CommentListState extends State<CommentList> {
                       softWrap: true,
                     ),
                     Gaps.v4,
-                    SizedBox(
-                      height: 26,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            height: 18,
-                            child: widget.isMyHeart
-                                ? AppIcon.like_actived
-                                : AppIcon.like_inactived,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Ink(
+                          height: 26,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              widget.isMyHeart
+                                  ? AppIcon.vote_active_18
+                                  : AppIcon.vote_inactive_18,
+                              Gaps.h2,
+                              Text(
+                                '도움',
+                                style: widget.isMyHeart
+                                    ? AppTextStyles.btn2
+                                        .copyWith(color: AppColors.blue)
+                                    : AppTextStyles.btn2
+                                        .copyWith(color: AppColors.g4),
+                              ),
+                              Gaps.h2,
+                              Text(
+                                widget.thisLike.toString(),
+                                style: widget.isMyHeart
+                                    ? AppTextStyles.btn2
+                                        .copyWith(color: AppColors.blue)
+                                    : AppTextStyles.btn2
+                                        .copyWith(color: AppColors.g4),
+                              ),
+                            ],
                           ),
-                          Text(
-                            '도움이 됐어요 ${widget.thisLike.toString()}',
-                            style: AppTextStyles.btn2
-                                .copyWith(color: AppColors.g4),
+                        ),
+                        Gaps.h16,
+                        Ink(
+                          height: 26,
+                          child: InkWell(
+                            onTap: widget.thisCommentTap,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 18,
+                                  child: AppIcon.comments,
+                                ),
+                                Gaps.h3,
+                                Text(
+                                  '답글쓰기',
+                                  style: AppTextStyles.btn2
+                                      .copyWith(color: AppColors.g4),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     )
                   ],
                 ),

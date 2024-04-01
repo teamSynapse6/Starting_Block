@@ -328,16 +328,18 @@ class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final thisTextStyle;
+  final String text;
+  final thisOnTap;
+  final state;
+
   const BackTitleAppBar({
     super.key,
     this.thisTextStyle,
     required this.text,
     this.thisOnTap,
+    this.state,
   });
-
-  final thisTextStyle;
-  final String text;
-  final thisOnTap;
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -347,7 +349,7 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: GestureDetector(
         onTap: () {
-          Navigator.pop(context);
+          Navigator.pop(context, state);
         },
         child: AppIcon.back,
       ),

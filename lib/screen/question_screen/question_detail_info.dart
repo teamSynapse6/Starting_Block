@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:starting_block/constants/color_table.dart';
-import 'package:starting_block/constants/font_table.dart';
-import 'package:starting_block/constants/gaps.dart';
-import 'package:starting_block/constants/icon_table.dart';
+import 'package:starting_block/constants/constants.dart';
 
 class QuestionDetailInfo extends StatelessWidget {
   final String thisUserName, thisQuestion, thisDate;
-  final int thisLike;
+  final int thisLike, thisQuestionHeardID;
+  final bool isMine;
+  final VoidCallback thisQuestionLikeTap, thisQuestionLikeCancelTap;
 
   const QuestionDetailInfo({
     super.key,
@@ -14,6 +13,10 @@ class QuestionDetailInfo extends StatelessWidget {
     required this.thisQuestion,
     required this.thisDate,
     required this.thisLike,
+    required this.isMine,
+    required this.thisQuestionLikeTap,
+    required this.thisQuestionLikeCancelTap,
+    required this.thisQuestionHeardID,
   });
 
   String formatDate(String date) {
@@ -28,17 +31,14 @@ class QuestionDetailInfo extends StatelessWidget {
     String formattedDate = formatDate(thisDate);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
-      ),
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               const CircleAvatar(
-                radius: 16,
+                radius: 20,
                 backgroundColor: AppColors.g3,
               ),
               Gaps.h12,
@@ -65,19 +65,13 @@ class QuestionDetailInfo extends StatelessWidget {
             style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
           ),
           Gaps.v4,
-          SizedBox(
-            height: 32,
-            child: Row(
-              children: [
-                AppIcon.like_inactived,
-                Gaps.h4,
-                Text(
-                  '궁금해요 $thisLike',
-                  style: AppTextStyles.btn2.copyWith(color: AppColors.g4),
-                )
-              ],
-            ),
-          )
+          CuriousVote36(
+            isMine: isMine,
+            heartCount: thisLike,
+            thisTap: thisQuestionHeardID == 0
+                ? thisQuestionLikeTap
+                : thisQuestionLikeCancelTap,
+          ),
         ],
       ),
     );

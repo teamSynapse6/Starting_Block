@@ -46,23 +46,31 @@ class ReplyList extends StatelessWidget {
                 style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
               ),
               Gaps.v4,
-              SizedBox(
+              Ink(
                 height: 26,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                        height: 18,
-                        child: isMyHeart
-                            ? AppIcon.like_actived
-                            : AppIcon.like_inactived),
-                    Gaps.h3,
+                    isMyHeart
+                        ? AppIcon.vote_active_18
+                        : AppIcon.vote_inactive_18,
+                    Gaps.h2,
                     Text(
-                      '좋아요 $thisLike',
-                      style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
+                      '도움',
+                      style: isMyHeart
+                          ? AppTextStyles.btn2.copyWith(color: AppColors.blue)
+                          : AppTextStyles.btn2.copyWith(color: AppColors.g4),
+                    ),
+                    Gaps.h2,
+                    Text(
+                      thisLike.toString(),
+                      style: isMyHeart
+                          ? AppTextStyles.btn2.copyWith(color: AppColors.blue)
+                          : AppTextStyles.btn2.copyWith(color: AppColors.g4),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           )
         ],

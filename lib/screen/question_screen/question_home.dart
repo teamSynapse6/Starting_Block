@@ -37,10 +37,11 @@ class _QuestionHomeState extends State<QuestionHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BackTitleAppBar(
+        state: true,
         text: "작성하기",
         thisTextStyle: AppTextStyles.btn1.copyWith(color: AppColors.g5),
-        thisOnTap: () {
-          Navigator.push(
+        thisOnTap: () async {
+          final dynamic result = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => QuestionWrite(
@@ -48,6 +49,9 @@ class _QuestionHomeState extends State<QuestionHome> {
               ),
             ),
           );
+          if (result == true) {
+            loadQuestionData();
+          }
         },
       ),
       body: Padding(
@@ -76,13 +80,19 @@ class _QuestionHomeState extends State<QuestionHome> {
                               thisLike: item.heartCount,
                               thisAnswerCount: item.answerCount,
                               thisContactAnswer: false,
-                              thisOnTap: () {
-                                Navigator.push(
+                              isMine: item.isMyHeart,
+                              thisOnTap: () async {
+                                final dynamic result = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => QuestionDetail(
-                                          questionID: item.questionId)),
+                                    builder: (context) => QuestionDetail(
+                                      questionID: item.questionId,
+                                    ),
+                                  ),
                                 );
+                                if (result == true) {
+                                  loadQuestionData();
+                                }
                               },
                             ),
                           );

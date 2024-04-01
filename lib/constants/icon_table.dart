@@ -97,6 +97,16 @@ class AppIcon {
   static Widget get sort_actived =>
       SvgPicture.asset('assets/icon/24/sort_actived.svg',
           fit: BoxFit.scaleDown);
+  static Widget get comments =>
+      SvgPicture.asset('assets/icon/24/comments.svg', fit: BoxFit.scaleDown);
+  static Widget get more =>
+      SvgPicture.asset('assets/icon/24/more.svg', fit: BoxFit.scaleDown);
+  static Widget get vote_active_24 =>
+      SvgPicture.asset('assets/icon/24/vote_active_24.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get vote_inactive_24 =>
+      SvgPicture.asset('assets/icon/24/vote_inactive_24.svg',
+          fit: BoxFit.scaleDown);
 
   // GNB Part Image
   static Widget get home_active =>
@@ -204,6 +214,12 @@ class AppIcon {
           fit: BoxFit.scaleDown);
   static Widget get starting_block_icon =>
       SvgPicture.asset('assets/icon/other/starting_block_icon.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get vote_active_18 =>
+      SvgPicture.asset('assets/icon/other/vote_active_18.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get vote_inactive_18 =>
+      SvgPicture.asset('assets/icon/other/vote_inactive_18.svg',
           fit: BoxFit.scaleDown);
 
   // Profile Image

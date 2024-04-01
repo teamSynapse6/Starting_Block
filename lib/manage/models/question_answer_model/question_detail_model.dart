@@ -4,7 +4,7 @@ class QuestionDetailModel {
   final String createdAt;
   final int heartCount;
   final bool isMyHeart;
-  final int? heartId;
+  final int heartId;
   final ContactAnswer? contactAnswer;
   final int answerCount;
   final List<AnswerModel> answerList;
@@ -15,7 +15,7 @@ class QuestionDetailModel {
         createdAt = json['createdAt'] ?? '',
         heartCount = json['heartCount'] ?? 0,
         isMyHeart = json['isMyHeart'] ?? false,
-        heartId = json['heartId'],
+        heartId = json['heartId'] ?? 0,
         contactAnswer = json['contactAnswer'] != null
             ? ContactAnswer.fromJson(json['contactAnswer'])
             : null,

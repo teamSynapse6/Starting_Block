@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
@@ -28,7 +30,6 @@ class _QuestionDetailState extends State<QuestionDetail> {
 
   @override
   void initState() {
-    print('질문 ID: ${widget.questionID}');
     super.initState();
     _loadQuestionDetail();
 
@@ -126,20 +127,60 @@ class _QuestionDetailState extends State<QuestionDetail> {
     });
   }
 
+  /*좋아요 메소드*/
+
+// 질문에 대한 궁금해요 전송 메소드
+  void postHeartForQuestion() async {
+    bool success =
+        await QuestionAnswerApi.postHeart(widget.questionID, 'QUESTION');
+    if (success) {
+      // 하트 전송 성공 시, 질문 상세 정보를 다시 로드
+      setState(() {
+        // _questionDetailFuture 업데이트를 위해 setState 내에서 호출
+        _questionDetailFuture =
+            QuestionAnswerApi.getQuestionDetail(widget.questionID);
+      });
+    }
+  }
+
+// 질문에 대한 하트 취소 메소드
+  void deleteHeartForQuestion() async {
+    final questionDetail = await _questionDetailFuture;
+    if (questionDetail?.heartId != null) {
+      bool success =
+          await QuestionAnswerApi.deleteHeart(questionDetail!.heartId);
+      if (success) {
+        print(
+            'Heart deleted successfully for question with ID ${widget.questionID}.');
+        // 하트 삭제 후 질문 상세 정보를 다시 로드하여 UI 업데이트
+        setState(() {
+          // _questionDetailFuture 업데이트를 위해 setState 내에서 호출
+          _questionDetailFuture =
+              QuestionAnswerApi.getQuestionDetail(widget.questionID);
+        });
+      } else {
+        // 하트 삭제 실패 시 처리
+        print('Failed to delete heart for question.');
+      }
+    } else {
+      print('No heartId found for question.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: const BackAppBar(),
+        appBar: const BackAppBar(
+          state: true,
+        ),
         body: SingleChildScrollView(
           child: FutureBuilder<QuestionDetailModel?>(
               future: _questionDetailFuture,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
+                if (snapshot.hasError) {
                   return const Center(
                       child: Text('Error loading question details'));
                 } else if (snapshot.hasData) {
@@ -153,19 +194,22 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisQuestion: questionDetail.content,
                         thisDate: questionDetail.createdAt,
                         thisLike: questionDetail.heartCount,
+                        isMine: questionDetail.isMyHeart,
+                        thisQuestionLikeTap: postHeartForQuestion,
+                        thisQuestionLikeCancelTap: deleteHeartForQuestion,
+                        thisQuestionHeardID: questionDetail.heartId,
                       ),
                       const CustomDividerH8G1(),
                       QuestionUserComment(
-                        questionID: widget.questionID,
                         thisTap: (int answerId, String userName) {
                           _handleReplyTap(answerId, userName);
                         },
+                        answers: questionDetail.answerList,
                       ),
                     ],
                   );
                 } else {
-                  return const Center(
-                      child: Text('No question details available'));
+                  return Container();
                 }
               }),
         ),

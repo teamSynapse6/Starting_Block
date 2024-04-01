@@ -90,6 +90,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                     classification: "교외사업",
                     content: _offcampusDetail[0].content,
                     questionCount: _questionCount,
+                    thisLoadAction: loadQuestionData,
                   ),
                 if (_offcampusDetail.isNotEmpty)
                   OffCampusDetailGptCard(

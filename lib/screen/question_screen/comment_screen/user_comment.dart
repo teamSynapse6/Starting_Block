@@ -1,69 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionUserComment extends StatefulWidget {
-  final int questionID;
-  final void Function(int answerId, String thisUserName)
-      thisTap; // Updated type of thisTap
+  final void Function(int answerId, String thisUserName) thisTap;
+  final List<AnswerModel> answers; // Modify the type of answers to direct list
 
   const QuestionUserComment({
-    super.key, // Added key parameter
-    required this.questionID,
+    super.key,
     required this.thisTap,
-  }); // Added super constructor
+    required this.answers,
+  });
 
   @override
   State<QuestionUserComment> createState() => _QuestionUserCommentState();
 }
 
 class _QuestionUserCommentState extends State<QuestionUserComment> {
-  Future<QuestionDetailModel?>? _questionDetailFuture;
   int? showAllRepliesForAnswerIndex;
 
   @override
-  void initState() {
-    super.initState();
-    _loadQuestionDetail();
-  }
-
-  void _loadQuestionDetail() {
-    _questionDetailFuture =
-        QuestionAnswerApi.getQuestionDetail(widget.questionID);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // 직접 전달받은 answers 리스트를 사용하여 UI 구성
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: FutureBuilder<QuestionDetailModel?>(
-        future: _questionDetailFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('Error loading question details'));
-          } else if (snapshot.hasData) {
-            final questionDetail = snapshot.data!;
-            final List<AnswerModel> answers = questionDetail.answerList;
-
-            return Column(
+      child: widget.answers.isNotEmpty
+          ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Gaps.v14,
                 Text(
-                  '타 창업자 도움 ${questionDetail.answerCount.toString()}',
+                  '타 창업자 도움 ${widget.answers.length.toString()}', // Use the length of answers
                   style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
                 ),
                 Gaps.v24,
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: answers.length,
+                  itemCount: widget.answers.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final answer = answers[index];
+                    final answer = widget.answers[index];
                     final shouldShowAllReplies =
                         index == showAllRepliesForAnswerIndex;
                     final repliesToShow = shouldShowAllReplies
@@ -71,6 +48,7 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                         : answer.replyResponse.take(3).toList();
 
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CommentList(
                           thisUserName: answer.userName,
@@ -78,11 +56,9 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                           thisDate: answer.createdAt,
                           thisLike: answer.heartCount,
                           isMyHeart: answer.isMyHeart,
-                          thisTap: () {
-                            widget.thisTap(
-                              answer.answerId,
-                              answer.userName,
-                            ); // Pass answerId to the callback
+                          thisAnswerId: answer.answerId,
+                          thisCommentTap: () {
+                            widget.thisTap(answer.answerId, answer.userName);
                           },
                         ),
                         if (answer.replyResponse.isNotEmpty &&
@@ -98,6 +74,7 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                                 });
                               },
                               child: Row(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
                                     shouldShowAllReplies
@@ -120,12 +97,30 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                   },
                 ),
               ],
-            );
-          } else {
-            return const SizedBox();
-          }
-        },
-      ),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gaps.v14,
+                Text(
+                  '타 창업자 도움 ${widget.answers.length.toString()}', // Use the length of answers
+                  style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                ),
+                Gaps.v40,
+                Center(
+                  child: Text(
+                    '아직 댓글이 없어요',
+                    style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    '가장 먼저 도움을 전해보세요',
+                    style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

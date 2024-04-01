@@ -155,4 +155,48 @@ class QuestionAnswerApi {
       // 필요에 따라 추가적인 예외 처리를 여기에 구현할 수 있습니다.
     }
   }
+
+  // 하트(좋아요) 보내기 메소드
+  static Future<bool> postHeart(int id, String heartType) async {
+    final url = Uri.parse('$baseUrl/api/v1/heart/send');
+    final body = jsonEncode({
+      "id": id,
+      "heartType": heartType,
+    });
+    try {
+      final response = await http.post(url,
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json',
+          },
+          body: body);
+      return response.statusCode == 204; // 204 상태 코드일 때 true 반환, 그 외는 false 반환
+    } catch (e) {
+      print('Error sending heart: $e');
+      return false; // 예외 발생 시 false 반환
+    }
+  }
+
+  // 하트(좋아요) 취소(삭제) 메소드
+  static Future<bool> deleteHeart(int heartId) async {
+    final url = Uri.parse('$baseUrl/api/v1/heart/cancel/$heartId');
+
+    try {
+      final response = await http.delete(url, headers: headers);
+      // 성공적으로 하트를 삭제했을 때의 처리
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        print(
+            'Heart deleted successfully. Status code: ${response.statusCode}');
+        return true; // 성공적으로 삭제되었음을 나타내는 true 반환
+      } else {
+        // 서버에서 비정상 응답이 왔을 때의 처리
+        print('Failed to delete heart. Status code: ${response.statusCode}');
+        return false; // 삭제 실패를 나타내는 false 반환
+      }
+    } catch (e) {
+      // 요청 중 에러가 발생했을 때의 처리
+      print('Error deleting heart: $e');
+      return false; // 예외 발생 시 삭제 실패를 나타내는 false 반환
+    }
+  }
 }

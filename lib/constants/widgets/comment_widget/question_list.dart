@@ -6,7 +6,7 @@ import 'package:starting_block/constants/constants.dart';
 class QuestionList extends StatelessWidget {
   final String thisQuestion;
   final int thisLike, thisAnswerCount;
-  final bool thisContactAnswer;
+  final bool thisContactAnswer, isMine;
   final thisOnTap;
 
   const QuestionList({
@@ -16,6 +16,7 @@ class QuestionList extends StatelessWidget {
     required this.thisAnswerCount,
     required this.thisContactAnswer,
     required this.thisOnTap,
+    required this.isMine,
   });
 
   @override
@@ -41,11 +42,9 @@ class QuestionList extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AppIcon.like_inactived,
-                    Gaps.h2,
-                    Text(
-                      thisLike.toString(),
-                      style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                    CuriousVote26(
+                      isMine: isMine,
+                      heartCount: thisLike,
                     ),
                     const Spacer(),
                     thisContactAnswer
