@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/oncampus_api_group_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 
 class OnCaGroupLecture extends StatefulWidget {
   const OnCaGroupLecture({super.key});
@@ -40,9 +40,7 @@ class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: _lectureList.isEmpty
-            ? const Center(
-                child:
-                    CircularProgressIndicator()) // 데이터 로딩 중이거나 실패했을 때를 대비한 처리
+            ? Container()
             : ListView.builder(
                 itemCount: _lectureList.length,
                 itemBuilder: (context, index) {

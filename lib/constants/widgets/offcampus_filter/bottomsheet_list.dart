@@ -16,10 +16,9 @@ class BottomSheetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
+    return InkWell(
       onTap: thisTapAction,
-      child: Container(
+      child: Ink(
         height: 48,
         color: thisColor, // null일 수 있는 색상 적용
         child: Padding(

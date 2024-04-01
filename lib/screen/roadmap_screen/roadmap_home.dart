@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 import 'dart:math' as math;
 
 class RoadmapHome extends StatefulWidget {

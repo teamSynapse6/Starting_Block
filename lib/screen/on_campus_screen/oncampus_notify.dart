@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
-import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/on_campus_screen/widget/oncampus_notify_delegate.dart';
 
 class OnCampusNotify extends StatefulWidget {

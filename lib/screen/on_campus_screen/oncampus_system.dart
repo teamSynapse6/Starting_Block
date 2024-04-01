@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart';
-import 'package:starting_block/screen/manage/models/oncampus_system_model.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart';
+import 'package:starting_block/manage/models/oncampus_system_model.dart';
 
 class OnCampusSystem extends StatefulWidget {
   const OnCampusSystem({super.key});

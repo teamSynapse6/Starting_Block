@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/screen/intergrate_screen.dart';
-import 'package:starting_block/screen/manage/api/roadmap_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/roadmap_delet.dart';
 import 'package:starting_block/screen/roadmap_screen/roadmaplist_add.dart';
 
@@ -200,26 +200,28 @@ class _RoadMapEditState extends State<RoadMapEdit> {
                     proxyDecorator:
                         (Widget child, int index, Animation<double> animation) {
                       return AnimatedBuilder(
-                          animation: animation,
-                          builder: (context, child) {
-                            double elevation =
-                                Tween<double>(begin: 0.0, end: 6.0)
-                                    .evaluate(animation);
-                            if (index == draggingIndex) {
-                              return Material(
-                                color: AppColors.g1,
-                                elevation: elevation,
-                                child: ReorderCustomTile(
-                                    thisBGColor: AppColors.g1,
-                                    thisText: roadMaps![index].title,
-                                    thisTextStyle: AppTextStyles.bd1),
-                              );
-                            }
+                        animation: animation,
+                        builder: (context, child) {
+                          double elevation = Tween<double>(begin: 0.0, end: 6.0)
+                              .evaluate(animation);
+                          if (index == draggingIndex) {
                             return Material(
-                              elevation: 0.0,
-                              child: child,
+                              color: AppColors.white,
+                              elevation: elevation,
+                              child: ReorderCustomTile(
+                                thisText: roadMaps![index].title,
+                                thisTextStyle: AppTextStyles.bd1
+                                    .copyWith(color: AppColors.g6),
+                              ),
                             );
-                          });
+                          }
+                          return Material(
+                            elevation: 0.0,
+                            child: child,
+                          );
+                        },
+                        child: child,
+                      );
                     },
                   )
                 : const Center(

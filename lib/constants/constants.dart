@@ -22,7 +22,7 @@ export 'package:starting_block/constants/widgets/ofca_sorting_textbuttonsheet.da
 export 'package:starting_block/constants/widgets/onboarding_state.dart'; //온보딩 화면 상단 현재 단계
 export 'package:starting_block/constants/widgets/setting_widget/setting_list.dart'; //설정_리스트 위젯
 export 'package:starting_block/constants/widgets/setting_widget/profile_icon_list.dart'; //설정_프로필 수정 리스트 위젯
-export 'package:starting_block/constants/widgets/question_widget/question_list.dart'; //질문 홈_리스트 위젯
+export 'package:starting_block/constants/widgets/comment_widget/question_list.dart'; //질문 홈_리스트 위젯
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트
@@ -67,3 +67,9 @@ export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_clas
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampuss_class_listcard.dart'; //교내지원사업_교내 강의 리스트 카드
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_notify_listcard.dart'; //교내지원사업_지원공고 리스트 카드
 export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_supportgroup_list.dart'; //교내지원사업_창업지원단 통합 리스트 카드
+
+//질문&답변 컴포넌트 관리
+export 'package:starting_block/constants/widgets/comment_widget/comment_list.dart'; //질문&답변_댓글 리스트
+export 'package:starting_block/constants/widgets/comment_widget/reply_list.dart'; //질문&답변_유저 답글 리스트
+export 'package:starting_block/constants/widgets/comment_widget/vote_reply_widget.dart'; //궁금해요 컴포넌트
+export 'package:starting_block/constants/widgets/comment_widget/delete_bottom_sheet.dart'; //댓글 삭제 컴포넌트

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 String formatedStartDate(String date) {
   // '20240102'와 같은 문자열을 '2024-01-02' 형식으로 변환
@@ -34,6 +34,7 @@ class OffCampusDetailInfo extends StatelessWidget {
       thisID,
       classification,
       questionCount;
+  final VoidCallback thisLoadAction;
 
   const OffCampusDetailInfo({
     super.key,
@@ -48,6 +49,7 @@ class OffCampusDetailInfo extends StatelessWidget {
     required this.classification,
     required this.content,
     required this.questionCount,
+    required this.thisLoadAction,
   });
 
   @override
@@ -102,8 +104,8 @@ class OffCampusDetailInfo extends StatelessWidget {
                 filledcolor: AppColors.white,
                 text: '질문하기 $questionCount',
                 textcolor: AppColors.blue,
-                onTapAction: () {
-                  Navigator.push(
+                onTapAction: () async {
+                  final dynamic result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => QuestionHome(
@@ -111,6 +113,9 @@ class OffCampusDetailInfo extends StatelessWidget {
                       ),
                     ),
                   );
+                  if (result == true) {
+                    thisLoadAction();
+                  }
                 },
               ),
               Gaps.h8,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/offcampus_api_manage.dart';
-import 'package:starting_block/screen/manage/api/question_answer_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/api/offcampus_api_manage.dart';
+import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OffCampusDetail extends StatefulWidget {
   final String thisID;
@@ -19,16 +20,16 @@ class OffCampusDetail extends StatefulWidget {
 
 class _OffCampusDetailState extends State<OffCampusDetail> {
   final List<OffCampusDetailModel> _offcampusDetail = [];
-  int _questionCount = 0;
+  String _questionCount = '0';
+
   Future<List<OffCampusListModel>>? futureRecommendations; // 추천 공고 데이터를 저장할 필드
 
-  @override
   @override
   void initState() {
     super.initState();
     loadoffCampusDetailData();
-    loadQuestionData();
     loadRecommendations(); // 추천 공고 데이터를 로드하는 메소드 호출
+    loadQuestionData();
   }
 
   Future<void> loadoffCampusDetailData() async {
@@ -42,54 +43,73 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
     });
   }
 
-  Future<void> loadQuestionData() async {
-    List<QuestionModel> questionData =
-        await QuestionAnswerApi.getQuestionData(widget.thisID);
-    setState(() {
-      _questionCount = questionData.length;
-    });
-  }
-
   // 추천 공고 데이터를 로드하는 메소드
   void loadRecommendations() {
     futureRecommendations = OffCampusApi.getOffcampusRecommend();
   }
 
+  void loadQuestionData() async {
+    final questions = await QuestionAnswerApi.getQuestionList(
+        int.tryParse(widget.thisID) ?? 0);
+    setState(() {
+      _questionCount = questions.length.toString(); // _questionData 업데이트
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SaveAppBar(
-        thisBookMark: Container(),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (_offcampusDetail.isNotEmpty)
-              OffCampusDetailInfo(
-                organize: _offcampusDetail[0].organization,
-                title: _offcampusDetail[0].title,
-                startDate: _offcampusDetail[0].startDate,
-                endDate: _offcampusDetail[0].endDate,
-                target: _offcampusDetail[0].target,
-                type: _offcampusDetail[0].supportType,
-                link: _offcampusDetail[0].link,
-                thisID: _offcampusDetail[0].id.toString(),
-                classification: "교외사업",
-                content: _offcampusDetail[0].content,
-                questionCount: _questionCount.toString(),
-              ),
-            Container(
-              height: 8,
-              decoration: const BoxDecoration(color: AppColors.g1),
+    return Consumer<BookMarkNotifier>(
+      builder: (context, bookMarkNotifier, child) {
+        if (bookMarkNotifier.isUpdated) {
+          loadoffCampusDetailData();
+          bookMarkNotifier.resetUpdate();
+        }
+        return Scaffold(
+          appBar: _offcampusDetail.isNotEmpty
+              ? SaveAppBar(
+                  thisBookMark: BookMarkButton(
+                    isSaved: _offcampusDetail[0].isBookmarked,
+                    thisID: widget.thisID,
+                  ),
+                )
+              : null,
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (_offcampusDetail.isNotEmpty)
+                  OffCampusDetailInfo(
+                    organize: _offcampusDetail[0].organization,
+                    title: _offcampusDetail[0].title,
+                    startDate: _offcampusDetail[0].startDate,
+                    endDate: _offcampusDetail[0].endDate,
+                    target: _offcampusDetail[0].target,
+                    type: _offcampusDetail[0].supportType,
+                    link: _offcampusDetail[0].link,
+                    thisID: _offcampusDetail[0].id.toString(),
+                    classification: "교외사업",
+                    content: _offcampusDetail[0].content,
+                    questionCount: _questionCount,
+                    thisLoadAction: loadQuestionData,
+                  ),
+                if (_offcampusDetail.isNotEmpty)
+                  OffCampusDetailGptCard(
+                    thisTitle: _offcampusDetail[0].title,
+                    thisID: widget.thisID,
+                  ),
+                Container(
+                  height: 8,
+                  decoration: const BoxDecoration(color: AppColors.g1),
+                ),
+                Recommendation(
+                  futureRecommendations: futureRecommendations!,
+                  thisID: widget.thisID,
+                ),
+              ],
             ),
-            Recommendation(
-              futureRecommendations: futureRecommendations!,
-              thisID: widget.thisID,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

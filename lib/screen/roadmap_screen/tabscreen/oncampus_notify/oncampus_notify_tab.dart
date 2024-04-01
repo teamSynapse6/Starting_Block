@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/oncampus_api_manage.dart'; // Import 수정
-import 'package:starting_block/screen/manage/model_manage.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart'; // Import 수정
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_recommend.dart';
 
 const List<String> validTextsNotify = [

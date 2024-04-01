@@ -1,15 +1,17 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/api/question_answer_api_manage.dart';
-import 'package:starting_block/screen/manage/model_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionDetail extends StatefulWidget {
-  final String qid;
+  final int questionID;
 
   const QuestionDetail({
     super.key,
-    required this.qid,
+    required this.questionID,
   });
 
   @override
@@ -17,14 +19,19 @@ class QuestionDetail extends StatefulWidget {
 }
 
 class _QuestionDetailState extends State<QuestionDetail> {
-  List<QuestionModel> _questionData = [];
+  Future<QuestionDetailModel?>? _questionDetailFuture;
+  int? replyingToAnswerId; // 답글 대상 답변의 ID
+  final FocusNode _replyFocusNode = FocusNode(); // 답글 작성을 위한 FocusNode 추가
+
   final TextEditingController _controller = TextEditingController();
   bool _isTyped = false;
+  String? replyingToUserName; // 답글 대상 사용자 이름
+  bool isReplying = false; // 답글 작성 UI 표시 여부
 
   @override
   void initState() {
     super.initState();
-    loadQuestionData(); // 위젯이 초기화될 때 질문 데이터를 가져옵니다.
+    _loadQuestionDetail();
 
     _controller.addListener(() {
       if (_controller.text.isNotEmpty && !_isTyped) {
@@ -47,12 +54,117 @@ class _QuestionDetailState extends State<QuestionDetail> {
     super.dispose();
   }
 
-  void loadQuestionData() async {
-    final List<QuestionModel> questionData =
-        await QuestionAnswerApi.getQuestionDataByQid(widget.qid);
+  // 질문 상세 정보를 로드하는 메서드
+  void _loadQuestionDetail() {
+    _questionDetailFuture =
+        QuestionAnswerApi.getQuestionDetail(widget.questionID);
+  }
+
+  Widget _sendMessageButton() {
+    return GestureDetector(
+      onTap: () async {
+        // 비동기 처리를 위해 async 추가
+        if (_isTyped) {
+          FocusScope.of(context).unfocus();
+          // 입력된 텍스트가 있는 경우에만 요청 실행
+          final content = _controller.text;
+          final questionId = widget.questionID;
+          const isContact = false; // isContact는 false로 설정
+
+          await QuestionAnswerApi.postAnswerWrite(
+              questionId, content, isContact);
+          _loadQuestionDetail();
+
+          setState(() {
+            _controller.clear();
+            _isTyped = false;
+          });
+        }
+      },
+      child: _isTyped ? AppIcon.send_actived : AppIcon.send_inactived,
+    );
+  }
+
+  Widget _sendReplyButton() {
+    return GestureDetector(
+      onTap: () async {
+        if (_isTyped && replyingToAnswerId != null) {
+          FocusScope.of(context).unfocus(); // 키보드 숨김
+          final content = _controller.text;
+
+          try {
+            // 답글 작성 API 호출
+            await QuestionAnswerApi.postReplyWrite(
+                replyingToAnswerId!, content);
+            print("답글이 성공적으로 등록되었습니다.");
+
+            // 성공적으로 답글이 작성된 후의 처리
+            _controller.clear(); // 입력 필드 초기화
+            _loadQuestionDetail();
+            setState(() {
+              _isTyped = false;
+              isReplying = false; // 답글 작성 UI 숨김
+            });
+          } catch (e) {
+            // 답글 작성 중 오류 발생 시 처리
+            print("답글 등록 중 오류가 발생했습니다: $e");
+          }
+        }
+      },
+      child: _isTyped ? AppIcon.send_actived : AppIcon.send_inactived,
+    );
+  }
+
+  // 'thisTap' 콜백 내에서 포커스 요청 로직 추가
+  void _handleReplyTap(int answerId, String userName) {
     setState(() {
-      _questionData = questionData;
+      replyingToUserName = userName;
+      replyingToAnswerId = answerId;
+      isReplying = true;
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(_replyFocusNode);
+    });
+  }
+
+  /*좋아요 메소드*/
+
+// 질문에 대한 궁금해요 전송 메소드
+  void postHeartForQuestion() async {
+    bool success =
+        await QuestionAnswerApi.postHeart(widget.questionID, 'QUESTION');
+    if (success) {
+      // 하트 전송 성공 시, 질문 상세 정보를 다시 로드
+      setState(() {
+        // _questionDetailFuture 업데이트를 위해 setState 내에서 호출
+        _questionDetailFuture =
+            QuestionAnswerApi.getQuestionDetail(widget.questionID);
+      });
+    }
+  }
+
+// 질문에 대한 하트 취소 메소드
+  void deleteHeartForQuestion() async {
+    final questionDetail = await _questionDetailFuture;
+    if (questionDetail?.heartId != null) {
+      bool success =
+          await QuestionAnswerApi.deleteHeart(questionDetail!.heartId);
+      if (success) {
+        print(
+            'Heart deleted successfully for question with ID ${widget.questionID}.');
+        // 하트 삭제 후 질문 상세 정보를 다시 로드하여 UI 업데이트
+        setState(() {
+          // _questionDetailFuture 업데이트를 위해 setState 내에서 호출
+          _questionDetailFuture =
+              QuestionAnswerApi.getQuestionDetail(widget.questionID);
+        });
+      } else {
+        // 하트 삭제 실패 시 처리
+        print('Failed to delete heart for question.');
+      }
+    } else {
+      print('No heartId found for question.');
+    }
   }
 
   @override
@@ -61,73 +173,186 @@ class _QuestionDetailState extends State<QuestionDetail> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: const BackAppBar(),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _questionData.isNotEmpty
-                ? QuestionDetailInfo(
-                    thisUserName: _questionData[0].userName,
-                    thisQuestion: _questionData[0].question,
-                    thisDate: _questionData[0].date,
-                    thisLike: _questionData[0].like,
-                  )
-                : Container(),
-            const CustomDividerH8G1(),
-            const QuestionUserComment(),
-          ],
+        appBar: const BackAppBar(
+          state: true,
         ),
-        bottomNavigationBar: Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: BottomAppBar(
-            height: 52,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 10,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
+        body: SingleChildScrollView(
+          child: FutureBuilder<QuestionDetailModel?>(
+              future: _questionDetailFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                      child: Text('Error loading question details'));
+                } else if (snapshot.hasData) {
+                  final questionDetail = snapshot.data!;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      QuestionDetailInfo(
+                        thisUserName: questionDetail.userName,
+                        thisQuestion: questionDetail.content,
+                        thisDate: questionDetail.createdAt,
+                        thisLike: questionDetail.heartCount,
+                        isMine: questionDetail.isMyHeart,
+                        thisQuestionLikeTap: postHeartForQuestion,
+                        thisQuestionLikeCancelTap: deleteHeartForQuestion,
+                        thisQuestionHeardID: questionDetail.heartId,
                       ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1.5,
-                          color: AppColors.g2,
+                      const CustomDividerH8G1(),
+                      QuestionUserComment(
+                        thisTap: (int answerId, String userName) {
+                          _handleReplyTap(answerId, userName);
+                        },
+                        answers: questionDetail.answerList,
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container();
+                }
+              }),
+        ),
+        bottomNavigationBar: isReplying
+            ? Padding(
+                padding: MediaQuery.of(context).viewInsets,
+                child: BottomAppBar(
+                  height: 52 + 42,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 10,
                         ),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: TextField(
-                        controller: _controller,
-                        cursorColor: AppColors.g6,
-                        minLines: 1,
-                        maxLines: null,
-                        style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(
-                            bottom: 9,
-                            top: -9,
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
+                        height: 42,
+                        color: Colors.grey[200],
+                        child: Row(
+                          children: [
+                            Text(
+                              '$replyingToUserName에게 답글 남기는 중',
+                              style: AppTextStyles.bd2
+                                  .copyWith(color: AppColors.g4),
+                            ),
+                            const Spacer(),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isReplying = false;
+                                  replyingToAnswerId = null;
+                                  replyingToUserName = null;
+                                });
+                              },
+                              child: AppIcon.close,
+                            ),
+                          ],
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 10,
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 32,
+                              width: MediaQuery.of(context).size.width *
+                                  (280 / 360),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1.5,
+                                  color: AppColors.g2,
+                                ),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: TextField(
+                                focusNode: _replyFocusNode,
+                                controller: _controller,
+                                cursorColor: AppColors.g6,
+                                minLines: 1,
+                                maxLines: null,
+                                style: AppTextStyles.bd2
+                                    .copyWith(color: AppColors.g6),
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                    bottom: 9,
+                                    top: -9,
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Gaps.h8,
+                            _sendReplyButton(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Padding(
+                padding: MediaQuery.of(context).viewInsets,
+                child: BottomAppBar(
+                  height: 52,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 10,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 32,
+                          width:
+                              MediaQuery.of(context).size.width * (280 / 360),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1.5,
+                              color: AppColors.g2,
+                            ),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: TextField(
+                            controller: _controller,
+                            cursorColor: AppColors.g6,
+                            minLines: 1,
+                            maxLines: null,
+                            style:
+                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                bottom: 9,
+                                top: -9,
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Gaps.h8,
+                        _sendMessageButton(),
+                      ],
                     ),
                   ),
-                  Gaps.h8,
-                  _isTyped ? AppIcon.send_actived : AppIcon.send_inactived,
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

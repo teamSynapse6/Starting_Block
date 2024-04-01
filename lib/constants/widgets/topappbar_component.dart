@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/manage/recentsearch_manage.dart';
-import 'package:starting_block/screen/manage/screen_manage.dart';
+import 'package:starting_block/manage/recentsearch_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({
@@ -321,22 +321,25 @@ class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: thisBookMark, // 이 부분에서 위젯을 사용
           ),
         ],
+        toolbarHeight: 56, // Set the height of the AppBar to 56
       ),
     );
   }
 }
 
 class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final thisTextStyle;
+  final String text;
+  final thisOnTap;
+  final state;
+
   const BackTitleAppBar({
     super.key,
     this.thisTextStyle,
     required this.text,
     this.thisOnTap,
+    this.state,
   });
-
-  final thisTextStyle;
-  final String text;
-  final thisOnTap;
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -346,7 +349,7 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: GestureDetector(
         onTap: () {
-          Navigator.pop(context);
+          Navigator.pop(context, state);
         },
         child: AppIcon.back,
       ),
