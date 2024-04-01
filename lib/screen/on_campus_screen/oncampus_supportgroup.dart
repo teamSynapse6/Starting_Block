@@ -52,17 +52,17 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
     }
   }
 
+  @override
+  void dispose() {
+    _tabController.dispose(); // TabController 해제
+    super.dispose();
+  }
+
   Future<void> _loadSchoolName() async {
     String schoolName = await UserInfo.getSchoolName();
     setState(() {
       _schoolName = schoolName;
     });
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose(); // TabController 해제
-    super.dispose();
   }
 
   Future<void> _loadSvgLogo() async {

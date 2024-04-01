@@ -40,9 +40,7 @@ class _OnCaGroupMentoringState extends State<OnCaGroupMentoring> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: _mentoringList.isEmpty
-            ? const Center(
-                child:
-                    CircularProgressIndicator()) // 데이터 로딩 중이거나 실패했을 때를 대비한 처리
+            ? Container()
             : ListView.builder(
                 itemCount: _mentoringList.length,
                 itemBuilder: (context, index) {

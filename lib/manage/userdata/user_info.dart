@@ -101,6 +101,18 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getInt('kakaoUserID') ?? 0; // 기본값으로 0을 반환하도록 설정
   }
 
+  //로그인 확인 메소드
+  Future<void> setLoginStatus(bool isLogined) async {
+    await _prefs.setBool('LoginStatus', isLogined);
+    _hasChanged = true;
+    notifyListeners();
+  }
+
+  static Future<bool> getLoginStatus() async {
+    await initialize(); // 초기화가 필요한 경우 여기에 추가
+    return _prefs.getBool('LoginStatus') ?? false;
+  }
+
   // gptThreadID 메소드
   Future<void> setGptThreadID(String gptThreadID) async {
     await _prefs.setString('gptThreadID', gptThreadID);

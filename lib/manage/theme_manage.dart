@@ -33,11 +33,10 @@ class ThemeManage {
         ),
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
-        padding: EdgeInsets.all(0),
-        elevation: 0,
-        color: AppColors.white,
-        height: 72 + 15, //72는 바텀시트의 높이, 15는 그라데이션 영역
-      ),
+          padding: EdgeInsets.all(0),
+          elevation: 0,
+          color: AppColors.white,
+          height: 72),
       bottomSheetTheme: const BottomSheetThemeData(
         elevation: 0,
         backgroundColor: AppColors.white, // 배경색 설정
@@ -100,6 +99,7 @@ class ThemeManage {
         elevation: 0,
       ),
       canvasColor: AppColors.white,
+      colorScheme: ColorScheme.fromSwatch().copyWith(primary: AppColors.blue),
     );
   }
 }

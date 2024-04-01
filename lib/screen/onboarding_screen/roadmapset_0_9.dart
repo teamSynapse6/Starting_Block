@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/system_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class RoadmapScreen extends StatefulWidget {
   const RoadmapScreen({super.key});
@@ -35,6 +39,47 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   // 사용자 닉네임 불러오기 메소드
   Future<void> _loadUserNickname() async {
     userNickname = await UserInfo.getNickName();
+  }
+
+  //자동로그인 설정
+  Future<void> _saveUserResidence() async {
+    // Provider를 사용하여 UserInfo 인스턴스에 접근
+    final userInfo = Provider.of<UserInfo>(context, listen: false);
+    await userInfo.setLoginStatus(true);
+  }
+
+  void _onNextTap() async {
+    int kakaoUserID = await UserInfo.getKakaoUserID();
+
+    // 닉네임과 함께 사용자 정보 생성 요청
+    if (userNickname != null && userNickname!.isNotEmpty) {
+      try {
+        // kakaoUserID를 String으로 변환하여 API 요청
+        final String uuid = await SystemApiManage.getCreateUserInfo(
+            userNickname!, kakaoUserID.toString());
+
+        // SharedPreferences에 UUID 저장
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userUuid', uuid);
+
+        // 성공적으로 UUID를 저장한 후 다음 화면으로 네비게이션
+        if (!mounted) return;
+        {
+          _saveUserResidence();
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const IntergrateScreen()),
+            (Route<dynamic> route) => false,
+          );
+        }
+      } catch (e) {
+        if (!mounted) return;
+        // 오류 처리: 사용자에게 실패 메시지를 표시합니다.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('사용자 정보 생성에 실패했습니다. 오류: $e')),
+        );
+      }
+    }
   }
 
   @override
@@ -95,8 +140,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                         return Material(
                           elevation: elevation,
                           child: ReorderCustomTile(
-                            thisText:
-                                currentItemText, // 드래그 중인 아이템의 텍스트를 설정합니다.
+                            thisText: currentItemText,
                             thisTextStyle:
                                 AppTextStyles.bd1.copyWith(color: AppColors.g6),
                           ),
@@ -139,7 +183,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                 right: 24,
               ),
               child: GestureDetector(
-                onTap: null,
+                onTap: _onNextTap,
                 child: const NextContained(
                   text: "시작하기",
                   disabled: false,

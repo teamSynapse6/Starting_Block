@@ -42,7 +42,7 @@ class StartingBlock extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeManage.theme,
-      home: const IntergrateScreen(),
+      home: const SplashScreen(),
     );
   }
 }
@@ -55,9 +55,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
+  bool _isLogIned = false;
+
   @override
   void initState() {
     super.initState();
+    loadLogInStatus();
 
     // SplashScreen에서 시스템 네비게이션 바 색상 설정
     SystemChrome.setSystemUIOverlayStyle(
@@ -67,17 +70,27 @@ class SplashScreenState extends State<SplashScreen> {
     );
 
     Future.delayed(
-      const Duration(milliseconds: 2000),
+      const Duration(milliseconds: 1000),
       () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(
+            builder: (context) =>
+                _isLogIned ? const IntergrateScreen() : const LoginScreen(),
+          ),
         );
         SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.white, // 다른 화면의 네비게이션 바 색상
         ));
       },
     );
+  }
+
+  void loadLogInStatus() async {
+    bool isLogIned = await UserInfo.getLoginStatus();
+    setState(() {
+      _isLogIned = isLogIned;
+    });
   }
 
   @override

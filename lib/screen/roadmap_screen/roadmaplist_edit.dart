@@ -200,26 +200,28 @@ class _RoadMapEditState extends State<RoadMapEdit> {
                     proxyDecorator:
                         (Widget child, int index, Animation<double> animation) {
                       return AnimatedBuilder(
-                          animation: animation,
-                          builder: (context, child) {
-                            double elevation =
-                                Tween<double>(begin: 0.0, end: 6.0)
-                                    .evaluate(animation);
-                            if (index == draggingIndex) {
-                              return Material(
-                                color: AppColors.g1,
-                                elevation: elevation,
-                                child: ReorderCustomTile(
-                                    thisBGColor: AppColors.g1,
-                                    thisText: roadMaps![index].title,
-                                    thisTextStyle: AppTextStyles.bd1),
-                              );
-                            }
+                        animation: animation,
+                        builder: (context, child) {
+                          double elevation = Tween<double>(begin: 0.0, end: 6.0)
+                              .evaluate(animation);
+                          if (index == draggingIndex) {
                             return Material(
-                              elevation: 0.0,
-                              child: child,
+                              color: AppColors.white,
+                              elevation: elevation,
+                              child: ReorderCustomTile(
+                                thisText: roadMaps![index].title,
+                                thisTextStyle: AppTextStyles.bd1
+                                    .copyWith(color: AppColors.g6),
+                              ),
                             );
-                          });
+                          }
+                          return Material(
+                            elevation: 0.0,
+                            child: child,
+                          );
+                        },
+                        child: child,
+                      );
                     },
                   )
                 : const Center(
