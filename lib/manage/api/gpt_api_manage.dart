@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class GptApi {
-  static String baseUrl = 'https://pdfgpt.startingblock.co.kr/';
+  static String baseUrl = 'https://pdfgpt.startingblock.co.kr';
   static String gptStart = 'gpt/start';
   static String gptChat = 'gpt/chat';
   static String gptEnd = 'gpt/end';

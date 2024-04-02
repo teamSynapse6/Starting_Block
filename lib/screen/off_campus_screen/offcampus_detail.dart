@@ -62,7 +62,6 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
       builder: (context, bookMarkNotifier, child) {
         if (bookMarkNotifier.isUpdated) {
           loadoffCampusDetailData();
-          bookMarkNotifier.resetUpdate();
         }
         return Scaffold(
           appBar: _offcampusDetail.isNotEmpty

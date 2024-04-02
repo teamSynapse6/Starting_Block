@@ -48,7 +48,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
           return DialogComponent(
             title: '문의처로 질문이 발송됩니다',
             description:
-                '답변을 받기까지 일정 시간이 소요됩니다.\n매너있고 상세한 질문은\n문의처의 빠른 답변으로 이어집니다',
+                '답변을 받기까지 일정 시간이 소요됩니다.\n매너있고 상세한 질문은\n문의처의 빠른 답변으로 이어집니다.',
             rightActionText: '발송',
             rightActionTap: _postQuestion, // 여기서 실제 발송 로직을 연결할 수 있습니다.
           );
