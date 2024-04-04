@@ -49,6 +49,9 @@ class _SchoolScreenState extends State<SchoolScreen> {
       _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
     });
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      _onNextTap();
+    });
   }
 
   Future<void> _saveSchoolName() async {
@@ -89,79 +92,85 @@ class _SchoolScreenState extends State<SchoolScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        appBar: BackTitleAppBar(
-          thisTextStyle: AppTextStyles.btn1.copyWith(
-            color: AppColors.g5,
-          ),
-          text: '건너뛰기',
-          thisOnTap: _onSkipTap,
-        ),
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gaps.v12,
-              const OnBoardingState(thisState: 5),
-              Gaps.v36,
-              Text(
-                "대학교(원)을 선택해주세요",
-                style: AppTextStyles.h5.copyWith(color: AppColors.g6),
+        appBar: const BackAppBar(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const OnBoardingState(thisState: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v52,
+                  Text(
+                    "대학교(원)을 선택해주세요",
+                    style: AppTextStyles.h5.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v10,
+                  Text(
+                    "현재 일부 대학의 교내 지원 사업을 제공해 드립니다",
+                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v32,
+                  TextField(
+                    style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                    controller: _schoolInfoController,
+                    decoration: InputDecoration(
+                      hintText: "학교명을 입력해주세요",
+                      hintStyle:
+                          AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                    ),
+                  ),
+                  Gaps.v20,
+                ],
               ),
-              Gaps.v10,
-              Text(
-                "현재 일부 대학의 교내 지원 사업을 제공해 드립니다",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v32,
-              TextField(
-                style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
-                controller: _schoolInfoController,
-                decoration: InputDecoration(
-                  hintText: "학교명을 입력해주세요",
-                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
-                ),
-              ),
-              Gaps.v20,
-              if (_schoolInfo.isNotEmpty) // 조건 추가
-                Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: filteredSchoolList.length > 3
-                        ? 3
-                        : filteredSchoolList.length, // 최대 3개만 표시
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        height: 32,
-                        child: InkWell(
-                          onTap: () => _onSchoolTap(filteredSchoolList[index]),
-                          highlightColor: AppColors.bluebg,
-                          splashColor: AppColors.bluebg,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              filteredSchoolList[index],
-                              style: AppTextStyles.bd4
-                                  .copyWith(color: AppColors.g6),
-                            ),
+            ),
+            if (_schoolInfo.isNotEmpty) // 조건 추가
+              ListView.separated(
+                shrinkWrap: true,
+                itemCount: filteredSchoolList.length > 3
+                    ? 3
+                    : filteredSchoolList.length,
+                separatorBuilder: (context, index) => Gaps.v4,
+                itemBuilder: (context, index) {
+                  return Ink(
+                    height: 32,
+                    width: MediaQuery.of(context).size.width,
+                    child: InkWell(
+                      onTap: () => _onSchoolTap(filteredSchoolList[index]),
+                      highlightColor: AppColors.bluebg,
+                      splashColor: AppColors.bluebg,
+                      child: Row(
+                        children: [
+                          Gaps.h24,
+                          Text(
+                            filteredSchoolList[index],
+                            style:
+                                AppTextStyles.bd4.copyWith(color: AppColors.g6),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24),
-                child: GestureDetector(
-                  onTap: _onNextTap,
-                  child: NextContained(
-                    text: "다음",
-                    disabled: _schoolInfo.isEmpty,
-                  ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+          ],
+        ),
+        bottomNavigationBar: BottomAppBar(
+          height: 92,
+          color: AppColors.white,
+          child: Ink(
+            padding: const EdgeInsets.fromLTRB(24, 36, 24, 24),
+            child: InkWell(
+              onTap: _onSkipTap,
+              child: Center(
+                child: Text(
+                  '다음에 설정',
+                  style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),

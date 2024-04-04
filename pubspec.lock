@@ -288,6 +288,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1+2"
+  korean_profanity_filter:
+    dependency: "direct main"
+    description:
+      name: korean_profanity_filter
+      sha256: "2e162e2377d96035f9eb89382488cd5ca44e765b6561c6703f9a89c9ee541d97"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   leak_tracker:
     dependency: transitive
     description:

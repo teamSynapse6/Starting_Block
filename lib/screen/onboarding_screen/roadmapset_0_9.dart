@@ -86,107 +86,156 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Gaps.v12,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const OnBoardingState(thisState: 6),
-                  Gaps.v36,
-                  Text(
-                    "로드맵을 설정해보세요",
-                    style: AppTextStyles.h5.copyWith(color: AppColors.g6),
-                  ),
-                  Gaps.v10,
-                  Text(
-                    "본인에게 맞는 창업 로드맵을 설정할 수 있습니다",
-                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-                  ),
-                ],
-              ),
-            ),
-            Gaps.v32,
-            Expanded(
-              child: ReorderableListView(
-                onReorderStart: (int newIndex) {
-                  setState(() {
-                    draggingIndex = newIndex;
-                  });
-                },
-                onReorderEnd: (int oldIndex) {
-                  setState(() {
-                    draggingIndex = -1;
-                  });
-                },
-                proxyDecorator:
-                    (Widget child, int index, Animation<double> animation) {
-                  return AnimatedBuilder(
-                    animation: animation,
-                    builder: (context, child) {
-                      double elevation = Tween<double>(begin: 0.0, end: 6.0)
-                          .evaluate(animation);
-                      if (index == draggingIndex &&
-                          index < roadmapItems.length) {
-                        // 현재 드래그 중인 아이템의 텍스트를 참조합니다.
-                        final String currentItemText = roadmapItems[index];
-                        return Material(
-                          elevation: elevation,
-                          child: ReorderCustomTile(
-                            thisText: currentItemText,
-                            thisTextStyle:
-                                AppTextStyles.bd1.copyWith(color: AppColors.g6),
-                          ),
-                        );
-                      }
-                      return Material(
-                        elevation: 0.0,
-                        child: child,
-                      );
-                    },
-                    child: child,
-                  );
-                },
-                children: <Widget>[
-                  for (final item
-                      in roadmapItems) // roadmapItems는 screen_manage.dart에서 정의된 것으로 가정
-                    ReorderCustomTile(
-                      key: Key(item),
-                      thisText: item,
-                      thisTextStyle: AppTextStyles.bd2.copyWith(
-                        color: AppColors.g6,
-                      ),
+      body: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const OnBoardingState(thisState: 6),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 24,
+                  right: 12,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Gaps.v52,
+                    Text(
+                      "로드맵을 설정해보세요",
+                      style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                     ),
-                ],
-                onReorder: (int oldIndex, int newIndex) {
-                  setState(() {
-                    if (newIndex > oldIndex) {
-                      newIndex -= 1;
-                    }
-                    final item = roadmapItems.removeAt(oldIndex);
-                    roadmapItems.insert(newIndex, item);
-                  });
-                },
+                    Gaps.v10,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: SizedBox(
+                            height: 32,
+                            width: 50,
+                            child: Center(
+                              child: Text(
+                                '추가',
+                                style: AppTextStyles.btn1
+                                    .copyWith(color: AppColors.g6),
+                              ),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: SizedBox(
+                            height: 32,
+                            width: 50,
+                            child: Center(
+                              child: Text(
+                                '삭제',
+                                style: AppTextStyles.btn1
+                                    .copyWith(color: AppColors.g6),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Gaps.v8,
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ReorderableListView(
+                  onReorderStart: (int newIndex) {
+                    setState(() {
+                      draggingIndex = newIndex;
+                    });
+                  },
+                  onReorderEnd: (int oldIndex) {
+                    setState(() {
+                      draggingIndex = -1;
+                    });
+                  },
+                  proxyDecorator:
+                      (Widget child, int index, Animation<double> animation) {
+                    return AnimatedBuilder(
+                      animation: animation,
+                      builder: (context, child) {
+                        double elevation = Tween<double>(begin: 0.0, end: 6.0)
+                            .evaluate(animation);
+                        if (index == draggingIndex &&
+                            index < roadmapItems.length) {
+                          // 현재 드래그 중인 아이템의 텍스트를 참조합니다.
+                          final String currentItemText = roadmapItems[index];
+                          return Material(
+                            elevation: elevation,
+                            child: ReorderCustomTile(
+                              thisText: currentItemText,
+                              thisTextStyle: AppTextStyles.bd1
+                                  .copyWith(color: AppColors.g6),
+                            ),
+                          );
+                        }
+                        return Material(
+                          elevation: 0.0,
+                          child: child,
+                        );
+                      },
+                      child: child,
+                    );
+                  },
+                  children: <Widget>[
+                    for (final item
+                        in roadmapItems) // roadmapItems는 screen_manage.dart에서 정의된 것으로 가정
+                      ReorderCustomTile(
+                        key: Key(item),
+                        thisText: item,
+                        thisTextStyle: AppTextStyles.bd2.copyWith(
+                          color: AppColors.g6,
+                        ),
+                      ),
+                  ],
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (newIndex > oldIndex) {
+                        newIndex -= 1;
+                      }
+                      final item = roadmapItems.removeAt(oldIndex);
+                      roadmapItems.insert(newIndex, item);
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+          const Positioned(
+            bottom: 0,
+            child: BottomGradient(),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        padding: const EdgeInsets.fromLTRB(24, 6, 24, 24),
+        height: 118,
+        child: Column(
+          children: [
+            InkWell(
+              onTap: _onNextTap,
+              child: const NextContained(
+                disabled: false,
+                text: '완료하기',
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 24,
-                left: 24,
-                right: 24,
-              ),
-              child: GestureDetector(
-                onTap: _onNextTap,
-                child: const NextContained(
-                  text: "시작하기",
-                  disabled: false,
+            Gaps.v8,
+            Ink(
+              height: 32,
+              width: MediaQuery.of(context).size.width,
+              child: InkWell(
+                onTap: () {},
+                child: Center(
+                  child: Text(
+                    '다음에 설정',
+                    style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
+                  ),
                 ),
               ),
             ),

@@ -45,6 +45,7 @@ dependencies:
   flutter_shimmer: ^2.1.2
   html: ^0.15.4
   path_provider: ^2.1.2
+  korean_profanity_filter: ^1.0.0
 
 
 dev_dependencies:
