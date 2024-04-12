@@ -116,9 +116,11 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
 
   void _onRegionTap(String region) {
     if (region.isNotEmpty) {
-      // region이 빈 문자열이 아닐 때만 상태를 변경하도록 조건 추가
       setState(() {
         selectedRegion = region;
+      });
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        _onNextTap();
       });
     }
   }
@@ -130,10 +132,8 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
 
   void _onNextTap() async {
     if (selectedRegion == null) return; // 지역이 선택되지 않으면 반환
-
     // 선택된 지역명을 SharedPreferences에 저장
     await _saveUserResidence();
-
     // 다음 화면으로 이동
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -148,38 +148,31 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
       appBar: const BackAppBar(),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gaps.v12,
-              const OnBoardingState(thisState: 4),
-              Gaps.v36,
-              Text(
-                "거주지를 선택해주세요",
-                style: AppTextStyles.h5.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v10,
-              Text(
-                "주민등록상의 거주지를 선택해주세요",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v32,
-              residenceGrid(),
-              const Spacer(), // 나머지 공간을 채우는 위젯
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24),
-                child: GestureDetector(
-                  onTap: _onNextTap,
-                  child: NextContained(
-                    text: "다음",
-                    disabled: selectedRegion == null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const OnBoardingState(thisState: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v52,
+                  Text(
+                    "거주지를 선택해주세요",
+                    style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
-                ),
+                  Gaps.v10,
+                  Text(
+                    "주민등록상의 거주지를 선택해주세요",
+                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v32,
+                  residenceGrid(),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

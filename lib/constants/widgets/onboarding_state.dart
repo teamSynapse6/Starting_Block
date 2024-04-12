@@ -8,16 +8,16 @@ class OnBoardingState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment:
+          MainAxisAlignment.spaceBetween, // Distribute space evenly
       children: List.generate(6, (index) {
-        return Row(
-          children: [
-            Icon(
-              Icons.circle,
-              size: 8.0, // 직접적인 크기 값을 사용합니다. Sizes.size8 대신에
-              color: thisState == index + 1 ? AppColors.blue : AppColors.g2,
-            ),
-            const SizedBox(width: 4.0), // Gaps.h4 대신에, 직접적인 간격 값을 사용합니다.
-          ],
+        return Expanded(
+          child: Container(
+            height: 4.0, // Set the height to 4
+            color: thisState > index
+                ? AppColors.blue
+                : AppColors.g1, // Adjust color based on the index
+          ),
         );
       }),
     );

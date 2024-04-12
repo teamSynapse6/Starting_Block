@@ -69,6 +69,7 @@ export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit
 export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_profileicon.dart'; //프로필 수정_프로필 아이콘 수정
 export 'package:starting_block/screen/myprofile_screen/setting/setting_home.dart'; //설정_홈 화면
 export 'package:starting_block/screen/myprofile_screen/setting/setting_alarm.dart'; //설정_알람 화면
+export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_heart.dart'; //탭_내 궁금해요
 
 //홈_페이지
 export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면

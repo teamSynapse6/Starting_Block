@@ -4,13 +4,21 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionUserComment extends StatefulWidget {
-  final void Function(int answerId, String thisUserName) thisTap;
-  final List<AnswerModel> answers; // Modify the type of answers to direct list
+  final void Function(int answerId, String thisUserName) thisReplyTap;
+  final void Function(int answerId) thisCommentHeartTap;
+  final void Function(int heartId) thisCommenHeartDeleteTap;
+  final void Function(int replyId) thisReplyHeartTap;
+  final void Function(int replyHeartId) thisReplyHeartDeleteTap;
+  final List<AnswerModel> answers;
 
   const QuestionUserComment({
     super.key,
-    required this.thisTap,
+    required this.thisReplyTap,
     required this.answers,
+    required this.thisCommentHeartTap,
+    required this.thisCommenHeartDeleteTap,
+    required this.thisReplyHeartTap,
+    required this.thisReplyHeartDeleteTap,
   });
 
   @override
@@ -57,8 +65,15 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                           thisLike: answer.heartCount,
                           isMyHeart: answer.isMyHeart,
                           thisAnswerId: answer.answerId,
-                          thisCommentTap: () {
-                            widget.thisTap(answer.answerId, answer.userName);
+                          thisReplyTap: () {
+                            widget.thisReplyTap(
+                                answer.answerId, answer.userName);
+                          },
+                          thisCommentHeartTap: () {
+                            widget.thisCommentHeartTap(answer.answerId);
+                          },
+                          thisCommenHeartDeleteTap: () {
+                            widget.thisCommenHeartDeleteTap(answer.heartId!);
                           },
                         ),
                         if (answer.replyResponse.isNotEmpty &&
@@ -91,7 +106,15 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                               ),
                             ),
                           ),
-                        QuestionUserReply(replies: repliesToShow),
+                        QuestionUserReply(
+                          replies: repliesToShow,
+                          thisReplyHeartTap: (int replyId) {
+                            widget.thisReplyHeartTap(replyId);
+                          },
+                          thisReplyHeartDeleteTap: (int replyHeartId) {
+                            widget.thisReplyHeartDeleteTap(replyHeartId);
+                          },
+                        ),
                       ],
                     );
                   },

@@ -32,7 +32,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
     _loadEntrepreneurCheck();
     _loadResidenceName();
     _loadSelectedProfileIcon(); // 프로필 아이콘 로드
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -243,6 +243,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
                   tabs: const [
                     Tab(text: '내 질문'),
                     Tab(text: '내 답변'),
+                    Tab(text: '내 궁금해요'),
                   ],
                 ),
               ),
@@ -250,14 +251,13 @@ class _MyProfileHomeState extends State<MyProfileHome>
                 child: TabBarView(
                   controller: _tabController,
                   children: const [
-                    // '내 질문' 탭 내용
                     Center(
                       child: Text('내 질문 내용'),
                     ),
-                    // '내 답변' 탭 내용
                     Center(
                       child: Text('내 답변 내용'),
                     ),
+                    MyProfileMyQuesion()
                   ],
                 ),
               ),

@@ -58,7 +58,7 @@ class Recommendation extends StatelessWidget {
                   return const Text('No data available.');
                 }
               }
-              return const CircularProgressIndicator();
+              return Container();
             },
           ),
         ],

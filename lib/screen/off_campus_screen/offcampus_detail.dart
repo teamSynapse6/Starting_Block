@@ -27,6 +27,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   @override
   void initState() {
     super.initState();
+    print('ID: ${widget.thisID}');
     loadoffCampusDetailData();
     loadRecommendations(); // 추천 공고 데이터를 로드하는 메소드 호출
     loadQuestionData();
@@ -62,7 +63,6 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
       builder: (context, bookMarkNotifier, child) {
         if (bookMarkNotifier.isUpdated) {
           loadoffCampusDetailData();
-          bookMarkNotifier.resetUpdate();
         }
         return Scaffold(
           appBar: _offcampusDetail.isNotEmpty

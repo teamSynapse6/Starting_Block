@@ -115,7 +115,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
     );
   }
 
-  // 'thisTap' 콜백 내에서 포커스 요청 로직 추가
+  // 답글(대댓글 작성 메소드)
   void _handleReplyTap(int answerId, String userName) {
     setState(() {
       replyingToUserName = userName;
@@ -150,20 +150,59 @@ class _QuestionDetailState extends State<QuestionDetail> {
       bool success =
           await QuestionAnswerApi.deleteHeart(questionDetail!.heartId);
       if (success) {
-        print(
-            'Heart deleted successfully for question with ID ${widget.questionID}.');
-        // 하트 삭제 후 질문 상세 정보를 다시 로드하여 UI 업데이트
         setState(() {
-          // _questionDetailFuture 업데이트를 위해 setState 내에서 호출
           _questionDetailFuture =
               QuestionAnswerApi.getQuestionDetail(widget.questionID);
         });
-      } else {
-        // 하트 삭제 실패 시 처리
-        print('Failed to delete heart for question.');
       }
     } else {
       print('No heartId found for question.');
+    }
+  }
+
+  // 댓글에 대한 도움 하트 메소드
+  void postHeartForAnswer(int answerId) async {
+    bool success = await QuestionAnswerApi.postHeart(answerId, 'ANSWER');
+    if (success) {
+      // 하트 전송 성공 시, 질문 상세 정보를 다시 로드
+      setState(() {
+        // _questionDetailFuture 업데이트를 위해 setState 내에서 호출
+        _questionDetailFuture =
+            QuestionAnswerApi.getQuestionDetail(widget.questionID);
+      });
+    }
+  }
+
+  // 댓글에 대한 도움 하트 취소 메소드
+  void deleteHeartForAnswer(int heartId) async {
+    bool success = await QuestionAnswerApi.deleteHeart(heartId);
+    if (success) {
+      setState(() {
+        _questionDetailFuture =
+            QuestionAnswerApi.getQuestionDetail(widget.questionID);
+      });
+    }
+  }
+
+  //답글(대댓글)에 대한 도움 하트 메소드
+  void postHeartForReply(int replyId) async {
+    bool success = await QuestionAnswerApi.postHeart(replyId, 'REPLY');
+    if (success) {
+      setState(() {
+        _questionDetailFuture =
+            QuestionAnswerApi.getQuestionDetail(widget.questionID);
+      });
+    }
+  }
+
+  //답글(대댓글)에 대한 도움 하트 취소 메소드
+  void deleteHeartForReply(int replyHeartId) async {
+    bool success = await QuestionAnswerApi.deleteHeart(replyHeartId);
+    if (success) {
+      setState(() {
+        _questionDetailFuture =
+            QuestionAnswerApi.getQuestionDetail(widget.questionID);
+      });
     }
   }
 
@@ -182,7 +221,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                      child: Text('Error loading question details'));
+                      child: Text('질문을 로딩하는 중 서버에서 오류가 발생했습니다.'));
                 } else if (snapshot.hasData) {
                   final questionDetail = snapshot.data!;
 
@@ -201,10 +240,22 @@ class _QuestionDetailState extends State<QuestionDetail> {
                       ),
                       const CustomDividerH8G1(),
                       QuestionUserComment(
-                        thisTap: (int answerId, String userName) {
+                        thisReplyTap: (int answerId, String userName) {
                           _handleReplyTap(answerId, userName);
                         },
                         answers: questionDetail.answerList,
+                        thisCommentHeartTap: (int answerId) {
+                          postHeartForAnswer(answerId);
+                        },
+                        thisCommenHeartDeleteTap: (int heartId) {
+                          deleteHeartForAnswer(heartId);
+                        },
+                        thisReplyHeartTap: (int replyId) {
+                          postHeartForReply(replyId);
+                        },
+                        thisReplyHeartDeleteTap: (int replyHeartId) {
+                          deleteHeartForReply(replyHeartId);
+                        },
                       ),
                     ],
                   );

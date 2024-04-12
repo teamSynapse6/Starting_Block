@@ -164,6 +164,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
           children: [
             Expanded(
               child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: [
                   TabScreenOfCaBiz(

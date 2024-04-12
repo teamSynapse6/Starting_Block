@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/screen_manage.dart';
-import 'package:intl/intl.dart';
 
 class BirthdayScreen extends StatefulWidget {
   const BirthdayScreen({super.key});
@@ -23,22 +22,6 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     _birthdayController.addListener(_updateBirthday);
   }
 
-  void _updateBirthday() {
-    final input = _birthdayController.text.replaceAll('.', '');
-    if (input.length == 8) {
-      final currentDate = DateTime.now();
-      final formattedDate = DateFormat('yyyyMMdd').format(currentDate);
-      setState(() {
-        _birthday = input;
-        _isInputValid = input.compareTo(formattedDate) < 0 && input.length == 8;
-      });
-    } else {
-      setState(() {
-        _isInputValid = false;
-      });
-    }
-  }
-
   Future<void> _saveBirthday() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userBirthday', _birthday);
@@ -54,6 +37,42 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     );
   }
 
+  void _updateBirthday() {
+    final input = _birthdayController.text.replaceAll('.', '');
+    if (input.length == 8) {
+      // 연, 월, 일로 분리
+      final int year = int.parse(input.substring(0, 4));
+      final int month = int.parse(input.substring(4, 6));
+      final int day = int.parse(input.substring(6, 8));
+
+      // 월과 일의 유효성 검사를 위해 DateTime 객체 생성
+      DateTime? birthday;
+      // 유효하지 않은 날짜를 처리하기 위해 예외 처리 로직이 필요하지 않음. DateTime은 자동으로 조정하지만, 유효하지 않은 월/일에 대해서는 별도로 검증
+      birthday = DateTime(year, month, day);
+
+      final DateTime currentDate = DateTime.now();
+      final bool isDateValid = birthday.year == year &&
+          birthday.month == month &&
+          birthday.day == day;
+      final bool isDateBeforeCurrent = birthday.isBefore(currentDate);
+
+      setState(() {
+        _birthday = input;
+        _isInputValid = isDateValid && isDateBeforeCurrent;
+      });
+      // _isInputValid가 true로 업데이트된 후, _onNextTap() 자동 호출
+      if (_isInputValid) {
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          _onNextTap();
+        });
+      }
+    } else {
+      setState(() {
+        _isInputValid = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -62,50 +81,49 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
       },
       child: Scaffold(
         appBar: const BackAppBar(),
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gaps.v12,
-              const OnBoardingState(thisState: 2),
-              Gaps.v36,
-              Text(
-                "생년월일을 입력해주세요",
-                style: AppTextStyles.h5.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v10,
-              Text(
-                "지원공고 맞춤 추천을 위해 사용됩니다",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v31,
-              TextField(
-                controller: _birthdayController,
-                decoration: InputDecoration(
-                  hintText: "연도월일 8자리로 입력해주세요",
-                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
-                  counterText: "",
-                ),
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  BirthdayInputFormatter(),
-                  LengthLimitingTextInputFormatter(10),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const OnBoardingState(thisState: 2),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v52,
+                  Text(
+                    "생년월일을 입력해주세요",
+                    style: AppTextStyles.h5.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v10,
+                  Text(
+                    "지원공고 맞춤 추천을 위해 사용됩니다",
+                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v31,
+                  TextField(
+                    controller: _birthdayController,
+                    decoration: InputDecoration(
+                      hintText: "연도월일 8자리로 입력해주세요",
+                      hintStyle:
+                          AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                      counterText: "",
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: _isInputValid ? AppColors.blue : AppColors.g2,
+                        ),
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      BirthdayInputFormatter(),
+                      LengthLimitingTextInputFormatter(10),
+                    ],
+                  ),
                 ],
               ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: Sizes.size24),
-                child: GestureDetector(
-                  onTap: _isInputValid ? _onNextTap : null,
-                  child: NextContained(
-                    text: "다음",
-                    disabled: !_isInputValid,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -123,14 +141,6 @@ class BirthdayInputFormatter extends TextInputFormatter {
       String year = newText.substring(0, 4);
       String month = newText.substring(4, 6);
       String day = newText.substring(6);
-
-      // 월이 1~12 범위를 벗어나면 조정
-      int monthInt = int.parse(month);
-      if (monthInt < 1 || monthInt > 12) month = '01';
-
-      // 일이 1~31 범위를 벗어나면 조정 (실제 달의 일수는 체크하지 않음)
-      int dayInt = int.parse(day);
-      if (dayInt < 1 || dayInt > 31) day = '01';
 
       newText = '$year$month$day';
     }

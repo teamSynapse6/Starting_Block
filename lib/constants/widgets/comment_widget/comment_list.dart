@@ -12,7 +12,9 @@ class CommentList extends StatefulWidget {
   final String thisUserName, thisAnswer, thisDate;
   final int thisLike, thisAnswerId;
   final bool isMyHeart;
-  final VoidCallback thisCommentTap;
+  final VoidCallback thisReplyTap,
+      thisCommentHeartTap,
+      thisCommenHeartDeleteTap;
 
   const CommentList({
     super.key,
@@ -21,8 +23,10 @@ class CommentList extends StatefulWidget {
     required this.thisDate,
     required this.thisLike,
     required this.isMyHeart,
-    required this.thisCommentTap,
+    required this.thisReplyTap,
     required this.thisAnswerId,
+    required this.thisCommentHeartTap,
+    required this.thisCommenHeartDeleteTap,
   });
 
   @override
@@ -84,38 +88,43 @@ class _CommentListState extends State<CommentList> {
                       children: [
                         Ink(
                           height: 26,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              widget.isMyHeart
-                                  ? AppIcon.vote_active_18
-                                  : AppIcon.vote_inactive_18,
-                              Gaps.h2,
-                              Text(
-                                '도움',
-                                style: widget.isMyHeart
-                                    ? AppTextStyles.btn2
-                                        .copyWith(color: AppColors.blue)
-                                    : AppTextStyles.btn2
-                                        .copyWith(color: AppColors.g4),
-                              ),
-                              Gaps.h2,
-                              Text(
-                                widget.thisLike.toString(),
-                                style: widget.isMyHeart
-                                    ? AppTextStyles.btn2
-                                        .copyWith(color: AppColors.blue)
-                                    : AppTextStyles.btn2
-                                        .copyWith(color: AppColors.g4),
-                              ),
-                            ],
+                          child: InkWell(
+                            onTap: widget.isMyHeart
+                                ? widget.thisCommenHeartDeleteTap
+                                : widget.thisCommentHeartTap,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                widget.isMyHeart
+                                    ? AppIcon.vote_active_18
+                                    : AppIcon.vote_inactive_18,
+                                Gaps.h2,
+                                Text(
+                                  '도움',
+                                  style: widget.isMyHeart
+                                      ? AppTextStyles.btn2
+                                          .copyWith(color: AppColors.blue)
+                                      : AppTextStyles.btn2
+                                          .copyWith(color: AppColors.g4),
+                                ),
+                                Gaps.h2,
+                                Text(
+                                  widget.thisLike.toString(),
+                                  style: widget.isMyHeart
+                                      ? AppTextStyles.btn2
+                                          .copyWith(color: AppColors.blue)
+                                      : AppTextStyles.btn2
+                                          .copyWith(color: AppColors.g4),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Gaps.h16,
                         Ink(
                           height: 26,
                           child: InkWell(
-                            onTap: widget.thisCommentTap,
+                            onTap: widget.thisReplyTap,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [

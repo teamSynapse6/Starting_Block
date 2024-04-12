@@ -8,6 +8,7 @@ export 'package:starting_block/manage/models/offcampus_models/offcampus_list_mod
 export 'package:starting_block/manage/models/offcampus_models/offcampus_detail_model.dart';
 export 'package:starting_block/manage/models/roadmap_models/roadmap_model.dart'; //로드맵 리스트 모델
 export 'package:starting_block/manage/models/roadmap_models/roadmap_announce_model.dart'; //로드맵_공고저장여부 리스트 모델
+export 'package:starting_block/manage/models/roadmap_models/roadmap_savedlist_offcampus.dart'; //로드맵_로드맵에 저장된 공고(교외사업)
 
 //교내지원사업_창업지원단 Model파일 관리용
 export 'package:starting_block/manage/models/oncampus_supportgroup/onca_mentoring_model.dart'; //멘토링 모델
@@ -16,6 +17,9 @@ export 'package:starting_block/manage/models/oncampus_supportgroup/onca_lecture_
 export 'package:starting_block/manage/models/oncampus_supportgroup/onca_competition_model.dart'; //경진대회 및 캠프 모델
 export 'package:starting_block/manage/models/oncampus_supportgroup/onca_space_model.dart'; //공간 모델
 export 'package:starting_block/manage/models/oncampus_supportgroup/onca_etc_model.dart'; //기타 모델
+
+//마이페이지_Model파일 관리용
+export 'package:starting_block/manage/models/myprofile_models/my_heart_model.dart'; //내 궁금해요 모델
 
 //채팅 모델 관리용
 export 'package:starting_block/manage/models/gpt_chta_models/message_model.dart'; //채팅 모델

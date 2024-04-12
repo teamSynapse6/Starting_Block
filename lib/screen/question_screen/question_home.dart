@@ -98,11 +98,13 @@ class _QuestionHomeState extends State<QuestionHome> {
                           );
                         }),
                   )
-                : Center(
-                    child: Text(
-                      '등록된 질문이 없습니다',
-                      style: AppTextStyles.bd4.copyWith(
-                        color: AppColors.g6,
+                : Expanded(
+                    child: Center(
+                      child: Text(
+                        '등록된 질문이 없습니다',
+                        style: AppTextStyles.bd4.copyWith(
+                          color: AppColors.g6,
+                        ),
                       ),
                     ),
                   )

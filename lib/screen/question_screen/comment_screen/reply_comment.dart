@@ -4,10 +4,14 @@ import 'package:starting_block/manage/model_manage.dart';
 
 class QuestionUserReply extends StatelessWidget {
   final List<ReplyModel> replies; // 댓글 목록을 저장할 변수
+  final void Function(int replyId) thisReplyHeartTap;
+  final void Function(int replyHeartId) thisReplyHeartDeleteTap;
 
   const QuestionUserReply({
     super.key,
     required this.replies,
+    required this.thisReplyHeartTap,
+    required this.thisReplyHeartDeleteTap,
   });
 
   @override
@@ -25,6 +29,12 @@ class QuestionUserReply extends StatelessWidget {
             thisAnswer: reply.content,
             thisLike: reply.heartCount,
             isMyHeart: reply.isMyHeart,
+            thisReplyHeartTap: () {
+              thisReplyHeartTap(reply.replyId);
+            },
+            thisReplyHeartDeleteTap: () {
+              thisReplyHeartDeleteTap(reply.heartId!);
+            },
           );
         });
   }

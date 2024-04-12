@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_recommend.dart';
 
 const List<String> validTextsBiz = [
@@ -32,27 +34,36 @@ class TabScreenOfCaBiz extends StatefulWidget {
 }
 
 class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
-  List<int> savedIds = [];
-  List<OffCampusModel> offCampusData = [];
+  List<RoadMapSavedOffcampus> offCampusData = [];
 
   @override
   void initState() {
     super.initState();
+    loadOffCampusData();
   }
 
   @override
   void didUpdateWidget(TabScreenOfCaBiz oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.thisSelectedText != widget.thisSelectedText) {}
+    if (oldWidget.thisSelectedText != widget.thisSelectedText) {
+      loadOffCampusData();
+    }
   }
 
-  // void _loadOffCampusDataByIds() async {}
+  void loadOffCampusData() async {
+    var loadedData =
+        await RoadMapApi.getSavedListOffcampus(widget.thisSelectedId);
+    setState(() {
+      offCampusData = loadedData;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.secondaryBG,
-        body: CustomScrollView(slivers: <Widget>[
+      backgroundColor: AppColors.secondaryBG,
+      body: CustomScrollView(
+        slivers: <Widget>[
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,57 +83,61 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
                           style:
                               AppTextStyles.bd1.copyWith(color: AppColors.g6)),
                       Gaps.v4,
-                      Text('신청 완료한 사업은 도약 완료 버튼으로 진행도 확인하기',
+                      Text('신청 완료한 사업은 도약 완료 버튼으로 진행도 확인하기!',
                           style:
                               AppTextStyles.bd6.copyWith(color: AppColors.g5)),
-                      Gaps.v18,
+                      Gaps.v16,
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final item = offCampusData[index];
-                return Container(
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.zero, // 조건부 BorderRadius 적용
-                  ),
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    children: [
-                      OfCaList(
-                        thisOrganize: item.organize,
-                        thisID: item.id,
-                        thisClassification: item.classification,
-                        thisTitle: item.title,
-                        thisEnddate: item.endDate,
-                      ),
-                      if (index < offCampusData.length - 1)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: CustomDivider(),
+          offCampusData.isNotEmpty
+              ? SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final item = offCampusData[index];
+                      return Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius:
+                              BorderRadius.zero, // 조건부 BorderRadius 적용
                         ),
-                    ],
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          children: [
+                            OfCaList(
+                              thisOrganize: item.department,
+                              thisID: item.announcementId.toString(),
+                              thisClassification: '',
+                              thisTitle: item.title,
+                              thisDDay: item.dday.toString(),
+                              isSaved: item.isBookMarked,
+                            ),
+                            if (index < offCampusData.length - 1)
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                child: CustomDivider(),
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: offCampusData.length,
                   ),
-                );
-              },
-              childCount: offCampusData.length,
-            ),
-          )
-        ]));
+                )
+              : SliverFillRemaining(
+                  fillOverscroll: true,
+                  hasScrollBody: false,
+                  child: GotoSaveItem(
+                    tapAction: () {
+                      IntergrateScreen.setSelectedIndexToZero(context);
+                    },
+                  ),
+                ),
+        ],
+      ),
+    );
   }
-  // else {
-  //   // 업데이트가 없으면 여기서 처리
-  //   return SliverToBoxAdapter(
-  //     child: GotoSaveItem(
-  //       tapAction: () {
-  //         IntergrateScreen.setSelectedIndexToZero(context);
-  //       },
-  //     ),
-  //   );
-  // }
 }
