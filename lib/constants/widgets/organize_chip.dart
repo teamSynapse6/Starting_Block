@@ -12,8 +12,10 @@ class OrganizeChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      height: 24,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 6,
+        vertical: 3,
+      ),
       decoration: const BoxDecoration(
         color: Color(0XffE8EDF5),
         borderRadius: BorderRadius.all(Radius.circular(2)),

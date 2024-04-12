@@ -139,4 +139,22 @@ class RoadMapApi {
       throw Exception('로드맵 순서 변경에 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }
+
+  // 로드맵에 저장된 교외 공고 리스트를 불러오는 메소드
+  static Future<List<RoadMapSavedOffcampus>> getSavedListOffcampus(
+      int roadmapId) async {
+    final url = Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId/off-campus');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      String utf8Body = utf8.decode(response.bodyBytes);
+      List<dynamic> body = jsonDecode(utf8Body);
+      List<RoadMapSavedOffcampus> savedOffcampusList = body
+          .map((dynamic item) => RoadMapSavedOffcampus.fromJson(item))
+          .toList();
+      return savedOffcampusList;
+    } else {
+      throw Exception('교외 공고 목록을 불러오는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
 }

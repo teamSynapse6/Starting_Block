@@ -73,3 +73,6 @@ export 'package:starting_block/constants/widgets/comment_widget/comment_list.dar
 export 'package:starting_block/constants/widgets/comment_widget/reply_list.dart'; //질문&답변_유저 답글 리스트
 export 'package:starting_block/constants/widgets/comment_widget/vote_reply_widget.dart'; //궁금해요 컴포넌트
 export 'package:starting_block/constants/widgets/comment_widget/delete_bottom_sheet.dart'; //댓글 삭제 컴포넌트
+
+//마이페이지 컴포넌트 관리
+export 'package:starting_block/constants/widgets/myprofile_widget/myquestion_list.dart'; //마이페이지_내 질문 리스트
