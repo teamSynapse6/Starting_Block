@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:starting_block/manage/api/userinfo_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-Future<void> signInWithKakao(BuildContext context) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
+Future<void> signInWithKakao(BuildContext context) async {
   // 카카오톡 실행 가능 여부 확인
   if (await isKakaoTalkInstalled()) {
     try {
@@ -17,16 +19,33 @@ Future<void> signInWithKakao(BuildContext context) async {
       // 사용자 정보 요청
       User user = await UserApi.instance.me();
       print('사용자 ID: ${user.id}');
+      print('사용자 이메일: ${user.kakaoAccount!.email}');
 
-      // user.id를 SharedPreferences에 저장
-      await prefs.setInt('kakaoUserID', user.id);
+      // user.id와 userEmail을 안전하게 저장
+      await secureStorage.write(key: 'kakaoUserID', value: user.id.toString());
+      String? userEmail = user.kakaoAccount?.email;
+      await secureStorage.write(key: 'kakaoUserEmail', value: userEmail ?? '');
 
-      // 로그인 성공 시 NickNameScreen으로 이동
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const NickNameScreen(),
-        ),
-      );
+      // UserInfoManageApi의 postSignIn 메소드 호출
+      UserSignInModel signInData = await UserInfoManageApi.postSignIn(
+          user.id.toString(), userEmail ?? '');
+
+      // 회원가입 완료 상태에 따른 화면 이동
+      if (signInData.isSignUpComplete) {
+        // 회원가입이 완료된 경우 IntergrateScreen으로 이동
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const IntergrateScreen(),
+          ),
+        );
+      } else {
+        // 회원가입이 완료되지 않은 경우 NickNameScreen으로 이동
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const NickNameScreen(),
+          ),
+        );
+      }
     } catch (error) {
       print('카카오톡으로 로그인 실패 $error');
 
@@ -34,35 +53,53 @@ Future<void> signInWithKakao(BuildContext context) async {
         // 사용자가 로그인을 취소한 경우
         return;
       }
-
       // 카카오계정으로 시도
-      await tryKakaoAccountLogin(prefs, context);
+      await tryKakaoAccountLogin(context);
     }
   } else {
     // 카카오계정으로 로그인 시도
-    await tryKakaoAccountLogin(prefs, context);
+    await tryKakaoAccountLogin(context);
   }
 }
 
-Future<void> tryKakaoAccountLogin(
-    SharedPreferences prefs, BuildContext context) async {
+Future<void> tryKakaoAccountLogin(BuildContext context) async {
   try {
     await UserApi.instance.loginWithKakaoAccount();
 
     // 사용자 정보 요청
     User user = await UserApi.instance.me();
     print('사용자 ID: ${user.id}');
+    print('사용자 이메일: ${user.kakaoAccount!.email}');
 
-    // user.id를 SharedPreferences에 저장
-    await prefs.setInt('kakaoUserID', user.id);
+    // user.id와 userEmail을 안전하게 저장
+    await secureStorage.write(key: 'kakaoUserID', value: user.id.toString());
+    String? userEmail = user.kakaoAccount?.email;
+    await secureStorage.write(key: 'kakaoUserEmail', value: userEmail ?? '');
 
-    // 로그인 성공 시 NickNameScreen으로 이동
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const NickNameScreen(),
-      ),
-    );
+    // UserInfoManageApi의 postSignIn 메소드 호출
+    UserSignInModel signInData =
+        await UserInfoManageApi.postSignIn(user.id.toString(), userEmail ?? '');
+
+    // 회원가입 완료 상태에 따른 화면 이동
+    if (signInData.isSignUpComplete) {
+      // 회원가입이 완료된 경우 IntergrateScreen으로 이동
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const IntergrateScreen(),
+        ),
+      );
+    } else {
+      // 회원가입이 완료되지 않은 경우 NickNameScreen으로 이동
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const NickNameScreen(),
+        ),
+      );
+    }
   } catch (error) {
-    print('카카오계정으로 로그인 실패 $error');
+    print('카카오계정으로 로그인 실패: $error');
+    if (error is Exception) {
+      // 예외에 따른 추가적인 에러 처리를 여기에 구현할 수 있습니다.
+    }
   }
 }

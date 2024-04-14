@@ -18,6 +18,9 @@ export 'package:starting_block/manage/models/oncampus_supportgroup/onca_competit
 export 'package:starting_block/manage/models/oncampus_supportgroup/onca_space_model.dart'; //공간 모델
 export 'package:starting_block/manage/models/oncampus_supportgroup/onca_etc_model.dart'; //기타 모델
 
+//유저 정보 Model파일 관리용
+export 'package:starting_block/manage/models/userinfo_models/signin_model.dart'; //유저_로그인 모델
+
 //마이페이지_Model파일 관리용
 export 'package:starting_block/manage/models/myprofile_models/my_heart_model.dart'; //내 궁금해요 모델
 

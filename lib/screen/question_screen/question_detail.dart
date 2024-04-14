@@ -256,6 +256,12 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisReplyHeartDeleteTap: (int replyHeartId) {
                           deleteHeartForReply(replyHeartId);
                         },
+                        thisAnswerDeleteTap: () {
+                          _loadQuestionDetail();
+                        },
+                        thisReplyDeleteTap: () {
+                          _loadQuestionDetail();
+                        },
                       ),
                     ],
                   );

@@ -199,4 +199,28 @@ class QuestionAnswerApi {
       return false; // 예외 발생 시 삭제 실패를 나타내는 false 반환
     }
   }
+
+  // 답변 삭제 메소드
+  static Future<bool> deleteAnswer(int answerId) async {
+    final url = Uri.parse('$baseUrl/api/v1/answer/cancel/$answerId');
+    try {
+      final response = await http.delete(url, headers: headers);
+      return response.statusCode >= 200 && response.statusCode < 300;
+    } catch (e) {
+      print('Error deleting answer: $e');
+      return false;
+    }
+  }
+
+  // 답글 삭제 메소드
+  static Future<bool> deleteReply(int replyId) async {
+    final url = Uri.parse('$baseUrl/api/v1/reply/cancel/$replyId');
+    try {
+      final response = await http.delete(url, headers: headers);
+      return response.statusCode >= 200 && response.statusCode < 300;
+    } catch (e) {
+      print('Error deleting answer: $e');
+      return false;
+    }
+  }
 }
