@@ -28,6 +28,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => OnCaFilterModel()),
         ChangeNotifierProvider(create: (context) => UserInfo()),
         ChangeNotifierProvider(create: (context) => BookMarkNotifier()),
+        ChangeNotifierProvider(create: (context) => UserTokenManage()),
       ],
       child: const StartingBlock(),
     ),
@@ -42,7 +43,7 @@ class StartingBlock extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeManage.theme,
-      home: const SplashScreen(),
+      home: const RoadmapScreen(),
     );
   }
 }

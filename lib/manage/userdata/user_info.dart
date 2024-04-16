@@ -95,12 +95,6 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getInt('selectedIconIndex') ?? 1;
   }
 
-  // kakaoUserID 가져오기
-  static Future<int> getKakaoUserID() async {
-    await initialize(); // SharedPreferences 인스턴스를 초기화합니다.
-    return _prefs.getInt('kakaoUserID') ?? 0; // 기본값으로 0을 반환하도록 설정
-  }
-
   //로그인 확인 메소드
   Future<void> setLoginStatus(bool isLogined) async {
     await _prefs.setBool('LoginStatus', isLogined);
@@ -122,5 +116,16 @@ class UserInfo extends ChangeNotifier {
   static Future<String> getGptThreadID() async {
     await initialize();
     return _prefs.getString('gptThreadID') ?? "";
+  }
+
+  Future<void> setTempInitialRoadmapItems(List<String> roadmapItems) async {
+    await _prefs.setStringList('roadmapItems', roadmapItems);
+    _hasChanged = true;
+    notifyListeners();
+  }
+
+  static Future<List<String>> getTempInitialRoadmapItems() async {
+    await initialize();
+    return _prefs.getStringList('roadmapItems') ?? [];
   }
 }

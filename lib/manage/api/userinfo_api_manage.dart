@@ -5,12 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:starting_block/manage/model_manage.dart';
 
 class UserInfoManageApi {
-  static Map<String, String> headers = {
-    'accept': 'application/json',
-    'Content-Type': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzA4Nzg5MjE5LCJleHAiOjIwNjg3ODkyMTl9.QfNiocS_CBaiDrKqK93hfl03MAMJ_Pm9Fy-IibpT37CVlz2RN-SdaUQk9VkGMJcsVNsTIyBrROlQA4eXLk02Pg'
-  };
+  // 헤더를 가져오는 메소드
+  static Future<Map<String, String>> getHeaders() async {
+    String? accessToken = await UserTokenManage.getAccessToken();
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+  }
 
   static String baseUrl = 'https://api.startingblock.co.kr';
 
@@ -36,7 +38,6 @@ class UserInfoManageApi {
       // 성공 응답 데이터를 UserSignInModel 객체로 변환
       UserSignInModel signInData =
           UserSignInModel.fromJson(json.decode(response.body));
-      print('로그인 토큰: ${signInData.accessToken}');
       return signInData; // 성공 시 UserSignInModel 객체 반환
     } else {
       // 실패 시 예외 던지기
@@ -45,7 +46,7 @@ class UserInfoManageApi {
   }
 
   //유저 세부정보 입력
-  static Future<void> patchUserInfo({
+  static Future<bool> patchUserInfo({
     required String nickname,
     required String birth,
     required bool isCompletedBusinessRegistration,
@@ -53,6 +54,7 @@ class UserInfoManageApi {
     required String university,
   }) async {
     String url = '$baseUrl/api/v1/users';
+    Map<String, String> headers = await getHeaders();
     Map<String, dynamic> body = {
       'nickname': nickname,
       'birth': birth,
@@ -66,11 +68,15 @@ class UserInfoManageApi {
       headers: headers,
       body: json.encode(body),
     );
+    print('헤더: $headers, 요청 내용: ${json.encode(body)}');
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       print('정보 업데이트 성공');
+      return true; // 성공 시 true 반환
     } else {
       print('정보 업데이트 실패: ${response.statusCode}');
+      print('실패 상세내용: ${response.headers}, ${response.body}');
+      return false; // 실패 시 false 반환
     }
   }
 }

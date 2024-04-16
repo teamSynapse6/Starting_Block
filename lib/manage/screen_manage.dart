@@ -8,6 +8,8 @@ export 'package:starting_block/screen/onboarding_screen/entrepreneur_0_6.dart';
 export 'package:starting_block/screen/onboarding_screen/residence_0_7.dart';
 export 'package:starting_block/screen/onboarding_screen/school_0_8.dart';
 export 'package:starting_block/screen/onboarding_screen/roadmapset_0_9.dart';
+export 'package:starting_block/screen/onboarding_screen/roadmapset_0_9_1_add.dart';
+export 'package:starting_block/screen/onboarding_screen/roadmapset_0_9_2_delete.dart';
 
 //전체 공통 관리용(GNB)
 export 'package:starting_block/screen/intergrate_screen.dart';

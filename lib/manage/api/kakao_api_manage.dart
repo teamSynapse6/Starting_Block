@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:starting_block/manage/api/userinfo_api_manage.dart';
-import 'package:starting_block/manage/model_manage.dart';
-import 'package:starting_block/manage/screen_manage.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -25,27 +22,6 @@ Future<void> signInWithKakao(BuildContext context) async {
       await secureStorage.write(key: 'kakaoUserID', value: user.id.toString());
       String? userEmail = user.kakaoAccount?.email;
       await secureStorage.write(key: 'kakaoUserEmail', value: userEmail ?? '');
-
-      // UserInfoManageApi의 postSignIn 메소드 호출
-      UserSignInModel signInData = await UserInfoManageApi.postSignIn(
-          user.id.toString(), userEmail ?? '');
-
-      // 회원가입 완료 상태에 따른 화면 이동
-      if (signInData.isSignUpComplete) {
-        // 회원가입이 완료된 경우 IntergrateScreen으로 이동
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const IntergrateScreen(),
-          ),
-        );
-      } else {
-        // 회원가입이 완료되지 않은 경우 NickNameScreen으로 이동
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const NickNameScreen(),
-          ),
-        );
-      }
     } catch (error) {
       print('카카오톡으로 로그인 실패 $error');
 
@@ -75,27 +51,6 @@ Future<void> tryKakaoAccountLogin(BuildContext context) async {
     await secureStorage.write(key: 'kakaoUserID', value: user.id.toString());
     String? userEmail = user.kakaoAccount?.email;
     await secureStorage.write(key: 'kakaoUserEmail', value: userEmail ?? '');
-
-    // UserInfoManageApi의 postSignIn 메소드 호출
-    UserSignInModel signInData =
-        await UserInfoManageApi.postSignIn(user.id.toString(), userEmail ?? '');
-
-    // 회원가입 완료 상태에 따른 화면 이동
-    if (signInData.isSignUpComplete) {
-      // 회원가입이 완료된 경우 IntergrateScreen으로 이동
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const IntergrateScreen(),
-        ),
-      );
-    } else {
-      // 회원가입이 완료되지 않은 경우 NickNameScreen으로 이동
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const NickNameScreen(),
-        ),
-      );
-    }
   } catch (error) {
     print('카카오계정으로 로그인 실패: $error');
     if (error is Exception) {
