@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -57,9 +60,47 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     await prefs.setStringList('roadmapItems', _initialRoadmapItems);
   }
 
+  //완료하기 버튼 클릭 시
+  void _onNextTap() async {
+    List<Map<String, dynamic>> roadMaps =
+        _initialRoadmapItems.asMap().entries.map((entry) {
+      return {"title": entry.value, "sequence": entry.key};
+    }).toList();
+    try {
+      await RoadMapApi.postInitialRoadMap(roadMaps);
+      if (mounted) {
+        _saveLoginStatus();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('roadmapItems', true);
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const IntergrateScreen()),
+            (Route<dynamic> route) => false,
+          );
+        }
+      }
+    } catch (e) {
+      print('서버 저장 중 오류가 발생했습니다: $e');
+    }
+  }
+
+  //다음에 설정 버튼 클릭 시
+  void _onSkipTap() async {
+    _saveLoginStatus();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('roadmapItems', false);
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const IntergrateScreen()),
+        (Route<dynamic> route) => false,
+      );
+    }
+  }
+
   //자동로그인 설정
-  Future<void> _saveUserResidence() async {
-    // Provider를 사용하여 UserInfo 인스턴스에 접근
+  Future<void> _saveLoginStatus() async {
     final userInfo = Provider.of<UserInfo>(context, listen: false);
     await userInfo.setLoginStatus(true);
   }
@@ -231,9 +272,9 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         height: 118,
         child: Column(
           children: [
-            const InkWell(
-              onTap: null,
-              child: NextContained(
+            InkWell(
+              onTap: _onNextTap,
+              child: const NextContained(
                 disabled: false,
                 text: '완료하기',
               ),
@@ -243,7 +284,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
               height: 32,
               width: MediaQuery.of(context).size.width,
               child: InkWell(
-                onTap: () {},
+                onTap: _onSkipTap,
                 child: Center(
                   child: Text(
                     '다음에 설정',

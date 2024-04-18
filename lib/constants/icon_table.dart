@@ -245,4 +245,12 @@ class AppIcon {
   static Widget get run_no =>
       SvgPicture.asset('assets/onboard_image/run_no.svg',
           fit: BoxFit.scaleDown);
+
+  //illustration Image
+  static Widget get roadmap_illustrate =>
+      SvgPicture.asset('assets/icon/illustrate/roadmap_illustrate.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get school_illustrate =>
+      SvgPicture.asset('assets/icon/illustrate/school_illustrate.svg',
+          fit: BoxFit.scaleDown);
 }

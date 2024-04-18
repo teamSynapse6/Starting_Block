@@ -40,12 +40,12 @@ class IntergrateScreen extends StatefulWidget {
 class _IntergrateScreenState extends State<IntergrateScreen> {
   int _selectedIndex = 4;
   String _schoolName = "";
-  final bool _isRoadMapEmpty = false;
+  bool _isRoadmapSet = false;
 
   @override
   void initState() {
     super.initState();
-
+    _loadRoadMap();
     _loadSchoolName();
     switch (widget.switchIndex) {
       case SwitchIndex.none:
@@ -73,6 +73,14 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     String schoolName = await UserInfo.getSchoolName(); // 비동기 호출
     setState(() {
       _schoolName = schoolName;
+    });
+  }
+
+  Future<void> _loadRoadMap() async {
+    bool isRoadmapSet = await UserInfo.getRoadmapSetStatus();
+    setState(() {
+      _isRoadmapSet = isRoadmapSet;
+      print('로드맵 설정 여부: $_isRoadmapSet');
     });
   }
 
@@ -107,10 +115,10 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
       case 2:
         return const HomeScreen();
       case 3:
-        if (_isRoadMapEmpty) {
-          return const RoadMapListSet();
-        } else {
+        if (_isRoadmapSet) {
           return const RoadmapHome();
+        } else {
+          return const RoadMapSet();
         }
       case 4:
       default:

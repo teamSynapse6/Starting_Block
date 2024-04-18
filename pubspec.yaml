@@ -39,7 +39,6 @@ dependencies:
   provider: ^6.1.1
   http: ^1.2.0
   flutter_inappwebview: ^6.0.0
-  vector_graphics: ^1.1.9+2
   intl: ^0.19.0
   kakao_flutter_sdk_user: ^1.9.0
   flutter_shimmer: ^2.1.2
@@ -81,6 +80,7 @@ flutter:
     - assets/icon/24/gnb_part/
     - assets/icon/other/
     - assets/icon/profile_image/
+    - assets/icon/illustrate/
     - assets/onboard_image/
     - assets/logo/
   # An image asset can refer to one or more resolution-specific "variants", see

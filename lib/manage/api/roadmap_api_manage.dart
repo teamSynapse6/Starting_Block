@@ -169,19 +169,13 @@ class RoadMapApi {
   }
 
   // 초기 로드맵 설정을 서버에 보내는 메소드
-  static Future<void> postInitialRoadMap(List<RoadMapModel> roadMaps) async {
-    final url =
-        Uri.parse('$baseUrl/$getRDList'); // getRDList 끝에 해당 엔드포인트를 사용합니다.
+  static Future<void> postInitialRoadMap(
+      List<Map<String, dynamic>> roadMaps) async {
+    final url = Uri.parse('$baseUrl/$getRDList');
     Map<String, String> headers = await getHeaders(); // 헤더 가져오기
 
-    // RoadMapModel 리스트를 JSON 객체로 변환
-    List<Map<String, dynamic>> roadMapsJson = roadMaps
-        .map(
-            (roadMap) => {"title": roadMap.title, "sequence": roadMap.sequence})
-        .toList();
-
     // JSON 바디 생성
-    String requestBody = jsonEncode({"roadmaps": roadMapsJson});
+    String requestBody = jsonEncode({"roadmaps": roadMaps});
 
     final response = await http.post(url, headers: headers, body: requestBody);
 

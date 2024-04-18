@@ -118,6 +118,7 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getString('gptThreadID') ?? "";
   }
 
+  //초기 로드맵 설정 메소드
   Future<void> setTempInitialRoadmapItems(List<String> roadmapItems) async {
     await _prefs.setStringList('roadmapItems', roadmapItems);
     _hasChanged = true;
@@ -127,5 +128,17 @@ class UserInfo extends ChangeNotifier {
   static Future<List<String>> getTempInitialRoadmapItems() async {
     await initialize();
     return _prefs.getStringList('roadmapItems') ?? [];
+  }
+
+  //로드맵 설정 여부
+  Future<void> setRoadmapSetStatus(bool isRoadmapSet) async {
+    await _prefs.setBool('isRoadmapSet', isRoadmapSet);
+    _hasChanged = true;
+    notifyListeners();
+  }
+
+  static Future<bool> getRoadmapSetStatus() async {
+    await initialize();
+    return _prefs.getBool('isRoadmapSet') ?? false;
   }
 }

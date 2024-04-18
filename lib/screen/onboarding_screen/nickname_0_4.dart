@@ -98,9 +98,9 @@ class _NickNameScreenState extends State<NickNameScreen> {
     // 서버에 닉네임 중복 검사 요청
     FocusScope.of(context).requestFocus(FocusNode());
     try {
-      final isAvailable = await SystemApiManage.getNickNameCheck(_nickname);
+      bool isAvailable = await SystemApiManage.getNickNameCheck(_nickname);
+      _isNicknameChecked = true; // 중복 확인 완료
       setState(() {
-        _isNicknameChecked = true; // 중복 확인 완료
         _isNicknameAvailable = isAvailable;
         _nicknameAvailabilityMessage =
             isAvailable ? "사용 가능한 닉네임입니다" : "이미 사용 중인 닉네임입니다";
@@ -172,16 +172,24 @@ class _NickNameScreenState extends State<NickNameScreen> {
                             const EdgeInsets.symmetric(vertical: 10.0),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: _isInputStarted && !_isNicknameAvailable
-                                ? AppColors.activered
-                                : AppColors.g2,
+                            color: _isNicknameChecked
+                                ? (_isNicknameAvailable
+                                    ? AppColors.blue
+                                    : AppColors.activered)
+                                : (_isInputStarted && !_isNicknameAvailable
+                                    ? AppColors.activered
+                                    : AppColors.g2),
                           ),
                         ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: _isInputStarted && !_isNicknameAvailable
-                                ? AppColors.activered
-                                : AppColors.g2,
+                            color: _isNicknameChecked
+                                ? (_isNicknameAvailable
+                                    ? AppColors.blue
+                                    : AppColors.activered)
+                                : (_isInputStarted && !_isNicknameAvailable
+                                    ? AppColors.activered
+                                    : AppColors.g2),
                           ),
                         ),
                         suffixIcon: Align(

@@ -57,6 +57,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
+              automaticallyImplyLeading: false,
               elevation: 0,
               forceElevated: true,
               backgroundColor: AppColors.blue,

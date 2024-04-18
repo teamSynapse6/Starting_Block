@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/screen/on_campus_screen/school_nonset_screen/oncampus_school_search.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
-class OnCampusSchoolSet extends StatelessWidget {
-  const OnCampusSchoolSet({super.key});
+class RoadMapSet extends StatelessWidget {
+  const RoadMapSet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class OnCampusSchoolSet extends StatelessWidget {
                     top: 96,
                     left: 24,
                     child: Text(
-                      '학교를 설정한 뒤,\n교내 창업 지원을 한 번에 확인해보세요',
+                      '로드맵을 설정한 뒤,\n나만의 창업 로드맵을 계획해보세요',
                       style: AppTextStyles.st2.copyWith(color: AppColors.g6),
                     ),
                   ),
@@ -47,7 +47,7 @@ class OnCampusSchoolSet extends StatelessWidget {
                     right: 0,
                     child: SizedBox(
                       width: 312,
-                      child: AppIcon.school_illustrate,
+                      child: AppIcon.roadmap_illustrate,
                     ),
                   ),
                 ],
@@ -59,12 +59,12 @@ class OnCampusSchoolSet extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const OnCampusSchoolSearch();
+                    return const RoadmapListSet();
                   }));
                 },
                 child: const NextContained(
                   disabled: false,
-                  text: '대학교 설정하기',
+                  text: '로드맵 설정하고 시작하기',
                 ),
               ),
             ),

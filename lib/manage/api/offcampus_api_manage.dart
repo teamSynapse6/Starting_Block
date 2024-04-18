@@ -3,11 +3,13 @@ import 'package:http/http.dart' as http;
 import 'package:starting_block/manage/model_manage.dart';
 
 class OffCampusApi {
-  static Map<String, String> headers = {
-    'accept': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzA4Nzg5MjE5LCJleHAiOjIwNjg3ODkyMTl9.QfNiocS_CBaiDrKqK93hfl03MAMJ_Pm9Fy-IibpT37CVlz2RN-SdaUQk9VkGMJcsVNsTIyBrROlQA4eXLk02Pg'
-  };
+  static Future<Map<String, String>> getHeaders() async {
+    String? accessToken = await UserTokenManage.getAccessToken();
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+  }
 
   static String baseUrl = 'https://api.startingblock.co.kr';
   static String offCampusListEndpoint = 'api/v1/announcements/list';
@@ -32,6 +34,7 @@ class OffCampusApi {
     if (size != 0) queryParams += '&size=$size';
 
     // URL에 쿼리 파라미터 문자열 추가
+    Map<String, String> headers = await getHeaders();
     final offCampusUrl =
         Uri.parse('$baseUrl/$offCampusListEndpoint?$queryParams');
     final response = await http.get(offCampusUrl, headers: headers);
@@ -54,6 +57,7 @@ class OffCampusApi {
 
   // ID를 이용해 공고정보 상세조회
   static Future<OffCampusDetailModel> getOffcampusDetailInfo(int id) async {
+    Map<String, String> headers = await getHeaders();
     final offCampusDetailUrl = Uri.parse('$baseUrl/api/v1/announcements/$id');
     final response = await http.get(offCampusDetailUrl, headers: headers);
 
@@ -71,6 +75,7 @@ class OffCampusApi {
 
 // 공고 3개 랜덤 리턴 메서드
   static Future<List<OffCampusListModel>> getOffcampusRecommend() async {
+    Map<String, String> headers = await getHeaders();
     final offCampusDetailUrl = Uri.parse('$baseUrl/$offCampusRecEndpoint');
     final response = await http.get(offCampusDetailUrl, headers: headers);
 
