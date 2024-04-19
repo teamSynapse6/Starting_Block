@@ -236,15 +236,12 @@ class _MyProfileHomeState extends State<MyProfileHome>
               ),
               Expanded(
                 child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
                   controller: _tabController,
                   children: const [
-                    Center(
-                      child: Text('내 질문 내용'),
-                    ),
-                    Center(
-                      child: Text('내 답변 내용'),
-                    ),
-                    MyProfileMyQuesion()
+                    MyProfileMyQuestion(),
+                    MyProfileMyAnswerReply(),
+                    MyProfileMyHeart(),
                   ],
                 ),
               ),

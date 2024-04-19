@@ -75,6 +75,8 @@ export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit
 export 'package:starting_block/screen/myprofile_screen/setting/setting_home.dart'; //설정_홈 화면
 export 'package:starting_block/screen/myprofile_screen/setting/setting_alarm.dart'; //설정_알람 화면
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_heart.dart'; //탭_내 궁금해요
+export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_answer_reply.dart'; //탭_내 댓글,답글
+export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_question.dart'; //탭_내 질문
 
 //홈_페이지
 export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면

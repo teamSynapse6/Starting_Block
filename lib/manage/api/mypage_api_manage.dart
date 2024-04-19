@@ -32,4 +32,40 @@ class MyPageApi {
       throw Exception('서버 오류: ${response.statusCode}');
     }
   }
+
+  //내 댓글,답글 불러오기
+  static Future<List<MyAnswerReplyModel>> getMyAnswerReply() async {
+    Map<String, String> headers = await getHeaders();
+    final url = Uri.parse('$baseUrl/api/v1/answer/my');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final String responseBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> jsonResponse = jsonDecode(responseBody);
+      return jsonResponse
+          .map((json) =>
+              MyAnswerReplyModel.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  // 내 질문 불러오기
+  static Future<List<MyProfileQuestion>> getMyQuestion() async {
+    Map<String, String> headers = await getHeaders();
+    final url = Uri.parse('$baseUrl/api/v1/question/my');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final String responseBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> jsonResponse = jsonDecode(responseBody);
+      return jsonResponse
+          .map((json) =>
+              MyProfileQuestion.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
 }

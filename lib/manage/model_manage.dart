@@ -23,6 +23,8 @@ export 'package:starting_block/manage/models/userinfo_models/signin_model.dart';
 
 //마이페이지_Model파일 관리용
 export 'package:starting_block/manage/models/myprofile_models/my_heart_model.dart'; //내 궁금해요 모델
+export 'package:starting_block/manage/models/myprofile_models/my_answer_reply_model.dart'; //내 댓글,답글 모델
+export 'package:starting_block/manage/models/myprofile_models/my_question_modls.dart'; //내 질문 모델
 
 //채팅 모델 관리용
 export 'package:starting_block/manage/models/gpt_chta_models/message_model.dart'; //채팅 모델

@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // 회원가입 완료 상태에 따른 화면 이동
       if (signInData.isSignUpComplete) {
-        // 회원가입이 완료된 경우 IntergrateScreen으로 이동
+        UserInfo().setLoginStatus(true);
         if (mounted) {
           Navigator.of(context).push(
             MaterialPageRoute(
