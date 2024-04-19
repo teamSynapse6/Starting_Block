@@ -3,16 +3,19 @@ import 'package:http/http.dart' as http;
 import 'package:starting_block/manage/model_manage.dart';
 
 class MyPageApi {
-  static Map<String, String> headers = {
-    'accept': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzA4Nzg5MjE5LCJleHAiOjIwNjg3ODkyMTl9.QfNiocS_CBaiDrKqK93hfl03MAMJ_Pm9Fy-IibpT37CVlz2RN-SdaUQk9VkGMJcsVNsTIyBrROlQA4eXLk02Pg'
-  };
+  static Future<Map<String, String>> getHeaders() async {
+    String? accessToken = await UserTokenManage.getAccessToken();
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
+  }
 
   static String baseUrl = 'https://api.startingblock.co.kr';
 
   // 내 궁금해요 불러오기
   static Future<List<MyProfileHearModel>> getMyHeart() async {
+    Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/heart/my');
     final response = await http.get(url, headers: headers);
 

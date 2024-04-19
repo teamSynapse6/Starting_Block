@@ -395,7 +395,8 @@ class OnCampusAPI {
   //     throw Exception('Failed to load roadmap recommendation data');
   //   }
   // }
-//교내지원사업(notify)_추천 메소드
+
+  //교내지원사업(notify)_추천 메소드
   static Future<List<OnCampusNotifyModel>> getOnCampusRoadmapRec({
     required List<String> types, // 필터링할 타입 목록
   }) async {
