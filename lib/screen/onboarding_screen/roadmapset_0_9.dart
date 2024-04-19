@@ -70,8 +70,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
       await RoadMapApi.postInitialRoadMap(roadMaps);
       if (mounted) {
         _saveLoginStatus();
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('roadmapItems', true);
+        await UserInfo().setRoadmapSetStatus(true);
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
@@ -88,8 +87,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   //다음에 설정 버튼 클릭 시
   void _onSkipTap() async {
     _saveLoginStatus();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('roadmapItems', false);
+    await UserInfo().setTempInitialRoadmapItems([]);
+    await UserInfo().setRoadmapSetStatus(false);
     if (mounted) {
       Navigator.pushAndRemoveUntil(
         context,

@@ -73,7 +73,10 @@ class _RoadmapListSetState extends State<RoadmapListSet> {
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const IntergrateScreen()),
+            MaterialPageRoute(
+                builder: (context) => const IntergrateScreen(
+                      switchIndex: SwitchIndex.toThree,
+                    )),
             (Route<dynamic> route) => false,
           );
         }

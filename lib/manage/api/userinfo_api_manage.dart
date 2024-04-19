@@ -79,4 +79,43 @@ class UserInfoManageApi {
       return false; // 실패 시 false 반환
     }
   }
+
+  // 로그아웃 처리 메소드
+  static Future<bool> postUserLogOut() async {
+    String url = '$baseUrl/auth/sign-out';
+    String? refreshToken =
+        await UserTokenManage.getRefreshToken(); // refreshToken을 가져옵니다.
+    Map<String, String> headers = await getHeaders();
+    Map<String, dynamic> body = {'refreshToken': refreshToken};
+
+    http.Response response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: json.encode(body),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      print('로그아웃 성공');
+      return true; // 성공적으로 로그아웃되면 true 반환
+    } else {
+      print('로그아웃 실패: ${response.statusCode}');
+      return false; // 로그아웃 실패시 false 반환
+    }
+  }
+
+  // 회원탈퇴 처리 메소드
+  static Future<bool> postDeleteAccount() async {
+    String url = '$baseUrl/api/v1/users/inactive';
+    Map<String, String> headers = await getHeaders();
+
+    http.Response response = await http.post(Uri.parse(url), headers: headers);
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      print('계정 비활성화 성공');
+      return true; // 성공적으로 계정이 비활성화되면 true 반환
+    } else {
+      print('계정 비활성화 실패: ${response.statusCode}, Body: ${response.body}');
+      return false; // 계정 비활성화 실패 시 false 반환
+    }
+  }
 }

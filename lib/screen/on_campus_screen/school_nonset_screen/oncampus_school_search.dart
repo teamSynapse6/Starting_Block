@@ -88,7 +88,11 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
         await _saveSchoolName();
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const IntergrateScreen()),
+          MaterialPageRoute(
+            builder: (context) => const IntergrateScreen(
+              switchIndex: SwitchIndex.toOne,
+            ),
+          ),
           (Route<dynamic> route) => false,
         );
       } else {
