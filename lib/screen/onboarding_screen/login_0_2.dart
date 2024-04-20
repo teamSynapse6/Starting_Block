@@ -1,8 +1,12 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/kakao_api_manage.dart';
+import 'package:starting_block/manage/api/userinfo_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,8 +16,56 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+
   void _onNextTap() async {
-    await signInWithKakao(context);
+    try {
+      // signInWithKakao를 호출하고 로그인 결과를 기다림
+      await signInWithKakao(context);
+
+      // FlutterSecureStorage에서 userID와 userEmail 불러오기
+      String? userId = await secureStorage.read(key: 'kakaoUserID');
+      String? userEmail = await secureStorage.read(key: 'kakaoUserEmail');
+
+      if (userId == null || userEmail == null) {
+        throw Exception('저장된 사용자 정보를 찾을 수 없습니다.');
+      }
+
+      // UserInfoManageApi를 통해 로그인 상태 확인
+      UserSignInModel signInData =
+          await UserInfoManageApi.postSignIn(userId, userEmail);
+
+      //유저 토큰 저장
+      await UserTokenManage().setRefreshToken(signInData.refreshToken);
+      await UserTokenManage().setAccessToken(signInData.accessToken);
+      print(
+          '로그인 완료: ${signInData.accessToken}\n 리프레시 토큰: ${signInData.refreshToken}');
+
+      // 회원가입 완료 상태에 따른 화면 이동
+      if (signInData.isSignUpComplete) {
+        UserInfo().setLoginStatus(true);
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const IntergrateScreen(),
+            ),
+          );
+        }
+      } else {
+        // 회원가입이 완료되지 않은 경우 NickNameScreen으로 이동
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const NickNameScreen(),
+            ),
+          );
+        }
+      }
+    } catch (error) {
+      // 오류 처리
+      print('로그인 또는 사용자 정보 확인 중 오류 발생: $error');
+      // 오류가 발생한 경우 적절한 UI 피드백 제공
+    }
   }
 
   @override

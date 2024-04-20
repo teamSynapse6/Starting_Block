@@ -6,6 +6,7 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/bookmark/bookmark_list.dart';
 import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class BookMarkButton extends StatefulWidget {
   final bool isSaved;
@@ -38,6 +39,7 @@ class _BookMarkButtonState extends State<BookMarkButton> {
     setState(() {
       roadMaps = roadMapAnnounceList;
     });
+    print('로드맵: $roadMaps');
   }
 
   void _saveAction(int roadmapId, StateSetter setStateModal) async {
@@ -78,6 +80,18 @@ class _BookMarkButtonState extends State<BookMarkButton> {
     });
   }
 
+  void gotoSaveRoadmapTap() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const IntergrateScreen(
+          switchIndex: SwitchIndex.toThree,
+        ),
+      ),
+      (route) => false,
+    );
+  }
+
   void _bookMarkTap(BuildContext context) async {
     await showModalBottomSheet(
       context: context,
@@ -100,35 +114,51 @@ class _BookMarkButtonState extends State<BookMarkButton> {
                     ),
                   ),
                   Gaps.v8,
-                  roadMaps == null
-                      ? const CircularProgressIndicator()
-                      : Expanded(
-                          child: ListView.builder(
-                            itemCount: roadMaps!.length,
-                            itemBuilder: (context, index) {
-                              final roadMap = roadMaps![index];
-                              return BookMarkList(
-                                thisText: roadMap.title,
-                                thisColor: AppColors.white,
-                                thisTapAction: () async {
-                                  print('클릭이 되었습니다.');
-                                  if (roadMap.isAnnouncementSaved) {
-                                    _deleteAction(
-                                        roadMap.roadmapId, setStateModal);
-                                  } else {
-                                    _saveAction(
-                                        roadMap.roadmapId, setStateModal);
-                                  }
-                                  // 모달의 상태를 업데이트합니다.
-                                  _updateRoadMapsModal(setStateModal);
-                                },
-                                thisIcon: roadMap.isAnnouncementSaved
-                                    ? AppIcon.plus_actived
-                                    : AppIcon.plus_inactived,
-                              );
-                            },
+                  // 조건을 검사하여 저장된 로드맵이 없는 경우 메시지를 표시합니다.
+                  if (roadMaps == null || roadMaps!.isEmpty)
+                    Center(
+                      child: Column(
+                        children: [
+                          Gaps.v104,
+                          Text(
+                            '저장된 로드맵이 없습니다.\n로드맵을 설정해볼까요?',
+                            style:
+                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                            textAlign: TextAlign.center,
                           ),
-                        ),
+                          Gaps.v24,
+                          GotoSaveRoadmap(
+                            tapAction: gotoSaveRoadmapTap,
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: roadMaps!.length,
+                        itemBuilder: (context, index) {
+                          final roadMap = roadMaps![index];
+                          return BookMarkList(
+                            thisText: roadMap.title,
+                            thisColor: AppColors.white,
+                            thisTapAction: () async {
+                              print('클릭이 되었습니다.');
+                              if (roadMap.isAnnouncementSaved) {
+                                _deleteAction(roadMap.roadmapId, setStateModal);
+                              } else {
+                                _saveAction(roadMap.roadmapId, setStateModal);
+                              }
+                              // 모달의 상태를 업데이트합니다.
+                              _updateRoadMapsModal(setStateModal);
+                            },
+                            thisIcon: roadMap.isAnnouncementSaved
+                                ? AppIcon.plus_actived
+                                : AppIcon.plus_inactived,
+                          );
+                        },
+                      ),
+                    ),
                 ],
               ),
             );

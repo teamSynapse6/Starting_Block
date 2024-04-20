@@ -28,6 +28,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => OnCaFilterModel()),
         ChangeNotifierProvider(create: (context) => UserInfo()),
         ChangeNotifierProvider(create: (context) => BookMarkNotifier()),
+        ChangeNotifierProvider(create: (context) => UserTokenManage()),
       ],
       child: const StartingBlock(),
     ),

@@ -48,6 +48,7 @@ class AnswerModel {
   final int heartCount;
   final bool isMyHeart;
   final int? heartId;
+  final bool isMyAnswer; // Added new field
   final List<ReplyModel> replyResponse;
 
   AnswerModel.fromJson(Map<String, dynamic> json)
@@ -58,6 +59,7 @@ class AnswerModel {
         heartCount = json['heartCount'] ?? 0,
         isMyHeart = json['isMyHeart'] ?? false,
         heartId = json['heartId'],
+        isMyAnswer = json['isMyAnswer'] ?? false,
         replyResponse = json['replyResponse'] != null
             ? (json['replyResponse'] as List)
                 .map((e) => ReplyModel.fromJson(e))
@@ -73,6 +75,7 @@ class ReplyModel {
   final int heartCount;
   final bool isMyHeart;
   final int? heartId;
+  final bool isMyReply;
 
   ReplyModel.fromJson(Map<String, dynamic> json)
       : replyId = json['replyId'] ?? 0,
@@ -81,5 +84,6 @@ class ReplyModel {
         createdAt = json['createdAt'] ?? '',
         heartCount = json['heartCount'] ?? 0,
         isMyHeart = json['isMyHeart'] ?? false,
-        heartId = json['heartId'];
+        heartId = json['heartId'],
+        isMyReply = json['isMyReply'] ?? false;
 }

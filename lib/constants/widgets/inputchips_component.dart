@@ -109,13 +109,14 @@ class DefaultInputChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
       onTap: chipTap,
-      child: Container(
+      child: Ink(
         height: 32,
         decoration: BoxDecoration(
           color: isSelected ? AppColors.blue : AppColors.g1,
-          borderRadius: BorderRadius.circular(46),
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

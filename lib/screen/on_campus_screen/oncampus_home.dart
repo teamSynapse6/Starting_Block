@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -13,14 +12,12 @@ class OnCampusHome extends StatefulWidget {
 
 class _OnCampusHomeState extends State<OnCampusHome> {
   String _schoolName = "";
-  String _svgLogo = ""; // SVG 데이터를 저장할 변수
   List<OnCampusNotifyModel> _notifyList = [];
 
   @override
   void initState() {
     super.initState();
     _loadSchoolName();
-    _loadSvgLogo();
     _loadOnCampusHomeNotify();
   }
 
@@ -28,13 +25,6 @@ class _OnCampusHomeState extends State<OnCampusHome> {
     String schoolName = await UserInfo.getSchoolName();
     setState(() {
       _schoolName = schoolName;
-    });
-  }
-
-  Future<void> _loadSvgLogo() async {
-    String svgData = await OnCampusAPI.onCampusLogo();
-    setState(() {
-      _svgLogo = svgData;
     });
   }
 
@@ -82,12 +72,11 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        _svgLogo.isNotEmpty
-                            ? SvgPicture.string(
-                                _svgLogo,
-                                fit: BoxFit.scaleDown,
-                              )
-                            : Container(),
+                        const SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: SchoolLogoWidget(),
+                        ),
                         Gaps.h4,
                         Text(
                           _schoolName,

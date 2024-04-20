@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -40,12 +43,12 @@ class IntergrateScreen extends StatefulWidget {
 class _IntergrateScreenState extends State<IntergrateScreen> {
   int _selectedIndex = 4;
   String _schoolName = "";
-  final bool _isRoadMapEmpty = false;
+  bool _isRoadmapSet = false;
 
   @override
   void initState() {
     super.initState();
-
+    _loadRoadMap();
     _loadSchoolName();
     switch (widget.switchIndex) {
       case SwitchIndex.none:
@@ -73,6 +76,20 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     String schoolName = await UserInfo.getSchoolName(); // 비동기 호출
     setState(() {
       _schoolName = schoolName;
+    });
+  }
+
+  Future<void> _loadRoadMap() async {
+    //토큰값
+    String? accesstoken = await UserTokenManage.getAccessToken();
+    print('accesstoken: $accesstoken');
+
+    //실제 데이터 불러오는 값
+    List roadMap = await RoadMapApi.getRoadMapList();
+    bool isRoadmapSet = roadMap.isNotEmpty;
+    setState(() {
+      _isRoadmapSet = isRoadmapSet;
+      print('로드맵 설정 여부: $_isRoadmapSet');
     });
   }
 
@@ -107,10 +124,10 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
       case 2:
         return const HomeScreen();
       case 3:
-        if (_isRoadMapEmpty) {
-          return const RoadMapListSet();
-        } else {
+        if (_isRoadmapSet) {
           return const RoadmapHome();
+        } else {
+          return const RoadMapSet();
         }
       case 4:
       default:

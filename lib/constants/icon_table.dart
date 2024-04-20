@@ -221,6 +221,18 @@ class AppIcon {
   static Widget get vote_inactive_18 =>
       SvgPicture.asset('assets/icon/other/vote_inactive_18.svg',
           fit: BoxFit.scaleDown);
+  static Widget get my_answer_tail =>
+      SvgPicture.asset('assets/icon/other/my_answer_tail.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get my_contact_tail =>
+      SvgPicture.asset('assets/icon/other/my_contact_tail.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get row_divider =>
+      SvgPicture.asset('assets/icon/other/row_divider.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get contact_logo_28 =>
+      SvgPicture.asset('assets/icon/other/contact_logo_28.svg',
+          fit: BoxFit.scaleDown);
 
   // Profile Image
   static Widget get profile_image_1 =>
@@ -244,5 +256,13 @@ class AppIcon {
           fit: BoxFit.scaleDown);
   static Widget get run_no =>
       SvgPicture.asset('assets/onboard_image/run_no.svg',
+          fit: BoxFit.scaleDown);
+
+  //illustration Image
+  static Widget get roadmap_illustrate =>
+      SvgPicture.asset('assets/icon/illustrate/roadmap_illustrate.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get school_illustrate =>
+      SvgPicture.asset('assets/icon/illustrate/school_illustrate.svg',
           fit: BoxFit.scaleDown);
 }

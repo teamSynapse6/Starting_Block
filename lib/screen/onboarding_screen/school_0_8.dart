@@ -1,8 +1,11 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/userinfo_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart'; // schoolList가 여기에 정의되어 있다고 가정
 
 class SchoolScreen extends StatefulWidget {
@@ -15,7 +18,7 @@ class SchoolScreen extends StatefulWidget {
 class _SchoolScreenState extends State<SchoolScreen> {
   final TextEditingController _schoolInfoController = TextEditingController();
   List<String> filteredSchoolList = [];
-  String _schoolInfo = "";
+  String _schoolInfo = '';
 
   @override
   void initState() {
@@ -44,14 +47,19 @@ class _SchoolScreenState extends State<SchoolScreen> {
     }
   }
 
-  void _onSchoolTap(String selectedSchool) {
+  void _onSchoolTap(String selectedSchool) async {
     setState(() {
       _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
     });
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      _onNextTap();
-    });
+    bool updateSuccess = await _saveUserInfoToServer();
+    if (updateSuccess) {
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        _onNextTap();
+      });
+    } else {
+      print('에러 발생');
+    }
   }
 
   Future<void> _saveSchoolName() async {
@@ -64,9 +72,26 @@ class _SchoolScreenState extends State<SchoolScreen> {
     await prefs.setString('userSchoolName', '');
   }
 
+  Future<bool> _saveUserInfoToServer() async {
+    String nickName = await UserInfo.getNickName();
+    bool isEnterpreneurCheck = await UserInfo.getEntrepreneurCheck();
+    String residence = await UserInfo.getResidence();
+    String university = _schoolInfo;
+    String birth = await UserInfo.getUserBirthday();
+    String formattedBirth =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
+
+    return await UserInfoManageApi.patchUserInfo(
+      nickname: nickName,
+      birth: formattedBirth,
+      isCompletedBusinessRegistration: isEnterpreneurCheck,
+      residence: residence,
+      university: university,
+    );
+  }
+
   void _onNextTap() async {
     if (_schoolInfo.isEmpty) return;
-    // 대학교명을 SharedPreferences에 저장
     await _saveSchoolName();
     // 다음 화면으로 이동
     Navigator.of(context).push(
@@ -77,12 +102,17 @@ class _SchoolScreenState extends State<SchoolScreen> {
   }
 
   void _onSkipTap() async {
-    await _skipSchoolName();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const RoadmapScreen(),
-      ),
-    );
+    bool updateSuccess = await _saveUserInfoToServer();
+    if (updateSuccess) {
+      await _skipSchoolName();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const RoadmapScreen(),
+        ),
+      );
+    } else {
+      print('에러 발생');
+    }
   }
 
   @override

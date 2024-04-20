@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -15,7 +13,6 @@ class MyProfileHome extends StatefulWidget {
 
 class _MyProfileHomeState extends State<MyProfileHome>
     with SingleTickerProviderStateMixin {
-  String _svgLogo = ""; // SVG 데이터를 저장할 변수
   String _nickName = "";
   String _schoolName = "";
   String _entrepreneurCheck = "사업자 등록 미완료"; // 사업자 등록 여부를 저장할 변수
@@ -27,7 +24,6 @@ class _MyProfileHomeState extends State<MyProfileHome>
   void initState() {
     super.initState();
     _loadNickName();
-    _loadSvgLogo();
     _loadSchoolName();
     _loadEntrepreneurCheck();
     _loadResidenceName();
@@ -39,13 +35,6 @@ class _MyProfileHomeState extends State<MyProfileHome>
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  Future<void> _loadSvgLogo() async {
-    String svgData = await OnCampusAPI.onCampusLogo();
-    setState(() {
-      _svgLogo = svgData;
-    });
   }
 
   Future<void> _loadNickName() async {
@@ -103,7 +92,6 @@ class _MyProfileHomeState extends State<MyProfileHome>
       body: Consumer<UserInfo>(
         builder: (context, userInfo, child) {
           if (userInfo.hasChanged) {
-            _loadSvgLogo();
             _loadNickName();
             _loadSchoolName();
             _loadEntrepreneurCheck();
@@ -130,21 +118,24 @@ class _MyProfileHomeState extends State<MyProfileHome>
                             style: AppTextStyles.st2
                                 .copyWith(color: AppColors.black),
                           ),
-                          _svgLogo.isNotEmpty ? Gaps.v8 : Container(),
-                          _svgLogo.isNotEmpty
-                              ? Row(
+                          _schoolName.isNotEmpty
+                              ? Column(
                                   children: [
-                                    SvgPicture.string(
-                                      _svgLogo,
-                                      fit: BoxFit.scaleDown,
-                                      width: 18,
-                                      height: 18,
-                                    ),
-                                    Gaps.h5,
-                                    Text(
-                                      _schoolName,
-                                      style: AppTextStyles.bd4
-                                          .copyWith(color: AppColors.g6),
+                                    Gaps.v8,
+                                    Row(
+                                      children: [
+                                        const SizedBox(
+                                          height: 18,
+                                          width: 18,
+                                          child: SchoolLogoWidget(),
+                                        ),
+                                        Gaps.h5,
+                                        Text(
+                                          _schoolName,
+                                          style: AppTextStyles.bd4
+                                              .copyWith(color: AppColors.g6),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 )
@@ -249,15 +240,12 @@ class _MyProfileHomeState extends State<MyProfileHome>
               ),
               Expanded(
                 child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
                   controller: _tabController,
                   children: const [
-                    Center(
-                      child: Text('내 질문 내용'),
-                    ),
-                    Center(
-                      child: Text('내 답변 내용'),
-                    ),
-                    MyProfileMyQuesion()
+                    MyProfileMyQuestion(),
+                    MyProfileMyAnswerReply(),
+                    MyProfileMyHeart(),
                   ],
                 ),
               ),

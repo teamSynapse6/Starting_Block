@@ -11,10 +11,11 @@ String formatDate(String date) {
 class CommentList extends StatefulWidget {
   final String thisUserName, thisAnswer, thisDate;
   final int thisLike, thisAnswerId;
-  final bool isMyHeart;
+  final bool isMyHeart, isMyAnswer;
   final VoidCallback thisReplyTap,
       thisCommentHeartTap,
-      thisCommenHeartDeleteTap;
+      thisCommenHeartDeleteTap,
+      thisAnswerDeleteTap;
 
   const CommentList({
     super.key,
@@ -27,6 +28,8 @@ class CommentList extends StatefulWidget {
     required this.thisAnswerId,
     required this.thisCommentHeartTap,
     required this.thisCommenHeartDeleteTap,
+    required this.isMyAnswer,
+    required this.thisAnswerDeleteTap,
   });
 
   @override
@@ -62,11 +65,12 @@ class _CommentListState extends State<CommentList> {
                 ],
               ),
               const Spacer(),
-              widget.thisAnswerId != 0
+              widget.isMyAnswer
                   ? AnswerCommentDelete(
                       thisId: widget.thisAnswerId,
+                      thisDeleteAction: widget.thisAnswerDeleteTap,
                     )
-                  : Container(),
+                  : const AnswerCommentReport(),
             ],
           ),
           Gaps.h4,

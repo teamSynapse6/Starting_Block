@@ -15,6 +15,7 @@ export 'package:starting_block/constants/widgets/detailpage_containedbutton.dart
 export 'package:starting_block/constants/widgets/inputchips_component.dart'; //인풋칩버튼
 export 'package:starting_block/constants/widgets/dialog_component.dart'; //다이얼로그(alert창) 컴포넌트
 export 'package:starting_block/constants/widgets/bookmark/bookmark_button.dart'; //로드맵에 저장 버튼
+export 'package:starting_block/constants/widgets/bookmark/bookmark_gotoset.dart'; //로드맵에 저장된 게시물이 없을 때
 export 'package:starting_block/constants/widgets/bookmark/web_bookmark.dart'; //인앱웹뷰_북마크 버튼
 export 'package:starting_block/constants/widgets/reorder_list.dart'; //로드맵 순서 변경 리스트
 export 'package:starting_block/constants/widgets/bottom_gradiant.dart'; //하단 투명 Gradient
@@ -72,7 +73,14 @@ export 'package:starting_block/constants/widgets/oncampus_listcard/oncampus_supp
 export 'package:starting_block/constants/widgets/comment_widget/comment_list.dart'; //질문&답변_댓글 리스트
 export 'package:starting_block/constants/widgets/comment_widget/reply_list.dart'; //질문&답변_유저 답글 리스트
 export 'package:starting_block/constants/widgets/comment_widget/vote_reply_widget.dart'; //궁금해요 컴포넌트
-export 'package:starting_block/constants/widgets/comment_widget/delete_bottom_sheet.dart'; //댓글 삭제 컴포넌트
+export 'package:starting_block/constants/widgets/comment_widget/delete_bottom_sheet.dart'; //댓글,답글 삭제 컴포넌트
+export 'package:starting_block/constants/widgets/comment_widget/report_bottom_sheet.dart'; //댓글, 답글 신고 컴포넌트
+
+//학교 로고 관리
+export 'package:starting_block/constants/widgets/school_logo_widget.dart'; //학교 로고 컴포넌트
 
 //마이페이지 컴포넌트 관리
+export 'package:starting_block/constants/widgets/myprofile_widget/myheart_list.dart'; //마이페이지_내 질문 리스트
+export 'package:starting_block/constants/widgets/myprofile_widget/myanswer_reply_list.dart'; //마이페이지_내 댓글,답글 리스트
 export 'package:starting_block/constants/widgets/myprofile_widget/myquestion_list.dart'; //마이페이지_내 질문 리스트
+
