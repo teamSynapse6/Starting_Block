@@ -19,7 +19,7 @@ class DeatailContainButton extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: onTapAction,
-        child: Container(
+        child: Ink(
           height: 44,
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(2)),

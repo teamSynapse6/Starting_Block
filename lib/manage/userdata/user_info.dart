@@ -129,16 +129,4 @@ class UserInfo extends ChangeNotifier {
     await initialize();
     return _prefs.getStringList('roadmapItems') ?? [];
   }
-
-  //로드맵 설정 여부
-  Future<void> setRoadmapSetStatus(bool isRoadmapSet) async {
-    await _prefs.setBool('isRoadmapSet', isRoadmapSet);
-    _hasChanged = true;
-    notifyListeners();
-  }
-
-  static Future<bool> getRoadmapSetStatus() async {
-    await initialize();
-    return _prefs.getBool('isRoadmapSet') ?? false;
-  }
 }

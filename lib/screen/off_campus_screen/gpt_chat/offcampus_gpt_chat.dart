@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:starting_block/constants/animation_table.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/gpt_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -102,32 +103,53 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
     }
   }
 
-  //메시지 보내기 메소드
+// 메시지 보내기 메소드
   Future<void> _postGptChat(String message) async {
     setState(() {
-      _isLoading = true; // Changed _isLoaded to _isLoading
+      _isLoading = true;
     });
-    // String thisMessage = '${widget.thisID}에서 찾아줘, $message';
-    String thisMessage = '1003에서 찾아줘, $message';
 
-    if (_threadId != null) {
-      String chatResponse =
-          // await GptApi.postGptChat(_threadId!, widget.thisID, thisMessage);
-          await GptApi.postGptChat(_threadId!, '1003', thisMessage);
+    String thisMessage = '1003에서 찾아줘, $message'; // 예시용으로 사용하는 ID
+
+    try {
+      if (_threadId != null) {
+        String chatResponse =
+            await GptApi.postGptChat(_threadId!, '1003', thisMessage);
+        final currentTime = DateTime.now();
+        final formattedTime = _formatCurrentTime(currentTime);
+
+        setState(() {
+          _messages.add(Message(
+              isUser: false, message: chatResponse, time: formattedTime));
+          _isLoading = false;
+        });
+
+        await _saveMessages(_messages);
+      }
+    } catch (e) {
+      // 에러 처리 및 사용자에게 에러 메시지 표시
       final currentTime = DateTime.now();
-      final formattedTime = int.parse(
-          '${currentTime.year}${currentTime.month.toString().padLeft(2, '0')}${currentTime.day.toString().padLeft(2, '0')}${currentTime.hour.toString().padLeft(2, '0')}${currentTime.minute.toString().padLeft(2, '0')}');
+      final formattedTime = _formatCurrentTime(currentTime);
 
       setState(() {
-        // 응답 메시지를 리스트에 추가
-        _messages.add(
-            Message(isUser: false, message: chatResponse, time: formattedTime));
-        _isLoading = false; // Changed _isLoaded to _isLoading
+        _messages.add(Message(
+            isUser: false,
+            message:
+                "답변을 찾는 과정에서 오류가 발생했습니다.\n자세한 내용으로 물어보면 더 정확한 답변을 찾을 수 있습니다.",
+            time: formattedTime));
+        _isLoading = false;
       });
 
-      // 변경된 대화 내용을 파일에 저장
       await _saveMessages(_messages);
+      await _deleteGptEnd();
+      await _getGptStart();
+      _scrollToBottom();
     }
+  }
+
+  int _formatCurrentTime(DateTime currentTime) {
+    return int.parse(
+        '${currentTime.year}${currentTime.month.toString().padLeft(2, '0')}${currentTime.day.toString().padLeft(2, '0')}${currentTime.hour.toString().padLeft(2, '0')}${currentTime.minute.toString().padLeft(2, '0')}');
   }
 
   /* 파일 저장 관련 메소드 */
@@ -274,7 +296,35 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
               itemBuilder: (context, index) {
                 if (index == _messages.length) {
                   // 마지막 아이템이 로딩 인디케이터
-                  return const Center(child: CircularProgressIndicator());
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 16,
+                          backgroundColor: AppColors.blue,
+                          child: AppIcon.starting_block_icon,
+                        ),
+                        Gaps.h4,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '스타팅블록',
+                              style: AppTextStyles.bd6
+                                  .copyWith(color: AppColors.g5),
+                            ),
+                            Gaps.v4,
+                            SizedBox(
+                              height: 38,
+                              child: AppAnimation.chatting_progress_indicator,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
                 }
                 final message = _messages[index];
                 final isFirstItem = index == 0;
@@ -321,7 +371,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                     Padding(
                       padding: EdgeInsets.only(
                         top: isFirstItem ? 10 : 0,
-                        bottom: isLastItem ? 10 : 0,
+                        bottom: isLastItem && !_isLoading ? 10 : 0,
                         left: 16,
                         right: 16,
                       ),
@@ -371,7 +421,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                               )
                             : Padding(
                                 padding: message.isUser
-                                    ? const EdgeInsets.only(bottom: 22)
+                                    ? const EdgeInsets.only(bottom: 50)
                                     : const EdgeInsets.only(bottom: 12),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,

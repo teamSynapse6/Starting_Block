@@ -78,6 +78,13 @@ class _SettingHomeState extends State<SettingHome> {
             ),
             thisText: "개인정보처리방침 및 이용약관",
           ),
+          SettingList(
+            onTapScreen: LicensePage(
+              applicationName: '스타팅블록',
+              applicationIcon: Image.asset('assets/logo/img_launcher_60.png'),
+            ),
+            thisText: "오픈소스 라이센스",
+          ),
           SettingListWithDialog(
             thisText: '로그아웃',
             thisTitle: '로그아웃',

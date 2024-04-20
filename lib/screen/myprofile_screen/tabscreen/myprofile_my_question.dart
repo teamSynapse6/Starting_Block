@@ -87,14 +87,24 @@ class _MyProfileMyQuestionState extends State<MyProfileMyQuestion> {
               );
             })
         : Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Gaps.v78,
-              Text(
-                '작성한 질문이 없어요.\n공고를 탐색하며, 궁금한 사항은 질문을 작성해 볼까요?',
-                style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
-                textAlign: TextAlign.center,
-              )
+              Gaps.v10,
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height - 360,
+                color: AppColors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Gaps.v78,
+                    Text(
+                      '작성한 질문이 없어요.\n공고를 탐색하며, 궁금한 사항은 질문을 작성해 볼까요?',
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
             ],
           );
   }

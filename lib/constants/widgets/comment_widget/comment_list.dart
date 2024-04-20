@@ -70,7 +70,7 @@ class _CommentListState extends State<CommentList> {
                       thisId: widget.thisAnswerId,
                       thisDeleteAction: widget.thisAnswerDeleteTap,
                     )
-                  : Container(),
+                  : const AnswerCommentReport(),
             ],
           ),
           Gaps.h4,

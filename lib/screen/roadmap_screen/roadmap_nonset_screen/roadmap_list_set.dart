@@ -69,7 +69,6 @@ class _RoadmapListSetState extends State<RoadmapListSet> {
     try {
       await RoadMapApi.postInitialRoadMap(roadMaps);
       if (mounted) {
-        UserInfo().setRoadmapSetStatus(true);
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,

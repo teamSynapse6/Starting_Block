@@ -69,14 +69,24 @@ class _MyProfileMyHeartState extends State<MyProfileMyHeart> {
             },
           )
         : Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Gaps.v78,
-              Text(
-                '궁금해요를 누른 게시글이 없어요\n타 창업자들의 질문을 확인해볼까요?',
-                style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
-                textAlign: TextAlign.center,
-              )
+              Gaps.v10,
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height - 360,
+                color: AppColors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Gaps.v78,
+                    Text(
+                      '궁금해요를 누른 게시글이 없어요.\n타 창업자들의 질문을 확인해 볼까요?',
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
             ],
           );
   }

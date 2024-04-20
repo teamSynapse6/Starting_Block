@@ -32,7 +32,8 @@ class _ReplyListState extends State<ReplyList> {
   Widget build(BuildContext context) {
     String formattedDate = formatDate(widget.thisDate);
 
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.fromLTRB(66 - 24, 8, 0, 8),
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +64,7 @@ class _ReplyListState extends State<ReplyList> {
                   ? ReplyCommentDelete(
                       thisId: widget.thisReplyId,
                       thisDeleteAction: widget.thisReplyDeleteTap)
-                  : Container()
+                  : const ReplyCommentReport(),
             ],
           ),
           Padding(

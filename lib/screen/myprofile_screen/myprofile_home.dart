@@ -118,20 +118,24 @@ class _MyProfileHomeState extends State<MyProfileHome>
                             style: AppTextStyles.st2
                                 .copyWith(color: AppColors.black),
                           ),
-                          Gaps.v8,
                           _schoolName.isNotEmpty
-                              ? Row(
+                              ? Column(
                                   children: [
-                                    const SizedBox(
-                                      height: 18,
-                                      width: 18,
-                                      child: SchoolLogoWidget(),
-                                    ),
-                                    Gaps.h5,
-                                    Text(
-                                      _schoolName,
-                                      style: AppTextStyles.bd4
-                                          .copyWith(color: AppColors.g6),
+                                    Gaps.v8,
+                                    Row(
+                                      children: [
+                                        const SizedBox(
+                                          height: 18,
+                                          width: 18,
+                                          child: SchoolLogoWidget(),
+                                        ),
+                                        Gaps.h5,
+                                        Text(
+                                          _schoolName,
+                                          style: AppTextStyles.bd4
+                                              .copyWith(color: AppColors.g6),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 )

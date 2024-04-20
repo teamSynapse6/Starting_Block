@@ -70,7 +70,6 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
       await RoadMapApi.postInitialRoadMap(roadMaps);
       if (mounted) {
         _saveLoginStatus();
-        await UserInfo().setRoadmapSetStatus(true);
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
@@ -88,7 +87,6 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   void _onSkipTap() async {
     _saveLoginStatus();
     await UserInfo().setTempInitialRoadmapItems([]);
-    await UserInfo().setRoadmapSetStatus(false);
     if (mounted) {
       Navigator.pushAndRemoveUntil(
         context,

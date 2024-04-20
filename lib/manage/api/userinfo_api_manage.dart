@@ -16,6 +16,45 @@ class UserInfoManageApi {
 
   static String baseUrl = 'https://api.startingblock.co.kr';
 
+  // 액세스 토큰 업데이트 메소드
+  static Future<void> updateAccessToken() async {
+    String url = '$baseUrl/auth/refresh';
+    String? refreshToken = await UserTokenManage.getRefreshToken();
+    print('갱신 호출됨, 리프레시 토큰: $refreshToken');
+
+    if (refreshToken == null) {
+      throw Exception("Refresh token is not available.");
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    Map<String, dynamic> body = {'refreshToken': refreshToken};
+    http.Response response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: json.encode(body),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // 성공적으로 응답 받음
+      var responseData = json.decode(response.body);
+      String newAccessToken = responseData['accessToken'];
+      String newRefreshToken = responseData['refreshToken'];
+      print('토큰: $newAccessToken, $newRefreshToken');
+      // 새로운 액세스 토큰을 저장
+      await UserTokenManage().setAccessToken(newAccessToken);
+      await UserTokenManage().setRefreshToken(newRefreshToken);
+      print('Access token updated successfully.');
+    } else {
+      // 실패 시 예외 처리
+      throw Exception(
+          'Failed to update access token: ${response.statusCode}, ${response.body}');
+    }
+  }
+
   //로그인 처리 메소드
   static Future<UserSignInModel> postSignIn(
       String providerId, String email) async {
@@ -45,14 +84,15 @@ class UserInfoManageApi {
     }
   }
 
-  //유저 세부정보 입력
-  static Future<bool> patchUserInfo({
-    required String nickname,
-    required String birth,
-    required bool isCompletedBusinessRegistration,
-    required String residence,
-    required String university,
-  }) async {
+//유저 세부정보 입력
+  static Future<bool> patchUserInfo(
+      {required String nickname,
+      required String birth,
+      required bool isCompletedBusinessRegistration,
+      required String residence,
+      required String university,
+      int retryCount = 3 // 재시도 횟수를 추가
+      }) async {
     String url = '$baseUrl/api/v1/users';
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> body = {
@@ -73,15 +113,23 @@ class UserInfoManageApi {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       print('정보 업데이트 성공');
       return true; // 성공 시 true 반환
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await updateAccessToken();
+      return await patchUserInfo(
+          nickname: nickname,
+          birth: birth,
+          isCompletedBusinessRegistration: isCompletedBusinessRegistration,
+          residence: residence,
+          university: university,
+          retryCount: retryCount - 1 // 재시도 횟수 감소
+          ); // 재귀 호출
     } else {
-      print('정보 업데이트 실패: ${response.statusCode}');
-      print('실패 상세내용: ${response.headers}, ${response.body}');
       return false; // 실패 시 false 반환
     }
   }
 
   // 로그아웃 처리 메소드
-  static Future<bool> postUserLogOut() async {
+  static Future<bool> postUserLogOut({int retryCount = 3}) async {
     String url = '$baseUrl/auth/sign-out';
     String? refreshToken =
         await UserTokenManage.getRefreshToken(); // refreshToken을 가져옵니다.
@@ -97,6 +145,9 @@ class UserInfoManageApi {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       print('로그아웃 성공');
       return true; // 성공적으로 로그아웃되면 true 반환
+    } else if (response.statusCode == 401) {
+      await updateAccessToken();
+      return await postDeleteAccount(retryCount: retryCount - 1);
     } else {
       print('로그아웃 실패: ${response.statusCode}');
       return false; // 로그아웃 실패시 false 반환
@@ -104,7 +155,7 @@ class UserInfoManageApi {
   }
 
   // 회원탈퇴 처리 메소드
-  static Future<bool> postDeleteAccount() async {
+  static Future<bool> postDeleteAccount({int retryCount = 3}) async {
     String url = '$baseUrl/api/v1/users/inactive';
     Map<String, String> headers = await getHeaders();
 
@@ -113,8 +164,13 @@ class UserInfoManageApi {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       print('계정 비활성화 성공');
       return true; // 성공적으로 계정이 비활성화되면 true 반환
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await updateAccessToken();
+      return await postDeleteAccount(retryCount: retryCount - 1);
     } else {
-      print('계정 비활성화 실패: ${response.statusCode}, Body: ${response.body}');
+      // 계정 비활성화 실패 또는 재시도 횟수 초과 처리
+      print(
+          '계정 비활성화 실패 or Maximum retry attempts exceeded: ${response.statusCode}, Body: ${response.body}');
       return false; // 계정 비활성화 실패 시 false 반환
     }
   }

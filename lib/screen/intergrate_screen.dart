@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -79,7 +80,13 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
   }
 
   Future<void> _loadRoadMap() async {
-    bool isRoadmapSet = await UserInfo.getRoadmapSetStatus();
+    //토큰값
+    String? accesstoken = await UserTokenManage.getAccessToken();
+    print('accesstoken: $accesstoken');
+
+    //실제 데이터 불러오는 값
+    List roadMap = await RoadMapApi.getRoadMapList();
+    bool isRoadmapSet = roadMap.isNotEmpty;
     setState(() {
       _isRoadmapSet = isRoadmapSet;
       print('로드맵 설정 여부: $_isRoadmapSet');

@@ -33,7 +33,7 @@ class GptApi {
       final chatResponse = responseData['response'];
       return chatResponse;
     } else {
-      // 에러 처리
+      print('에러 발생: ${response.statusCode}, ${response.body}');
       throw Exception('Failed to load chat data');
     }
   }

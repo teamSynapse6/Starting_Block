@@ -56,14 +56,24 @@ class _MyProfileMyAnswerReplyState extends State<MyProfileMyAnswerReply> {
             },
           )
         : Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Gaps.v78,
-              Text(
-                '작성한 답변이 없어요.\n타 창업자들에게 도움을 제공해 볼까요?',
-                style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
-                textAlign: TextAlign.center,
-              )
+              Gaps.v10,
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height - 360,
+                color: AppColors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Gaps.v78,
+                    Text(
+                      '작성한 답변이 없어요.\n타 창업자들에게 도움을 제공해 볼까요?',
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
             ],
           );
   }

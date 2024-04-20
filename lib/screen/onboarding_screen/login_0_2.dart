@@ -38,6 +38,8 @@ class _LoginScreenState extends State<LoginScreen> {
       //유저 토큰 저장
       await UserTokenManage().setRefreshToken(signInData.refreshToken);
       await UserTokenManage().setAccessToken(signInData.accessToken);
+      print(
+          '로그인 완료: ${signInData.accessToken}\n 리프레시 토큰: ${signInData.refreshToken}');
 
       // 회원가입 완료 상태에 따른 화면 이동
       if (signInData.isSignUpComplete) {

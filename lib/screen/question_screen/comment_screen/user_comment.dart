@@ -83,19 +83,25 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                         ),
                         if (answer.replyResponse.isNotEmpty &&
                             answer.replyResponse.length > 3)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                66 - 24, 8 + 16, 0, 8),
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  showAllRepliesForAnswerIndex =
-                                      shouldShowAllReplies ? null : index;
-                                });
-                              },
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showAllRepliesForAnswerIndex =
+                                    shouldShowAllReplies ? null : index;
+                              });
+                            },
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.fromLTRB(66 - 24, 9, 0, 9),
                               child: Row(
-                                mainAxisSize: MainAxisSize.min,
+                                mainAxisSize: MainAxisSize.max,
                                 children: [
+                                  Container(
+                                    height: 1,
+                                    width: 24,
+                                    color: AppColors.g2,
+                                  ),
+                                  Gaps.h8,
                                   Text(
                                     shouldShowAllReplies
                                         ? '답글 숨기기'
@@ -103,10 +109,6 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                                     style: AppTextStyles.bd6
                                         .copyWith(color: AppColors.g5),
                                   ),
-                                  Gaps.h4,
-                                  shouldShowAllReplies
-                                      ? AppIcon.arrow_up_16
-                                      : AppIcon.arrow_down_16
                                 ],
                               ),
                             ),
@@ -121,6 +123,11 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                           },
                           thisReplyDeleteTap: widget.thisReplyDeleteTap,
                         ),
+                        if (index < widget.answers.length - 1)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: CustomDividerH1G1(),
+                          )
                       ],
                     );
                   },
