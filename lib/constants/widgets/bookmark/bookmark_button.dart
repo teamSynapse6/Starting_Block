@@ -39,7 +39,6 @@ class _BookMarkButtonState extends State<BookMarkButton> {
     setState(() {
       roadMaps = roadMapAnnounceList;
     });
-    print('로드맵: $roadMaps');
   }
 
   void _saveAction(int roadmapId, StateSetter setStateModal) async {

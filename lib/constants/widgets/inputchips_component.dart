@@ -49,11 +49,11 @@ class InputChipsDelete extends StatelessWidget {
   }
 }
 
-class InputChupsSharp extends StatelessWidget {
+class InputChips extends StatelessWidget {
   final String text;
   final VoidCallback? chipTap; // 타입을 명확하게 VoidCallback으로 변경
 
-  const InputChupsSharp({
+  const InputChips({
     super.key,
     required this.text,
     this.chipTap,
@@ -67,7 +67,8 @@ class InputChupsSharp extends StatelessWidget {
         height: 32,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: AppColors.g1,
+          color: AppColors.white,
+          border: Border.all(color: AppColors.g2, width: 1),
         ),
         child: InkWell(
           onTap: chipTap,
@@ -81,9 +82,9 @@ class InputChupsSharp extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '#$text',
-                  style: AppTextStyles.btn1.copyWith(
-                    color: AppColors.blue,
+                  text,
+                  style: AppTextStyles.bd4.copyWith(
+                    color: AppColors.g5,
                   ),
                 ),
               ],

@@ -21,13 +21,15 @@ class _RoadmapHomeState extends State<RoadmapHome>
   int _roadMapId = 0;
   final GlobalKey<RoadMapListState> roadMapListKey =
       GlobalKey<RoadMapListState>(); // RoadMapListState에 접근하기 위해 사용
+  final ScrollController _scrollController = ScrollController();
+  bool _isScrolled = false;
 
   @override
   void initState() {
     super.initState();
     _loadNickName();
     _tabController = TabController(length: 4, vsync: this);
-    // _selectedRoadmapText를 로드하는 논리를 여기에 추가합니다
+    _scrollController.addListener(_onScroll);
   }
 
   Future<void> _loadNickName() async {
@@ -39,8 +41,30 @@ class _RoadmapHomeState extends State<RoadmapHome>
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _tabController.dispose();
     super.dispose();
+  }
+
+  void backToTopTap() {
+    _scrollController.animateTo(
+      0.0, // 최상단 위치
+      duration: const Duration(milliseconds: 300), // 애니메이션 지속 시간
+      curve: Curves.easeOut, // 애니메이션 곡선 설정
+    );
+  }
+
+  void _onScroll() {
+    if (_scrollController.offset == 0) {
+      setState(() {
+        _isScrolled = false;
+      });
+    }
+    if (_scrollController.offset != 0) {
+      setState(() {
+        _isScrolled = true;
+      });
+    }
   }
 
   @override
@@ -54,6 +78,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
         ),
       ),
       body: NestedScrollView(
+        controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
@@ -161,36 +186,48 @@ class _RoadmapHomeState extends State<RoadmapHome>
             )
           ];
         },
-        body: Column(
+        body: Stack(
           children: [
-            Expanded(
-              child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _tabController,
-                children: [
-                  TabScreenOfCaBiz(
-                    thisSelectedText: _selectedRoadmapText,
-                    thisCurrentStage: _isCurrentStageSelected,
-                    thisSelectedId: _roadMapId,
+            Column(
+              children: [
+                Expanded(
+                  child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _tabController,
+                    children: [
+                      TabScreenOfCaBiz(
+                        thisSelectedText: _selectedRoadmapText,
+                        thisCurrentStage: _isCurrentStageSelected,
+                        thisSelectedId: _roadMapId,
+                      ),
+                      TabScreenOnCaNotify(
+                        thisSelectedText: _selectedRoadmapText,
+                        thisCurrentStage: _isCurrentStageSelected,
+                        thisSelectedId: _roadMapId,
+                      ),
+                      TabScreenOnCaClass(
+                        thisSelectedText: _selectedRoadmapText,
+                        thisCurrentStage: _isCurrentStageSelected,
+                        thisSelectedId: _roadMapId,
+                      ),
+                      TabScreenOnCaSystem(
+                        thisSelectedText: _selectedRoadmapText,
+                        thisCurrentStage: _isCurrentStageSelected,
+                        thisSelectedId: _roadMapId,
+                      ),
+                    ],
                   ),
-                  TabScreenOnCaNotify(
-                    thisSelectedText: _selectedRoadmapText,
-                    thisCurrentStage: _isCurrentStageSelected,
-                    thisSelectedId: _roadMapId,
-                  ),
-                  TabScreenOnCaClass(
-                    thisSelectedText: _selectedRoadmapText,
-                    thisCurrentStage: _isCurrentStageSelected,
-                    thisSelectedId: _roadMapId,
-                  ),
-                  TabScreenOnCaSystem(
-                    thisSelectedText: _selectedRoadmapText,
-                    thisCurrentStage: _isCurrentStageSelected,
-                    thisSelectedId: _roadMapId,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+            _isScrolled
+                ? Positioned(
+                    right: 24,
+                    bottom: 15 + 9,
+                    child: ScrollToTopButtion(
+                      thisBackToTopTap: backToTopTap,
+                    ))
+                : Container()
           ],
         ),
       ),

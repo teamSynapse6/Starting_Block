@@ -107,6 +107,8 @@ class AppIcon {
   static Widget get vote_inactive_24 =>
       SvgPicture.asset('assets/icon/24/vote_inactive_24.svg',
           fit: BoxFit.scaleDown);
+  static Widget get arrow_up_24 =>
+      SvgPicture.asset('assets/icon/24/arrow_up_24.svg', fit: BoxFit.scaleDown);
 
   // GNB Part Image
   static Widget get home_active =>
@@ -232,6 +234,9 @@ class AppIcon {
           fit: BoxFit.scaleDown);
   static Widget get contact_logo_28 =>
       SvgPicture.asset('assets/icon/other/contact_logo_28.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get chatting_icon =>
+      SvgPicture.asset('assets/icon/other/chatting_icon.svg',
           fit: BoxFit.scaleDown);
 
   // Profile Image

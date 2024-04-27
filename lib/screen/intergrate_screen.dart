@@ -41,7 +41,7 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _IntergrateScreenState extends State<IntergrateScreen> {
-  int _selectedIndex = 4;
+  int _selectedIndex = 0;
   String _schoolName = "";
   bool _isRoadmapSet = false;
 
@@ -89,7 +89,6 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     bool isRoadmapSet = roadMap.isNotEmpty;
     setState(() {
       _isRoadmapSet = isRoadmapSet;
-      print('로드맵 설정 여부: $_isRoadmapSet');
     });
   }
 

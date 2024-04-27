@@ -15,6 +15,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   final TextEditingController _birthdayController = TextEditingController();
   String _birthday = "";
   bool _isInputValid = false;
+  String _birthAvailabilityMessage = "";
 
   @override
   void initState() {
@@ -65,6 +66,11 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
         Future.delayed(const Duration(milliseconds: 1000), () {
           _onNextTap();
         });
+      } else {
+        setState(() {
+          _isInputValid = false;
+          _birthAvailabilityMessage = "생년월일을 한번 더 확인해주세요";
+        });
       }
     } else {
       setState(() {
@@ -95,12 +101,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                     "생년월일을 입력해주세요",
                     style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
-                  Gaps.v10,
-                  Text(
-                    "지원공고 맞춤 추천을 위해 사용됩니다",
-                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-                  ),
-                  Gaps.v31,
+                  Gaps.v42,
                   TextField(
                     controller: _birthdayController,
                     decoration: InputDecoration(
@@ -110,7 +111,11 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                       counterText: "",
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: _isInputValid ? AppColors.blue : AppColors.g2,
+                          color: _birthdayController.text.length == 10
+                              ? _isInputValid
+                                  ? AppColors.blue
+                                  : AppColors.activered
+                              : AppColors.g3,
                         ),
                       ),
                     ),
@@ -120,6 +125,13 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                       LengthLimitingTextInputFormatter(10),
                     ],
                   ),
+                  Gaps.v4,
+                  if (_birthdayController.text.length == 10 && !_isInputValid)
+                    Text(
+                      _birthAvailabilityMessage,
+                      style: AppTextStyles.caption
+                          .copyWith(color: AppColors.activered),
+                    )
                 ],
               ),
             ),
