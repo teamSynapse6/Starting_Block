@@ -9,11 +9,11 @@ class OffCampusHomeSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 4,
+      itemCount: 5,
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: AppColors.g1,
-          highlightColor: AppColors.g3,
+          highlightColor: AppColors.g2,
           child: Container(
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(

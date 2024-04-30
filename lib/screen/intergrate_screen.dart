@@ -41,9 +41,9 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _IntergrateScreenState extends State<IntergrateScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 3;
   String _schoolName = "";
-  bool _isRoadmapSet = false;
+  bool _isRoadmapSet = true;
 
   @override
   void initState() {
@@ -80,10 +80,6 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
   }
 
   Future<void> _loadRoadMap() async {
-    //토큰값
-    String? accesstoken = await UserTokenManage.getAccessToken();
-    print('accesstoken: $accesstoken');
-
     //실제 데이터 불러오는 값
     List roadMap = await RoadMapApi.getRoadMapList();
     bool isRoadmapSet = roadMap.isNotEmpty;

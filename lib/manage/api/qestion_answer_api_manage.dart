@@ -19,7 +19,7 @@ class QuestionAnswerApi {
   // 질문 작성 메소드
   static Future<void> postQuestionWrite(
       int announcementId, String content, bool isContact,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/question/ask');
     final body = jsonEncode({
@@ -43,7 +43,7 @@ class QuestionAnswerApi {
 
   // 질문 리스트 가져오기 메소드
   static Future<List<QuestionListModel>> getQuestionList(int announcementId,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/question/$announcementId');
     final response = await http.get(url, headers: headers);
@@ -65,7 +65,7 @@ class QuestionAnswerApi {
 
   // 질문 상세 정보 가져오기 메소드
   static Future<QuestionDetailModel> getQuestionDetail(int questionId,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/question/detail/$questionId');
     final response = await http.get(url, headers: headers);
@@ -87,7 +87,7 @@ class QuestionAnswerApi {
   // 답변 작성 메소드
   static Future<void> postAnswerWrite(
       int questionId, String content, bool isContact,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/answer/send');
     final body = jsonEncode({
@@ -110,7 +110,7 @@ class QuestionAnswerApi {
 
   // 답글(대댓글) 작성 메소드
   static Future<void> postReplyWrite(int answerId, String content,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/reply/send');
     final body = jsonEncode({
@@ -131,7 +131,7 @@ class QuestionAnswerApi {
 
   // 하트(좋아요) 보내기 메소드
   static Future<bool> postHeart(int id, String heartType,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/heart/send');
     final body = jsonEncode({
@@ -152,7 +152,7 @@ class QuestionAnswerApi {
   }
 
   // 하트(좋아요) 취소(삭제) 메소드
-  static Future<bool> deleteHeart(int heartId, {int retryCount = 3}) async {
+  static Future<bool> deleteHeart(int heartId, {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/heart/cancel/$heartId');
 
@@ -170,7 +170,7 @@ class QuestionAnswerApi {
   }
 
   // 답변 삭제 메소드
-  static Future<bool> deleteAnswer(int answerId, {int retryCount = 3}) async {
+  static Future<bool> deleteAnswer(int answerId, {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/answer/cancel/$answerId');
     final response = await http.delete(url, headers: headers);
@@ -186,7 +186,7 @@ class QuestionAnswerApi {
   }
 
   // 답글 삭제 메소드
-  static Future<bool> deleteReply(int replyId, {int retryCount = 3}) async {
+  static Future<bool> deleteReply(int replyId, {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/reply/cancel/$replyId');
     final response = await http.delete(url, headers: headers);

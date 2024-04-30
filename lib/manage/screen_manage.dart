@@ -44,6 +44,9 @@ export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadm
 export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadmap_list_set.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadmap_list_add.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadmap_list_delete.dart';
+//로드맵 도약시 화면
+export 'package:starting_block/screen/roadmap_screen/roadmap_leap_screen/leap_first.dart'; //첫 도약시 팝업 화면
+export 'package:starting_block/screen/roadmap_screen/roadmap_leap_screen/leap_after_first.dart'; //두번째부터 도약시 팝업 화면
 
 //교내지원사업 페이지
 export 'package:starting_block/screen/on_campus_screen/oncampus_home.dart';
@@ -107,5 +110,6 @@ export 'package:starting_block/manage/theme_manage.dart';
 
 //스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/offcampus_home_skeleton.dart'; //교외지원사업 홈, 검색 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/roadmap_tap_ofca_skeleton.dart'; //로드맵_교외사업 탭 스켈레톤 로더 화면
 
 //테스트용

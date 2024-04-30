@@ -20,7 +20,6 @@ class UserInfoManageApi {
   static Future<void> updateAccessToken() async {
     String url = '$baseUrl/auth/refresh';
     String? refreshToken = await UserTokenManage.getRefreshToken();
-    print('갱신 호출됨, 리프레시 토큰: $refreshToken');
 
     if (refreshToken == null) {
       throw Exception("Refresh token is not available.");
@@ -43,11 +42,9 @@ class UserInfoManageApi {
       var responseData = json.decode(response.body);
       String newAccessToken = responseData['accessToken'];
       String newRefreshToken = responseData['refreshToken'];
-      print('토큰: $newAccessToken, $newRefreshToken');
       // 새로운 액세스 토큰을 저장
       await UserTokenManage().setAccessToken(newAccessToken);
       await UserTokenManage().setRefreshToken(newRefreshToken);
-      print('Access token updated successfully.');
     } else {
       // 실패 시 예외 처리
       throw Exception(
@@ -91,7 +88,7 @@ class UserInfoManageApi {
       required bool isCompletedBusinessRegistration,
       required String residence,
       required String university,
-      int retryCount = 3 // 재시도 횟수를 추가
+      int retryCount = 1 // 재시도 횟수를 추가
       }) async {
     String url = '$baseUrl/api/v1/users';
     Map<String, String> headers = await getHeaders();
@@ -129,7 +126,7 @@ class UserInfoManageApi {
   }
 
   // 로그아웃 처리 메소드
-  static Future<bool> postUserLogOut({int retryCount = 3}) async {
+  static Future<bool> postUserLogOut({int retryCount = 1}) async {
     String url = '$baseUrl/auth/sign-out';
     String? refreshToken =
         await UserTokenManage.getRefreshToken(); // refreshToken을 가져옵니다.
@@ -155,7 +152,7 @@ class UserInfoManageApi {
   }
 
   // 회원탈퇴 처리 메소드
-  static Future<bool> postDeleteAccount({int retryCount = 3}) async {
+  static Future<bool> postDeleteAccount({int retryCount = 1}) async {
     String url = '$baseUrl/api/v1/users/inactive';
     Map<String, String> headers = await getHeaders();
 

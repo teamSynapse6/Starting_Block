@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="350" fill="none" viewBox="0 0 360 350">
+  <g clip-path="url(#a)">
+    <path stroke="#fff" d="M280.211 1.429 380.423 175 280.211 348.571H79.789L-20.423 175 79.79 1.429h200.42Z" opacity=".15"/>
+    <path fill="#fff" fill-opacity=".03" d="m301 175-60.5 104.789h-121L59 175l60.5-104.79h121L301 175Z"/>
+    <path stroke="#fff" stroke-opacity=".15" stroke-width="2" d="M239.923 71.21 299.845 175l-59.922 103.789H120.077L60.155 175l59.922-103.79h119.846Z"/>
+    <path fill="#fff" fill-opacity=".05" d="m268 175-44 76.21h-88L92 175l44-76.21h88L268 175Z"/>
+    <path stroke="#fff" stroke-opacity=".15" stroke-width="3" d="M223.134 100.29 266.268 175l-43.134 74.71h-86.268L93.732 175l43.134-74.71h86.268Z"/>
+    <path fill="#fff" fill-rule="evenodd" d="m171.52 182.741 13.136 3.519 2.357-2.357-.011-.011 4.327-4.328.011.012 2.932-2.932-3.52-13.135-13.136-3.52-9.616 9.616 3.52 13.136Zm12.323.486 7.395-7.395-2.707-10.103-10.102-2.707-7.395 7.396 2.706 10.102 10.103 2.707Z" clip-rule="evenodd"/>
+    <path fill="#fff" d="m192.266 182.87-1.924 1.924 4.314 4.103 1.875-1.97-4.265-4.057Z"/>
+  </g>
+  <defs>
+    <clipPath id="a">
+      <path fill="#fff" d="M0 0h360v350H0z"/>
+    </clipPath>
+  </defs>
+</svg>

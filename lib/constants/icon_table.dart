@@ -238,6 +238,8 @@ class AppIcon {
   static Widget get chatting_icon =>
       SvgPicture.asset('assets/icon/other/chatting_icon.svg',
           fit: BoxFit.scaleDown);
+  static Widget get test =>
+      SvgPicture.asset('assets/icon/other/test.svg', fit: BoxFit.scaleDown);
 
   // Profile Image
   static Widget get profile_image_1 =>

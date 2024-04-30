@@ -18,6 +18,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
   String _nickName = "";
   String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
   bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
+  int _selectedRoadmapStage = 0; //선택된 로드맵의 단계
   int _roadMapId = 0;
   final GlobalKey<RoadMapListState> roadMapListKey =
       GlobalKey<RoadMapListState>(); // RoadMapListState에 접근하기 위해 사용
@@ -65,6 +66,24 @@ class _RoadmapHomeState extends State<RoadmapHome>
         _isScrolled = true;
       });
     }
+  }
+
+  void nextStepTap() async {
+    Navigator.of(context).pop();
+    bool isSuccess = await RoadMapApi.roadMapLeap();
+    if (isSuccess) {
+      moveToLeapScreen();
+    }
+  }
+
+  void moveToLeapScreen() async {
+    if (_selectedRoadmapStage == 0) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LeapFirstScreen()),
+      );
+      roadMapListKey.currentState?.loadRoadMaps();
+    } else {}
   }
 
   @override
@@ -127,6 +146,11 @@ class _RoadmapHomeState extends State<RoadmapHome>
                             _isCurrentStageSelected = currentStage;
                           });
                         },
+                        selectedRoadMapStage: (int selectedStage) {
+                          setState(() {
+                            _selectedRoadmapStage = selectedStage;
+                          });
+                        },
                       ),
                     );
                   },
@@ -150,14 +174,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
                           children: [
                             const Spacer(),
                             _isCurrentStageSelected
-                                ? NextStep(
-                                    thisRightActionTap: () async {
-                                      Navigator.of(context).pop();
-                                      await RoadMapApi.roadMapLeap();
-                                      roadMapListKey.currentState
-                                          ?.loadRoadMaps();
-                                    },
-                                  )
+                                ? NextStep(thisRightActionTap: nextStepTap)
                                 : GoBackToStep(thisTap: () {
                                     roadMapListKey.currentState
                                         ?.selectInProgressRoadMap();

@@ -8,12 +8,14 @@ class RoadMapList extends StatefulWidget {
   final Function(String)? selectedRoadMapTitle;
   final Function(int)? selectedRoadMapId;
   final Function(bool)? isCurrentStage;
+  final Function(int)? selectedRoadMapStage;
 
   const RoadMapList({
     super.key,
     required this.selectedRoadMapTitle,
     required this.selectedRoadMapId,
     required this.isCurrentStage,
+    required this.selectedRoadMapStage,
   });
 
   static void setSelectedRoadMapTitle(BuildContext context) {
@@ -64,6 +66,8 @@ class RoadMapListState extends State<RoadMapList> {
           widget.selectedRoadMapId?.call(inProgressOrLastRoadMap.roadmapId);
           widget.isCurrentStage
               ?.call(inProgressOrLastRoadMap.roadmapStatus == "IN_PROGRESS");
+          widget.selectedRoadMapStage
+              ?.call(inProgressOrLastRoadMap.sequence); //선택된 로드맵의 순서
         }
       });
     }
@@ -85,6 +89,8 @@ class RoadMapListState extends State<RoadMapList> {
         widget.selectedRoadMapId?.call(inProgressRoadMap.roadmapId);
         widget.isCurrentStage
             ?.call(inProgressRoadMap.roadmapStatus == "IN_PROGRESS");
+        widget.selectedRoadMapStage
+            ?.call(inProgressRoadMap.sequence); //선택된 로드맵의 순서
       });
     }
   }
@@ -168,6 +174,8 @@ class RoadMapListState extends State<RoadMapList> {
                                           widget.isCurrentStage?.call(
                                               roadMap.roadmapStatus ==
                                                   "IN_PROGRESS");
+                                          widget.selectedRoadMapStage
+                                              ?.call(roadMap.sequence);
 
                                           Navigator.pop(context); // 바텀 시트 닫기
                                         },

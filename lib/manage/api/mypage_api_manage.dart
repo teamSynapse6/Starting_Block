@@ -16,7 +16,7 @@ class MyPageApi {
 
   // 내 궁금해요 불러오기
   static Future<List<MyProfileHearModel>> getMyHeart(
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/heart/my');
     final response = await http.get(url, headers: headers);
@@ -38,7 +38,7 @@ class MyPageApi {
 
   // 내 댓글,답글 불러오기
   static Future<List<MyAnswerReplyModel>> getMyAnswerReply(
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/answer/my');
     final response = await http.get(url, headers: headers);
@@ -60,7 +60,7 @@ class MyPageApi {
 
   // 내 질문 불러오기
   static Future<List<MyProfileQuestion>> getMyQuestion(
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/api/v1/question/my');
     final response = await http.get(url, headers: headers);
