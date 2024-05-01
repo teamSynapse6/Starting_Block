@@ -44,6 +44,7 @@ export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadm
 export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadmap_list_set.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadmap_list_add.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadmap_list_delete.dart';
+export 'package:starting_block/screen/roadmap_screen/roadmap_nonset_screen/roadmap_first_popup.dart'; //로드맵 설정 첫 팝업 화면
 //로드맵 도약시 화면
 export 'package:starting_block/screen/roadmap_screen/roadmap_leap_screen/leap_first.dart'; //첫 도약시 팝업 화면
 export 'package:starting_block/screen/roadmap_screen/roadmap_leap_screen/leap_after_first.dart'; //두번째부터 도약시 팝업 화면

@@ -83,7 +83,13 @@ class _RoadmapHomeState extends State<RoadmapHome>
         MaterialPageRoute(builder: (context) => const LeapFirstScreen()),
       );
       roadMapListKey.currentState?.loadRoadMaps();
-    } else {}
+    } else {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LeapAfterFirstScreen()),
+      );
+      roadMapListKey.currentState?.loadRoadMaps();
+    }
   }
 
   @override

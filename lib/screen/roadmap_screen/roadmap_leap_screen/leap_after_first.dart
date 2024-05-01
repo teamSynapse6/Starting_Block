@@ -13,7 +13,7 @@ class LeapAfterFirstScreen extends StatelessWidget {
         systemNavigationBarColor: AppColors.blue,
       ));
       Future.delayed(
-        const Duration(minutes: 5),
+        const Duration(seconds: 3),
         () {
           // 원래 상태로 돌리기 위한 스타일 설정
           SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

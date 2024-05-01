@@ -269,6 +269,12 @@ class AppIcon {
   static Widget get roadmap_illustrate =>
       SvgPicture.asset('assets/icon/illustrate/roadmap_illustrate.svg',
           fit: BoxFit.scaleDown);
+  static Widget get roadmap_pop1_illustrate =>
+      SvgPicture.asset('assets/icon/illustrate/roadmap_pop1_illustrate.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get roadmap_pop2_illustrate =>
+      SvgPicture.asset('assets/icon/illustrate/roadmap_pop2_illustrate.svg',
+          fit: BoxFit.scaleDown);
   static Widget get school_illustrate =>
       SvgPicture.asset('assets/icon/illustrate/school_illustrate.svg',
           fit: BoxFit.scaleDown);

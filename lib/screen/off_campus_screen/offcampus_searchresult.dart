@@ -142,25 +142,21 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
   }
 
   Future<void> _reloadAllData() async {
-    // 현재까지 로드된 데이터의 개수를 기반으로 전체 데이터를 다시 로드합니다.
+    int totalLoadedDataCount = _offcampusList.length;
+
     var result = await OffCampusApi.getOffCampusHomeList(
-      page: 0, // 처음부터 데이터를 다시 로드하기 때문에 페이지는 0으로 설정합니다.
-      size: _offcampusList.length, // 현재까지 로드된 데이터의 총 개수를 size로 설정합니다.
+      page: 0,
+      size: totalLoadedDataCount,
       sorting: _sorting,
       postTarget: _postTarget,
       region: _region,
       supportType: _supportType,
-      search: _controller.text, // 검색어도 포함하여 요청합니다.
     );
 
-    // API 호출 결과로 받은 데이터로 상태를 업데이트합니다.
     List<OffCampusListModel> reloadedData = result['offCampusList'];
-    // bool last = result['last'];
 
     setState(() {
-      _offcampusList = reloadedData; // 새로 로드된 데이터로 리스트를 업데이트합니다.
-      // _hasMoreData = !last; // 'last' 값에 따라 더 로드할 데이터가 있는지 업데이트합니다.
-      // _pageNumber = (reloadedData.length ~/ 20); // 페이지 번호도 업데이트합니다.
+      _offcampusList = reloadedData;
     });
   }
 
@@ -175,11 +171,21 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SearchFiledAppBar(
+      appBar: SearchResultAppBar(
         hintText: '검색어를 입력해주세요',
         controller: _controller,
         recentSearchManager: recentSearchManager,
         onBackTap: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const IntergrateScreen(
+                      switchIndex: SwitchIndex.toZero,
+                    )),
+            (Route<dynamic> route) => false,
+          );
+        },
+        onCloseTap: () {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const OffCampusSearch()),

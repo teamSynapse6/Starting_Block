@@ -53,7 +53,7 @@ String getSchoolNumber(String schoolName) {
 }
 
 class OnCampusAPI {
-  static String baseUrl = 'https://simpleapi.startingblock.co.kr';
+  static String baseUrl = 'http://pdfgpt.startingblock.co.kr:5002';
   static String schoolUrl = 'url';
   static String schoolLogo = 'logo';
   static String schoolSystem = 'system';

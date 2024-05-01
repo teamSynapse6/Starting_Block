@@ -1,9 +1,36 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class RoadMapSet extends StatelessWidget {
+class RoadMapSet extends StatefulWidget {
   const RoadMapSet({super.key});
+
+  @override
+  State<RoadMapSet> createState() => _RoadMapSetState();
+}
+
+class _RoadMapSetState extends State<RoadMapSet> {
+  @override
+  void initState() {
+    super.initState();
+    checkRoadmapPopUp();
+  }
+
+  void checkRoadmapPopUp() async {
+    bool isPopUped = await UserInfo.getRoadMapPopUp();
+    if (!isPopUped) {
+      // Navigator를 사용하여 RoadMapSetFirstPopUp 화면으로 이동
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RoadMapSetFirstPopUp(),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

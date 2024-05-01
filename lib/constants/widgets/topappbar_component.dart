@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/recentsearch_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
@@ -198,7 +199,12 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: GestureDetector(
         onTap: onBackTap,
-        child: AppIcon.back,
+        child: Container(
+          width: 48,
+          height: 48,
+          margin: const EdgeInsets.only(left: 4),
+          child: AppIcon.back,
+        ),
       ),
       titleSpacing: 0,
       title: Row(
@@ -224,6 +230,87 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class SearchResultAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String hintText;
+  final TextEditingController controller;
+  final VoidCallback onBackTap, onCloseTap;
+  final RecentSearchManager recentSearchManager;
+
+  const SearchResultAppBar({
+    super.key,
+    required this.hintText,
+    required this.controller,
+    required this.onBackTap,
+    required this.recentSearchManager,
+    required this.onCloseTap, // RecentSearchManager 인스턴스 추가
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  void _onSearchSubmitted(BuildContext context, String query) async {
+    // 검색 내역을 추가하고 결과 화면으로 이동하는 로직
+    await recentSearchManager.addSearch(query);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OffCampusSearchResult(searchWord: query),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: GestureDetector(
+        onTap: onBackTap,
+        child: Container(
+          width: 48,
+          height: 48,
+          margin: const EdgeInsets.only(left: 4),
+          child: AppIcon.back,
+        ),
+      ),
+      titleSpacing: 0,
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: TextField(
+              style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+              controller: controller,
+              onSubmitted: (query) => _onSearchSubmitted(context, query),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                contentPadding: EdgeInsets.zero,
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: onCloseTap,
+          child: Container(
+            width: 48,
+            height: 48,
+            margin: const EdgeInsets.only(right: 12),
+            child: AppIcon.close24,
+          ),
+        ),
+      ],
     );
   }
 }

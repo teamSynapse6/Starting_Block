@@ -78,8 +78,10 @@ class _RoadMapDeleteState extends State<RoadMapDelete> {
               children: [
                 Gaps.v22,
                 Text(
-                  '로드맵 단계 삭제',
-                  style: AppTextStyles.h5.copyWith(color: AppColors.black),
+                  '단계를 삭제할까요?',
+                  style: AppTextStyles.h5.copyWith(
+                    color: AppColors.g6,
+                  ),
                 ),
                 Gaps.v50,
               ],
@@ -93,11 +95,15 @@ class _RoadMapDeleteState extends State<RoadMapDelete> {
                       final roadMap = roadMaps![index];
                       return DeleteList(
                         thisText: roadMap.title,
-                        thisTap: () => _thisDeleteTap(roadMap.roadmapId),
-                        thisBackgroundColor:
-                            selectedDeleteIndex == roadMap.roadmapId
-                                ? AppColors.g2
-                                : AppColors.white,
+                        thisTap: () {
+                          _thisDeleteTap(roadMap.roadmapId);
+                          setState(() {
+                            selectedDeleteIndex = index;
+                          });
+                        },
+                        thisBackgroundColor: selectedDeleteIndex == index
+                            ? AppColors.g1
+                            : AppColors.white,
                       );
                     },
                   )

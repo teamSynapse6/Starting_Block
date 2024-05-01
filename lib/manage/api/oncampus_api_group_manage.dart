@@ -50,7 +50,7 @@ int getSchoolNumber(String schoolName) {
 }
 
 class OnCampusGroupApi {
-  static String baseUrl = 'https://simpleapi.startingblock.co.kr';
+  static String baseUrl = 'http://pdfgpt.startingblock.co.kr:5002';
   static String groupMentoring = 'supportgroup/mentoring';
   static String groupClub = 'supportgroup/club';
   static String groupLecture = 'supportgroup/lecture';
