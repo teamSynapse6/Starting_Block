@@ -4,12 +4,13 @@ export 'package:starting_block/constants/sizes.dart';
 export 'package:starting_block/constants/font_table.dart';
 export 'package:starting_block/constants/color_table.dart';
 export 'package:starting_block/constants/icon_table.dart';
+export 'package:starting_block/constants/animation_table.dart';
 
 // 컴포넌트 관리
 export 'package:starting_block/constants/widgets/topappbar_component.dart'; //탑앱바
 export 'package:starting_block/constants/widgets/contained_button.dart'; //contained버튼
 export 'package:starting_block/constants/widgets/itemlist_component.dart'; //지원사업공고 리스트
-export 'package:starting_block/constants/widgets/organize_chip.dart'; //기관명 칩
+export 'package:starting_block/constants/widgets/offcampus_list_chips.dart'; //기관명 칩
 export 'package:starting_block/constants/widgets/divider_component.dart'; //디바이더
 export 'package:starting_block/constants/widgets/detailpage_containedbutton.dart'; //공고 상세페이지의 버튼
 export 'package:starting_block/constants/widgets/inputchips_component.dart'; //인풋칩버튼
@@ -24,6 +25,7 @@ export 'package:starting_block/constants/widgets/onboarding_state.dart'; //온�
 export 'package:starting_block/constants/widgets/setting_widget/setting_list.dart'; //설정_리스트 위젯
 export 'package:starting_block/constants/widgets/setting_widget/profile_icon_list.dart'; //설정_프로필 수정 리스트 위젯
 export 'package:starting_block/constants/widgets/comment_widget/question_list.dart'; //질문 홈_리스트 위젯
+export 'package:starting_block/constants/widgets/scroll_to_top.dart'; //상단으로 자동 스크롤 위젯
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트
@@ -84,3 +86,5 @@ export 'package:starting_block/constants/widgets/myprofile_widget/myheart_list.d
 export 'package:starting_block/constants/widgets/myprofile_widget/myanswer_reply_list.dart'; //마이페이지_내 댓글,답글 리스트
 export 'package:starting_block/constants/widgets/myprofile_widget/myquestion_list.dart'; //마이페이지_내 질문 리스트
 
+//검색 컴포넌트 관리
+export 'package:starting_block/constants/widgets/search_history_list.dart'; //검색_최근 검색어 리스트

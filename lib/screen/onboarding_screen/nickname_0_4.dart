@@ -73,7 +73,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
 
     String message = '';
     if (!isValidLength) {
-      message = '닉네임은 2자-10자 사이로 입력해주세요';
+      message = '닉네임은 띄어쓰기 없이 2자-10자로 입력해주세요.';
     } else if (!hasNoSpaces) {
       message = '띄어쓰기 없이 입력해주세요';
     } else if (!isValidCharacters) {
@@ -158,12 +158,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
                       "닉네임을 설정해 주세요",
                       style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                     ),
-                    Gaps.v10,
-                    Text(
-                      "닉네임은 다른 사용자들에게 공개됩니다",
-                      style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-                    ),
-                    Gaps.v32,
+                    Gaps.v40,
                     TextFormField(
                       controller: _nicknameController,
                       decoration: InputDecoration(
@@ -207,7 +202,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
                                 color: _isNicknameAvailable &&
                                         _formKey.currentState?.validate() ==
                                             true
-                                    ? AppColors.bluedark
+                                    ? AppColors.blue
                                     : AppColors.g2,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(2),

@@ -13,8 +13,15 @@ class OnCampusSearch extends StatefulWidget {
 class _OnCampusSearchState extends State<OnCampusSearch> {
   final TextEditingController _controller = TextEditingController();
   List<String> recentSearches = [];
-  List<String> popularKeywords = []; // 인기 검색어 목록을 저장할 리스트
   final RecentSearchManager recentSearchManager = RecentSearchManager();
+  final List<String> _popularKeywords = [
+    '서울',
+    '창업',
+    '청년창업지원',
+    '서울',
+    '창업',
+    '청년창업지원'
+  ];
 
   @override
   void initState() {
@@ -60,9 +67,12 @@ class _OnCampusSearchState extends State<OnCampusSearch> {
   }
 
   Future<void> loadPopularKeywords() async {
-    // popularKeywords =
+    // List<String> popularKeyword =
     //     await OffCampusApi.getOffCampusPopularKeyword(); // 인기 검색어 로드
-    // setState(() {});
+    // setState(() {
+    //   _popularKeywords.clear();
+    //   _popularKeywords.addAll(popularKeyword);
+    // });
   }
 
   @override
@@ -81,81 +91,92 @@ class _OnCampusSearchState extends State<OnCampusSearch> {
               context,
               MaterialPageRoute(
                   builder: (context) => const IntergrateScreen(
-                        switchIndex: SwitchIndex.toOne,
+                        switchIndex: SwitchIndex.toZero,
                       )),
               (Route<dynamic> route) => false,
             );
           },
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gaps.v24,
-              recentSearches.isNotEmpty
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '최근 검색어',
-                              style: AppTextStyles.st2
-                                  .copyWith(color: AppColors.g6),
-                            ),
-                            const Spacer(),
-                            GestureDetector(
-                              onTap: deleteAllSearch,
-                              child: Text(
-                                '전체 삭제',
-                                style: AppTextStyles.btn1
-                                    .copyWith(color: AppColors.g5),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Gaps.v16,
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: recentSearches.map((search) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 8),
-                                child: InputChipsDelete(
-                                  thisIcon: AppIcon.close,
-                                  text: search,
-                                  deleteTap: () => deleteSearch(search),
-                                  chipTap: () =>
-                                      navigateToSearchResult(search), // 여기에 추가
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                        Gaps.v64,
-                      ],
-                    )
-                  : Container(),
-              Text(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gaps.v24,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
                 '인기 검색어',
                 style: AppTextStyles.st2.copyWith(color: AppColors.g6),
               ),
-              Gaps.v16,
-              Wrap(
-                runSpacing: 12,
-                spacing: 12,
-                children: popularKeywords.map((keyword) {
-                  // 인기 검색어 목록을 바탕으로 동적으로 위젯 생성
-                  return InputChupsSharp(
-                    text: keyword,
-                    chipTap: () => navigateToSearchResult(keyword),
+            ),
+            Gaps.v16,
+            SizedBox(
+              height: 32, // 충분한 높이 설정
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _popularKeywords.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      left: index == 0 ? 24 : 0,
+                      right: 12,
+                    ),
+                    child: InputChips(
+                      text: _popularKeywords[index],
+                      chipTap: () =>
+                          navigateToSearchResult(_popularKeywords[index]),
+                    ),
                   );
-                }).toList(),
+                },
               ),
-            ],
-          ),
+            ),
+            Gaps.v48,
+            recentSearches.isNotEmpty
+                ? Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '최근 검색어',
+                                style: AppTextStyles.st2
+                                    .copyWith(color: AppColors.g6),
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: deleteAllSearch,
+                                child: Text(
+                                  '전체 삭제',
+                                  style: AppTextStyles.btn1
+                                      .copyWith(color: AppColors.g5),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Gaps.v8,
+                        Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: recentSearches.length,
+                            itemBuilder: (context, index) {
+                              final search = recentSearches[index];
+                              return SearchHistoryList(
+                                thisText: search,
+                                thisTap: () => navigateToSearchResult(search),
+                                thisDeleteTap: () => deleteSearch(search),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ),
     );

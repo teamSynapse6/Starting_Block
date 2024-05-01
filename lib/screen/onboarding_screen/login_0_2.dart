@@ -45,10 +45,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (signInData.isSignUpComplete) {
         UserInfo().setLoginStatus(true);
         if (mounted) {
-          Navigator.of(context).push(
+          Navigator.pushAndRemoveUntil(
+            context,
             MaterialPageRoute(
               builder: (context) => const IntergrateScreen(),
             ),
+            (route) => false,
           );
         }
       } else {

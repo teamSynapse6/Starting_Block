@@ -28,43 +28,36 @@ class OfCaList extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        width: 312,
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  OrganizeChip(
-                    text: thisOrganize,
-                  ),
-                  const Spacer(),
-                  BookMarkButton(
-                    isSaved: isSaved,
-                    thisID: thisID,
-                  )
-                ],
-              ),
-              Gaps.v10,
-              Text(
-                thisTitle,
-                style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Gaps.v10,
-              Text(
-                'D-$thisDDay',
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
-              ),
-            ],
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                OrganizeChip(
+                  text: thisOrganize,
+                ),
+                const Spacer(),
+                BookMarkButton(
+                  isSaved: isSaved,
+                  thisID: thisID,
+                )
+              ],
+            ),
+            Gaps.v10,
+            Text(
+              thisTitle,
+              style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Gaps.v10,
+            Text(
+              'D-$thisDDay',
+              style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
+            ),
+          ],
         ),
       ),
     );

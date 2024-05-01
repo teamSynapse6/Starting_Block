@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OfCaRecommend extends StatefulWidget {
   final String thisSelectedText;
@@ -22,6 +23,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
   bool isEntrepreneur = false;
   String residence = '';
   String userBirthday = '';
+  final bool _isLoading = false;
 
   // thisSelectedText에 따른 supporttype 매핑 정보 업데이트
   final Map<String, List<String>> textToSupportType = {
@@ -87,6 +89,25 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Column(
+        children: [
+          Row(
+            children: [
+              Gaps.h24,
+              Text('추천 사업',
+                  style: AppTextStyles.bd1.copyWith(color: AppColors.blue)),
+              Text('이 도착했습니다',
+                  style: AppTextStyles.bd1.copyWith(color: AppColors.g6)),
+            ],
+          ),
+          Gaps.v12,
+          const RoadMapOfcaTapCarousel(),
+          Gaps.v54,
+        ],
+      );
+    }
+
     // offCampusData 리스트에 데이터가 없으면 아무것도 표시하지 않음
     if (offCampusData.isEmpty) {
       return Container();
@@ -110,7 +131,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
         Stack(
           children: [
             SizedBox(
-              height: 140, // 카드의 높이
+              height: 130, // 카드의 높이
               child: PageView.builder(
                 controller: PageController(
                   viewportFraction: 312 / (360 - 16), // 카드가 차지하는 화면의 비율 조정
@@ -161,7 +182,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
               ),
           ],
         ),
-        Gaps.v28,
+        Gaps.v54,
       ],
     );
   }

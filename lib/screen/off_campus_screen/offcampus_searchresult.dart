@@ -29,6 +29,8 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
   String _region = '';
   String _supportType = '';
   String _sorting = '';
+  bool _isScrolled = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -64,6 +66,9 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
   }
 
   Future<void> _loadOffCampusList() async {
+    setState(() {
+      _isLoading = true;
+    });
     var result = await OffCampusApi.getOffCampusHomeList(
       page: _pageNumber,
       sorting: _sorting,
@@ -81,6 +86,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
       _offcampusList.clear(); // 기존 목록을 지우고 새 데이터로 채웁니다.
       _offcampusList.addAll(offCampusList);
       _hasMoreData = !last; // 'last' 값에 따라 _hasMoreData를 업데이트합니다.
+      _isLoading = false;
     });
   }
 
@@ -98,6 +104,16 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
       if (_hasMoreData) {
         _loadMoreData();
       }
+    }
+    if (_scrollController.offset == 0) {
+      setState(() {
+        _isScrolled = false;
+      });
+    }
+    if (_scrollController.offset != 0) {
+      setState(() {
+        _isScrolled = true;
+      });
     }
   }
 
@@ -126,36 +142,50 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
   }
 
   Future<void> _reloadAllData() async {
-    // 현재까지 로드된 데이터의 개수를 기반으로 전체 데이터를 다시 로드합니다.
+    int totalLoadedDataCount = _offcampusList.length;
+
     var result = await OffCampusApi.getOffCampusHomeList(
-      page: 0, // 처음부터 데이터를 다시 로드하기 때문에 페이지는 0으로 설정합니다.
-      size: _offcampusList.length, // 현재까지 로드된 데이터의 총 개수를 size로 설정합니다.
+      page: 0,
+      size: totalLoadedDataCount,
       sorting: _sorting,
       postTarget: _postTarget,
       region: _region,
       supportType: _supportType,
-      search: _controller.text, // 검색어도 포함하여 요청합니다.
     );
 
-    // API 호출 결과로 받은 데이터로 상태를 업데이트합니다.
     List<OffCampusListModel> reloadedData = result['offCampusList'];
-    // bool last = result['last'];
 
     setState(() {
-      _offcampusList = reloadedData; // 새로 로드된 데이터로 리스트를 업데이트합니다.
-      // _hasMoreData = !last; // 'last' 값에 따라 더 로드할 데이터가 있는지 업데이트합니다.
-      // _pageNumber = (reloadedData.length ~/ 20); // 페이지 번호도 업데이트합니다.
+      _offcampusList = reloadedData;
     });
+  }
+
+  void backToTopTap() {
+    _scrollController.animateTo(
+      0.0, // 최상단 위치
+      duration: const Duration(milliseconds: 300), // 애니메이션 지속 시간
+      curve: Curves.easeOut, // 애니메이션 곡선 설정
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SearchFiledAppBar(
+      appBar: SearchResultAppBar(
         hintText: '검색어를 입력해주세요',
         controller: _controller,
         recentSearchManager: recentSearchManager,
         onBackTap: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const IntergrateScreen(
+                      switchIndex: SwitchIndex.toZero,
+                    )),
+            (Route<dynamic> route) => false,
+          );
+        },
+        onCloseTap: () {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const OffCampusSearch()),
@@ -173,75 +203,100 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
             }
           });
 
-          return Column(
+          return Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Gaps.v12,
-                    const IntergrateFilter(),
-                    Gaps.v12,
-                    Container(
-                      height: 32,
-                      decoration: const BoxDecoration(
-                        border: BorderDirectional(
-                          top: BorderSide(width: 2, color: AppColors.g1),
-                          bottom: BorderSide(width: 2, color: AppColors.g1),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${_offcampusList.length}개의 공고',
-                            style:
-                                AppTextStyles.bd6.copyWith(color: AppColors.g4),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Gaps.v12,
+                        const IntergrateFilter(),
+                        Gaps.v12,
+                        Container(
+                          height: 32,
+                          decoration: const BoxDecoration(
+                            border: BorderDirectional(
+                              top: BorderSide(width: 2, color: AppColors.g1),
+                              bottom: BorderSide(width: 2, color: AppColors.g1),
+                            ),
                           ),
-                          const Spacer(),
-                          const OffCampusSortingButton(),
-                        ],
-                      ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${_offcampusList.length}개의 공고',
+                                style: AppTextStyles.bd6
+                                    .copyWith(color: AppColors.g4),
+                              ),
+                              const Spacer(),
+                              const OffCampusSortingButton(),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  _isLoading
+                      ? const Expanded(
+                          child: OffCampusHomeSkeleton(),
+                        )
+                      : Consumer<BookMarkNotifier>(
+                          builder: (context, bookMarkNotifier, child) {
+                            if (bookMarkNotifier.isUpdated) {
+                              _reloadAllData();
+                              bookMarkNotifier.resetUpdate();
+                            }
+                            return Expanded(
+                              child: RefreshIndicator(
+                                color: AppColors.blue,
+                                onRefresh: () async {
+                                  // 새로고침 로직을 실행합니다.
+                                  _pageNumber = 0; // 페이지 번호를 초기화합니다.
+                                  loadFilterValue(); // 데이터를 다시 로드합니다.
+                                },
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24),
+                                  itemCount: _offcampusList.length,
+                                  itemBuilder: (context, index) {
+                                    final item = _offcampusList[index];
+                                    return Column(
+                                      children: [
+                                        ItemList(
+                                          thisID:
+                                              item.announcementId.toString(),
+                                          thisOrganize: item.departmentName,
+                                          thisTitle: item.title,
+                                          thisStartDate: item.startDate,
+                                          thisEndDate: item.endDate,
+                                          thisClassification: '교외사업',
+                                          isSaved: item.isBookmarked,
+                                        ),
+                                        Gaps.v16,
+                                        if (index != _offcampusList.length - 1)
+                                          const CustomDividerH2G1()
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ],
               ),
-              Consumer<BookMarkNotifier>(
-                builder: (context, bookMarkNotifier, child) {
-                  if (bookMarkNotifier.isUpdated) {
-                    _reloadAllData();
-                    bookMarkNotifier.resetUpdate();
-                  }
-                  return Expanded(
-                    child: RefreshIndicator(
-                      color: AppColors.blue,
-                      onRefresh: () async {
-                        // 새로고침 로직을 실행합니다.
-                        _pageNumber = 0; // 페이지 번호를 초기화합니다.
-                        loadFilterValue(); // 데이터를 다시 로드합니다.
-                      },
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        itemCount: _offcampusList.length,
-                        itemBuilder: (context, index) {
-                          final item = _offcampusList[index];
-                          return ItemList(
-                            thisID: item.announcementId.toString(),
-                            thisOrganize: item.departmentName,
-                            thisTitle: item.title,
-                            thisStartDate: item.startDate,
-                            thisEndDate: item.endDate,
-                            thisClassification: '교외사업',
-                            isSaved: item.isBookmarked,
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
+              _isScrolled
+                  ? Positioned(
+                      right: 24,
+                      bottom: 15 + 9,
+                      child: ScrollToTopButtion(
+                        thisBackToTopTap: backToTopTap,
+                      ))
+                  : Container()
             ],
           );
         },

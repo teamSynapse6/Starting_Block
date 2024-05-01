@@ -39,7 +39,6 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
   Widget residenceGrid() {
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(), // 스크롤 방지
-
       shrinkWrap: true, // 내용물 크기에 맞게 축소
       itemCount: regions.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -162,12 +161,7 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
                     "거주지를 선택해주세요",
                     style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
-                  Gaps.v10,
-                  Text(
-                    "주민등록상의 거주지를 선택해주세요",
-                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-                  ),
-                  Gaps.v32,
+                  Gaps.v42,
                   residenceGrid(),
                 ],
               ),

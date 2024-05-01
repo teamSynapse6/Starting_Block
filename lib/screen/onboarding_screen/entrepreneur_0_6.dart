@@ -64,12 +64,7 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
                     "사업자 등록을 완료하셨나요?",
                     style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
-                  Gaps.v10,
-                  Text(
-                    "지원공고 맞춤 추천을 위해 사용됩니다",
-                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-                  ),
-                  Gaps.v32,
+                  Gaps.v42,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

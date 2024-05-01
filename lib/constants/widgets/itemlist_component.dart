@@ -62,17 +62,19 @@ class ItemList extends StatelessWidget {
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
-          border: BorderDirectional(
-            bottom: BorderSide(width: 2, color: AppColors.g1),
-          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Gaps.v16,
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 OrganizeChip(text: thisOrganize),
+                Gaps.h4,
+                const ConatactChip(),
+                Gaps.h4,
+                const AIChip(),
                 const Spacer(),
                 BookMarkButton(
                   isSaved: isSaved,
@@ -95,7 +97,6 @@ class ItemList extends StatelessWidget {
               '마감일 $formattedEndDate',
               style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
             ),
-            Gaps.v16
           ],
         ),
       ),

@@ -19,7 +19,7 @@ class RoadMapApi {
   static String addRDList = 'api/v1/roadmaps/add';
 
   //로드맵 리스트 불러오는 메소드
-  static Future<List<RoadMapModel>> getRoadMapList({int retryCount = 3}) async {
+  static Future<List<RoadMapModel>> getRoadMapList({int retryCount = 1}) async {
     final url = Uri.parse('$baseUrl/$getRDList');
     Map<String, String> headers = await getHeaders();
     final response = await http.get(url, headers: headers);
@@ -40,7 +40,7 @@ class RoadMapApi {
 
   // 로드맵 단계 추가 메소드
   static Future<void> addRoadMap(String roadmapTitle,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     String encodedTitle = Uri.encodeComponent(roadmapTitle);
     Map<String, String> headers = await getHeaders();
     final url = Uri.parse('$baseUrl/$addRDList?roadmapTitle=$encodedTitle');
@@ -58,7 +58,7 @@ class RoadMapApi {
 
   // 로드맵 단계 삭제 메소드
   static Future<void> deleteRoadMap(String roadmapId,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     final url = Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId');
     Map<String, String> headers = await getHeaders();
     final response = await http.delete(url, headers: headers);
@@ -76,7 +76,7 @@ class RoadMapApi {
   // 로드맵에 공고 저장 메소드
   static Future<void> addAnnouncementToRoadMap(
       int roadmapId, String announcementId,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     final url = Uri.parse(
         '$baseUrl/api/v1/roadmaps/$roadmapId/announcement?announcementId=$announcementId');
     Map<String, String> headers = await getHeaders();
@@ -96,7 +96,7 @@ class RoadMapApi {
   // 로드맵에서 공고 삭제 메소드
   static Future<void> deleteAnnouncementFromRoadMap(
       int roadmapId, String announcementId,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     final url = Uri.parse(
         '$baseUrl/api/v1/roadmaps/$roadmapId/announcement?announcementId=$announcementId');
     Map<String, String> headers = await getHeaders();
@@ -116,7 +116,7 @@ class RoadMapApi {
   // 로드맵의 해당 ID가 저장되어 있는지 확인하는 메소드
   static Future<List<RoadMapAnnounceModel>> getRoadMapAnnounceList(
       String announcementId,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     final url =
         Uri.parse('$baseUrl/api/v1/roadmaps/announcement/$announcementId');
     Map<String, String> headers = await getHeaders();
@@ -138,14 +138,14 @@ class RoadMapApi {
     }
   }
 
-  // 로드맵 도약하기 메소드
-  static Future<void> roadMapLeap({int retryCount = 3}) async {
+// 로드맵 도약하기 메소드
+  static Future<bool> roadMapLeap({int retryCount = 1}) async {
     final url = Uri.parse('$baseUrl/api/v1/roadmaps/leap');
     Map<String, String> headers = await getHeaders();
     final response = await http.post(url, headers: headers);
 
     if (response.statusCode == 200) {
-      // 성공적으로 처리됨
+      return true; // 성공적으로 처리됨
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return roadMapLeap(retryCount: retryCount - 1); // 재귀 호출
@@ -156,7 +156,7 @@ class RoadMapApi {
 
   // 로드맵 순서 변경 메소드
   static Future<void> roadMapReorder(List<int> roadmapIds,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     final url = Uri.parse('$baseUrl/api/v1/roadmaps/swap');
     Map<String, String> headers = await getHeaders();
     final String requestBody = jsonEncode({"roadmapIds": roadmapIds});
@@ -175,7 +175,7 @@ class RoadMapApi {
   // 로드맵에 저장된 교외 공고 리스트를 불러오는 메소드
   static Future<List<RoadMapSavedOffcampus>> getSavedListOffcampus(
       int roadmapId,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     final url = Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId/off-campus');
     Map<String, String> headers = await getHeaders();
     final response = await http.get(url, headers: headers);
@@ -198,7 +198,7 @@ class RoadMapApi {
 
   // 초기 로드맵 설정을 서버에 보내는 메소드
   static Future<void> postInitialRoadMap(List<Map<String, dynamic>> roadMaps,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     final url = Uri.parse('$baseUrl/$getRDList');
     Map<String, String> headers = await getHeaders(); // 헤더 가져오기
     String requestBody = jsonEncode({"roadmaps": roadMaps});

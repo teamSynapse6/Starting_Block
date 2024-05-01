@@ -113,8 +113,10 @@ class _RoadMapEditState extends State<RoadMapEdit> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '로드맵 단계 수정',
-                  style: AppTextStyles.h5.copyWith(color: AppColors.black),
+                  '단계 순서를 변경해 보세요',
+                  style: AppTextStyles.h5.copyWith(
+                    color: AppColors.g6,
+                  ),
                 ),
                 Gaps.v10,
                 Row(

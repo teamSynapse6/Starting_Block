@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class SystemApiManage {
-  static String baseUrl = 'https://simpleapi.startingblock.co.kr';
+  static String baseUrl = 'http://pdfgpt.startingblock.co.kr:5002';
   static String nickNameCheck = 'getUserNickName';
   static String createUserInfo = 'createuserinfo';
   static String changeNickName = 'changeNickName';

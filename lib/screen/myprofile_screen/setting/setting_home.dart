@@ -73,8 +73,7 @@ class _SettingHomeState extends State<SettingHome> {
           ),
           const SettingList(
             onTapScreen: SettingTermWebview(
-              url:
-                  'https://www.youtube.com/watch?v=Km71Rr9K-Bw&list=RDx7gUk3mzT8s&index=12', //링크 수정필요
+              url: 'https://www.startingblock.co.kr/term', //링크 1차 수정
             ),
             thisText: "개인정보처리방침 및 이용약관",
           ),

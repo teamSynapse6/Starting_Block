@@ -107,6 +107,8 @@ class AppIcon {
   static Widget get vote_inactive_24 =>
       SvgPicture.asset('assets/icon/24/vote_inactive_24.svg',
           fit: BoxFit.scaleDown);
+  static Widget get arrow_up_24 =>
+      SvgPicture.asset('assets/icon/24/arrow_up_24.svg', fit: BoxFit.scaleDown);
 
   // GNB Part Image
   static Widget get home_active =>
@@ -233,6 +235,11 @@ class AppIcon {
   static Widget get contact_logo_28 =>
       SvgPicture.asset('assets/icon/other/contact_logo_28.svg',
           fit: BoxFit.scaleDown);
+  static Widget get chatting_icon =>
+      SvgPicture.asset('assets/icon/other/chatting_icon.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get test =>
+      SvgPicture.asset('assets/icon/other/test.svg', fit: BoxFit.scaleDown);
 
   // Profile Image
   static Widget get profile_image_1 =>
@@ -261,6 +268,12 @@ class AppIcon {
   //illustration Image
   static Widget get roadmap_illustrate =>
       SvgPicture.asset('assets/icon/illustrate/roadmap_illustrate.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get roadmap_pop1_illustrate =>
+      SvgPicture.asset('assets/icon/illustrate/roadmap_pop1_illustrate.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get roadmap_pop2_illustrate =>
+      SvgPicture.asset('assets/icon/illustrate/roadmap_pop2_illustrate.svg',
           fit: BoxFit.scaleDown);
   static Widget get school_illustrate =>
       SvgPicture.asset('assets/icon/illustrate/school_illustrate.svg',

@@ -290,58 +290,10 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
         ),
         body: Stack(
           children: [
-            ListView.builder(
-              controller: _scrollController,
-              itemCount: _messages.length + (_isLoading ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == _messages.length) {
-                  // 마지막 아이템이 로딩 인디케이터
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: AppColors.blue,
-                          child: AppIcon.starting_block_icon,
-                        ),
-                        Gaps.h4,
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '스타팅블록',
-                              style: AppTextStyles.bd6
-                                  .copyWith(color: AppColors.g5),
-                            ),
-                            Gaps.v4,
-                            SizedBox(
-                              height: 38,
-                              child: AppAnimation.chatting_progress_indicator,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                final message = _messages[index];
-                final isFirstItem = index == 0;
-                final isLastItem = index == _messages.length - 1;
-
-                final messageDate = _parseMessageDateTime(message.time);
-                bool isFirstMessageOfDay = false;
-                if (index == 0 ||
-                    _parseMessageDateTime(_messages[index - 1].time).day !=
-                        messageDate.day) {
-                  isFirstMessageOfDay = true;
-                }
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (isFirstMessageOfDay)
+            _messages.isEmpty
+                ? Column(
+                    children: [
+                      Gaps.v16,
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: Row(
@@ -354,7 +306,8 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                             ),
                             Gaps.h18,
                             Text(
-                              DateFormat('yyyy년 MM월 dd일').format(messageDate),
+                              DateFormat('yyyy년 MM월 dd일')
+                                  .format(DateTime.now()),
                               style: AppTextStyles.bd6
                                   .copyWith(color: AppColors.g4),
                             ),
@@ -368,131 +321,220 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                           ],
                         ),
                       ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: isFirstItem ? 10 : 0,
-                        bottom: isLastItem && !_isLoading ? 10 : 0,
-                        left: 16,
-                        right: 16,
+                      Gaps.v24,
+                      Center(
+                        child: Text(
+                          '오늘은 어떤 도움이 필요하세요?\nAI와 공고의 첨푸파일 관련 대화를 시작해 보세요.',
+                          style:
+                              AppTextStyles.btn2.copyWith(color: AppColors.g4),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      child: Align(
-                        alignment: message.isUser
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: message.isUser
-                            ? Padding(
-                                padding: !message.isUser
-                                    ? const EdgeInsets.only(bottom: 22)
-                                    : const EdgeInsets.only(bottom: 12),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      _formatMessageTime(message.time),
-                                      style: AppTextStyles.caption
-                                          .copyWith(color: AppColors.g3),
+                    ],
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _messages.length + (_isLoading ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == _messages.length) {
+                        // 마지막 아이템이 로딩 인디케이터
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: 18,
+                                backgroundColor: AppColors.blue,
+                                child: AppIcon.chatting_icon,
+                              ),
+                              Gaps.v8,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  SizedBox(
+                                    height: 38,
+                                    child: AppAnimation
+                                        .chatting_progress_indicator,
+                                  ),
+                                  Gaps.h4,
+                                  Text(
+                                    _formatMessageTime(
+                                        DateTime.now().millisecondsSinceEpoch),
+                                    style: AppTextStyles.caption
+                                        .copyWith(color: AppColors.g3),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      final message = _messages[index];
+                      final isFirstItem = index == 0;
+                      final isLastItem = index == _messages.length - 1;
+
+                      final messageDate = _parseMessageDateTime(message.time);
+                      bool isFirstMessageOfDay = false;
+                      if (index == 0 ||
+                          _parseMessageDateTime(_messages[index - 1].time)
+                                  .day !=
+                              messageDate.day) {
+                        isFirstMessageOfDay = true;
+                      }
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (isFirstMessageOfDay)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: 1,
+                                      color: AppColors.g3,
                                     ),
-                                    Gaps.h4,
-                                    Container(
-                                      constraints: BoxConstraints(
-                                        maxWidth: 360 *
-                                            (232 /
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.blue,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 9),
-                                        child: Text(
-                                          message.message,
-                                          style: AppTextStyles.bd4
-                                              .copyWith(color: AppColors.g1),
-                                        ),
+                                  ),
+                                  Gaps.h18,
+                                  Text(
+                                    DateFormat('yyyy년 MM월 dd일')
+                                        .format(messageDate),
+                                    style: AppTextStyles.bd6
+                                        .copyWith(color: AppColors.g4),
+                                  ),
+                                  Gaps.h18,
+                                  Expanded(
+                                    child: Container(
+                                      height: 1,
+                                      color: AppColors.g3,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: isFirstItem ? 10 : 0,
+                              bottom: isLastItem && !_isLoading ? 10 : 0,
+                              left: 16,
+                              right: 16,
+                            ),
+                            child: Align(
+                              alignment: message.isUser
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: message.isUser
+                                  ? Padding(
+                                      padding: !message.isUser
+                                          ? const EdgeInsets.only(bottom: 22)
+                                          : const EdgeInsets.only(bottom: 12),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            _formatMessageTime(message.time),
+                                            style: AppTextStyles.caption
+                                                .copyWith(color: AppColors.g3),
+                                          ),
+                                          Gaps.h4,
+                                          Container(
+                                            constraints: BoxConstraints(
+                                              maxWidth: 360 *
+                                                  (232 /
+                                                      MediaQuery.of(context)
+                                                          .size
+                                                          .width),
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.blue,
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 9),
+                                              child: Text(
+                                                message.message,
+                                                style: AppTextStyles.bd4
+                                                    .copyWith(
+                                                        color: AppColors.g1),
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     )
-                                  ],
-                                ),
-                              )
-                            : Padding(
-                                padding: message.isUser
-                                    ? const EdgeInsets.only(bottom: 50)
-                                    : const EdgeInsets.only(bottom: 12),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 16,
-                                      backgroundColor: AppColors.blue,
-                                      child: AppIcon.starting_block_icon,
-                                    ),
-                                    Gaps.h4,
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '스타팅블록',
-                                          style: AppTextStyles.bd6
-                                              .copyWith(color: AppColors.g5),
-                                        ),
-                                        Gaps.v4,
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              constraints: BoxConstraints(
-                                                maxWidth: 360 *
-                                                    (232 /
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: AppColors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 12,
-                                                        vertical: 9),
-                                                child: Text(
-                                                  message.message,
-                                                  style: AppTextStyles.bd4
-                                                      .copyWith(
-                                                          color:
-                                                              AppColors.black),
+                                  : Padding(
+                                      padding: message.isUser
+                                          ? const EdgeInsets.only(bottom: 50)
+                                          : const EdgeInsets.only(bottom: 12),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 18,
+                                            backgroundColor: AppColors.blue,
+                                            child: AppIcon.chatting_icon,
+                                          ),
+                                          Gaps.v8,
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                constraints: BoxConstraints(
+                                                  maxWidth: 360 *
+                                                      (252 /
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width),
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 9),
+                                                  child: Text(
+                                                    message.message,
+                                                    style: AppTextStyles.bd4
+                                                        .copyWith(
+                                                            color: AppColors
+                                                                .black),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Gaps.h4,
-                                            Text(
-                                              _formatMessageTime(message.time),
-                                              style: AppTextStyles.caption
-                                                  .copyWith(
-                                                      color: AppColors.g3),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
+                                              Gaps.h4,
+                                              Text(
+                                                _formatMessageTime(
+                                                    message.time),
+                                                style: AppTextStyles.caption
+                                                    .copyWith(
+                                                        color: AppColors.g3),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
             const Positioned(
               bottom: 0,
               child: BottomGradient(),

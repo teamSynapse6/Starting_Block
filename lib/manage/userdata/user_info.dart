@@ -129,4 +129,16 @@ class UserInfo extends ChangeNotifier {
     await initialize();
     return _prefs.getStringList('roadmapItems') ?? [];
   }
+
+  //로드맵 팝업 1회성 확인 여부
+  Future<void> setRoadMapPopUp(bool roadmapPopUp) async {
+    await _prefs.setBool('roadmapPopUp', roadmapPopUp);
+    _hasChanged = true;
+    notifyListeners();
+  }
+
+  static Future<bool> getRoadMapPopUp() async {
+    await initialize();
+    return _prefs.getBool('roadmapPopUp') ?? false;
+  }
 }

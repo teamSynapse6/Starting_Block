@@ -25,7 +25,7 @@ class OffCampusApi {
       String supportType = '',
       String search = '',
       int size = 0,
-      int retryCount = 3}) async {
+      int retryCount = 1}) async {
     String queryParams = 'page=$page&sorting=$sorting';
     if (postTarget != '') queryParams += '&postTarget=$postTarget';
     if (region != '') queryParams += '&region=$region';
@@ -64,7 +64,7 @@ class OffCampusApi {
 
   // ID를 이용해 공고정보 상세조회
   static Future<OffCampusDetailModel> getOffcampusDetailInfo(int id,
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final offCampusDetailUrl = Uri.parse('$baseUrl/api/v1/announcements/$id');
     final response = await http.get(offCampusDetailUrl, headers: headers);
@@ -85,7 +85,7 @@ class OffCampusApi {
 
   // 공고 3개 랜덤 리턴 메서드
   static Future<List<OffCampusListModel>> getOffcampusRecommend(
-      {int retryCount = 3}) async {
+      {int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
     final offCampusDetailUrl = Uri.parse('$baseUrl/$offCampusRecEndpoint');
     final response = await http.get(offCampusDetailUrl, headers: headers);

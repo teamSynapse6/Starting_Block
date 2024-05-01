@@ -16,18 +16,20 @@ class BottomSheetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: thisTapAction,
-      child: Ink(
-        height: 48,
-        color: thisColor, // null일 수 있는 색상 적용
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24), // Padding 추가
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              thisText,
-              style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+    return Material(
+      child: InkWell(
+        onTap: thisTapAction,
+        child: Ink(
+          height: 48,
+          color: thisColor,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24), // Padding 추가
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                thisText,
+                style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+              ),
             ),
           ),
         ),

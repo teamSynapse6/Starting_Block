@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 36 36">
+  <circle cx="18" cy="17.992" r="18" fill="#5E8BFF"/>
+  <mask id="a" width="36" height="37" x="0" y="-1" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+    <path fill="#fff" d="M0 17.992c0-9.94 8.059-18 18-18s18 8.06 18 18c0 9.941-8.059 18-18 18s-18-8.059-18-18Z"/>
+  </mask>
+  <g mask="url(#a)">
+    <path fill="url(#b)" d="m14.951 10.41 1.21 3.512h11.367l1.21-3.512 1.615.433-.765 3.941 6.734 11.664-7.072 9.545H14.786l-7.393-9.545 6.715-11.631-.771-3.974 1.614-.433Z"/>
+    <path fill="#fff" d="M13.179 20.66h17.357v5.143l-8.679 1.736v-1.736H13.18V20.66Z"/>
+    <path fill="#213049" d="M20.572 22.012v2.571H18v-2.571h2.572Zm4.821 0v2.571h-2.571v-2.571h2.571Z"/>
+  </g>
+  <defs>
+    <linearGradient id="b" x1="15" x2="30.5" y1="18.5" y2="33" gradientUnits="userSpaceOnUse">
+      <stop offset=".14" stop-color="#EFEFEF"/>
+      <stop offset="1" stop-color="#EFEFEF" stop-opacity=".4"/>
+    </linearGradient>
+  </defs>
+</svg>

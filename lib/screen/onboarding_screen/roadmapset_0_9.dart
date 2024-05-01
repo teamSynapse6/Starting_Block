@@ -68,15 +68,13 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     }).toList();
     try {
       await RoadMapApi.postInitialRoadMap(roadMaps);
+      _saveLoginStatus();
       if (mounted) {
-        _saveLoginStatus();
-        if (mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const IntergrateScreen()),
-            (Route<dynamic> route) => false,
-          );
-        }
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const CompleteScreen()),
+          (Route<dynamic> route) => false,
+        );
       }
     } catch (e) {
       print('서버 저장 중 오류가 발생했습니다: $e');
@@ -90,7 +88,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     if (mounted) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const IntergrateScreen()),
+        MaterialPageRoute(builder: (context) => const CompleteScreen()),
         (Route<dynamic> route) => false,
       );
     }

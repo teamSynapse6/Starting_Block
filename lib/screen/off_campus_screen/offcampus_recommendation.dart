@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/constants/widgets/divider_component.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
 class Recommendation extends StatelessWidget {
@@ -41,14 +42,21 @@ class Recommendation extends StatelessWidget {
                     itemCount: filteredData.length,
                     itemBuilder: (context, index) {
                       var item = filteredData[index];
-                      return ItemList(
-                        thisID: item.announcementId.toString(),
-                        thisOrganize: item.departmentName,
-                        thisTitle: item.title,
-                        thisStartDate: item.startDate,
-                        thisEndDate: item.endDate,
-                        thisClassification: '교외사업',
-                        isSaved: item.isBookmarked,
+                      return Column(
+                        children: [
+                          ItemList(
+                            thisID: item.announcementId.toString(),
+                            thisOrganize: item.departmentName,
+                            thisTitle: item.title,
+                            thisStartDate: item.startDate,
+                            thisEndDate: item.endDate,
+                            thisClassification: '교외사업',
+                            isSaved: item.isBookmarked,
+                          ),
+                          Gaps.v16,
+                          if (index != filteredData.length - 1)
+                            const CustomDividerH2G1()
+                        ],
                       );
                     },
                   );
