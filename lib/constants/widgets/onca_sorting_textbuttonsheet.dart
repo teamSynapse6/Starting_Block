@@ -80,12 +80,7 @@ class _OnCampusSortingButtonState extends State<OnCampusSortingButton> {
           onTap: () => onSortingBottom(context, filterModel),
           child: Text(
             filterModel.selectedSorting, // 선택된 정렬 옵션 표시
-            style: const TextStyle(
-              fontFamily: 'pretendard',
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-              color: AppColors.g4,
-            ),
+            style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
           ),
         ),
         Gaps.h4,

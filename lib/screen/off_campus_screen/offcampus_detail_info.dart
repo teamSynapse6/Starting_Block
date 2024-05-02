@@ -130,7 +130,6 @@ class OffCampusDetailInfo extends StatelessWidget {
                       builder: (context) => WebViewScreen(
                         url: link,
                         id: thisID,
-                        classification: '교외사업',
                       ),
                     ),
                   );

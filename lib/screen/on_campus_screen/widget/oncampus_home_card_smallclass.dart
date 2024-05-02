@@ -24,7 +24,11 @@ class _OnCampusCardSmallClassState extends State<OnCampusCardSmallClass> {
               borderRadius: BorderRadius.all(
                 Radius.circular(4),
               ),
-              color: AppColors.bluelight),
+              gradient: LinearGradient(
+                colors: [Color(0xffB1C5F6), Color(0xffC8D6F9)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )),
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
@@ -33,8 +37,8 @@ class _OnCampusCardSmallClassState extends State<OnCampusCardSmallClass> {
                 ),
               );
             },
-            splashColor: AppColors.oncampusSmallClassPressed,
-            highlightColor: AppColors.oncampusSmallClassPressed,
+            splashColor: const Color(0xff95B4FF),
+            highlightColor: const Color(0xff95B4FF),
             borderRadius: BorderRadius.circular(4),
             child: Stack(
               children: [
@@ -45,7 +49,7 @@ class _OnCampusCardSmallClassState extends State<OnCampusCardSmallClass> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '창업 강의',
+                        '강의',
                         style:
                             AppTextStyles.bd3.copyWith(color: AppColors.white),
                       ),

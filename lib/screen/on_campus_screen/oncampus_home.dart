@@ -118,20 +118,27 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                 style: AppTextStyles.st2.copyWith(color: AppColors.g6),
               ),
             ),
-            Gaps.v24,
-            Padding(
+            Gaps.v8,
+            ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: _notifyList.map((notify) {
-                  return OnCampusNotifyListCard(
-                    thisProgramText: notify.type,
-                    thisId: notify.id,
-                    thisTitle: notify.title,
-                    thisStartDate: notify.startdate,
-                    thisUrl: notify.detailurl,
-                  );
-                }).toList(),
-              ),
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: _notifyList.length,
+              itemBuilder: (context, index) {
+                final notifyitem = _notifyList[index];
+                return Column(
+                  children: [
+                    OnCampusNotifyListCard(
+                      thisProgramText: notifyitem.classification,
+                      thisId: notifyitem.id,
+                      thisTitle: notifyitem.title,
+                      thisStartDate: notifyitem.startdate,
+                      thisUrl: notifyitem.detailurl,
+                    ),
+                    if (index < _notifyList.length) const CustomDividerH2G1(),
+                  ],
+                );
+              },
             ),
           ],
         ),

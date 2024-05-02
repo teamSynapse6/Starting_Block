@@ -35,7 +35,6 @@ export 'package:starting_block/constants/widgets/offcampus_filter/bottomsheet_li
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/oncampus_filter/onca_programchipsheet.dart'; //교내지원사업_프로그램 컴포넌트
-export 'package:starting_block/constants/widgets/oncampus_filter/onca_resetbutton.dart'; //교내지원사업 필터 리셋 위젯
 
 //리스트 필터 시스템
 export 'package:starting_block/constants/widgets/offcampus_filter/intergrate_filter.dart'; //교외지원사업_통합 필터 시스템

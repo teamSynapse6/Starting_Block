@@ -122,11 +122,6 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
                     "대학교(원)을 선택해주세요",
                     style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
-                  Gaps.v10,
-                  Text(
-                    "현재 일부 대학의 교내 지원 사업을 제공해 드립니다",
-                    style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-                  ),
                   Gaps.v32,
                   TextField(
                     style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
@@ -141,7 +136,8 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
                 ],
               ),
             ),
-            if (_schoolInfo.isNotEmpty) // 조건 추가
+            if (_schoolInfo.isNotEmpty &&
+                filteredSchoolList.isNotEmpty) // 조건 추가
               ListView.separated(
                 shrinkWrap: true,
                 itemCount: filteredSchoolList.length > 3
@@ -169,7 +165,14 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
                     ),
                   );
                 },
-              ),
+              )
+            else if (_schoolInfo.isNotEmpty && filteredSchoolList.isEmpty)
+              Center(
+                child: Text(
+                  '현재 일부 대학의 지원 사업을 제공해드립니다',
+                  style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                ),
+              )
           ],
         ),
         bottomNavigationBar: BottomAppBar(

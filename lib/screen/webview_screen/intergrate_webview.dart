@@ -8,13 +8,12 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class WebViewScreen extends StatefulWidget {
-  final String url, id, classification;
+  final String url, id;
 
   const WebViewScreen({
     super.key,
     required this.url,
     required this.id,
-    required this.classification,
   });
 
   @override

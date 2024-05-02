@@ -38,7 +38,6 @@ class OnCaNotifyCard extends StatelessWidget {
             builder: (context) => WebViewScreen(
               url: thisUrl,
               id: thisID,
-              classification: '교내사업',
             ),
           ),
         );

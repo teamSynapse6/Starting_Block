@@ -36,21 +36,25 @@ class _OnCaGroupEtcState extends State<OnCaGroupEtc> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.g1,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: _etcList.isEmpty
-            ? Container()
-            : ListView.builder(
-                itemCount: _etcList.length,
-                itemBuilder: (context, index) {
-                  final item = _etcList[index];
-                  return OnCampusGroupList(
-                    thisTitle: item.title,
-                    thisContent: item.content,
-                  );
-                },
-              ),
-      ),
+      body: _etcList.isEmpty
+          ? Container()
+          : ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              itemCount: _etcList.length,
+              itemBuilder: (context, index) {
+                final item = _etcList[index];
+                return Column(
+                  children: [
+                    if (index == 0) Gaps.v16,
+                    OnCampusGroupList(
+                      thisTitle: item.title,
+                      thisContent: item.content,
+                    ),
+                    Gaps.v16,
+                  ],
+                );
+              },
+            ),
     );
   }
 }

@@ -13,7 +13,7 @@ class OnCampusGroupList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(4),

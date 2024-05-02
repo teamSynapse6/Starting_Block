@@ -85,14 +85,8 @@ class _ProgramChipsSheetState extends State<ProgramChipsSheet> {
       child: Container(
         height: 32,
         decoration: BoxDecoration(
-          color: selectedProgram == "전체" ? AppColors.white : AppColors.bluedark,
+          color: selectedProgram == "전체" ? AppColors.g1 : AppColors.blue,
           borderRadius: BorderRadius.circular(46),
-          border: Border.all(
-            color: selectedProgram == "전체"
-                ? AppColors.chipsColor
-                : AppColors.bluedark,
-            width: 1,
-          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -101,12 +95,12 @@ class _ProgramChipsSheetState extends State<ProgramChipsSheet> {
             Gaps.h12,
             Text(
               selectedProgram == "전체" ? '프로그램' : selectedProgram,
-              style: AppTextStyles.btn2.copyWith(
-                color: selectedProgram == "전체" ? AppColors.g5 : AppColors.white,
+              style: AppTextStyles.btn1.copyWith(
+                color: selectedProgram == "전체" ? AppColors.g4 : AppColors.white,
               ),
             ),
             Gaps.h4,
-            AppIcon.down_g3,
+            selectedProgram == "전체" ? AppIcon.down_g3 : AppIcon.down_g1,
             Gaps.h8,
           ],
         ),

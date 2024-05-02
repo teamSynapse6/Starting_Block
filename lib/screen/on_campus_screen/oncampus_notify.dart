@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
@@ -18,25 +17,12 @@ class OnCampusNotify extends StatefulWidget {
 }
 
 class _OnCampusNotifyState extends State<OnCampusNotify> {
-  String _svgLogo = "";
   List<OnCampusNotifyModel> _notifyList = [];
 
   @override
   void initState() {
     super.initState();
-    _loadSvgLogo();
     _loadFilteredOnCampusNotify();
-  }
-
-  Future<void> _loadSvgLogo() async {
-    try {
-      String svgData = await OnCampusAPI.onCampusLogo();
-      setState(() {
-        _svgLogo = svgData;
-      });
-    } catch (e) {
-      print('SVG 로고 로드 실패: $e');
-    }
   }
 
   Future<void> _loadFilteredOnCampusNotify() async {
@@ -45,10 +31,6 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
       String selectedProgram = prefs.getString('selectedProgram') ?? "전체";
       String selectedSorting =
           prefs.getString('selectedOnCaSorting') ?? "latest";
-
-      print('프로그램: $selectedProgram');
-      print('정렬: $selectedSorting');
-
       List<OnCampusNotifyModel> notifyList =
           await OnCampusAPI.getOnCampusNotifyFiltered(
         program: selectedProgram,
@@ -66,6 +48,11 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Container(
+            color: AppColors.white,
+          )),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
@@ -76,7 +63,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
               forceElevated: innerBoxIsScrolled,
               backgroundColor: AppColors.white,
               pinned: true,
-              expandedHeight: 116,
+              expandedHeight: 128,
               collapsedHeight: 56,
               leading: GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
@@ -85,23 +72,37 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                   child: AppIcon.back,
                 ),
               ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: GestureDetector(
+                    onTap: null, //여기 수정 필요
+                    child: SizedBox(
+                      height: 48,
+                      width: 48,
+                      child: AppIcon.search,
+                    ),
+                  ),
+                ),
+              ],
               flexibleSpace: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   // AppBar의 최대 높이와 현재 높이를 기준으로 패딩 값을 계산
                   double appBarHeight = constraints.biggest.height;
-                  double maxPaddingTop = 32.0;
-                  double minPaddingTop = 5;
+                  double maxPaddingTop = 20;
+                  double minPaddingTop = 16;
                   double paddingTopRange = maxPaddingTop - minPaddingTop;
                   double heightRange =
-                      116 - 56; // expandedHeight - collapsedHeight
+                      128 - 56; // expandedHeight - collapsedHeight
 
                   // 선형적으로 paddingBottom 계산
                   double paddingBottom = minPaddingTop +
                       paddingTopRange * ((appBarHeight - 56) / heightRange);
 
                   return FlexibleSpaceBar(
-                    expandedTitleScale: 1,
+                    expandedTitleScale: 24 / 18,
                     titlePadding: EdgeInsets.only(
+                      top: 16,
                       bottom: paddingBottom,
                       left: 60,
                     ),
@@ -109,18 +110,17 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                       '지원 공고',
                       style: AppTextStyles.st2.copyWith(color: AppColors.g6),
                     ),
-                    background: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                    background: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Gaps.v74,
-                          _svgLogo.isNotEmpty
-                              ? SvgPicture.string(
-                                  _svgLogo,
-                                  fit: BoxFit.scaleDown,
-                                )
-                              : Container(),
+                          Gaps.v80,
+                          SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: SchoolLogoWidget(),
+                          ),
                         ],
                       ),
                     ),
@@ -151,8 +151,8 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '24개의 공고',
-                                style: AppTextStyles.bd6
+                                '${_notifyList.length}개의 공고',
+                                style: AppTextStyles.bd4
                                     .copyWith(color: AppColors.g4),
                               ),
                               const Spacer(), // 왼쪽 텍스트와 오른쪽 버튼 사이의 공간을 만듦
@@ -186,12 +186,18 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                       itemCount: _notifyList.length,
                       itemBuilder: (context, index) {
                         OnCampusNotifyModel notify = _notifyList[index];
-                        return OnCampusNotifyListCard(
-                          thisProgramText: notify.type,
-                          thisId: notify.id,
-                          thisTitle: notify.title,
-                          thisStartDate: notify.startdate,
-                          thisUrl: notify.detailurl,
+                        return Column(
+                          children: [
+                            OnCampusNotifyListCard(
+                              thisProgramText: notify.type,
+                              thisId: notify.id,
+                              thisTitle: notify.title,
+                              thisStartDate: notify.startdate,
+                              thisUrl: notify.detailurl,
+                            ),
+                            if (index < _notifyList.length - 1)
+                              const CustomDividerH2G1(),
+                          ],
                         );
                       },
                     ),
