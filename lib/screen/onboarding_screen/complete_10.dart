@@ -19,20 +19,29 @@ class CompleteScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              Gaps.v108,
-              Text(
-                '도약할 준비 완료!\n앞으로의 창업 로드를 응원해요',
-                style: AppTextStyles.st1.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v49,
-              //여기에 애니메이션 들어가야 함.
-            ],
+      body: PopScope(
+        canPop: false,
+        child: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gaps.v108,
+                Row(
+                  children: [
+                    Gaps.h16,
+                    Text(
+                      '도약할 준비 완료!\n앞으로의 창업 로드를 응원해요',
+                      style: AppTextStyles.st1.copyWith(color: AppColors.g6),
+                    ),
+                  ],
+                ),
+                Gaps.v49,
+                //여기에 애니메이션 들어가야 함.
+              ],
+            ),
           ),
         ),
       ),

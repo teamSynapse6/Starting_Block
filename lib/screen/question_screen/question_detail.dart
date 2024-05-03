@@ -239,6 +239,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisQuestionHeardID: questionDetail.heartId,
                       ),
                       const CustomDividerH8G1(),
+                      const QuestionContactComment(),
                       QuestionUserComment(
                         thisReplyTap: (int answerId, String userName) {
                           _handleReplyTap(answerId, userName);

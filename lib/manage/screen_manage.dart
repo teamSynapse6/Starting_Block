@@ -26,7 +26,7 @@ export 'package:starting_block/screen/off_campus_screen/offcampus_search.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_searchresult.dart';
 
 //GPT 채팅 페이지
-export 'package:starting_block/screen/off_campus_screen/gpt_chat/offcampus_gpt_chat.dart';
+export 'package:starting_block/screen/gpt_chat/offcampus_gpt_chat.dart';
 
 //로드맵 페이지
 export 'package:starting_block/screen/roadmap_screen/roadmap_home.dart';
@@ -83,6 +83,7 @@ export 'package:starting_block/screen/myprofile_screen/setting/setting_opensourc
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_heart.dart'; //탭_내 궁금해요
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_answer_reply.dart'; //탭_내 댓글,답글
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_question.dart'; //탭_내 질문
+export 'package:starting_block/screen/myprofile_screen/myprofile_gpt_list.dart'; //AI로 공고 분석하기 리스트 화면
 
 //홈_페이지
 export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면
@@ -103,6 +104,8 @@ export 'package:starting_block/screen/question_screen/question_detail.dart'; //�
 export 'package:starting_block/screen/question_screen/question_detail_info.dart'; //질문 상세 화면_질문영역
 export 'package:starting_block/screen/question_screen/comment_screen/user_comment.dart'; //유저 댓글 영역
 export 'package:starting_block/screen/question_screen/comment_screen/reply_comment.dart'; //유저 답글 영역
+export 'package:starting_block/screen/question_screen/comment_screen/contact_reply_comment.dart'; //문의처 답글 영역
+export 'package:starting_block/screen/question_screen/question_write_complete.dart'; //질문 작성 완료 화면
 
 //데이터 파일 관리용
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';
@@ -119,4 +122,3 @@ export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_class_skel
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_supportgroup_skeleton.dart'; //교내지원사업_창업지원단 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_search_skeleton.dart'; //교내지원사업_검색 화면 스켈레톤 로더 화면
 
-//테스트용

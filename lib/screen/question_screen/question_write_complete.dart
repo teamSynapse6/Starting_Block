@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class LeapAfterFirstScreen extends StatelessWidget {
-  const LeapAfterFirstScreen({super.key});
+class QuestionWriteComplete extends StatelessWidget {
+  const QuestionWriteComplete({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Color topColor = const Color(0xFF5E8BFF);
+    Color bottomColor = const Color(0xFF87A8FA);
+
     // 페이지가 렌더링된 직후에 타이머를 설정합니다.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        systemNavigationBarColor: AppColors.blue,
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: bottomColor,
       ));
       Future.delayed(
         const Duration(seconds: 3),
@@ -32,22 +35,32 @@ class LeapAfterFirstScreen extends StatelessWidget {
       child: Scaffold(
         body: Container(
           width: MediaQuery.of(context).size.width,
-          color: AppColors.blue,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                topColor,
+                bottomColor,
+              ],
+            ),
+          ),
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Gaps.v117,
+                Gaps.v114,
                 Text(
-                  '다음 단계의\n추천 지원 사업을 찾고 있어요',
+                  '질문 작성 완료!',
+                  style: AppTextStyles.h3.copyWith(color: AppColors.white),
+                ),
+                Gaps.v8,
+                Text(
+                  '빠른 궁금증 해결과\n성공적인 공고 준비를 도와줄게요',
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.st1.copyWith(color: AppColors.white),
+                  style: AppTextStyles.bd2.copyWith(color: AppColors.white),
                 ),
                 Gaps.v28,
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: AppAnimation.leap_after_first,
-                ),
               ],
             ),
           ),

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/divider_component.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
 class Recommendation extends StatelessWidget {

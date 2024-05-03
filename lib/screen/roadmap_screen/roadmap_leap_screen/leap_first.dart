@@ -30,42 +30,45 @@ class LeapFirstScreen extends StatelessWidget {
       );
     });
 
-    return Scaffold(
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                topColor,
-                bottomColor,
-              ],
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  topColor,
+                  bottomColor,
+                ],
+              ),
             ),
-          ),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Gaps.v112,
-                const Text(
-                  '첫 도약 완료!',
-                  style: TextStyle(
-                    fontFamily: 'score',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 32,
-                    color: AppColors.white,
-                    height: 1.25,
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Gaps.v112,
+                  const Text(
+                    '첫 도약 완료!',
+                    style: TextStyle(
+                      fontFamily: 'score',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 32,
+                      color: AppColors.white,
+                      height: 1.25,
+                    ),
                   ),
-                ),
-                Gaps.v4,
-                Text(
-                  '앞으로의 성장을 기대할게요',
-                  style: AppTextStyles.bd1.copyWith(color: AppColors.white),
-                )
-              ],
-            ),
-          )),
+                  Gaps.v4,
+                  Text(
+                    '앞으로의 성장을 기대할게요',
+                    style: AppTextStyles.bd1.copyWith(color: AppColors.white),
+                  )
+                ],
+              ),
+            )),
+      ),
     );
   }
 }

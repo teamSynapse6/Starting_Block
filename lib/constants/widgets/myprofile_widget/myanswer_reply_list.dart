@@ -86,7 +86,7 @@ class MyAnswerList extends StatelessWidget {
                         Text(
                           questionWriterName,
                           style:
-                              AppTextStyles.bd5.copyWith(color: AppColors.g6),
+                              AppTextStyles.bd6.copyWith(color: AppColors.g6),
                         ),
                         Gaps.v4,
                         Text(
@@ -104,6 +104,7 @@ class MyAnswerList extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Container(
+                        margin: const EdgeInsets.only(left: 56 - 24),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 10),
                         color: AppColors.g1,
@@ -229,7 +230,7 @@ class MyAnswerList extends StatelessWidget {
                 ),
                 Gaps.v12,
                 Padding(
-                  padding: const EdgeInsets.only(left: 32),
+                  padding: const EdgeInsets.only(left: 60 - 24),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -267,7 +268,7 @@ class MyAnswerList extends StatelessWidget {
                   ),
                 ),
                 ListView.builder(
-                  padding: const EdgeInsets.only(left: 32),
+                  padding: const EdgeInsets.only(left: 60 - 24),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: replyList.length,

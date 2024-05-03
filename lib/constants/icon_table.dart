@@ -109,6 +109,9 @@ class AppIcon {
           fit: BoxFit.scaleDown);
   static Widget get arrow_up_24 =>
       SvgPicture.asset('assets/icon/24/arrow_up_24.svg', fit: BoxFit.scaleDown);
+  static Widget get gpt_robot_24 =>
+      SvgPicture.asset('assets/icon/24/gpt_robot_24.svg',
+          fit: BoxFit.scaleDown);
 
   // GNB Part Image
   static Widget get home_active =>
@@ -238,8 +241,15 @@ class AppIcon {
   static Widget get chatting_icon =>
       SvgPicture.asset('assets/icon/other/chatting_icon.svg',
           fit: BoxFit.scaleDown);
-  static Widget get test =>
-      SvgPicture.asset('assets/icon/other/test.svg', fit: BoxFit.scaleDown);
+  static Widget get contact_logo_18 =>
+      SvgPicture.asset('assets/icon/other/contact_logo_18.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get gpt_robot_icon =>
+      SvgPicture.asset('assets/icon/other/gpt_robot_icon.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get gpt_listpage_tail =>
+      SvgPicture.asset('assets/icon/other/gpt_listpage_tail.svg',
+          fit: BoxFit.scaleDown);
 
   // Profile Image
   static Widget get profile_image_1 =>

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionWrite extends StatefulWidget {
   final String thisID;
@@ -76,6 +77,11 @@ class _QuestionWriteState extends State<QuestionWrite> {
 
     // 질문이 성공적으로 게시된 후에는 화면을 닫거나 사용자에게 알림을 표시할 수 있습니다.
     if (mounted) {
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const QuestionWriteComplete()));
+
       Navigator.of(context).pop(); // 다이얼로그 닫기
     }
     if (mounted) {

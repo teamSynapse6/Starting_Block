@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:starting_block/constants/animation_table.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/gpt_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';

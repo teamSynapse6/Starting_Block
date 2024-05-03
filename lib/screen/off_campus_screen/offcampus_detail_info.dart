@@ -56,6 +56,7 @@ class OffCampusDetailInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     String formattedStartDate = formatedStartDate(startDate);
     String formattedEndDate = formatedEndDate(endDate);
+    print('지원혜택: $content');
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
