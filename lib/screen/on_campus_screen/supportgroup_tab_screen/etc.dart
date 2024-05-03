@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OnCaGroupEtc extends StatefulWidget {
   const OnCaGroupEtc({super.key});
@@ -14,6 +15,7 @@ class OnCaGroupEtc extends StatefulWidget {
 
 class _OnCaGroupEtcState extends State<OnCaGroupEtc> {
   List<OnCaEtcModel> _etcList = []; // '기타' 리스트를 저장할 변수
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -22,10 +24,14 @@ class _OnCaGroupEtcState extends State<OnCaGroupEtc> {
   }
 
   Future<void> _loadEtcData() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       List<OnCaEtcModel> etcList = await OnCampusGroupApi.getOnCaEtc();
       setState(() {
         _etcList = etcList;
+        isLoading = false;
       });
     } catch (e) {
       print('기타 정보 로드 실패: $e');
@@ -36,8 +42,8 @@ class _OnCaGroupEtcState extends State<OnCaGroupEtc> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.g1,
-      body: _etcList.isEmpty
-          ? Container()
+      body: isLoading
+          ? const OncaSkeletonSupportGroup()
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               itemCount: _etcList.length,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OnCaGroupMentoring extends StatefulWidget {
   const OnCaGroupMentoring({super.key});
@@ -14,6 +15,7 @@ class OnCaGroupMentoring extends StatefulWidget {
 
 class _OnCaGroupMentoringState extends State<OnCaGroupMentoring> {
   List<OnCaMentoringModel> _mentoringList = []; // 멘토링 리스트를 저장할 변수
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -22,11 +24,15 @@ class _OnCaGroupMentoringState extends State<OnCaGroupMentoring> {
   }
 
   Future<void> _loadMentoringData() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       List<OnCaMentoringModel> mentoringList =
           await OnCampusGroupApi.getOnCaMentoring();
       setState(() {
         _mentoringList = mentoringList;
+        isLoading = false;
       });
     } catch (e) {
       print('멘토링 정보 로드 실패: $e');
@@ -37,8 +43,8 @@ class _OnCaGroupMentoringState extends State<OnCaGroupMentoring> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.g1,
-      body: _mentoringList.isEmpty
-          ? Container()
+      body: isLoading
+          ? const OncaSkeletonSupportGroup()
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               itemCount: _mentoringList.length,

@@ -24,7 +24,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => WebViewScreen(
+              builder: (context) => OncampusWebViewScreen(
                 url: thisUrl,
                 id: thisId,
               ),

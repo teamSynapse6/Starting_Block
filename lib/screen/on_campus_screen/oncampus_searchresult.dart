@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/recentsearch_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -19,6 +20,7 @@ class OnCampusSearchResult extends StatefulWidget {
 class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
   final TextEditingController _controller = TextEditingController();
   final RecentSearchManager recentSearchManager = RecentSearchManager();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -29,11 +31,8 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
   }
 
   Future<void> _fetchOnCampusSearchResults() async {
-    // final prefs = await SharedPreferences.getInstance();
-    // String supporttype = prefs.getString('selectedSupportType') ?? "전체";
-    // String region = prefs.getString('selectedResidence') ?? "전체";
-    // String posttarget = prefs.getString('selectedEntrepreneur') ?? "전체";
-    // String sorting = prefs.getString('selectedSorting') ?? "latest";
+    String selectedProgram = OnCaFilterModel().selectedProgram;
+    String selectedSorting = OnCaFilterModel().selectedSorting;
 
     // try {
     //   List<OffCampusModel> offcampusList =
@@ -100,6 +99,11 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
               ],
             ),
           ),
+          !isLoading
+              ? const Expanded(
+                  child: OncaSkeletonSearch(),
+                )
+              : Container(),
           // Expanded(
           //   child: Consumer<FilterModel>(
           //     builder: (context, filterModel, child) {

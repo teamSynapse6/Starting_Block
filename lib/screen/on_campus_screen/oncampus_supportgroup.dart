@@ -19,15 +19,17 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
   String _schoolName = "";
   TabController? _tabController;
   List<Tab> myTabs = [];
+  final ScrollController _scrollController = ScrollController();
+  bool _isScrolled = false;
 
   @override
   void initState() {
     super.initState();
     _loadSchoolName();
-
+    _scrollController.addListener(_onScroll);
     _loadTabs().then((_) {
-      // 비동기 로드 완료 후 _tabController를 초기화합니다.
       if (myTabs.isNotEmpty) {
+        // 비동기 로드 완료 후 _tabController를 초기화합니다.
         setState(() {
           _tabController = TabController(length: myTabs.length, vsync: this);
         });
@@ -57,6 +59,8 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
   @override
   void dispose() {
     _tabController?.dispose(); // TabController 해제
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose(); // 위젯 사용이 끝날 때 컨트롤러 해제
     super.dispose();
   }
 
@@ -72,6 +76,27 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
     return myTabs.any((tab) => tab.text == tabText);
   }
 
+  void _onScroll() {
+    if (_scrollController.offset == 0) {
+      setState(() {
+        _isScrolled = false;
+      });
+    }
+    if (_scrollController.offset != 0) {
+      setState(() {
+        _isScrolled = true;
+      });
+    }
+  }
+
+  void backToTopTap() {
+    _scrollController.animateTo(
+      0.0, // 최상단 위치
+      duration: const Duration(milliseconds: 300), // 애니메이션 지속 시간
+      curve: Curves.easeOut, // 애니메이션 곡선 설정
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +109,7 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
       body: _tabController == null
           ? Container()
           : NestedScrollView(
+              controller: _scrollController,
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
@@ -172,15 +198,28 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
                   ),
                 ];
               },
-              body: TabBarView(
-                controller: _tabController,
+              body: Stack(
                 children: [
-                  if (isTabPresent('멘토링')) const OnCaGroupMentoring(),
-                  if (isTabPresent('동아리')) const OnCaGroupClub(),
-                  if (isTabPresent('특강')) const OnCaGroupLecture(),
-                  if (isTabPresent('경진대회 및 캠프')) const OnCaGroupCompetition(),
-                  if (isTabPresent('공간')) const OnCaGroupSpace(),
-                  if (isTabPresent('기타')) const OnCaGroupEtc(),
+                  TabBarView(
+                    controller: _tabController,
+                    children: [
+                      if (isTabPresent('멘토링')) const OnCaGroupMentoring(),
+                      if (isTabPresent('동아리')) const OnCaGroupClub(),
+                      if (isTabPresent('특강')) const OnCaGroupLecture(),
+                      if (isTabPresent('경진대회 및 캠프'))
+                        const OnCaGroupCompetition(),
+                      if (isTabPresent('공간')) const OnCaGroupSpace(),
+                      if (isTabPresent('기타')) const OnCaGroupEtc(),
+                    ],
+                  ),
+                  _isScrolled
+                      ? Positioned(
+                          right: 24,
+                          bottom: 12,
+                          child: ScrollToTopButton(
+                            thisBackToTopTap: backToTopTap,
+                          ))
+                      : Container()
                 ],
               ),
             ),

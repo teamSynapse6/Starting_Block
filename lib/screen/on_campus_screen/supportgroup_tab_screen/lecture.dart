@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OnCaGroupLecture extends StatefulWidget {
   const OnCaGroupLecture({super.key});
@@ -14,6 +15,7 @@ class OnCaGroupLecture extends StatefulWidget {
 
 class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
   List<OnCaLectureModel> _lectureList = []; // 강연 리스트를 저장할 변수
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -22,11 +24,15 @@ class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
   }
 
   Future<void> _loadLectureData() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       List<OnCaLectureModel> lectureList =
           await OnCampusGroupApi.getOnCaLecture();
       setState(() {
         _lectureList = lectureList;
+        isLoading = false;
       });
     } catch (e) {
       print('강연 정보 로드 실패: $e');
@@ -37,8 +43,8 @@ class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.g1,
-      body: _lectureList.isEmpty
-          ? Container()
+      body: isLoading
+          ? const OncaSkeletonSupportGroup()
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               itemCount: _lectureList.length,

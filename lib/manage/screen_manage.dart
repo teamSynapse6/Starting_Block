@@ -92,7 +92,8 @@ export 'package:starting_block/screen/home_screen/home_question_recommend.dart';
 export 'package:starting_block/screen/home_screen/home_alarm_screen.dart'; //홈_알림 화면
 
 //인앱웹뷰 페이지 관리용
-export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰
+export 'package:starting_block/screen/webview_screen/offcampus_webview.dart'; //교외지원사업 웹뷰
+export 'package:starting_block/screen/webview_screen/oncampus_webview.dart'; //교내지원사업 웹뷰
 export 'package:starting_block/screen/webview_screen/setting_term_webview.dart'; //개인정보처리방침 및 이용약관 웹뷰
 
 //질문하기 페이지
@@ -112,5 +113,10 @@ export 'package:starting_block/manage/theme_manage.dart';
 //스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/offcampus_home_skeleton.dart'; //교외지원사업 홈, 검색 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/roadmap_tap_ofca_skeleton.dart'; //로드맵_교외사업 탭 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_notify_skeleton.dart'; //교내지원사업_공고 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_system_skeleton.dart'; //교내지원사업_제도 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_class_skeleton.dart'; //교내지원사업_강의 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_supportgroup_skeleton.dart'; //교내지원사업_창업지원단 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_search_skeleton.dart'; //교내지원사업_검색 화면 스켈레톤 로더 화면
 
 //테스트용

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class ScrollToTopButtion extends StatelessWidget {
+class ScrollToTopButton extends StatelessWidget {
   final VoidCallback thisBackToTopTap;
 
-  const ScrollToTopButtion({
+  const ScrollToTopButton({
     super.key,
     required this.thisBackToTopTap,
   });
