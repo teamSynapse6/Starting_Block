@@ -84,6 +84,7 @@ export 'package:starting_block/constants/widgets/school_logo_widget.dart'; //학
 export 'package:starting_block/constants/widgets/myprofile_widget/myheart_list.dart'; //마이페이지_내 질문 리스트
 export 'package:starting_block/constants/widgets/myprofile_widget/myanswer_reply_list.dart'; //마이페이지_내 댓글,답글 리스트
 export 'package:starting_block/constants/widgets/myprofile_widget/myquestion_list.dart'; //마이페이지_내 질문 리스트
+export 'package:starting_block/constants/widgets/myprofile_widget/mygpt_list.dart'; //마이페이지_내 GPT 리스트
 
 //검색 컴포넌트 관리
 export 'package:starting_block/constants/widgets/search_history_list.dart'; //검색_최근 검색어 리스트

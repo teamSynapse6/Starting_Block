@@ -82,7 +82,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
           MaterialPageRoute(
               builder: (context) => const QuestionWriteComplete()));
 
-      Navigator.of(context).pop(); // 다이얼로그 닫기
+      Navigator.of(context).pop();
     }
     if (mounted) {
       Navigator.of(context).pop(true); // 작성화면 닫기

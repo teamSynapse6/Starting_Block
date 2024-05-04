@@ -284,6 +284,7 @@ class RoadMapListState extends State<RoadMapList> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () => roadMapTap(context),
       child: Row(
         mainAxisSize: MainAxisSize.min,

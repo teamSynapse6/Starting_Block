@@ -66,7 +66,7 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 4),
           child: Row(
             children: [
-              InkWell(
+              GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
@@ -81,7 +81,7 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: AppIcon.gpt_robot_24,
                 ),
               ),
-              InkWell(
+              GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
@@ -575,6 +575,44 @@ class TermAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class BackTitleAppBarForLicense extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String title;
+
+  const BackTitleAppBarForLicense({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      leading: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+          margin: const EdgeInsets.only(left: 4),
+          width: 48,
+          height: 48,
+          child: AppIcon.back,
+        ),
+      ),
+      titleSpacing: 4,
+      title: Text(
+        title,
+        style: AppTextStyles.st2.copyWith(color: AppColors.g6),
       ),
     );
   }

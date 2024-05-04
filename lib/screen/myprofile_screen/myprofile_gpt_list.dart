@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/screen_manage.dart';
+import 'package:starting_block/manage/userdata/gpt_list_manage.dart';
 
 class MyProfileGptList extends StatefulWidget {
   const MyProfileGptList({super.key});
@@ -13,6 +13,31 @@ class MyProfileGptList extends StatefulWidget {
 class _MyProfileGptListState extends State<MyProfileGptList> {
   Color topColor = const Color(0xff5E8BFF);
   Color bottomColor = const Color(0xff00288F);
+  List<GptListModel> chatList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadChatData();
+  }
+
+  void loadChatData() async {
+    List<GptListModel> tempList = await GptListManage.loadChatData();
+    setState(() {
+      chatList = tempList;
+    });
+  }
+
+  void thisGptListTap(String id, String title) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyProfileGptChat(thisTitle: title, thisID: id),
+        ));
+    if (result == true) {
+      loadChatData();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +96,36 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
                     topRight: Radius.circular(8),
                   ),
                 ),
-                child: const Column(
+                child: Column(
                   children: [
                     Gaps.v12,
+                    chatList.isNotEmpty
+                        ? Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: chatList.length,
+                              itemBuilder: (context, index) {
+                                final chat = chatList[index];
+                                return Column(
+                                  children: [
+                                    MyProfileGptListWidget(
+                                      thisTitle: chat.title,
+                                      thisLastContent: chat.lastMessage,
+                                      thisLastDate: chat.lastDate.toString(),
+                                      thisTap: () => thisGptListTap(
+                                          chat.id.toString(), chat.title),
+                                    ),
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 24),
+                                      child: CustomDividerH1G1(),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),

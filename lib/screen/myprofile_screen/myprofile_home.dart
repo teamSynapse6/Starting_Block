@@ -181,6 +181,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
                             ],
                           ),
                           GestureDetector(
+                            behavior: HitTestBehavior.translucent,
                             onTap: () {
                               Navigator.push(
                                 context,

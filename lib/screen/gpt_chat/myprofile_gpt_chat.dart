@@ -7,21 +7,21 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/gpt_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
-class OffCampusGptChat extends StatefulWidget {
+class MyProfileGptChat extends StatefulWidget {
   final String thisTitle;
   final String thisID;
 
-  const OffCampusGptChat({
+  const MyProfileGptChat({
     super.key,
     required this.thisTitle,
     required this.thisID,
   });
 
   @override
-  State<OffCampusGptChat> createState() => _OffCampusGptChatState();
+  State<MyProfileGptChat> createState() => _MyProfileGptChatState();
 }
 
-class _OffCampusGptChatState extends State<OffCampusGptChat> {
+class _MyProfileGptChatState extends State<MyProfileGptChat> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _controller = TextEditingController();
   bool _isTyped = false;
@@ -258,7 +258,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
           leading: GestureDetector(
             onTap: () {
               _deleteGptEnd();
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             },
             child: AppIcon.back,
           ),
