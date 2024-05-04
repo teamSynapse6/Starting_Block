@@ -37,9 +37,13 @@ class _MyProfileMyHeartState extends State<MyProfileMyHeart> {
               return Column(
                 children: [
                   if (index == 0)
-                    SizedBox(
+                    Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 10,
+                      color: AppColors.g1,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                     ),
                   MyProfileHeartList(
                     thisOrganization: question.announcementType,
@@ -78,6 +82,14 @@ class _MyProfileMyHeartState extends State<MyProfileMyHeart> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: AppColors.g1,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                    ),
                     Gaps.v78,
                     Text(
                       '궁금해요를 누른 게시글이 없어요.\n타 창업자들의 질문을 확인해 볼까요?',

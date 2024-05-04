@@ -247,7 +247,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
                 ? Positioned(
                     right: 24,
                     bottom: 15 + 9,
-                    child: ScrollToTopButtion(
+                    child: ScrollToTopButton(
                       thisBackToTopTap: backToTopTap,
                     ))
                 : Container()

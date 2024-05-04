@@ -26,7 +26,11 @@ class _OnCampusCardMediumState extends State<OnCampusCardMedium> {
             borderRadius: BorderRadius.all(
               Radius.circular(4),
             ),
-            color: AppColors.oncampusMedium,
+            gradient: LinearGradient(
+              colors: [Color(0XFFFDA86A), Color(0XFFFDB681)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
           child: InkWell(
             onTap: () {
@@ -37,8 +41,8 @@ class _OnCampusCardMediumState extends State<OnCampusCardMedium> {
                 ),
               );
             },
-            splashColor: AppColors.oncampusMediumPressed,
-            highlightColor: AppColors.oncampusMediumPressed,
+            splashColor: const Color(0xffFF994F),
+            highlightColor: const Color(0xffFF994F),
             borderRadius: BorderRadius.circular(4),
             child: Stack(
               children: [

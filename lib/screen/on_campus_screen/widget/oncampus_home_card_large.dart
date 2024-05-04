@@ -24,7 +24,11 @@ class _OnCampusCardLargeState extends State<OnCampusCardLarge> {
             borderRadius: BorderRadius.all(
               Radius.circular(4),
             ),
-            color: AppColors.blue,
+            gradient: LinearGradient(
+              colors: [Color(0XFF5E8BFF), Color(0XFF8FAEFF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
           child: InkWell(
             onTap: () {
@@ -34,8 +38,8 @@ class _OnCampusCardLargeState extends State<OnCampusCardLarge> {
                 ),
               );
             },
-            splashColor: AppColors.oncampusLargePressed,
-            highlightColor: AppColors.oncampusLargePressed,
+            splashColor: AppColors.blue,
+            highlightColor: AppColors.blue,
             borderRadius: BorderRadius.circular(4),
             child: Stack(
               children: [
@@ -66,7 +70,7 @@ class _OnCampusCardLargeState extends State<OnCampusCardLarge> {
                     height: 74,
                     width: 74,
                     decoration: BoxDecoration(
-                      color: AppColors.oncampusDeepBlue,
+                      color: AppColors.blue,
                       borderRadius: BorderRadius.circular(37),
                     ),
                     child: Transform.translate(

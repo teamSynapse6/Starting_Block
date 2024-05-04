@@ -1,11 +1,8 @@
 // ignore_for_file: avoid_print
-import 'dart:io';
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:starting_block/constants/animation_table.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/gpt_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -36,15 +33,13 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
   void initState() {
     super.initState();
     initializeWidget();
-    _ensureLocalFileExists().then((_) {
-      _loadMessages().then((loadedMessages) {
-        setState(() {
-          _messages = loadedMessages;
-          _scrollToBottom();
-          print('메시지 리스트: $_messages');
-        });
+    _loadMessages().then((loadedMessages) {
+      setState(() {
+        _messages = loadedMessages;
+        _scrollToBottom();
       });
     });
+
     _controller.addListener(_handleTextInputChange);
   }
 
@@ -152,25 +147,17 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
         '${currentTime.year}${currentTime.month.toString().padLeft(2, '0')}${currentTime.day.toString().padLeft(2, '0')}${currentTime.hour.toString().padLeft(2, '0')}${currentTime.minute.toString().padLeft(2, '0')}');
   }
 
-  /* 파일 저장 관련 메소드 */
-  Future<void> _ensureLocalFileExists() async {
-    final file = await _getLocalFile();
-    if (!await file.exists()) {
-      await file.create(recursive: true);
-      await file.writeAsString(jsonEncode([])); // 초기 빈 JSON 배열을 파일에 쓰기
-    }
-  }
-
-  Future<File> _getLocalFile() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return File('${directory.path}/chat_data/${widget.thisID}.json');
-  }
-
-// 메시지 목록을 SharedPreferences에 저장합니다.
+// 메시지 목록과 대화 제목을 SharedPreferences에 저장합니다.
   Future<void> _saveMessages(List<Message> messages) async {
     final prefs = await SharedPreferences.getInstance();
-    String encodedData =
-        jsonEncode(messages.map((msg) => msg.toJson()).toList());
+
+    // 메시지 데이터를 JSON 형식으로 인코딩합니다.
+    String encodedData = jsonEncode({
+      'messages': messages.map((msg) => msg.toJson()).toList(),
+      'title': widget.thisTitle // 제목 정보 추가
+    });
+
+    // SharedPreferences에 JSON 문자열을 저장합니다.
     await prefs.setString('chat_${widget.thisID}', encodedData);
   }
 
@@ -181,8 +168,14 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
     if (encodedData == null) {
       return [];
     }
-    List<dynamic> jsonData = jsonDecode(encodedData);
-    return jsonData.map((data) => Message.fromJson(data)).toList();
+
+    // JSON 데이터를 Map<String, dynamic>으로 파싱합니다.
+    Map<String, dynamic> jsonData = jsonDecode(encodedData);
+    List<dynamic> messageData =
+        jsonData['messages']; // 'messages' 키를 사용하여 메시지 배열을 추출
+
+    // messageData를 List<Message>로 변환
+    return messageData.map((data) => Message.fromJson(data)).toList();
   }
 
   // _buildSendMessageButton 메소드를 만들어서 '보내기' 버튼을 구성합니다.

@@ -26,7 +26,8 @@ export 'package:starting_block/screen/off_campus_screen/offcampus_search.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_searchresult.dart';
 
 //GPT 채팅 페이지
-export 'package:starting_block/screen/off_campus_screen/gpt_chat/offcampus_gpt_chat.dart';
+export 'package:starting_block/screen/gpt_chat/offcampus_gpt_chat.dart';
+export 'package:starting_block/screen/gpt_chat/myprofile_gpt_chat.dart';
 
 //로드맵 페이지
 export 'package:starting_block/screen/roadmap_screen/roadmap_home.dart';
@@ -79,10 +80,11 @@ export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit
 export 'package:starting_block/screen/myprofile_screen/profile_edit/profile_edit_profileicon.dart'; //프로필 수정_프로필 아이콘 수정
 export 'package:starting_block/screen/myprofile_screen/setting/setting_home.dart'; //설정_홈 화면
 export 'package:starting_block/screen/myprofile_screen/setting/setting_alarm.dart'; //설정_알람 화면
-export 'package:starting_block/screen/myprofile_screen/setting/setting_opensource.dart'; //설정_오픈소스 라이센스 화면
+export 'package:starting_block/screen/myprofile_screen/setting/license/custom_setting_license.dart'; //설정_오픈소스 라이센스 화면
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_heart.dart'; //탭_내 궁금해요
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_answer_reply.dart'; //탭_내 댓글,답글
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_question.dart'; //탭_내 질문
+export 'package:starting_block/screen/myprofile_screen/myprofile_gpt_list.dart'; //AI로 공고 분석하기 리스트 화면
 
 //홈_페이지
 export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면
@@ -92,7 +94,8 @@ export 'package:starting_block/screen/home_screen/home_question_recommend.dart';
 export 'package:starting_block/screen/home_screen/home_alarm_screen.dart'; //홈_알림 화면
 
 //인앱웹뷰 페이지 관리용
-export 'package:starting_block/screen/webview_screen/intergrate_webview.dart'; //교외지원사업 웹뷰
+export 'package:starting_block/screen/webview_screen/offcampus_webview.dart'; //교외지원사업 웹뷰
+export 'package:starting_block/screen/webview_screen/oncampus_webview.dart'; //교내지원사업 웹뷰
 export 'package:starting_block/screen/webview_screen/setting_term_webview.dart'; //개인정보처리방침 및 이용약관 웹뷰
 
 //질문하기 페이지
@@ -102,6 +105,8 @@ export 'package:starting_block/screen/question_screen/question_detail.dart'; //�
 export 'package:starting_block/screen/question_screen/question_detail_info.dart'; //질문 상세 화면_질문영역
 export 'package:starting_block/screen/question_screen/comment_screen/user_comment.dart'; //유저 댓글 영역
 export 'package:starting_block/screen/question_screen/comment_screen/reply_comment.dart'; //유저 답글 영역
+export 'package:starting_block/screen/question_screen/comment_screen/contact_reply_comment.dart'; //문의처 답글 영역
+export 'package:starting_block/screen/question_screen/question_write_complete.dart'; //질문 작성 완료 화면
 
 //데이터 파일 관리용
 export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_info.dart';
@@ -112,5 +117,9 @@ export 'package:starting_block/manage/theme_manage.dart';
 //스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/offcampus_home_skeleton.dart'; //교외지원사업 홈, 검색 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/roadmap_tap_ofca_skeleton.dart'; //로드맵_교외사업 탭 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_notify_skeleton.dart'; //교내지원사업_공고 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_system_skeleton.dart'; //교내지원사업_제도 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_class_skeleton.dart'; //교내지원사업_강의 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_supportgroup_skeleton.dart'; //교내지원사업_창업지원단 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_search_skeleton.dart'; //교내지원사업_검색 화면 스켈레톤 로더 화면
 
-//테스트용

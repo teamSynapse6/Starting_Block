@@ -26,7 +26,7 @@ class OffCampusDetailModel {
       : id = json['id'] as int,
         organization = json['organization'] ?? '',
         title = decodeHtmlEntities(json['title'] ?? ''),
-        content = json['content'] ?? '',
+        content = decodeHtmlEntities(json['content'] ?? ''),
         startDate = json['startDate'] ?? '',
         endDate = json['endDate'] ?? '',
         target = json['target'] ?? '',

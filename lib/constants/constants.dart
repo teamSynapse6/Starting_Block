@@ -35,7 +35,6 @@ export 'package:starting_block/constants/widgets/offcampus_filter/bottomsheet_li
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/oncampus_filter/onca_programchipsheet.dart'; //교내지원사업_프로그램 컴포넌트
-export 'package:starting_block/constants/widgets/oncampus_filter/onca_resetbutton.dart'; //교내지원사업 필터 리셋 위젯
 
 //리스트 필터 시스템
 export 'package:starting_block/constants/widgets/offcampus_filter/intergrate_filter.dart'; //교외지원사업_통합 필터 시스템
@@ -85,6 +84,7 @@ export 'package:starting_block/constants/widgets/school_logo_widget.dart'; //학
 export 'package:starting_block/constants/widgets/myprofile_widget/myheart_list.dart'; //마이페이지_내 질문 리스트
 export 'package:starting_block/constants/widgets/myprofile_widget/myanswer_reply_list.dart'; //마이페이지_내 댓글,답글 리스트
 export 'package:starting_block/constants/widgets/myprofile_widget/myquestion_list.dart'; //마이페이지_내 질문 리스트
+export 'package:starting_block/constants/widgets/myprofile_widget/mygpt_list.dart'; //마이페이지_내 GPT 리스트
 
 //검색 컴포넌트 관리
 export 'package:starting_block/constants/widgets/search_history_list.dart'; //검색_최근 검색어 리스트

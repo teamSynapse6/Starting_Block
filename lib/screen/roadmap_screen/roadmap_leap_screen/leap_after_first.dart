@@ -27,26 +27,29 @@ class LeapAfterFirstScreen extends StatelessWidget {
       );
     });
 
-    return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        color: AppColors.blue,
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Gaps.v117,
-              Text(
-                '다음 단계의\n추천 지원 사업을 찾고 있어요',
-                textAlign: TextAlign.center,
-                style: AppTextStyles.st1.copyWith(color: AppColors.white),
-              ),
-              Gaps.v28,
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: AppAnimation.leap_after_first,
-              ),
-            ],
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          color: AppColors.blue,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Gaps.v117,
+                Text(
+                  '다음 단계의\n추천 지원 사업을 찾고 있어요',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.st1.copyWith(color: AppColors.white),
+                ),
+                Gaps.v28,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: AppAnimation.leap_after_first,
+                ),
+              ],
+            ),
           ),
         ),
       ),

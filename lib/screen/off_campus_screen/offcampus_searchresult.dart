@@ -293,7 +293,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
                   ? Positioned(
                       right: 24,
                       bottom: 15 + 9,
-                      child: ScrollToTopButtion(
+                      child: ScrollToTopButton(
                         thisBackToTopTap: backToTopTap,
                       ))
                   : Container()

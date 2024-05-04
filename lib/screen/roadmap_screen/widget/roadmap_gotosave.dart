@@ -21,6 +21,7 @@ class GotoSaveItem extends StatelessWidget {
         ),
         Gaps.v8,
         GestureDetector(
+          behavior: HitTestBehavior.translucent,
           onTap: tapAction,
           child: Container(
             width: 130,

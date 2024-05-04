@@ -22,6 +22,8 @@ class QuestionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onTap: thisOnTap,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +40,7 @@ class QuestionList extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Gaps.v4,
+                Gaps.v6,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -55,7 +57,7 @@ class QuestionList extends StatelessWidget {
                           )
                         : Text(
                             '답변 $thisAnswerCount개 보러가기',
-                            style: AppTextStyles.bd4
+                            style: AppTextStyles.bd6
                                 .copyWith(color: AppColors.blue),
                           ),
                     AppIcon.arrow_next_14_blue

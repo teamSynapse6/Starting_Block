@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/recentsearch_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
@@ -65,20 +64,39 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 4),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SettingHome(),
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyProfileGptList(),
+                    ),
+                  );
+                },
+                child: SizedBox(
+                  height: 48,
+                  width: 48,
+                  child: AppIcon.gpt_robot_24,
                 ),
-              );
-            },
-            child: SizedBox(
-              height: 48,
-              width: 48,
-              child: AppIcon.settings,
-            ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingHome(),
+                    ),
+                  );
+                },
+                child: SizedBox(
+                  height: 48,
+                  width: 48,
+                  child: AppIcon.settings,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -462,6 +480,34 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+class BackTitleAppBarForGptList extends StatelessWidget
+    implements PreferredSizeWidget {
+  const BackTitleAppBarForGptList({
+    super.key,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: AppIcon.back_white,
+      ),
+      titleSpacing: 4,
+      title: Text(
+        'AI로 공고 분석하기',
+        style: AppTextStyles.st1.copyWith(color: AppColors.white),
+      ),
+    );
+  }
+}
+
 class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TitleAppBar({
     super.key,
@@ -529,6 +575,44 @@ class TermAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class BackTitleAppBarForLicense extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String title;
+
+  const BackTitleAppBarForLicense({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      leading: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+          margin: const EdgeInsets.only(left: 4),
+          width: 48,
+          height: 48,
+          child: AppIcon.back,
+        ),
+      ),
+      titleSpacing: 4,
+      title: Text(
+        title,
+        style: AppTextStyles.st2.copyWith(color: AppColors.g6),
       ),
     );
   }

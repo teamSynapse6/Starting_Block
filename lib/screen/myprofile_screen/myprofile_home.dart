@@ -87,7 +87,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.g1,
+      backgroundColor: AppColors.white,
       appBar: const SettingAppBar(),
       body: Consumer<UserInfo>(
         builder: (context, userInfo, child) {
@@ -181,6 +181,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
                             ],
                           ),
                           GestureDetector(
+                            behavior: HitTestBehavior.translucent,
                             onTap: () {
                               Navigator.push(
                                 context,

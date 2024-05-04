@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OnCaGroupClub extends StatefulWidget {
   const OnCaGroupClub({super.key});
@@ -14,6 +15,7 @@ class OnCaGroupClub extends StatefulWidget {
 
 class _OnCaGroupClubState extends State<OnCaGroupClub> {
   List<OnCaClubModel> _clubList = []; // 동아리 리스트를 저장할 변수
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -22,10 +24,14 @@ class _OnCaGroupClubState extends State<OnCaGroupClub> {
   }
 
   Future<void> _loadClubData() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       List<OnCaClubModel> clubList = await OnCampusGroupApi.getOnCaClub();
       setState(() {
         _clubList = clubList;
+        isLoading = false;
       });
     } catch (e) {
       print('동아리 정보 로드 실패: $e');
@@ -36,21 +42,25 @@ class _OnCaGroupClubState extends State<OnCaGroupClub> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.g1,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: _clubList.isEmpty
-            ? Container()
-            : ListView.builder(
-                itemCount: _clubList.length,
-                itemBuilder: (context, index) {
-                  final item = _clubList[index];
-                  return OnCampusGroupList(
-                    thisTitle: item.title,
-                    thisContent: item.content,
-                  );
-                },
-              ),
-      ),
+      body: isLoading
+          ? const OncaSkeletonSupportGroup()
+          : ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              itemCount: _clubList.length,
+              itemBuilder: (context, index) {
+                final item = _clubList[index];
+                return Column(
+                  children: [
+                    if (index == 0) Gaps.v16,
+                    OnCampusGroupList(
+                      thisTitle: item.title,
+                      thisContent: item.content,
+                    ),
+                    Gaps.v16,
+                  ],
+                );
+              },
+            ),
     );
   }
 }

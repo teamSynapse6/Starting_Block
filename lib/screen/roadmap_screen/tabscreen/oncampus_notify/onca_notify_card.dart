@@ -35,10 +35,9 @@ class OnCaNotifyCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => WebViewScreen(
+            builder: (context) => OfcampusWebViewScreen(
               url: thisUrl,
               id: thisID,
-              classification: '교내사업',
             ),
           ),
         );

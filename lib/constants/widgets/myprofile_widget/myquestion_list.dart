@@ -111,7 +111,7 @@ class MyQuestionList extends StatelessWidget {
                 ),
               ],
             ),
-            organizationManger != ''
+            organizationManger != '' //문의처답변
                 ? Column(
                     children: [
                       Gaps.v16,

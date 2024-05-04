@@ -66,9 +66,10 @@ class _MyProfileMyQuestionState extends State<MyProfileMyQuestion> {
               return Column(
                 children: [
                   if (index == 0)
-                    SizedBox(
+                    Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 10,
+                      height: 8,
+                      color: AppColors.g1,
                     ),
                   MyQuestionList(
                     thisOrganization: question.announcementType,
@@ -81,29 +82,35 @@ class _MyProfileMyQuestionState extends State<MyProfileMyQuestion> {
                     contactAnswerContent: question.contactAnswerContent,
                     thisTap: () => _thisTap(question.questionId),
                   ),
-                  if (index < myQuestions.length - 1) Gaps.v4,
+                  if (index < myQuestions.length - 1)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24),
+                      child: CustomDividerH1G1(),
+                    ),
                   if (index == myQuestions.length - 1) Gaps.v10,
                 ],
               );
             })
         : Column(
             children: [
-              Gaps.v10,
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 360,
-                color: AppColors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Gaps.v78,
-                    Text(
-                      '작성한 질문이 없어요.\n공고를 탐색하며, 궁금한 사항은 질문을 작성해 볼까요?',
-                      style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
+                color: AppColors.g1,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
                 ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Gaps.v78,
+                  Text(
+                    '작성한 질문이 없어요.\n공고를 탐색하며, 궁금한 사항은 질문을 작성해 볼까요?',
+                    style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                    textAlign: TextAlign.center,
+                  )
+                ],
               ),
             ],
           );

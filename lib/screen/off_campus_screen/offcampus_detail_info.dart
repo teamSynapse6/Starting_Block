@@ -127,10 +127,9 @@ class OffCampusDetailInfo extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => WebViewScreen(
+                      builder: (context) => OfcampusWebViewScreen(
                         url: link,
                         id: thisID,
-                        classification: '교외사업',
                       ),
                     ),
                   );

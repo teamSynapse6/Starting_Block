@@ -7,21 +7,20 @@ import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class WebViewScreen extends StatefulWidget {
-  final String url, id, classification;
+class OfcampusWebViewScreen extends StatefulWidget {
+  final String url, id;
 
-  const WebViewScreen({
+  const OfcampusWebViewScreen({
     super.key,
     required this.url,
     required this.id,
-    required this.classification,
   });
 
   @override
-  State<WebViewScreen> createState() => _WebViewScreenState();
+  State<OfcampusWebViewScreen> createState() => _OfcampusWebViewScreenState();
 }
 
-class _WebViewScreenState extends State<WebViewScreen> {
+class _OfcampusWebViewScreenState extends State<OfcampusWebViewScreen> {
   String _questionCount = '0';
   final List<OffCampusDetailModel> _offcampusDetail = [];
   bool _isBottomAppBarVisible = true;

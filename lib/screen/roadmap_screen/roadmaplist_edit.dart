@@ -182,8 +182,9 @@ class _RoadMapEditState extends State<RoadMapEdit> {
                         key: ValueKey(roadMap.roadmapId),
                         child: ReorderCustomTile(
                           thisText: roadMap.title,
-                          thisTextStyle:
-                              AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                          thisTextStyle: roadMap.roadmapStatus == "COMPLETED"
+                              ? AppTextStyles.bd2.copyWith(color: AppColors.g4)
+                              : AppTextStyles.bd2.copyWith(color: AppColors.g6),
                           isComlete: roadMap.roadmapStatus == "COMPLETED",
                         ),
                       );

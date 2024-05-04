@@ -17,18 +17,16 @@ class OnCampusNotifyListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(
-        bottom: 16,
-      ),
-      child: InkWell(
+      color: AppColors.white,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: GestureDetector(
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => WebViewScreen(
+              builder: (context) => OncampusWebViewScreen(
                 url: thisUrl,
                 id: thisId,
-                classification: '교내사업',
               ),
             ),
           );
@@ -40,7 +38,6 @@ class OnCampusNotifyListCard extends StatelessWidget {
               children: [
                 OrganizeChip(text: thisProgramText),
                 const Spacer(),
-                // BookMarkButton(id: thisId, classification: '교내사업')
               ],
             ),
             Gaps.v12,
@@ -53,8 +50,6 @@ class OnCampusNotifyListCard extends StatelessWidget {
               '등록일 $thisStartDate',
               style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
             ),
-            Gaps.v16,
-            const CustomDivider(),
           ],
         ),
       ),

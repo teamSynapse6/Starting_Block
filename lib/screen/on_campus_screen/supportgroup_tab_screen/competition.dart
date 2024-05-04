@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OnCaGroupCompetition extends StatefulWidget {
   const OnCaGroupCompetition({super.key});
@@ -14,6 +15,7 @@ class OnCaGroupCompetition extends StatefulWidget {
 
 class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
   List<OnCaCompetitionModel> _competitionList = []; // 경진대회 리스트를 저장할 변수
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -22,11 +24,15 @@ class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
   }
 
   Future<void> _loadCompetitionData() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       List<OnCaCompetitionModel> competitionList =
           await OnCampusGroupApi.getOnCaCompetition();
       setState(() {
         _competitionList = competitionList;
+        isLoading = false;
       });
     } catch (e) {
       print('경진대회 정보 로드 실패: $e');
@@ -37,21 +43,25 @@ class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.g1,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: _competitionList.isEmpty
-            ? Container()
-            : ListView.builder(
-                itemCount: _competitionList.length,
-                itemBuilder: (context, index) {
-                  final item = _competitionList[index];
-                  return OnCampusGroupList(
-                    thisTitle: item.title,
-                    thisContent: item.content,
-                  );
-                },
-              ),
-      ),
+      body: isLoading
+          ? const OncaSkeletonSupportGroup()
+          : ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              itemCount: _competitionList.length,
+              itemBuilder: (context, index) {
+                final item = _competitionList[index];
+                return Column(
+                  children: [
+                    if (index == 0) Gaps.v20,
+                    OnCampusGroupList(
+                      thisTitle: item.title,
+                      thisContent: item.content,
+                    ),
+                    Gaps.v16,
+                  ],
+                );
+              },
+            ),
     );
   }
 }

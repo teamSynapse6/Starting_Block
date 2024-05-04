@@ -6,6 +6,7 @@ import 'package:starting_block/constants/sizes.dart';
 class ThemeManage {
   static ThemeData get theme {
     return ThemeData(
+      useMaterial3: true,
       scaffoldBackgroundColor: AppColors.white,
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.white,

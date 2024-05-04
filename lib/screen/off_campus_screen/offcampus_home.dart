@@ -268,7 +268,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                   ? Positioned(
                       right: 24,
                       bottom: 15 + 9,
-                      child: ScrollToTopButtion(
+                      child: ScrollToTopButton(
                         thisBackToTopTap: backToTopTap,
                       ))
                   : Container()

@@ -25,7 +25,11 @@ class _OnCampusCardSmallSystemState extends State<OnCampusCardSmallSystem> {
               borderRadius: BorderRadius.all(
                 Radius.circular(4),
               ),
-              color: AppColors.oncampusSmallSys),
+              gradient: LinearGradient(
+                colors: [Color(0xffDBB7FF), Color(0xffE8D1FF)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )),
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
@@ -34,8 +38,11 @@ class _OnCampusCardSmallSystemState extends State<OnCampusCardSmallSystem> {
                 ),
               );
             },
-            splashColor: AppColors.oncampusSmallSysPressed,
-            highlightColor: AppColors.oncampusSmallSysPressed,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(4),
+            ),
+            splashColor: const Color(0xffCB98FF),
+            highlightColor: const Color(0xffCB98FF),
             child: Stack(
               children: [
                 Positioned(
@@ -45,7 +52,7 @@ class _OnCampusCardSmallSystemState extends State<OnCampusCardSmallSystem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '창업 제도',
+                        '제도',
                         style:
                             AppTextStyles.bd3.copyWith(color: AppColors.white),
                       ),
