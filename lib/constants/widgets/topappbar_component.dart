@@ -8,10 +8,7 @@ import 'package:starting_block/manage/screen_manage.dart';
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({
     super.key,
-    required this.newAlarm,
   });
-
-  final bool newAlarm;
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -27,26 +24,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: AppColors.g1,
         leadingWidth: 38,
         leading: AppIcon.topapplogo,
-        actions: <Widget>[
-          InkWell(
-            borderRadius: BorderRadius.circular(24),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeAlarmScreen(),
-                ),
-              );
-            },
-            child: SizedBox(
-              height: 48,
-              width: 48,
-              child: !newAlarm
-                  ? AppIcon.notification_inactived
-                  : AppIcon.notification_actived,
-            ),
-          ),
-        ],
       ),
     );
   }

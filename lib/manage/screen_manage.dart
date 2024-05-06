@@ -89,9 +89,9 @@ export 'package:starting_block/screen/myprofile_screen/myprofile_gpt_list.dart';
 //홈_페이지
 export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면
 export 'package:starting_block/screen/home_screen/home_question_step.dart'; //홈_질문 단계
+export 'package:starting_block/screen/home_screen/home_question_step_expend.dart'; //홈_질문 단계 확장 영역
 export 'package:starting_block/screen/home_screen/home_notify_recommend.dart'; //홈_공고 추천 영역
 export 'package:starting_block/screen/home_screen/home_question_recommend.dart'; //홈_질문 추천 영역
-export 'package:starting_block/screen/home_screen/home_alarm_screen.dart'; //홈_알림 화면
 
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/offcampus_webview.dart'; //교외지원사업 웹뷰

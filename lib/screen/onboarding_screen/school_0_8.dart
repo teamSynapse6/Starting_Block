@@ -181,9 +181,10 @@ class _SchoolScreenState extends State<SchoolScreen> {
                 },
               )
             else if (_schoolInfo.isNotEmpty && filteredSchoolList.isEmpty)
-              Center(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  '현재 일부 대학의 지원 사업을 제공해드립니다',
+                  "'현재 수도권 대학만을 지원해요.\n입력하신 학교의 정보를 빠르게 제공하도록 노력할게요'",
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
                 ),
               )

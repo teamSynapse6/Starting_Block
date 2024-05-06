@@ -62,7 +62,6 @@ class _MyProfileMyAnswerReplyState extends State<MyProfileMyAnswerReply> {
           )
         : Column(
             children: [
-              Gaps.v10,
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height - 360,

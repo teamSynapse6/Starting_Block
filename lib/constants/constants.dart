@@ -46,6 +46,8 @@ export 'package:starting_block/constants/widgets/home_widget/dash_stroke.dart'; 
 export 'package:starting_block/constants/widgets/home_widget/notify_recommend_list.dart'; //공고 추천 위젯
 export 'package:starting_block/constants/widgets/home_widget/question_recommend_list.dart'; //질문 추천 위젯
 export 'package:starting_block/constants/widgets/home_widget/ofca_onca_chip.dart'; //교내교외 구분 칩
+export 'package:starting_block/constants/widgets/home_widget/question_expanded_list.dart'; //질문 홈_확장 리스트
+export 'package:starting_block/constants/widgets/home_widget/question_expanded_stepper.dart'; //질문 홈_확장 스텝퍼 위젯
 
 //로드맵 컴포넌트 관리
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_gotosave.dart'; //로드맵_지원사업 저장하러 가기

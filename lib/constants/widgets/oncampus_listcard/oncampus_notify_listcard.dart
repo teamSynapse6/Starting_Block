@@ -20,6 +20,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
       color: AppColors.white,
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           Navigator.push(
             context,

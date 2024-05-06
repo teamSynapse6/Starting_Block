@@ -74,7 +74,6 @@ class _MyProfileMyHeartState extends State<MyProfileMyHeart> {
           )
         : Column(
             children: [
-              Gaps.v10,
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height - 360,

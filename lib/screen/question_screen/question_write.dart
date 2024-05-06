@@ -123,8 +123,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
                       style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                       children: <TextSpan>[
                         const TextSpan(
-                            text:
-                                '질문하기를 작성 시, 다른 창업자들이 작성한 답변을 유지하기 위해, 댓글이 달린 이후에는 '),
+                            text: '글 작성 시 다른 창업자들이 작성한 답변을 유지하기 위해,\n'),
                         TextSpan(
                             text: '글을 수정 및 삭제할 수 없습니다.',
                             style: AppTextStyles.bd5
@@ -173,8 +172,8 @@ class _QuestionWriteState extends State<QuestionWrite> {
               ),
               const Spacer(),
               Text(
-                "문의처 이메일이 제공된 공고글에 한해,\n'문의처에 질문하기' 기능이 제공됩니다.\n주말(공휴일) 제외 오전 9시에 문의처에 메일이 발송됩니다.",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
+                "문의처 이메일이 안내된 공고에 대해 질문할 수 있어요.\n메일은 '평일 오전 9시'에 발송돼요.",
+                style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
               ),
               Gaps.v24,
             ],
