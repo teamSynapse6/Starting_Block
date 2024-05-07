@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class HomeQuestionStepExpandedList extends StatelessWidget {
-  const HomeQuestionStepExpandedList({super.key});
+  final int questionStage;
+
+  const HomeQuestionStepExpandedList({
+    super.key,
+    required this.questionStage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +41,11 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         Gaps.v16,
-        const QuestionExpandedStepper(questionStage: 1),
+        QuestionExpandedStepper(
+          questionStage: questionStage, //질문단계
+        ),
         Gaps.v6,
-        const Row(
+        Row(
           children: [
             Gaps.h16,
             SizedBox(
@@ -49,28 +56,89 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
                 children: [
                   Text(
                     '질문 접수',
-                    style: TextStyle(
-                      fontFamily: 'pretendard',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      height: 14 / 10,
-                      color: AppColors.blue,
-                    ),
+                    style: questionStage >= 2
+                        ? const TextStyle(
+                            fontFamily: 'pretendard',
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            height: 14 / 10,
+                            color: AppColors.bluelight,
+                          )
+                        : const TextStyle(
+                            fontFamily: 'pretendard',
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            height: 14 / 10,
+                            color: AppColors.blue,
+                          ),
                   ),
                   Text(
                     '(04.06)',
-                    style: TextStyle(
-                      fontFamily: 'pretendard',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      height: 14 / 10,
-                      color: AppColors.blue,
-                    ),
+                    style: questionStage >= 2
+                        ? const TextStyle(
+                            fontFamily: 'pretendard',
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            height: 14 / 10,
+                            color: AppColors.bluelight,
+                          )
+                        : const TextStyle(
+                            fontFamily: 'pretendard',
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            height: 14 / 10,
+                            color: AppColors.blue,
+                          ),
                   ),
                 ],
               ),
             ),
-            Spacer(),
+            const Spacer(),
+            SizedBox(
+              width: 48,
+              height: 28,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('질문 발송',
+                      style: questionStage == 1
+                          ? AppTextStyles.caption.copyWith(color: AppColors.g3)
+                          : questionStage == 2
+                              ? const TextStyle(
+                                  fontFamily: 'pretendard',
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  height: 14 / 10,
+                                  color: AppColors.blue,
+                                )
+                              : const TextStyle(
+                                  fontFamily: 'pretendard',
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  height: 14 / 10,
+                                  color: AppColors.bluelight,
+                                )),
+                  if (questionStage >= 2)
+                    Text('(04.06)',
+                        style: questionStage == 2
+                            ? const TextStyle(
+                                fontFamily: 'pretendard',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                height: 14 / 10,
+                                color: AppColors.blue,
+                              )
+                            : const TextStyle(
+                                fontFamily: 'pretendard',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                height: 14 / 10,
+                                color: AppColors.bluelight,
+                              )),
+                ],
+              ),
+            ),
+            const Spacer(),
             SizedBox(
               width: 48,
               height: 28,
@@ -78,55 +146,30 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '질문 접수',
-                    style: TextStyle(
-                      fontFamily: 'pretendard',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      height: 14 / 10,
-                      color: AppColors.blue,
-                    ),
+                    '답변 도착',
+                    style: questionStage == 3
+                        ? const TextStyle(
+                            fontFamily: 'pretendard',
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            height: 14 / 10,
+                            color: AppColors.blue,
+                          )
+                        : AppTextStyles.caption.copyWith(color: AppColors.g3),
                   ),
-                  Text(
-                    '(04.06)',
-                    style: TextStyle(
-                      fontFamily: 'pretendard',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      height: 14 / 10,
-                      color: AppColors.blue,
+                  if (questionStage >= 3)
+                    Text(
+                      '(04.06)',
+                      style: questionStage == 3
+                          ? const TextStyle(
+                              fontFamily: 'pretendard',
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              height: 14 / 10,
+                              color: AppColors.blue,
+                            )
+                          : AppTextStyles.caption.copyWith(color: AppColors.g3),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Spacer(),
-            SizedBox(
-              width: 48,
-              height: 28,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '질문 접수',
-                    style: TextStyle(
-                      fontFamily: 'pretendard',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      height: 14 / 10,
-                      color: AppColors.blue,
-                    ),
-                  ),
-                  Text(
-                    '(04.06)',
-                    style: TextStyle(
-                      fontFamily: 'pretendard',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      height: 14 / 10,
-                      color: AppColors.blue,
-                    ),
-                  ),
                 ],
               ),
             ),

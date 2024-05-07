@@ -7,6 +7,8 @@ class HomeQuestionStepExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int itemCount = 1;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,15 +24,23 @@ class HomeQuestionStepExpanded extends StatelessWidget {
         Gaps.v16,
         const CustomDividerH2G1(),
         const CustomDividerH2G1(),
-        Gaps.v20,
         ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 1,
+          itemCount: itemCount,
           itemBuilder: (context, index) {
-            return const HomeQuestionStepExpandedList();
+            return Column(
+              children: [
+                Gaps.v20,
+                const HomeQuestionStepExpandedList(
+                  questionStage: 1,
+                ),
+                Gaps.v20,
+                if (index < itemCount - 1) const CustomDividerH2G1(),
+              ],
+            );
           },
         ),
-        Gaps.v40,
       ],
     );
   }

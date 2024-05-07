@@ -39,7 +39,9 @@ class CompleteScreen extends StatelessWidget {
                   ],
                 ),
                 Gaps.v49,
-                //여기에 애니메이션 들어가야 함.
+                Center(
+                  child: AppAnimation.signup_complete,
+                ),
               ],
             ),
           ),

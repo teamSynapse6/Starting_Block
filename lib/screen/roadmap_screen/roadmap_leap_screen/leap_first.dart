@@ -64,7 +64,11 @@ class LeapFirstScreen extends StatelessWidget {
                   Text(
                     '앞으로의 성장을 기대할게요',
                     style: AppTextStyles.bd1.copyWith(color: AppColors.white),
-                  )
+                  ),
+                  Gaps.v28,
+                  Center(
+                    child: AppAnimation.leap_first,
+                  ),
                 ],
               ),
             )),
