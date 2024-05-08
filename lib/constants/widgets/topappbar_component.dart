@@ -336,6 +336,29 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+class BackAppBarWithBlueBG extends StatelessWidget
+    implements PreferredSizeWidget {
+  const BackAppBarWithBlueBG({
+    super.key,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: AppColors.blue,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: AppIcon.back_white,
+      ),
+    );
+  }
+}
+
 class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final state;
 
@@ -459,8 +482,11 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class BackTitleAppBarForGptList extends StatelessWidget
     implements PreferredSizeWidget {
+  final String title;
+
   const BackTitleAppBarForGptList({
     super.key,
+    required this.title,
   });
 
   @override
@@ -478,7 +504,7 @@ class BackTitleAppBarForGptList extends StatelessWidget
       ),
       titleSpacing: 4,
       title: Text(
-        'AI로 공고 분석하기',
+        title,
         style: AppTextStyles.st1.copyWith(color: AppColors.white),
       ),
     );

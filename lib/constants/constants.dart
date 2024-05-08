@@ -45,6 +45,8 @@ export 'package:starting_block/constants/widgets/home_widget/question_stepper.da
 export 'package:starting_block/constants/widgets/home_widget/dash_stroke.dart'; //질문 단계_dash 위젯
 export 'package:starting_block/constants/widgets/home_widget/notify_recommend_list.dart'; //공고 추천 위젯
 export 'package:starting_block/constants/widgets/home_widget/question_recommend_list.dart'; //질문 추천 위젯
+export 'package:starting_block/constants/widgets/home_widget/question_detail_stepper.dart'; //질문_상세 스텝퍼 위젯
+export 'package:starting_block/constants/widgets/home_widget/question_detail_steptext.dart'; //질문_상세 스텝퍼 텍스트 위젯
 export 'package:starting_block/constants/widgets/home_widget/ofca_onca_chip.dart'; //교내교외 구분 칩
 export 'package:starting_block/constants/widgets/home_widget/question_expanded_list.dart'; //질문 홈_확장 리스트
 export 'package:starting_block/constants/widgets/home_widget/question_expanded_stepper.dart'; //질문 홈_확장 스텝퍼 위젯

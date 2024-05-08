@@ -30,8 +30,8 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
     List<Map<String, dynamic>> questionStage = [
       {
         "stage": 1,
-        "title": "${widget.thisUserName}님의 질문이\n발송 준비 중이에요",
-        "content": "평일 오전 9시에 발송 예정이에요",
+        "title": "${widget.thisUserName}님의 최신 질문이\n발송 준비중이에요",
+        "content": "매일 오전 9시에 발송 예정이에요",
       },
       {
         "stage": 2,
@@ -60,7 +60,9 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             isExpanded
-                ? const HomeQuestionStepExpanded()
+                ? HomeQuestionStepExpanded(
+                    thisUserName: widget.thisUserName,
+                  )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

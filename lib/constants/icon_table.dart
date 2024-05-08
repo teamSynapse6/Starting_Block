@@ -241,14 +241,22 @@ class AppIcon {
   static Widget get chatting_icon =>
       SvgPicture.asset('assets/icon/other/chatting_icon.svg',
           fit: BoxFit.scaleDown);
-  static Widget get contact_logo_18 =>
-      SvgPicture.asset('assets/icon/other/contact_logo_18.svg',
-          fit: BoxFit.scaleDown);
+  static Widget get contact_logo =>
+      SvgPicture.asset('assets/icon/other/contact_logo_18.svg');
   static Widget get gpt_robot_icon =>
       SvgPicture.asset('assets/icon/other/gpt_robot_icon.svg',
           fit: BoxFit.scaleDown);
   static Widget get gpt_listpage_tail =>
       SvgPicture.asset('assets/icon/other/gpt_listpage_tail.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get tail_down_right_24 =>
+      SvgPicture.asset('assets/icon/other/tail_down_right_24.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get tail_down_left_24 =>
+      SvgPicture.asset('assets/icon/other/tail_down_left_24.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get stepper_octagon =>
+      SvgPicture.asset('assets/icon/other/stepper_octagon.svg',
           fit: BoxFit.scaleDown);
 
   // Profile Image
