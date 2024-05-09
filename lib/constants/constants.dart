@@ -26,6 +26,7 @@ export 'package:starting_block/constants/widgets/setting_widget/setting_list.dar
 export 'package:starting_block/constants/widgets/setting_widget/profile_icon_list.dart'; //설정_프로필 수정 리스트 위젯
 export 'package:starting_block/constants/widgets/comment_widget/question_list.dart'; //질문 홈_리스트 위젯
 export 'package:starting_block/constants/widgets/scroll_to_top.dart'; //상단으로 자동 스크롤 위젯
+export 'package:starting_block/constants/widgets/pointer_pop_ignore.dart'; //뒤로가기 무시 컴포넌트
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트

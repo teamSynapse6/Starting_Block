@@ -3,17 +3,20 @@ import 'package:starting_block/constants/constants.dart';
 
 class QuestionStepper extends StatelessWidget {
   final int stage;
+  final String receptionTime, sendTime, arriveTime;
 
   const QuestionStepper({
     super.key,
     required this.stage,
+    required this.receptionTime,
+    required this.sendTime,
+    required this.arriveTime,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 48,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -28,6 +31,12 @@ class QuestionStepper extends StatelessWidget {
               Text(
                 '질문 접수',
                 style: AppTextStyles.btn2.copyWith(
+                  color: AppColors.blue,
+                ),
+              ),
+              Text(
+                '($receptionTime)',
+                style: AppTextStyles.caption.copyWith(
                   color: AppColors.blue,
                 ),
               )
@@ -56,7 +65,18 @@ class QuestionStepper extends StatelessWidget {
                           ? AppColors.blue
                           : AppColors.g3,
                 ),
-              )
+              ),
+              if (sendTime != '')
+                Text(
+                  '($sendTime)',
+                  style: AppTextStyles.caption.copyWith(
+                    color: stage == 2
+                        ? AppColors.blue
+                        : stage == 3
+                            ? AppColors.blue
+                            : AppColors.g3,
+                  ),
+                ),
             ],
           ),
           Expanded(
@@ -79,7 +99,14 @@ class QuestionStepper extends StatelessWidget {
                 style: AppTextStyles.btn2.copyWith(
                   color: stage == 3 ? AppColors.blue : AppColors.g3,
                 ),
-              )
+              ),
+              if (arriveTime != '')
+                Text(
+                  '($arriveTime)',
+                  style: AppTextStyles.caption.copyWith(
+                    color: stage == 3 ? AppColors.blue : AppColors.g3,
+                  ),
+                )
             ],
           ),
         ],

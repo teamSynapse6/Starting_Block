@@ -1,8 +1,44 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
 
-class HomeQuestionContactAnswerComplete extends StatelessWidget {
-  const HomeQuestionContactAnswerComplete({super.key});
+class HomeQuestionStage3 extends StatefulWidget {
+  final String thisTitle, thisContent;
+  final int questionId;
+
+  const HomeQuestionStage3({
+    super.key,
+    required this.thisTitle,
+    required this.thisContent,
+    required this.questionId,
+  });
+
+  @override
+  State<HomeQuestionStage3> createState() => _HomeQuestionStage3State();
+}
+
+class _HomeQuestionStage3State extends State<HomeQuestionStage3> {
+  String contactAnswer = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadQuestionDetails(widget.questionId);
+  }
+
+  Future<void> _loadQuestionDetails(int questionId) async {
+    try {
+      final questionDetail =
+          await QuestionAnswerApi.getQuestionDetail(widget.questionId);
+      setState(() {
+        contactAnswer = questionDetail.contactAnswer?.content ?? '데이터 없음';
+      });
+    } catch (e) {
+      print('Error loading question details: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +91,7 @@ class HomeQuestionContactAnswerComplete extends StatelessWidget {
                         Gaps.h8,
                         Expanded(
                           child: Text(
-                            '청년 취창업 멘토링 시범운영 개시 및 멘티 모집',
+                            widget.thisTitle,
                             style:
                                 AppTextStyles.bd3.copyWith(color: AppColors.g6),
                             maxLines: 1,
@@ -66,7 +102,7 @@ class HomeQuestionContactAnswerComplete extends StatelessWidget {
                     ),
                     Gaps.v8,
                     Text(
-                      'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\nㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\nㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\nㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ\n',
+                      widget.thisContent,
                       style: AppTextStyles.bd4.copyWith(color: AppColors.g5),
                     )
                   ],
@@ -86,7 +122,7 @@ class HomeQuestionContactAnswerComplete extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Text(
-                  '인당 질의응답 시간이 정해져 있지는 않음ㅇㅇ? ㄱㄴㄲ 조용히 하셈',
+                  contactAnswer,
                   style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
                 ),
               ),

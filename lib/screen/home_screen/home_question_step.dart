@@ -1,14 +1,16 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/home_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class HomeQuestionStep extends StatefulWidget {
-  final int thisStage;
   final String thisUserName;
 
   const HomeQuestionStep({
     super.key,
-    required this.thisStage,
     required this.thisUserName,
   });
 
@@ -18,6 +20,14 @@ class HomeQuestionStep extends StatefulWidget {
 
 class _HomeQuestionStepState extends State<HomeQuestionStep> {
   bool isExpanded = false;
+  List<HomeQuestionStatusModel> questionStatus = [];
+  bool _isLoading = true; // 로딩 상태 추가
+
+  @override
+  void initState() {
+    super.initState();
+    loadQuestionStatus();
+  }
 
   void _toggleExpand() {
     setState(() {
@@ -25,8 +35,36 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
     });
   }
 
+  // 질문 발송 상태 API 호출
+  void loadQuestionStatus() async {
+    try {
+      List<HomeQuestionStatusModel> fetchedStatus =
+          await HomeApi.getHomeQuestionStatus();
+      setState(() {
+        questionStatus = fetchedStatus;
+        _isLoading = false; // 데이터 로딩 완료
+      });
+    } catch (e) {
+      print('Error fetching question status: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_isLoading || questionStatus.isEmpty) {
+      return Container();
+    }
+
+    // 마지막 항목이 있는지 확인하고 가져오기
+    final lastQuestionStatus =
+        questionStatus.isNotEmpty ? questionStatus.last : null;
+
+    if (lastQuestionStatus != null) {
+      // 마지막 항목이 존재할 때 처리
+    } else {
+      // 리스트가 비어 있을 때 처리
+    }
+
     List<Map<String, dynamic>> questionStage = [
       {
         "stage": 1,
@@ -47,8 +85,7 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
 
     // 현재 단계에 해당하는 데이터 찾기
     Map<String, dynamic> currentStage = questionStage.firstWhere(
-      (stageData) => stageData["stage"] == widget.thisStage,
-      orElse: () => questionStage[0], // 기본값 설정
+      (stageData) => stageData["stage"] == lastQuestionStatus!.questionStage,
     );
 
     return Material(
@@ -62,6 +99,7 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
             isExpanded
                 ? HomeQuestionStepExpanded(
                     thisUserName: widget.thisUserName,
+                    questionStatus: questionStatus,
                   )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +116,11 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
                       ),
                       Gaps.v16,
                       QuestionStepper(
-                        stage: widget.thisStage,
+                        stage: lastQuestionStatus!.questionStage,
+                        receptionTime:
+                            lastQuestionStatus.formattedReceptionTime,
+                        sendTime: lastQuestionStatus.formattedSendTime,
+                        arriveTime: lastQuestionStatus.formattedArriveTime,
                       ),
                       Gaps.v16,
                     ],

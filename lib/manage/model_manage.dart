@@ -26,6 +26,10 @@ export 'package:starting_block/manage/models/myprofile_models/my_heart_model.dar
 export 'package:starting_block/manage/models/myprofile_models/my_answer_reply_model.dart'; //내 댓글,답글 모델
 export 'package:starting_block/manage/models/myprofile_models/my_question_modls.dart'; //내 질문 모델
 
+//홈 Model 파일 관리용
+export 'package:starting_block/manage/models/home_models/home_question_status_model.dart'; //홈_질문 상태 모델
+export 'package:starting_block/manage/models/home_models/home_notify_rec_model.dart'; //홈_맞춤 지원사업 모델
+
 //채팅 모델 관리용
 export 'package:starting_block/manage/models/gpt_chat_models/message_model.dart'; //채팅 모델
 

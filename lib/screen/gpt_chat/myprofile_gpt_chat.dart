@@ -120,6 +120,7 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
         });
 
         await _saveMessages(_messages);
+        _scrollToBottom();
       }
     } catch (e) {
       // 에러 처리 및 사용자에게 에러 메시지 표시

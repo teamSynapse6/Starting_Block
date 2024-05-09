@@ -90,8 +90,9 @@ export 'package:starting_block/screen/myprofile_screen/myprofile_gpt_list.dart';
 export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면
 export 'package:starting_block/screen/home_screen/home_question_step.dart'; //홈_질문 단계
 export 'package:starting_block/screen/home_screen/home_question_step_expend.dart'; //홈_질문 단계 확장 영역
-export 'package:starting_block/screen/home_screen/home_question_step_detail.dart'; //홈_질문 단계 상세 화면
-export 'package:starting_block/screen/home_screen/home_question_contactanswer_complete.dart'; //홈_질문 단계 상세_문의처 답변 완료 화면
+export 'package:starting_block/screen/home_screen/home_question_screen/home_question_step_1.dart'; //홈_질문 단계 상세_1단계(질문접수) 화면
+export 'package:starting_block/screen/home_screen/home_question_screen/home_question_step_2.dart'; //홈_질문 단계 상세_2단계(질문발송) 화면
+export 'package:starting_block/screen/home_screen/home_question_screen/home_question_step_3.dart'; //홈_질문 단계 상세_3단계(답변도착) 화면
 export 'package:starting_block/screen/home_screen/home_notify_recommend.dart'; //홈_공고 추천 영역
 export 'package:starting_block/screen/home_screen/home_question_recommend.dart'; //홈_질문 추천 영역
 

@@ -16,6 +16,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   String _birthday = "";
   bool _isInputValid = false;
   String _birthAvailabilityMessage = "";
+  bool _isCheacking = false;
 
   @override
   void initState() {
@@ -41,6 +42,9 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   void _updateBirthday() {
     final input = _birthdayController.text.replaceAll('.', '');
     if (input.length == 8) {
+      setState(() {
+        _isCheacking = true;
+      });
       // 연, 월, 일로 분리
       final int year = int.parse(input.substring(0, 4));
       final int month = int.parse(input.substring(4, 6));
@@ -63,79 +67,81 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
       });
       // _isInputValid가 true로 업데이트된 후, _onNextTap() 자동 호출
       if (_isInputValid) {
-        Future.delayed(const Duration(milliseconds: 1000), () {
+        Future.delayed(const Duration(milliseconds: 500), () {
           _onNextTap();
+          _isCheacking = false;
         });
       } else {
         setState(() {
           _isInputValid = false;
           _birthAvailabilityMessage = "생년월일을 한번 더 확인해주세요";
+          _isCheacking = false;
         });
       }
-    } else {
-      setState(() {
-        _isInputValid = false;
-      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Scaffold(
-        appBar: const BackAppBar(),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const OnBoardingState(thisState: 2),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Gaps.v52,
-                  Text(
-                    "생년월일을 입력해주세요",
-                    style: AppTextStyles.h5.copyWith(color: AppColors.g6),
-                  ),
-                  Gaps.v42,
-                  TextField(
-                    controller: _birthdayController,
-                    decoration: InputDecoration(
-                      hintText: "연도월일 8자리로 입력해주세요",
-                      hintStyle:
-                          AppTextStyles.bd2.copyWith(color: AppColors.g3),
-                      counterText: "",
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: _birthdayController.text.length == 10
-                              ? _isInputValid
-                                  ? AppColors.blue
-                                  : AppColors.activered
-                              : AppColors.g3,
+    return IgnorePopWrapper(
+      ignoring: _isCheacking,
+      canPop: !_isCheacking,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Scaffold(
+          appBar: const BackAppBar(),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const OnBoardingState(thisState: 2),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Gaps.v52,
+                    Text(
+                      "생년월일을 입력해주세요",
+                      style: AppTextStyles.h5.copyWith(color: AppColors.g6),
+                    ),
+                    Gaps.v42,
+                    TextField(
+                      controller: _birthdayController,
+                      decoration: InputDecoration(
+                        hintText: "연도월일 8자리로 입력해주세요",
+                        hintStyle:
+                            AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                        counterText: "",
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: _birthdayController.text.length == 10
+                                ? _isInputValid
+                                    ? AppColors.blue
+                                    : AppColors.activered
+                                : AppColors.g3,
+                          ),
                         ),
                       ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        BirthdayInputFormatter(),
+                        LengthLimitingTextInputFormatter(10),
+                      ],
                     ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      BirthdayInputFormatter(),
-                      LengthLimitingTextInputFormatter(10),
-                    ],
-                  ),
-                  Gaps.v4,
-                  if (_birthdayController.text.length == 10 && !_isInputValid)
-                    Text(
-                      _birthAvailabilityMessage,
-                      style: AppTextStyles.caption
-                          .copyWith(color: AppColors.activered),
-                    )
-                ],
+                    Gaps.v4,
+                    if (_birthdayController.text.length == 10 && !_isInputValid)
+                      Text(
+                        _birthAvailabilityMessage,
+                        style: AppTextStyles.caption
+                            .copyWith(color: AppColors.activered),
+                      )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

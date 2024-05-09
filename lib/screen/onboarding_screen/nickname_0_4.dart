@@ -21,6 +21,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
   String _nicknameAvailabilityMessage = "";
   bool _isNicknameChecked = false;
   bool _isInputStarted = false;
+  bool _isCheacking = false;
 
   Future<void> _saveNickname() async {
     final prefs = await SharedPreferences.getInstance();
@@ -95,7 +96,12 @@ class _NickNameScreenState extends State<NickNameScreen> {
     if (_nickname.isEmpty) {
       return;
     }
+
     // 서버에 닉네임 중복 검사 요청
+    setState(() {
+      _isCheacking = true;
+    });
+
     FocusScope.of(context).requestFocus(FocusNode());
     try {
       bool isAvailable = await SystemApiManage.getNickNameCheck(_nickname);
@@ -105,10 +111,12 @@ class _NickNameScreenState extends State<NickNameScreen> {
         _nicknameAvailabilityMessage =
             isAvailable ? "사용 가능한 닉네임입니다" : "이미 사용 중인 닉네임입니다";
       });
-
       if (isAvailable) {
         await Future.delayed(const Duration(milliseconds: 500));
         _onNextTap();
+        _isCheacking = false;
+      } else if (!isAvailable) {
+        _isCheacking = false;
       }
     } catch (e) {
       // 에러 처리
@@ -136,106 +144,110 @@ class _NickNameScreenState extends State<NickNameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Scaffold(
-        appBar: const BackAppBar(),
-        body: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const OnBoardingState(thisState: 1),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Gaps.v52,
-                    Text(
-                      "닉네임을 설정해 주세요",
-                      style: AppTextStyles.h5.copyWith(color: AppColors.g6),
-                    ),
-                    Gaps.v40,
-                    TextFormField(
-                      controller: _nicknameController,
-                      decoration: InputDecoration(
-                        hintText: "닉네임을 입력해주세요",
-                        contentPadding:
-                            const EdgeInsets.symmetric(vertical: 10.0),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: _isNicknameChecked
-                                ? (_isNicknameAvailable
-                                    ? AppColors.blue
-                                    : AppColors.activered)
-                                : (_isInputStarted && !_isNicknameAvailable
-                                    ? AppColors.activered
-                                    : AppColors.g2),
+    return IgnorePopWrapper(
+      ignoring: _isCheacking,
+      canPop: !_isCheacking,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Scaffold(
+          appBar: const BackAppBar(),
+          body: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const OnBoardingState(thisState: 1),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Gaps.v52,
+                      Text(
+                        "닉네임을 설정해 주세요",
+                        style: AppTextStyles.h5.copyWith(color: AppColors.g6),
+                      ),
+                      Gaps.v40,
+                      TextFormField(
+                        controller: _nicknameController,
+                        decoration: InputDecoration(
+                          hintText: "닉네임을 입력해주세요",
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 10.0),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _isNicknameChecked
+                                  ? (_isNicknameAvailable
+                                      ? AppColors.blue
+                                      : AppColors.activered)
+                                  : (_isInputStarted && !_isNicknameAvailable
+                                      ? AppColors.activered
+                                      : AppColors.g2),
+                            ),
                           ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: _isNicknameChecked
-                                ? (_isNicknameAvailable
-                                    ? AppColors.blue
-                                    : AppColors.activered)
-                                : (_isInputStarted && !_isNicknameAvailable
-                                    ? AppColors.activered
-                                    : AppColors.g2),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _isNicknameChecked
+                                  ? (_isNicknameAvailable
+                                      ? AppColors.blue
+                                      : AppColors.activered)
+                                  : (_isInputStarted && !_isNicknameAvailable
+                                      ? AppColors.activered
+                                      : AppColors.g2),
+                            ),
                           ),
-                        ),
-                        suffixIcon: Align(
-                          alignment: Alignment.centerRight,
-                          widthFactor: 1.0,
-                          child: GestureDetector(
-                            onTap: _isNicknameAvailable &&
-                                    _formKey.currentState?.validate() == true
-                                ? _onCheckNickname
-                                : null,
-                            child: Container(
-                              width: Sizes.size72,
-                              height: Sizes.size35,
-                              decoration: ShapeDecoration(
-                                color: _isNicknameAvailable &&
-                                        _formKey.currentState?.validate() ==
-                                            true
-                                    ? AppColors.blue
-                                    : AppColors.g2,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(2),
+                          suffixIcon: Align(
+                            alignment: Alignment.centerRight,
+                            widthFactor: 1.0,
+                            child: GestureDetector(
+                              onTap: _isNicknameAvailable &&
+                                      _formKey.currentState?.validate() == true
+                                  ? _onCheckNickname
+                                  : null,
+                              child: Container(
+                                width: Sizes.size72,
+                                height: Sizes.size35,
+                                decoration: ShapeDecoration(
+                                  color: _isNicknameAvailable &&
+                                          _formKey.currentState?.validate() ==
+                                              true
+                                      ? AppColors.blue
+                                      : AppColors.g2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
                                 ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '중복 확인',
-                                  style: AppTextStyles.btn1
-                                      .copyWith(color: AppColors.white),
+                                child: Center(
+                                  child: Text(
+                                    '중복 확인',
+                                    style: AppTextStyles.btn1
+                                        .copyWith(color: AppColors.white),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    if (_nickname.isNotEmpty) // 닉네임 입력 중 메시지 표시
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          _nicknameAvailabilityMessage,
-                          style: AppTextStyles.caption.copyWith(
-                            color: _isNicknameAvailable
-                                ? AppColors.blue
-                                : AppColors.activered,
+                      if (_nickname.isNotEmpty) // 닉네임 입력 중 메시지 표시
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            _nicknameAvailabilityMessage,
+                            style: AppTextStyles.caption.copyWith(
+                              color: _isNicknameAvailable
+                                  ? AppColors.blue
+                                  : AppColors.activered,
+                            ),
                           ),
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

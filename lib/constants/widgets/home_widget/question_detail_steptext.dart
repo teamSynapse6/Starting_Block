@@ -3,9 +3,11 @@ import 'package:starting_block/constants/constants.dart';
 
 class QuestionDetailStepText extends StatelessWidget {
   final int questionStage;
+  final String? thisSendDay;
   const QuestionDetailStepText({
     super.key,
     required this.questionStage,
+    this.thisSendDay,
   });
 
   @override
@@ -61,7 +63,7 @@ class QuestionDetailStepText extends StatelessWidget {
               ),
               Gaps.v6,
               Text(
-                '19일 오전 9시 발송 완료\n',
+                '$thisSendDay일 오전 9시 발송 완료\n',
                 style: AppTextStyles.bd6.copyWith(color: AppColors.blue),
               ),
               Gaps.v36,

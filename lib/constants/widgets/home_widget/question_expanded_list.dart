@@ -4,11 +4,23 @@ import 'package:starting_block/constants/constants.dart';
 class HomeQuestionStepExpandedList extends StatelessWidget {
   final int questionStage;
   final VoidCallback thisQuestionTap;
+  final String thisTitle,
+      thisQuestion,
+      thisReceptionTime,
+      thisSendTime,
+      thisArriveTime;
+  final int thisQuestionStage;
 
   const HomeQuestionStepExpandedList({
     super.key,
     required this.questionStage,
     required this.thisQuestionTap,
+    required this.thisTitle,
+    required this.thisQuestion,
+    required this.thisReceptionTime,
+    required this.thisSendTime,
+    required this.thisArriveTime,
+    required this.thisQuestionStage,
   });
 
   @override
@@ -30,7 +42,7 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
               Gaps.h8,
               Expanded(
                 child: Text(
-                  '질문 단계zzzzzzzzzzㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+                  thisTitle,
                   style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -40,14 +52,14 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
           ),
           Gaps.v8,
           Text(
-            '멘토링ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+            thisQuestion,
             style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           Gaps.v16,
           QuestionExpandedStepper(
-            questionStage: questionStage, //질문단계
+            questionStage: thisQuestionStage, //질문단계
           ),
           Gaps.v6,
           Row(
@@ -78,7 +90,7 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
                             ),
                     ),
                     Text(
-                      '(04.06)',
+                      '($thisReceptionTime)',
                       style: questionStage >= 2
                           ? const TextStyle(
                               fontFamily: 'pretendard',
@@ -125,7 +137,7 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
                                     color: AppColors.bluelight,
                                   )),
                     if (questionStage >= 2)
-                      Text('(04.06)',
+                      Text('($thisSendTime)',
                           style: questionStage == 2
                               ? const TextStyle(
                                   fontFamily: 'pretendard',
@@ -165,7 +177,7 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
                     ),
                     if (questionStage >= 3)
                       Text(
-                        '(04.06)',
+                        '($thisArriveTime)',
                         style: questionStage == 3
                             ? const TextStyle(
                                 fontFamily: 'pretendard',

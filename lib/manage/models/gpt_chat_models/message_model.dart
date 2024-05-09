@@ -5,7 +5,11 @@ class Message {
   String message;
   int time;
 
-  Message({required this.isUser, required this.message, required this.time});
+  Message({
+    required this.isUser,
+    required this.message,
+    required this.time,
+  });
 
   static String decodeHtmlEntities(String htmlString) {
     var document = parse(htmlString);

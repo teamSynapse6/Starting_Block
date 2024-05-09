@@ -16,7 +16,7 @@ class QuestionWriteComplete extends StatelessWidget {
         systemNavigationBarColor: bottomColor,
       ));
       Future.delayed(
-        const Duration(seconds: 300),
+        const Duration(seconds: 3),
         () {
           // 원래 상태로 돌리기 위한 스타일 설정
           SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
