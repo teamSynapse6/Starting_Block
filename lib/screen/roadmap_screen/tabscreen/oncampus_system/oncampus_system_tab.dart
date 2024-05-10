@@ -34,7 +34,7 @@ class TabScreenOnCaSystem extends StatefulWidget {
 
 class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
   List<int> savedIds = [];
-  List<OnCampusSystemModel> onCampusSystemData = [];
+  List<OncaSystemModel> onCampusSystemData = [];
 
   @override
   void initState() {
@@ -95,7 +95,7 @@ class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
                     children: [
                       OnCaListSystem(
                         thisTitle: item.title,
-                        thisId: item.id,
+                        thisId: item.systemId.toString(),
                         thisContent: item.content,
                         thisTarget: item.target,
                       ),

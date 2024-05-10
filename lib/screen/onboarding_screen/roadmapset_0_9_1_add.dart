@@ -112,7 +112,7 @@ class _RoadmapScreenAddState extends State<RoadmapScreenAdd> {
                 maxLength: 20,
                 decoration: InputDecoration(
                   hintText: '원하는 단계명을 추가해 주세요',
-                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g4),
+                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g2),
                   counterText: '', // 기본 카운터 숨김
                 ),
               ),
@@ -131,14 +131,14 @@ class _RoadmapScreenAddState extends State<RoadmapScreenAdd> {
                   ),
                 ],
               ),
-              Gaps.v32,
+              Gaps.v52,
               Text(
                 '기존 단계로 추가하시고 싶으신가요',
                 style: AppTextStyles.bd4.copyWith(color: AppColors.g5),
               ),
               Gaps.v20,
               Wrap(
-                runSpacing: 16,
+                runSpacing: 14,
                 spacing: 16,
                 children: [
                   for (var list in existing)

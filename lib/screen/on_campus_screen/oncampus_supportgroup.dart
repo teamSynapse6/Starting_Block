@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/on_campus_screen/widget/oncampus_supportgroup_delegate.dart';
@@ -18,7 +17,14 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
     with TickerProviderStateMixin {
   String _schoolName = "";
   TabController? _tabController;
-  List<Tab> myTabs = [];
+  List<Tab> myTabs = [
+    const Tab(text: '멘토링'),
+    const Tab(text: '동아리'),
+    const Tab(text: '특강'),
+    const Tab(text: '경진대회 및 캠프'),
+    const Tab(text: '공간'),
+    const Tab(text: '기타'),
+  ];
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
 
@@ -27,33 +33,7 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
     super.initState();
     _loadSchoolName();
     _scrollController.addListener(_onScroll);
-    _loadTabs().then((_) {
-      if (myTabs.isNotEmpty) {
-        // 비동기 로드 완료 후 _tabController를 초기화합니다.
-        setState(() {
-          _tabController = TabController(length: myTabs.length, vsync: this);
-        });
-      }
-    });
-  }
-
-// 탭 로드 중이거나 탭 데이터가 없을 때 기본 탭 설정
-  Future<void> _loadTabs() async {
-    try {
-      List<String> tabTitles = await OnCampusAPI.getSupportTabList();
-      List<Tab> tabs = tabTitles.map((tabText) => Tab(text: tabText)).toList();
-
-      setState(() {
-        myTabs = tabs.isNotEmpty
-            ? tabs
-            : [const Tab(text: "Default")]; // 비어 있을 경우 기본 탭 추가
-      });
-    } catch (e) {
-      print("탭 데이터 로드 실패: $e");
-      setState(() {
-        myTabs = [const Tab(text: "Default")]; // 오류 발생시 기본 탭 설정
-      });
-    }
+    _tabController = TabController(vsync: this, length: myTabs.length);
   }
 
   @override

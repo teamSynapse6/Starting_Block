@@ -101,6 +101,8 @@ class ThemeManage {
       ),
       canvasColor: AppColors.white,
       colorScheme: ColorScheme.fromSwatch().copyWith(primary: AppColors.blue),
+      splashColor: AppColors.g2,
+      highlightColor: AppColors.g1,
     );
   }
 }

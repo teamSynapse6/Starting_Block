@@ -268,7 +268,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
           ),
           titleSpacing: 4,
           title: Text(
-            "AI와 첨부 파일 대화",
+            "AI로 공고 분석하기",
             style: AppTextStyles.st2.copyWith(color: AppColors.g6),
           ),
           bottom: PreferredSize(
@@ -279,6 +279,8 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   widget.thisTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bd3.copyWith(color: AppColors.g5),
                 ),
               ),
@@ -354,12 +356,6 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                       child: AppAnimation
                                           .chatting_progress_indicator),
                                   Gaps.h4,
-                                  Text(
-                                    _formatMessageTime(
-                                        DateTime.now().millisecondsSinceEpoch),
-                                    style: AppTextStyles.caption
-                                        .copyWith(color: AppColors.g3),
-                                  ),
                                 ],
                               ),
                             ],
@@ -434,7 +430,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                           Text(
                                             _formatMessageTime(message.time),
                                             style: AppTextStyles.caption
-                                                .copyWith(color: AppColors.g3),
+                                                .copyWith(color: AppColors.g4),
                                           ),
                                           Gaps.h4,
                                           Container(
@@ -516,7 +512,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                                     message.time),
                                                 style: AppTextStyles.caption
                                                     .copyWith(
-                                                        color: AppColors.g3),
+                                                        color: AppColors.g4),
                                               ),
                                             ],
                                           )

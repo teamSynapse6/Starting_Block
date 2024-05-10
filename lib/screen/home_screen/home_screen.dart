@@ -63,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
               HomeQuestionStep(
                 thisUserName: _nickName,
               ),
-              Gaps.v28,
               const HomeNotifyRecommend(),
               Gaps.v28,
               const HomeQuestionRecommend(),

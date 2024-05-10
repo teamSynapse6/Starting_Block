@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class OnCaListClass extends StatelessWidget {
-  final String thisTitle, thisId, thisLiberal, thisCredit, thisContent;
-  final List<String> thisSession;
+  final String thisTitle,
+      thisId,
+      thisLiberal,
+      thisCredit,
+      thisContent,
+      thisSession;
 
   const OnCaListClass({
     super.key,
@@ -46,14 +50,7 @@ class OnCaListClass extends StatelessWidget {
                 Gaps.h8,
                 ClassCreditsChips(thisTextNum: thisCredit),
                 Gaps.h8,
-                Wrap(
-                  // Row 대신 Wrap 위젯을 사용합니다.
-                  spacing: 8, // 각 칩 사이의 간격
-                  children: thisSession
-                      .map((session) =>
-                          ClassSessionChips(thisTextSession: session))
-                      .toList(),
-                ),
+                ClassSessionChips(thisTextSession: thisSession),
               ],
             ),
             Gaps.v12,

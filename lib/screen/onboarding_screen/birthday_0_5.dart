@@ -110,7 +110,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                     TextField(
                       controller: _birthdayController,
                       decoration: InputDecoration(
-                        hintText: "연도월일 8자리로 입력해주세요",
+                        hintText: "YYYY.MM.DD",
                         hintStyle:
                             AppTextStyles.bd2.copyWith(color: AppColors.g3),
                         counterText: "",

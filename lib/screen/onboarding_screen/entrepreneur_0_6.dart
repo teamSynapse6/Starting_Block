@@ -20,7 +20,7 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
       selectedCard = cardIndex;
     });
     if (selectedCard != null) {
-      Future.delayed(const Duration(milliseconds: 1000), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         _onNextTap();
       });
     }

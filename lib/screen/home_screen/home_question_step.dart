@@ -73,12 +73,12 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
       },
       {
         "stage": 2,
-        "title": "${widget.thisUserName}님의 질문이 발송되었어요",
+        "title": "${widget.thisUserName}님의 최신 질문이\n발송 되었어요",
         "content": "답변이 도착하면 알려드릴게요",
       },
       {
         "stage": 3,
-        "title": "${widget.thisUserName}님의 질문에 대한\n답변이 도착했어요",
+        "title": "${widget.thisUserName}님의 최신 질문에 대한\n답변이 도착했어요",
         "content": "도착한 답변을 확인해보세요",
       },
     ];
@@ -88,62 +88,70 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
       (stageData) => stageData["stage"] == lastQuestionStatus!.questionStage,
     );
 
-    return Material(
-      color: AppColors.white,
-      borderRadius: BorderRadius.circular(4),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 20, 15, 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            isExpanded
-                ? HomeQuestionStepExpanded(
-                    thisUserName: widget.thisUserName,
-                    questionStatus: questionStatus,
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        currentStage["title"], // 동적으로 title 반영
-                        style:
-                            AppTextStyles.bd1.copyWith(color: AppColors.black),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Material(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(4),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 20, 15, 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                isExpanded
+                    ? HomeQuestionStepExpanded(
+                        thisUserName: widget.thisUserName,
+                        questionStatus: questionStatus,
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            currentStage["title"], // 동적으로 title 반영
+                            style: AppTextStyles.bd1
+                                .copyWith(color: AppColors.black),
+                          ),
+                          Gaps.v4,
+                          Text(
+                            currentStage["content"], // 동적으로 content 반영
+                            style:
+                                AppTextStyles.bd6.copyWith(color: AppColors.g5),
+                          ),
+                          Gaps.v16,
+                          QuestionStepper(
+                            stage: lastQuestionStatus!.questionStage,
+                            receptionTime:
+                                lastQuestionStatus.formattedReceptionTime,
+                            sendTime: lastQuestionStatus.formattedSendTime,
+                            arriveTime: lastQuestionStatus.formattedArriveTime,
+                          ),
+                          Gaps.v16,
+                        ],
                       ),
-                      Gaps.v4,
-                      Text(
-                        currentStage["content"], // 동적으로 content 반영
-                        style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
-                      ),
-                      Gaps.v16,
-                      QuestionStepper(
-                        stage: lastQuestionStatus!.questionStage,
-                        receptionTime:
-                            lastQuestionStatus.formattedReceptionTime,
-                        sendTime: lastQuestionStatus.formattedSendTime,
-                        arriveTime: lastQuestionStatus.formattedArriveTime,
-                      ),
-                      Gaps.v16,
-                    ],
+                const CustomDividerH1G1(),
+                Gaps.v8,
+                SizedBox(
+                  child: GestureDetector(
+                    onTap: _toggleExpand,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('질문 상세보기',
+                            style: AppTextStyles.bd6
+                                .copyWith(color: AppColors.g5)),
+                        Gaps.h4,
+                        isExpanded ? AppIcon.arrow_up_18 : AppIcon.arrow_down_18
+                      ],
+                    ),
                   ),
-            const CustomDividerH1G1(),
-            Gaps.v8,
-            SizedBox(
-              child: InkWell(
-                onTap: _toggleExpand,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('질문 상세보기',
-                        style: AppTextStyles.bd6.copyWith(color: AppColors.g5)),
-                    Gaps.h4,
-                    isExpanded ? AppIcon.arrow_up_18 : AppIcon.arrow_down_18
-                  ],
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Gaps.v28,
+      ],
     );
   }
 }

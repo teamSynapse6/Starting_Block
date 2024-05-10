@@ -106,7 +106,7 @@ class _MyProfileMyQuestionState extends State<MyProfileMyQuestion> {
                 children: [
                   Gaps.v78,
                   Text(
-                    '작성한 질문이 없어요.\n공고를 탐색하며, 궁금한 사항은 질문을 작성해 볼까요?',
+                    '작성한 질문이 없어요.\n공고를 탐색하며, 궁금한 점을 작성해 볼까요?',
                     style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
                     textAlign: TextAlign.center,
                   )

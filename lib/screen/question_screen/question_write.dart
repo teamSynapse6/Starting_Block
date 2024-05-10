@@ -79,12 +79,11 @@ class _QuestionWriteState extends State<QuestionWrite> {
 
     // 질문이 성공적으로 게시된 후에는 화면을 닫거나 사용자에게 알림을 표시할 수 있습니다.
     if (mounted) {
+      Navigator.of(context).pop();
       await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => const QuestionWriteComplete()));
-
-      Navigator.of(context).pop();
     }
     if (mounted) {
       Navigator.of(context).pop(true); // 작성화면 닫기
@@ -136,41 +135,38 @@ class _QuestionWriteState extends State<QuestionWrite> {
                 ),
               ),
               Gaps.v20,
-              SizedBox(
-                height: 300,
-                child: TextFormField(
-                  controller: _textController,
-                  maxLength: 160, // 최대 글자 수를 400으로 설정합니다.
-                  maxLines: null, // 무제한 줄 입력을 허용합니다. (자동으로 높이가 조정됩니다)
-                  keyboardType: TextInputType.multiline,
-                  buildCounter: (BuildContext context,
-                      {int? currentLength, bool? isFocused, int? maxLength}) {
-                    return RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                              text: '$currentLength', // 현재 글자수
-                              style: AppTextStyles.bd6
-                                  .copyWith(color: AppColors.g5)),
-                          TextSpan(
-                              text: ' /$maxLength', // 최대 글자수
-                              style: AppTextStyles.bd6
-                                  .copyWith(color: AppColors.g4)),
-                        ],
-                      ),
-                    );
-                  },
+              TextFormField(
+                controller: _textController,
+                maxLength: 160, // 최대 글자 수를 160으로 설정합니다.
+                maxLines: null, // 무제한 줄 입력을 허용합니다. (자동으로 높이가 조정됩니다)
+                keyboardType: TextInputType.multiline,
+                buildCounter: (BuildContext context,
+                    {int? currentLength, bool? isFocused, int? maxLength}) {
+                  return RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                            text: '$currentLength', // 현재 글자수
+                            style: AppTextStyles.bd6
+                                .copyWith(color: AppColors.g5)),
+                        TextSpan(
+                            text: ' /$maxLength', // 최대 글자수
+                            style: AppTextStyles.bd6
+                                .copyWith(color: AppColors.g4)),
+                      ],
+                    ),
+                  );
+                },
 
-                  decoration: InputDecoration(
-                    hintText: '여기에 질문을 작성하세요',
-                    hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
-                    enabledBorder:
-                        const UnderlineInputBorder(borderSide: BorderSide.none),
-                    focusedBorder:
-                        const UnderlineInputBorder(borderSide: BorderSide.none),
-                  ),
-                  style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                decoration: InputDecoration(
+                  hintText: '질문을 작성해 주세요',
+                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                  enabledBorder:
+                      const UnderlineInputBorder(borderSide: BorderSide.none),
+                  focusedBorder:
+                      const UnderlineInputBorder(borderSide: BorderSide.none),
                 ),
+                style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
               ),
               const Spacer(),
               Text(

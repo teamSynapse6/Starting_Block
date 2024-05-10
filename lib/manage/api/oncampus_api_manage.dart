@@ -1,435 +1,86 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:http/http.dart' as http;
 
-Map<String, int> schoolNameToNumber = {
-  '가톨릭대학교': 01,
-  '강서대학교': 02,
-  '건국대학교': 03,
-  '경기대학교': 04,
-  '경희대학교': 05,
-  '고려대학교': 06,
-  '광운대학교': 07,
-  '국민대학교': 08,
-  '덕성여자대학교': 09,
-  '동국대학교': 10,
-  '동덕여자대학교': 11,
-  '명지대학교': 12,
-  '삼육대학교': 13,
-  '상명대학교': 14,
-  '서강대학교': 15,
-  '서경대학교': 16,
-  '서울과학기술대학교': 17,
-  '서울교육대학교': 18,
-  '서울대학교': 19,
-  '서울시립대학교': 20,
-  '서울여자대학교': 21,
-  '서울한영대학교': 22,
-  '성공회대학교': 23,
-  '성균관대학교': 24,
-  '성신여자대학교': 25,
-  '세종대학교': 26,
-  '숙명여자대학교': 27,
-  '숭실대학교': 28,
-  '연세대학교': 29,
-  '이화여자대학교': 30,
-  '중앙대학교': 31,
-  '총신대학교': 32,
-  '추계예술대학교': 33,
-  '한국외국어대학교': 34,
-  '한국체육대학교': 35,
-  '한성대학교': 36,
-  '한양대학교': 37,
-  '홍익대학교': 38
-};
-
-String getSchoolNumber(String schoolName) {
-  // 학교명에 해당하는 번호를 찾습니다.
-  int? number = schoolNameToNumber[schoolName];
-  // 번호가 있으면 2자리 문자열로 변환하고, 없으면 "00"을 반환합니다.
-  return number != null ? number.toString().padLeft(2, '0') : "00";
-}
-
-class OnCampusAPI {
-  static String baseUrl = 'http://pdfgpt.startingblock.co.kr:5002';
-  static String schoolUrl = 'url';
-  static String schoolLogo = 'logo';
-  static String schoolSystem = 'system';
-  static String schoolSystemByID = 'system/ids';
-  static String schoolSystemRoadmapRec = 'system/roadmapRec';
-  static String schoolClass = 'class';
-  static String schoolClassByID = 'class/ids';
-  static String schoolClassRoadmapRec = 'class/roadmapRec';
-  static String schoolNotify = 'notify';
-  static String schoolNotifyByID = 'notify/ids';
-  static String schoolNotifyRoadmapRec = 'notify/roadmapRec';
-  static String schoolNotifyFiltered = 'supportgroup/notify/filtered';
-  static String schoolTabList = 'supportgroup/tablist';
-
-  static Future<String> onCampusLogo() async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolLogo');
-    print('로고: $url');
-
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      // SVG 이미지 데이터를 문자열로 반환
-      String svgData = response.body;
-      return svgData;
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
+class OnCapmusApi {
+  static Future<Map<String, String>> getHeaders() async {
+    String? accessToken = await UserTokenManage.getAccessToken();
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken'
+    };
   }
 
-  static Future<List<OnCampusSystemModel>> getOnCampusSystem() async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolSystem');
+  static String baseUrl = 'https://api.startingblock.co.kr';
 
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusSystemModel> systemList =
-          jsonData.map((item) => OnCampusSystemModel.fromJson(item)).toList();
-      return systemList;
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
-  }
+  // Onca Support Group 데이터를 가져오는 메소드
+  static Future<List<OncaSupportGroupModel>> getOncaSupportGroup(
+      {String? keyword, int retryCount = 1}) async {
+    Map<String, String> headers = await getHeaders();
 
-  // ID를 반환해서 데이터를 받아오는 메소드
-  static Future<List<OnCampusSystemModel>> getOnCampusSystemByIds(
-      List<int> ids) async {
-    String schoolName = await UserInfo.getSchoolName();
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolSystemByID');
-
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'ids': ids}),
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusSystemModel> systemList =
-          jsonData.map((item) => OnCampusSystemModel.fromJson(item)).toList();
-      return systemList;
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
-  }
-
-  // 시스템 로드맵 추천 데이터를 서버로부터 받아오는 메소드
-  static Future<OnCampusSystemModel> getOnCampusSystemRec(
-      List<String> types) async {
-    String schoolName = await UserInfo.getSchoolName();
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolSystemRoadmapRec');
-
-    // POST 요청을 보냅니다.
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'type': types}),
-    );
-
-    // 서버 응답 처리
-    if (response.statusCode == 200) {
-      // 응답 데이터를 JSON 객체로 디코딩
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      // JSON 객체를 OnCampusSystemModel로 변환
-      return OnCampusSystemModel.fromJson(data);
-    } else {
-      // 서버가 에러로 응답하면, 에러 상태 코드를 출력하고 예외 발생
-      print('서버 에러: ${response.statusCode}');
-      throw Exception('Failed to load system roadmap recommendation data');
-    }
-  }
-
-  static Future<List<OnCampusClassModel>> getOnCampusClass() async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolClass');
-
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusClassModel> classList =
-          jsonData.map((item) => OnCampusClassModel.fromJson(item)).toList();
-      return classList;
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
-  }
-
-  //ID를 반환해서 데이터를 받아오는 메소드
-  static Future<List<OnCampusClassModel>> getOnCampusClassByIds(
-      List<int> ids) async {
-    String schoolName = await UserInfo.getSchoolName();
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolClassByID');
-
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'ids': ids}),
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusClassModel> classList =
-          jsonData.map((item) => OnCampusClassModel.fromJson(item)).toList();
-      return classList;
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
-  }
-
-  //로드맵_추천메소드
-  static Future<OnCampusClassModel> getOnCampusClassRec() async {
-    String schoolName = await UserInfo.getSchoolName();
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolClassRoadmapRec');
-    final response = await http.get(url);
-
-    // 응답 상태 코드 확인
-    if (response.statusCode == 200) {
-      // 서버가 200 OK로 응답하면, JSON 응답을 디코드
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return OnCampusClassModel.fromJson(data);
-    } else {
-      // 서버가 에러로 응답하면, 에러 상태 코드를 출력하고 예외 발생
-      print('서버 에러: ${response.statusCode}');
-      throw Exception('클래스별 추천 데이터 로드 실패');
-    }
-  }
-
-  static Future<List<OnCampusNotifyModel>> getOnCampusNotify() async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotify');
-    print('교내지원사업: $url');
-
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusNotifyModel> notifyList =
-          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-      return notifyList;
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
-  }
-
-  static Future<List<OnCampusNotifyModel>> getOnCampusHomeNotify() async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotify');
-
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusNotifyModel> notifyList =
-          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-
-      // 결과 리스트에서 처음 10개의 항목만 반환
-      return notifyList.take(5).toList();
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
-  }
-
-  //ID를 반환해서 데이터를 받아오는 메소드
-  static Future<List<OnCampusNotifyModel>> getOnCampusNotifyByIds(
-      List<int> ids) async {
-    String schoolName = await UserInfo.getSchoolName();
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotifyByID');
-
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'ids': ids}),
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      List<OnCampusNotifyModel> notifyList =
-          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-      return notifyList;
-    } else {
-      print('에러: ${response.statusCode}.');
-      throw Error();
-    }
-  }
-
-  // 필터링된 공지사항 데이터를 서버로부터 받아오는 메소드
-  static Future<List<OnCampusNotifyModel>> getOnCampusNotifyFiltered({
-    required String program, // 필터링할 프로그램
-    required String sorting, // 정렬 조건
-  }) async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName); // 학교 번호를 가져옵니다.
+    // URL 생성 - keyword 파라미터가 존재하는지 확인
+    String queryString = keyword != null ? '?keyword=$keyword' : '';
     final url =
-        Uri.parse('$baseUrl/$schoolNumber/notify/filtered'); // URL 구성 수정
+        Uri.parse('$baseUrl/api/v1/announcements/list/on-campus$queryString');
 
-    // POST 요청을 보냅니다.
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'type': program, // 요청 본문에 'type' 필드를 포함
-        'sorting': sorting, // 'sorting' 필드도 포함
-      }),
-    );
+    final response = await http.get(url, headers: headers);
 
-    // 서버 응답 처리
     if (response.statusCode == 200) {
-      // 응답 데이터를 JSON 배열로 디코딩
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      // JSON 배열을 OnCampusNotifyModel 리스트로 변환
-      List<OnCampusNotifyModel> notifyList =
-          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-      return notifyList;
+      final String responseBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> jsonResponse = jsonDecode(responseBody);
+      List<OncaSupportGroupModel> supportGroupList = jsonResponse
+          .map((json) => OncaSupportGroupModel.fromJson(json))
+          .toList();
+      return supportGroupList;
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getOncaSupportGroup(keyword: keyword, retryCount: retryCount - 1);
     } else {
-      print('서버 에러: ${response.statusCode}');
-      throw Exception('Failed to load filtered notify data');
+      throw Exception('서버 오류: ${response.statusCode}');
     }
   }
 
-  // 필터링 및 검색된 공지사항 데이터를 서버로부터 받아오는 메소드
-  static Future<List<OnCampusNotifyModel>> getOnCampusNotifySearch({
-    required String program, // 필터링할 프로그램
-    required String sorting, // 정렬 조건
-    required String keyword, // 검색 키워드
-  }) async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName); // 학교 번호를 가져옵니다.
-    final url = Uri.parse('$baseUrl/$schoolNumber/notify/search'); // URL 구성
+  // 교내 제도 메소드
+  static Future<List<OncaSystemModel>> getOncaSystem(
+      {int retryCount = 1}) async {
+    Map<String, String> headers = await getHeaders();
+    final url = Uri.parse('$baseUrl/api/v1/announcements/list/system');
+    final response = await http.get(url, headers: headers);
 
-    // POST 요청을 보냅니다.
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'type': program, // 요청 본문에 'type' 필드를 포함
-        'sorting': sorting, // 'sorting' 필드도 포함
-        'keyword': keyword, // 'keyword' 필드도 포함
-      }),
-    );
-
-    // 서버 응답 처리
     if (response.statusCode == 200) {
-      // 응답 데이터를 JSON 배열로 디코딩
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      // JSON 배열을 OnCampusNotifyModel 리스트로 변환
-      List<OnCampusNotifyModel> notifyList =
-          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-      return notifyList;
+      final String responseBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> jsonResponse = jsonDecode(responseBody);
+      List<OncaSystemModel> classList =
+          jsonResponse.map((json) => OncaSystemModel.fromJson(json)).toList();
+      return classList;
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      // 토큰 재갱신 후 다시 시도
+      await UserInfoManageApi.updateAccessToken();
+      return getOncaSystem(retryCount: retryCount - 1);
     } else {
-      print('서버 에러: ${response.statusCode}');
-      throw Exception('Failed to load search notify data');
+      throw Exception('서버 오류: ${response.statusCode}');
     }
   }
 
-  static Future<List<String>> getSupportTabList() async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolTabList');
+  // 교내 강의 메소드 추가
+  static Future<List<OncaClassModel>> getOncaClass({int retryCount = 1}) async {
+    Map<String, String> headers = await getHeaders();
+    final url = Uri.parse('$baseUrl/api/v1/announcements/list/lecture');
+    final response = await http.get(url, headers: headers);
 
-    final response = await http.get(url);
     if (response.statusCode == 200) {
-      // 서버 응답의 body 내용을 바로 List<String>으로 파싱하여 반환
-      return List<String>.from(jsonDecode(response.body));
+      final String responseBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> jsonResponse = jsonDecode(responseBody);
+      List<OncaClassModel> classList =
+          jsonResponse.map((json) => OncaClassModel.fromJson(json)).toList();
+      return classList;
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      // 토큰 재갱신 후 다시 시도
+      await UserInfoManageApi.updateAccessToken();
+      return getOncaClass(retryCount: retryCount - 1);
     } else {
-      print('에러: ${response.statusCode}.');
-      throw Exception('Failed to load tab list');
-    }
-  }
-
-  // //교내지원사업(notify)_추천 메소드
-  // static Future<List<OnCampusNotifyModel>> getOnCampusRoadmapRec({
-  //   required List<String> types, // 필터링할 타입 목록
-  // }) async {
-  //   String schoolName =
-  //       await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-  //   String schoolNumber = getSchoolNumber(schoolName);
-  //   final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotifyRoadmapRec');
-
-  //   // POST 요청을 보냅니다.
-  //   final response = await http.post(
-  //     url,
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: jsonEncode({'types': types}),
-  //   );
-
-  //   // 서버 응답 처리
-  //   if (response.statusCode == 200) {
-  //     // 응답 데이터를 JSON 배열로 디코딩
-  //     final List<dynamic> jsonData = jsonDecode(response.body);
-  //     // JSON 배열을 OnCampusNotifyModel 리스트로 변환
-  //     List<OnCampusNotifyModel> notifyList =
-  //         jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-  //     return notifyList;
-  //   } else {
-  //     print('서버 에러: ${response.statusCode}');
-  //     throw Exception('Failed to load roadmap recommendation data');
-  //   }
-  // }
-
-  //교내지원사업(notify)_추천 메소드
-  static Future<List<OnCampusNotifyModel>> getOnCampusRoadmapRec({
-    required List<String> types, // 필터링할 타입 목록
-  }) async {
-    String schoolName =
-        await UserInfo.getSchoolName(); // UserInfo에서 학교명을 가져옵니다.
-    String schoolNumber = getSchoolNumber(schoolName);
-    final url = Uri.parse('$baseUrl/$schoolNumber/$schoolNotifyRoadmapRec');
-
-    // 요청 본문
-    String requestBody = jsonEncode({'types': types});
-
-    // 요청 정보 출력
-    print('POST 요청을 보냅니다. URL: $url');
-    print('요청 본문: $requestBody');
-
-    // POST 요청을 보냅니다.
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: requestBody,
-    );
-
-    // 서버 응답 처리
-    if (response.statusCode == 200) {
-      // 응답 데이터를 JSON 배열로 디코딩
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      // JSON 배열을 OnCampusNotifyModel 리스트로 변환
-      List<OnCampusNotifyModel> notifyList =
-          jsonData.map((item) => OnCampusNotifyModel.fromJson(item)).toList();
-      return notifyList;
-    } else {
-      print('서버 에러: ${response.statusCode}');
-      throw Exception('Failed to load roadmap recommendation data');
+      throw Exception('서버 오류: ${response.statusCode}');
     }
   }
 }

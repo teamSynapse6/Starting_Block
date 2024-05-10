@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_system/onca_system_card.dart';
 
@@ -21,7 +20,7 @@ class OnCaSystemRecommend extends StatefulWidget {
 }
 
 class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
-  List<OnCampusSystemModel> systemList = [];
+  List<OncaSystemModel> systemList = [];
   final GlobalKey _cardKey = GlobalKey(); // GlobalKey 추가
   double _cardHeight = 268; // 카드의 높이를 저장할 변수
 
@@ -41,7 +40,7 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateCardHeight());
-    loadSystemData();
+    // loadSystemData();
   }
 
   @override
@@ -49,24 +48,24 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.thisSelectedText != widget.thisSelectedText) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _updateCardHeight());
-      loadSystemData();
+      // loadSystemData();
     }
   }
 
-  Future<void> loadSystemData() async {
-    var types = textToType[widget.thisSelectedText];
-    // 'Na'를 체크하여 메소드 호출을 건너뛰거나 빈 리스트 할당
-    if (types != 'Na' && types is List<String>) {
-      var data = await OnCampusAPI.getOnCampusSystemRec(types);
-      setState(() {
-        systemList = [data]; // 결과를 리스트에 할당
-      });
+  // Future<void> loadSystemData() async {
+  //   var types = textToType[widget.thisSelectedText];
+  //   // 'Na'를 체크하여 메소드 호출을 건너뛰거나 빈 리스트 할당
+  //   if (types != 'Na' && types is List<String>) {
+  //     var data = await OnCampusAPI.getOnCampusSystemRec(types);
+  //     setState(() {
+  //       systemList = [data]; // 결과를 리스트에 할당
+  //     });
 
-      setState(() {
-        systemList = []; // Na인 경우 빈 리스트 할당
-      });
-    }
-  }
+  //     setState(() {
+  //       systemList = []; // Na인 경우 빈 리스트 할당
+  //     });
+  //   }
+  // }
 
   void _updateCardHeight() {
     final RenderObject? renderObject =
@@ -108,7 +107,7 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
                 child: OnCaSystemCard(
                   key: _cardKey,
                   thisTitle: systemList[0].title,
-                  thisId: systemList[0].id,
+                  thisId: systemList[0].systemId.toString(),
                   thisContent: systemList[0].content,
                   thisTarget: systemList[0].target,
                 ),

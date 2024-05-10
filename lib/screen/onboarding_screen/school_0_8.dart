@@ -54,7 +54,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
     });
     bool updateSuccess = await _saveUserInfoToServer();
     if (updateSuccess) {
-      Future.delayed(const Duration(milliseconds: 1000), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         _onNextTap();
       });
     } else {
@@ -153,6 +153,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
             ),
             if (_schoolInfo.isNotEmpty && filteredSchoolList.isNotEmpty)
               ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 shrinkWrap: true,
                 itemCount: filteredSchoolList.length > 3
                     ? 3
@@ -168,7 +169,6 @@ class _SchoolScreenState extends State<SchoolScreen> {
                       splashColor: AppColors.bluebg,
                       child: Row(
                         children: [
-                          Gaps.h24,
                           Text(
                             filteredSchoolList[index],
                             style:
