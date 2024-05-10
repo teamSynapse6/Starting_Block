@@ -103,7 +103,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                   children: [
                     Gaps.v52,
                     Text(
-                      "생년월일을 입력해주세요",
+                      "생년월일을 입력해 주세요",
                       style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                     ),
                     Gaps.v42,

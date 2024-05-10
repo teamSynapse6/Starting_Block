@@ -158,7 +158,7 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
                 children: [
                   Gaps.v52,
                   Text(
-                    "거주지를 선택해주세요",
+                    "거주지를 선택해 주세요",
                     style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
                   Gaps.v42,

@@ -173,6 +173,8 @@ class _NickNameScreenState extends State<NickNameScreen> {
                       TextFormField(
                         controller: _nicknameController,
                         decoration: InputDecoration(
+                          hintStyle:
+                              AppTextStyles.bd2.copyWith(color: AppColors.g3),
                           hintText: "닉네임을 입력해주세요",
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 10.0),
