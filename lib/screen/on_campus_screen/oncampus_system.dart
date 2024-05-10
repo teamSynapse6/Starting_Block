@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/oncampus_api_manage.dart';
-import 'package:starting_block/manage/models/oncampus_system_model.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class OnCampusSystem extends StatefulWidget {
@@ -14,7 +14,7 @@ class OnCampusSystem extends StatefulWidget {
 }
 
 class _OnCampusSystemState extends State<OnCampusSystem> {
-  List<OnCampusSystemModel> _systemList = []; // OnCampusSystemModel의 리스트
+  List<OncaSystemModel> _systemList = []; // OncaSystemModel의 리스트
   bool isLoading = false;
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
@@ -23,7 +23,7 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _loadOnCampusSystem(); // 학사 제도 정보를 로드하는 함수 호출
+    _loadOnCampusSystem();
   }
 
   @override
@@ -38,8 +38,7 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
       isLoading = true;
     });
     try {
-      List<OnCampusSystemModel> systemList =
-          await OnCampusAPI.getOnCampusSystem();
+      List<OncaSystemModel> systemList = await OnCapmusApi.getOncaSystem();
       setState(() {
         _systemList = systemList;
         isLoading = false;
@@ -161,12 +160,13 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
                                 const NeverScrollableScrollPhysics(), // 중첩 스크롤 문제 방지
                             itemCount: _systemList.length,
                             itemBuilder: (context, index) {
-                              OnCampusSystemModel item = _systemList[index];
+                              OncaSystemModel item = _systemList[index];
                               return OnCampusSysListCard(
                                 thisTitle: item.title,
-                                thisId: item.id,
+                                thisId: item.systemId.toString(),
                                 thisContent: item.content,
                                 thisTarget: item.target,
+                                isBookmarked: item.isBookmarked,
                               );
                             },
                           ),

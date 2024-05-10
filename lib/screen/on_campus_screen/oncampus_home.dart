@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
 class OnCampusHome extends StatefulWidget {
@@ -12,13 +11,12 @@ class OnCampusHome extends StatefulWidget {
 
 class _OnCampusHomeState extends State<OnCampusHome> {
   String _schoolName = "";
-  List<OnCampusNotifyModel> _notifyList = [];
+  final List _notifyList = [];
 
   @override
   void initState() {
     super.initState();
     _loadSchoolName();
-    _loadOnCampusHomeNotify();
   }
 
   Future<void> _loadSchoolName() async {
@@ -28,13 +26,13 @@ class _OnCampusHomeState extends State<OnCampusHome> {
     });
   }
 
-  Future<void> _loadOnCampusHomeNotify() async {
-    List<OnCampusNotifyModel> notifyList =
-        await OnCampusAPI.getOnCampusHomeNotify();
-    setState(() {
-      _notifyList = notifyList;
-    });
-  }
+  // Future<void> _loadOnCampusHomeNotify() async {
+  //   List<OnCampusNotifyModel> notifyList =
+  //       await OnCampusAPI.getOnCampusHomeNotify();
+  //   setState(() {
+  //     _notifyList = notifyList;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

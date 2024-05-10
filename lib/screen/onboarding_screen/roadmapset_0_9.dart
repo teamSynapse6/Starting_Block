@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/roadmap_api_manage.dart';
+import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -67,18 +69,42 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
       return {"title": entry.value, "sequence": entry.key};
     }).toList();
     try {
-      await RoadMapApi.postInitialRoadMap(roadMaps);
-      _saveLoginStatus();
-      if (mounted) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const CompleteScreen()),
-          (Route<dynamic> route) => false,
-        );
+      bool isSuccess = await _saveUserInfoToServer();
+      if (isSuccess) {
+        await RoadMapApi.postInitialRoadMap(roadMaps);
+        _saveLoginStatus();
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const CompleteScreen()),
+            (Route<dynamic> route) => false,
+          );
+        }
+      }
+      if (!isSuccess) {
+        print('유저 정보 저장 중 오류 발생');
       }
     } catch (e) {
       print('서버 저장 중 오류가 발생했습니다: $e');
     }
+  }
+
+  Future<bool> _saveUserInfoToServer() async {
+    String nickName = await UserInfo.getNickName();
+    bool isEnterpreneurCheck = await UserInfo.getEntrepreneurCheck();
+    String residence = await UserInfo.getResidence();
+    String university = await UserInfo.getSchoolName();
+    String birth = await UserInfo.getUserBirthday();
+    String formattedBirth =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
+
+    return await UserInfoManageApi.patchUserInfo(
+      nickname: nickName,
+      birth: formattedBirth,
+      isCompletedBusinessRegistration: isEnterpreneurCheck,
+      residence: residence,
+      university: university,
+    );
   }
 
   //다음에 설정 버튼 클릭 시
@@ -126,7 +152,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                       children: [
                         Gaps.v52,
                         Text(
-                          "로드맵을 설정해보세요",
+                          "로드맵을 설정해 보세요",
                           style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                         ),
                         Gaps.v10,
@@ -189,6 +215,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                   ),
                   Expanded(
                     child: ReorderableListView(
+                      shrinkWrap: true,
                       onReorderStart: (int newIndex) {
                         setState(() {
                           draggingIndex = newIndex;
@@ -233,7 +260,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                         for (final item
                             in _initialRoadmapItems) // roadmapItems는 screen_manage.dart에서 정의된 것으로 가정
                           ReorderCustomTile(
-                            key: Key(item),
+                            key: UniqueKey(),
                             thisText: item,
                             thisTextStyle: AppTextStyles.bd2.copyWith(
                               color: AppColors.g6,
@@ -282,7 +309,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                 onTap: _onSkipTap,
                 child: Center(
                   child: Text(
-                    '다음에 설정',
+                    '다음에 설정하기',
                     style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
                   ),
                 ),

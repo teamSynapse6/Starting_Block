@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -14,7 +14,7 @@ class OnCaGroupClub extends StatefulWidget {
 }
 
 class _OnCaGroupClubState extends State<OnCaGroupClub> {
-  List<OnCaClubModel> _clubList = []; // 동아리 리스트를 저장할 변수
+  List<OncaSupportGroupModel> _clubList = []; // 동아리 리스트를 저장할 변수
   bool isLoading = false;
 
   @override
@@ -28,7 +28,8 @@ class _OnCaGroupClubState extends State<OnCaGroupClub> {
       isLoading = true;
     });
     try {
-      List<OnCaClubModel> clubList = await OnCampusGroupApi.getOnCaClub();
+      List<OncaSupportGroupModel> clubList =
+          await OnCapmusApi.getOncaSupportGroup(keyword: 'CLUB');
       setState(() {
         _clubList = clubList;
         isLoading = false;

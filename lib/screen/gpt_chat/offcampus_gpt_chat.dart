@@ -115,11 +115,15 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
 
         setState(() {
           _messages.add(Message(
-              isUser: false, message: chatResponse, time: formattedTime));
+            isUser: false,
+            message: chatResponse,
+            time: formattedTime,
+          ));
           _isLoading = false;
         });
 
         await _saveMessages(_messages);
+        _scrollToBottom();
       }
     } catch (e) {
       // 에러 처리 및 사용자에게 에러 메시지 표시
@@ -264,7 +268,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
           ),
           titleSpacing: 4,
           title: Text(
-            "AI와 첨부 파일 대화",
+            "AI로 공고 분석하기",
             style: AppTextStyles.st2.copyWith(color: AppColors.g6),
           ),
           bottom: PreferredSize(
@@ -275,6 +279,8 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   widget.thisTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bd3.copyWith(color: AppColors.g5),
                 ),
               ),
@@ -332,7 +338,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                       if (index == _messages.length) {
                         // 마지막 아이템이 로딩 인디케이터
                         return Padding(
-                          padding: const EdgeInsets.only(left: 16),
+                          padding: const EdgeInsets.only(left: 24, bottom: 22),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -346,17 +352,10 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   SizedBox(
-                                    height: 38,
-                                    child: AppAnimation
-                                        .chatting_progress_indicator,
-                                  ),
+                                      height: 38,
+                                      child: AppAnimation
+                                          .chatting_progress_indicator),
                                   Gaps.h4,
-                                  Text(
-                                    _formatMessageTime(
-                                        DateTime.now().millisecondsSinceEpoch),
-                                    style: AppTextStyles.caption
-                                        .copyWith(color: AppColors.g3),
-                                  ),
                                 ],
                               ),
                             ],
@@ -411,8 +410,8 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                             padding: EdgeInsets.only(
                               top: isFirstItem ? 10 : 0,
                               bottom: isLastItem && !_isLoading ? 10 : 0,
-                              left: 16,
-                              right: 16,
+                              left: 24,
+                              right: 24,
                             ),
                             child: Align(
                               alignment: message.isUser
@@ -420,9 +419,8 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                   : Alignment.centerLeft,
                               child: message.isUser
                                   ? Padding(
-                                      padding: !message.isUser
-                                          ? const EdgeInsets.only(bottom: 22)
-                                          : const EdgeInsets.only(bottom: 12),
+                                      padding:
+                                          const EdgeInsets.only(bottom: 22),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -432,7 +430,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                           Text(
                                             _formatMessageTime(message.time),
                                             style: AppTextStyles.caption
-                                                .copyWith(color: AppColors.g3),
+                                                .copyWith(color: AppColors.g4),
                                           ),
                                           Gaps.h4,
                                           Container(
@@ -465,9 +463,8 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                       ),
                                     )
                                   : Padding(
-                                      padding: message.isUser
-                                          ? const EdgeInsets.only(bottom: 50)
-                                          : const EdgeInsets.only(bottom: 12),
+                                      padding:
+                                          const EdgeInsets.only(bottom: 22),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -515,7 +512,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                                     message.time),
                                                 style: AppTextStyles.caption
                                                     .copyWith(
-                                                        color: AppColors.g3),
+                                                        color: AppColors.g4),
                                               ),
                                             ],
                                           )

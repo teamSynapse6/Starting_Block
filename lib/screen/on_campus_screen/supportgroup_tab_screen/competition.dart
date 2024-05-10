@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -14,7 +14,7 @@ class OnCaGroupCompetition extends StatefulWidget {
 }
 
 class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
-  List<OnCaCompetitionModel> _competitionList = []; // 경진대회 리스트를 저장할 변수
+  List<OncaSupportGroupModel> _competitionList = []; // 경진대회 리스트를 저장할 변수
   bool isLoading = false;
 
   @override
@@ -28,8 +28,8 @@ class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
       isLoading = true;
     });
     try {
-      List<OnCaCompetitionModel> competitionList =
-          await OnCampusGroupApi.getOnCaCompetition();
+      List<OncaSupportGroupModel> competitionList =
+          await OnCapmusApi.getOncaSupportGroup(keyword: 'CONTEST');
       setState(() {
         _competitionList = competitionList;
         isLoading = false;

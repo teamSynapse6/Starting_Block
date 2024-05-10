@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
@@ -77,12 +79,11 @@ class _QuestionWriteState extends State<QuestionWrite> {
 
     // 질문이 성공적으로 게시된 후에는 화면을 닫거나 사용자에게 알림을 표시할 수 있습니다.
     if (mounted) {
+      Navigator.of(context).pop();
       await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => const QuestionWriteComplete()));
-
-      Navigator.of(context).pop();
     }
     if (mounted) {
       Navigator.of(context).pop(true); // 작성화면 닫기
@@ -123,8 +124,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
                       style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                       children: <TextSpan>[
                         const TextSpan(
-                            text:
-                                '질문하기를 작성 시, 다른 창업자들이 작성한 답변을 유지하기 위해, 댓글이 달린 이후에는 '),
+                            text: '글 작성 시 다른 창업자들이 작성한 답변을 유지하기 위해,\n'),
                         TextSpan(
                             text: '글을 수정 및 삭제할 수 없습니다.',
                             style: AppTextStyles.bd5
@@ -135,46 +135,43 @@ class _QuestionWriteState extends State<QuestionWrite> {
                 ),
               ),
               Gaps.v20,
-              SizedBox(
-                height: 300,
-                child: TextFormField(
-                  controller: _textController,
-                  maxLength: 160, // 최대 글자 수를 400으로 설정합니다.
-                  maxLines: null, // 무제한 줄 입력을 허용합니다. (자동으로 높이가 조정됩니다)
-                  keyboardType: TextInputType.multiline,
-                  buildCounter: (BuildContext context,
-                      {int? currentLength, bool? isFocused, int? maxLength}) {
-                    return RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                              text: '$currentLength', // 현재 글자수
-                              style: AppTextStyles.bd6
-                                  .copyWith(color: AppColors.g5)),
-                          TextSpan(
-                              text: ' /$maxLength', // 최대 글자수
-                              style: AppTextStyles.bd6
-                                  .copyWith(color: AppColors.g4)),
-                        ],
-                      ),
-                    );
-                  },
+              TextFormField(
+                controller: _textController,
+                maxLength: 160, // 최대 글자 수를 160으로 설정합니다.
+                maxLines: null, // 무제한 줄 입력을 허용합니다. (자동으로 높이가 조정됩니다)
+                keyboardType: TextInputType.multiline,
+                buildCounter: (BuildContext context,
+                    {int? currentLength, bool? isFocused, int? maxLength}) {
+                  return RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                            text: '$currentLength', // 현재 글자수
+                            style: AppTextStyles.bd6
+                                .copyWith(color: AppColors.g5)),
+                        TextSpan(
+                            text: ' /$maxLength', // 최대 글자수
+                            style: AppTextStyles.bd6
+                                .copyWith(color: AppColors.g4)),
+                      ],
+                    ),
+                  );
+                },
 
-                  decoration: InputDecoration(
-                    hintText: '여기에 질문을 작성하세요',
-                    hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
-                    enabledBorder:
-                        const UnderlineInputBorder(borderSide: BorderSide.none),
-                    focusedBorder:
-                        const UnderlineInputBorder(borderSide: BorderSide.none),
-                  ),
-                  style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                decoration: InputDecoration(
+                  hintText: '질문을 작성해 주세요',
+                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                  enabledBorder:
+                      const UnderlineInputBorder(borderSide: BorderSide.none),
+                  focusedBorder:
+                      const UnderlineInputBorder(borderSide: BorderSide.none),
                 ),
+                style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
               ),
               const Spacer(),
               Text(
-                "문의처 이메일이 제공된 공고글에 한해,\n'문의처에 질문하기' 기능이 제공됩니다.\n주말(공휴일) 제외 오전 9시에 문의처에 메일이 발송됩니다.",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
+                "문의처 이메일이 안내된 공고에 대해 질문할 수 있어요.\n메일은 '평일 오전 9시'에 발송돼요.",
+                style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
               ),
               Gaps.v24,
             ],

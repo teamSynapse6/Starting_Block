@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/onca_class_card.dart';
 
@@ -21,7 +20,7 @@ class OnCaClassRecommend extends StatefulWidget {
 }
 
 class _OnCaClassRecState extends State<OnCaClassRecommend> {
-  List<OnCampusClassModel> classList = [];
+  List<OncaClassModel> classList = [];
   final GlobalKey _cardKey = GlobalKey(); // GlobalKey 추가
   double _cardHeight = 268; // 카드의 높이를 저장할 변수
 
@@ -41,7 +40,7 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateCardHeight());
-    loadClassData();
+    // loadClassData();
   }
 
   @override
@@ -49,24 +48,24 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.thisSelectedText != widget.thisSelectedText) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _updateCardHeight());
-      loadClassData();
+      // loadClassData();
     }
   }
 
-  Future<void> loadClassData() async {
-    // boolToClass에서 현재 선택된 텍스트에 대한 값이 true인지 확인
-    if (boolToClass[widget.thisSelectedText] ?? false) {
-      final OnCampusClassModel classData =
-          await OnCampusAPI.getOnCampusClassRec();
-      setState(() {
-        classList = [classData];
-      });
-    } else {
-      setState(() {
-        classList = [];
-      });
-    }
-  }
+  // Future<void> loadClassData() async {
+  //   // boolToClass에서 현재 선택된 텍스트에 대한 값이 true인지 확인
+  //   if (boolToClass[widget.thisSelectedText] ?? false) {
+  //     final OnCampusClassModel classData =
+  //         await OnCampusAPI.getOnCampusClassRec();
+  //     setState(() {
+  //       classList = [classData];
+  //     });
+  //   } else {
+  //     setState(() {
+  //       classList = [];
+  //     });
+  //   }
+  // }
 
   void _updateCardHeight() {
     final RenderObject? renderObject =
@@ -108,11 +107,11 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
                 child: OnCaClassCard(
                   key: _cardKey,
                   thisTitle: classList[0].title,
-                  thisId: classList[0].id,
+                  thisId: classList[0].lectureId.toString(),
                   thisLiberal: classList[0].liberal,
-                  thisCredit: classList[0].credit,
+                  thisCredit: classList[0].credit.toString(),
                   thisContent: classList[0].content,
-                  thisSession: classList[0].session,
+                  thisSession: classList[0].session.toString(),
                   thisInstructor: classList[0].instructor,
                 ),
               ),

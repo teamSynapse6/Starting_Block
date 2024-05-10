@@ -120,6 +120,7 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
         });
 
         await _saveMessages(_messages);
+        _scrollToBottom();
       }
     } catch (e) {
       // 에러 처리 및 사용자에게 에러 메시지 표시
@@ -264,7 +265,7 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
           ),
           titleSpacing: 4,
           title: Text(
-            "AI와 첨부 파일 대화",
+            "AI로 공고 분석하기",
             style: AppTextStyles.st2.copyWith(color: AppColors.g6),
           ),
           bottom: PreferredSize(
@@ -351,12 +352,6 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                                         .chatting_progress_indicator,
                                   ),
                                   Gaps.h4,
-                                  Text(
-                                    _formatMessageTime(
-                                        DateTime.now().millisecondsSinceEpoch),
-                                    style: AppTextStyles.caption
-                                        .copyWith(color: AppColors.g3),
-                                  ),
                                 ],
                               ),
                             ],
@@ -432,7 +427,7 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                                           Text(
                                             _formatMessageTime(message.time),
                                             style: AppTextStyles.caption
-                                                .copyWith(color: AppColors.g3),
+                                                .copyWith(color: AppColors.g4),
                                           ),
                                           Gaps.h4,
                                           Container(
@@ -515,7 +510,7 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                                                     message.time),
                                                 style: AppTextStyles.caption
                                                     .copyWith(
-                                                        color: AppColors.g3),
+                                                        color: AppColors.g4),
                                               ),
                                             ],
                                           )

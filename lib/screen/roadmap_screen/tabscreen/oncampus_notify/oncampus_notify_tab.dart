@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_manage.dart'; // Import 수정
-import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_recommend.dart';
 
 const List<String> validTextsNotify = [
@@ -37,8 +35,7 @@ class TabScreenOnCaNotify extends StatefulWidget {
 
 class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
   List<int> savedIds = [];
-  List<OnCampusNotifyModel> onCampusNotifyData =
-      []; // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
+  List onCampusNotifyData = [];
 
   @override
   void initState() {
@@ -63,7 +60,7 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
     });
 
     if (ids.isNotEmpty) {
-      _loadOnCampusNotifyDataByIds(); // 변경: _loadOffCampusDataByIds()를 _loadOnCampusNotifyDataByIds()로 변경
+      // _loadOnCampusNotifyDataByIds(); // 변경: _loadOffCampusDataByIds()를 _loadOnCampusNotifyDataByIds()로 변경
     }
   }
 
@@ -84,23 +81,23 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
     }
   }
 
-  void _loadOnCampusNotifyDataByIds() async {
-    if (savedIds.isNotEmpty) {
-      try {
-        final data = await OnCampusAPI.getOnCampusNotifyByIds(
-            savedIds); // 변경: OffCampusApiService.getOffCampusDataByIds()를 OnCampusAPI.getOnCampusNotifyByIds()로 변경
-        setState(() {
-          onCampusNotifyData = data;
-        });
-      } catch (e) {
-        // 에러 처리 로직
-      }
-    } else {
-      setState(() {
-        onCampusNotifyData = [];
-      });
-    }
-  }
+  // void _loadOnCampusNotifyDataByIds() async {
+  //   if (savedIds.isNotEmpty) {
+  //     try {
+  //       final data = await OnCampusAPI.getOnCampusNotifyByIds(
+  //           savedIds); // 변경: OffCampusApiService.getOffCampusDataByIds()를 OnCampusAPI.getOnCampusNotifyByIds()로 변경
+  //       setState(() {
+  //         onCampusNotifyData = data;
+  //       });
+  //     } catch (e) {
+  //       // 에러 처리 로직
+  //     }
+  //   } else {
+  //     setState(() {
+  //       onCampusNotifyData = [];
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -30,9 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.g1,
-      appBar: const HomeAppBar(
-        newAlarm: false,
-      ),
+      appBar: const HomeAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -63,10 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               HomeQuestionStep(
-                thisStage: 1,
                 thisUserName: _nickName,
               ),
-              Gaps.v28,
               const HomeNotifyRecommend(),
               Gaps.v28,
               const HomeQuestionRecommend(),

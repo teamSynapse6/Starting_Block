@@ -12,4 +12,22 @@ class AppAnimation {
         frameRate: FrameRate.max,
         fit: BoxFit.fill,
       );
+  static Widget get leap_first => Lottie.asset(
+        'assets/animation/leap_first.json',
+        repeat: false,
+        frameRate: FrameRate.max,
+        fit: BoxFit.fill,
+      );
+  static Widget get signup_complete => Lottie.asset(
+        'assets/animation/signup_complete.json',
+        repeat: true,
+        frameRate: FrameRate.max,
+        fit: BoxFit.fill,
+      );
+  static Widget get question_write_complete => Lottie.asset(
+        'assets/animation/question_write_complete.json',
+        repeat: false,
+        frameRate: FrameRate.max,
+        fit: BoxFit.fill,
+      );
 }

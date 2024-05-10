@@ -3,6 +3,7 @@ import 'package:starting_block/constants/constants.dart';
 
 class OnCampusSysListCard extends StatelessWidget {
   final String thisTitle, thisId, thisContent, thisTarget;
+  final bool isBookmarked;
 
   const OnCampusSysListCard({
     super.key,
@@ -10,6 +11,7 @@ class OnCampusSysListCard extends StatelessWidget {
     required this.thisId,
     required this.thisContent,
     required this.thisTarget,
+    required this.isBookmarked,
   });
 
   @override
@@ -32,7 +34,10 @@ class OnCampusSysListCard extends StatelessWidget {
                   style: AppTextStyles.bd1.copyWith(color: AppColors.black),
                 ),
                 const Spacer(),
-                // BookMarkButton(id: thisId, classification: '창업제도'),
+                BookMarkButton(
+                  thisID: thisId,
+                  isSaved: isBookmarked,
+                ),
               ],
             ),
             Gaps.v8,

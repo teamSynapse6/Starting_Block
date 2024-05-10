@@ -2,8 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_manage.dart';
-import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_card.dart';
 
 class OnCaNotifyRecommend extends StatefulWidget {
@@ -21,7 +19,7 @@ class OnCaNotifyRecommend extends StatefulWidget {
 }
 
 class _OnCaNotifyRecommendState extends State<OnCaNotifyRecommend> {
-  List<OnCampusNotifyModel> notifyList = []; // 로드된 데이터를 저장할 리스트
+  List notifyList = []; // 로드된 데이터를 저장할 리스트
 
   final Map<String, List<String>> textToType = {
     '창업 교육': ['창업 캠프', '창업 특강', '창업 멘토링'],
@@ -38,25 +36,25 @@ class _OnCaNotifyRecommendState extends State<OnCaNotifyRecommend> {
   @override
   void initState() {
     super.initState();
-    loadOnCaNotifyRec(); // 데이터 로드
+    // loadOnCaNotifyRec(); // 데이터 로드
   }
 
   @override
   void didUpdateWidget(OnCaNotifyRecommend oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.thisSelectedText != widget.thisSelectedText) {
-      loadOnCaNotifyRec();
+      // loadOnCaNotifyRec();
     }
   }
 
-  Future<void> loadOnCaNotifyRec() async {
-    final List<String> types = textToType[widget.thisSelectedText] ?? [];
-    final List<OnCampusNotifyModel> loadedNotifyList =
-        await OnCampusAPI.getOnCampusRoadmapRec(types: types);
-    setState(() {
-      notifyList = loadedNotifyList;
-    });
-  }
+  // Future<void> loadOnCaNotifyRec() async {
+  //   final List<String> types = textToType[widget.thisSelectedText] ?? [];
+  //   final List<OnCampusNotifyModel> loadedNotifyList =
+  //       await OnCampusAPI.getOnCampusRoadmapRec(types: types);
+  //   setState(() {
+  //     notifyList = loadedNotifyList;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

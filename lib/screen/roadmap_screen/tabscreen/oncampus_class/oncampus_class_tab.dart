@@ -36,7 +36,7 @@ class TabScreenOnCaClass extends StatefulWidget {
 
 class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
   List<int> savedIds = [];
-  List<OnCampusClassModel> onCampusClassData = [];
+  List<OncaClassModel> onCampusClassData = [];
 
   @override
   void initState() {
@@ -114,11 +114,11 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
                     children: [
                       OnCaListClass(
                         thisTitle: item.title,
-                        thisId: item.id,
+                        thisId: item.lectureId.toString(),
                         thisLiberal: item.liberal,
-                        thisCredit: item.credit,
+                        thisCredit: item.credit.toString(),
                         thisContent: item.content,
-                        thisSession: item.session,
+                        thisSession: item.session.toString(),
                       ),
                       if (index < onCampusClassData.length - 1)
                         const Padding(

@@ -14,7 +14,7 @@ class OnCampusClass extends StatefulWidget {
 }
 
 class _OnCampusClassState extends State<OnCampusClass> {
-  List<OnCampusClassModel> _classList = []; // OnCampusClassModel의 리스트
+  List<OncaClassModel> _classList = []; // OncaClassModel의 리스트
   bool isLoading = false;
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
@@ -23,7 +23,7 @@ class _OnCampusClassState extends State<OnCampusClass> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _loadOnCampusClass(); // 클래스 데이터를 로드하는 함수 호출
+    _loadOnCampusClass();
   }
 
   @override
@@ -38,7 +38,7 @@ class _OnCampusClassState extends State<OnCampusClass> {
       isLoading = true;
     });
     try {
-      List<OnCampusClassModel> classList = await OnCampusAPI.getOnCampusClass();
+      List<OncaClassModel> classList = await OnCapmusApi.getOncaClass();
       setState(() {
         _classList = classList;
         isLoading = false;
@@ -161,15 +161,16 @@ class _OnCampusClassState extends State<OnCampusClass> {
                                 const NeverScrollableScrollPhysics(), // 중첩 스크롤 문제 방지
                             itemCount: _classList.length,
                             itemBuilder: (context, index) {
-                              OnCampusClassModel item = _classList[index];
+                              OncaClassModel item = _classList[index];
                               return OnCampusClassListCard(
                                 thisTitle: item.title,
-                                thisId: item.id,
+                                thisId: item.lectureId.toString(),
                                 thisLiberal: item.liberal,
-                                thisCredit: item.credit,
+                                thisCredit: item.credit.toString(),
                                 thisInstructor: item.instructor,
                                 thisContent: item.content,
-                                thisSession: item.session,
+                                thisSession: item.session.toString(),
+                                isBookmarked: item.isBookmarked,
                               );
                             },
                           ),

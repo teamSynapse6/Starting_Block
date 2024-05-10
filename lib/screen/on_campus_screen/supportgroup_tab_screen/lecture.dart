@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -14,7 +14,7 @@ class OnCaGroupLecture extends StatefulWidget {
 }
 
 class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
-  List<OnCaLectureModel> _lectureList = []; // 강연 리스트를 저장할 변수
+  List<OncaSupportGroupModel> _lectureList = []; // 강연 리스트를 저장할 변수
   bool isLoading = false;
 
   @override
@@ -28,8 +28,8 @@ class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
       isLoading = true;
     });
     try {
-      List<OnCaLectureModel> lectureList =
-          await OnCampusGroupApi.getOnCaLecture();
+      List<OncaSupportGroupModel> lectureList =
+          await OnCapmusApi.getOncaSupportGroup(keyword: 'LECTURE');
       setState(() {
         _lectureList = lectureList;
         isLoading = false;

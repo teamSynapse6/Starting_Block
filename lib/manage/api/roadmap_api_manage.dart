@@ -172,26 +172,43 @@ class RoadMapApi {
     }
   }
 
-  // 로드맵에 저장된 교외 공고 리스트를 불러오는 메소드
+  // 로드맵에 저장된 교외/교내 공고 리스트를 불러오는 메소드
   static Future<List<RoadMapSavedOffcampus>> getSavedListOffcampus(
-      int roadmapId,
-      {int retryCount = 1}) async {
-    final url = Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId/off-campus');
+      {required int roadmapId,
+      required String type,
+      int retryCount = 1}) async {
+    // roadmapId와 쿼리 파라미터 'type'을 포함한 URL 생성
+    final url = Uri.parse(
+        '$baseUrl/api/v1/roadmaps/$roadmapId/list?type=${Uri.encodeComponent(type)}');
+
+    // 인증 토큰이 포함된 헤더 가져오기
     Map<String, String> headers = await getHeaders();
+
+    // 새로운 URL로 GET 요청 보내기
     final response = await http.get(url, headers: headers);
 
+    // 성공적인 응답인지 확인
     if (response.statusCode == 200) {
+      // 응답 본문을 UTF-8로 디코딩
       String utf8Body = utf8.decode(response.bodyBytes);
+      // JSON을 동적 객체 목록으로 파싱
       List<dynamic> body = jsonDecode(utf8Body);
+      // 동적 객체를 RoadMapSavedOffcampus 객체 목록으로 변환
       List<RoadMapSavedOffcampus> savedOffcampusList = body
           .map((dynamic item) => RoadMapSavedOffcampus.fromJson(item))
           .toList();
+      // 파싱된 목록 반환
       return savedOffcampusList;
     } else if (response.statusCode == 401 && retryCount > 0) {
+      // 권한이 없는 경우(401 코드), 액세스 토큰을 갱신하고 재시도
       await UserInfoManageApi.updateAccessToken();
-      return getSavedListOffcampus(roadmapId,
-          retryCount: retryCount - 1); // 재귀 호출
+      return getSavedListOffcampus(
+        retryCount: retryCount - 1,
+        roadmapId: roadmapId,
+        type: type,
+      ); // 재귀 호출
     } else {
+      // 요청이 실패하면 예외를 발생시킴
       throw Exception('교외 공고 목록을 불러오는 데 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }

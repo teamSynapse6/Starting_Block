@@ -13,7 +13,7 @@ class OfcaOncaChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      height: 24,
+      height: 20,
       decoration: BoxDecoration(
         color: isOfca ? AppColors.salmon.withOpacity(0.1) : AppColors.bluebg,
         borderRadius: const BorderRadius.all(Radius.circular(2)),

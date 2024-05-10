@@ -61,6 +61,7 @@ class QuestionWriteComplete extends StatelessWidget {
                   style: AppTextStyles.bd2.copyWith(color: AppColors.white),
                 ),
                 Gaps.v28,
+                Center(child: AppAnimation.question_write_complete),
               ],
             ),
           ),

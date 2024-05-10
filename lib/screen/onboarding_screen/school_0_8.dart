@@ -1,10 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart'; // schoolList가 여기에 정의되어 있다고 가정
 
@@ -52,42 +49,18 @@ class _SchoolScreenState extends State<SchoolScreen> {
       _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
     });
-    bool updateSuccess = await _saveUserInfoToServer();
-    if (updateSuccess) {
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        _onNextTap();
-      });
-    } else {
-      print('에러 발생');
-    }
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _onNextTap();
+    });
   }
 
   Future<void> _saveSchoolName() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userSchoolName', _schoolInfo);
+    UserInfo().setSchoolName(_schoolInfo);
   }
 
   Future<void> _skipSchoolName() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userSchoolName', '');
-  }
-
-  Future<bool> _saveUserInfoToServer() async {
-    String nickName = await UserInfo.getNickName();
-    bool isEnterpreneurCheck = await UserInfo.getEntrepreneurCheck();
-    String residence = await UserInfo.getResidence();
-    String university = _schoolInfo;
-    String birth = await UserInfo.getUserBirthday();
-    String formattedBirth =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
-
-    return await UserInfoManageApi.patchUserInfo(
-      nickname: nickName,
-      birth: formattedBirth,
-      isCompletedBusinessRegistration: isEnterpreneurCheck,
-      residence: residence,
-      university: university,
-    );
+    UserInfo().setSchoolName('');
   }
 
   void _onNextTap() async {
@@ -102,17 +75,12 @@ class _SchoolScreenState extends State<SchoolScreen> {
   }
 
   void _onSkipTap() async {
-    bool updateSuccess = await _saveUserInfoToServer();
-    if (updateSuccess) {
-      await _skipSchoolName();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const RoadmapScreen(),
-        ),
-      );
-    } else {
-      print('에러 발생');
-    }
+    await _skipSchoolName();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const RoadmapScreen(),
+      ),
+    );
   }
 
   @override
@@ -134,7 +102,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
                 children: [
                   Gaps.v52,
                   Text(
-                    "대학교(원)을 선택해주세요",
+                    "대학교(원)을 선택해 주세요",
                     style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
                   Gaps.v42,
@@ -153,6 +121,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
             ),
             if (_schoolInfo.isNotEmpty && filteredSchoolList.isNotEmpty)
               ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 shrinkWrap: true,
                 itemCount: filteredSchoolList.length > 3
                     ? 3
@@ -168,7 +137,6 @@ class _SchoolScreenState extends State<SchoolScreen> {
                       splashColor: AppColors.bluebg,
                       child: Row(
                         children: [
-                          Gaps.h24,
                           Text(
                             filteredSchoolList[index],
                             style:
@@ -181,9 +149,10 @@ class _SchoolScreenState extends State<SchoolScreen> {
                 },
               )
             else if (_schoolInfo.isNotEmpty && filteredSchoolList.isEmpty)
-              Center(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  '현재 일부 대학의 지원 사업을 제공해드립니다',
+                  "'현재 수도권 대학만을 지원해요.\n입력하신 학교의 정보를 빠르게 제공하도록 노력할게요'",
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
                 ),
               )
@@ -198,7 +167,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
               onTap: _onSkipTap,
               child: Center(
                 child: Text(
-                  '다음에 설정',
+                  '다음에 설정하기',
                   style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
                 ),
               ),

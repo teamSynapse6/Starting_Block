@@ -62,15 +62,11 @@ class _SettingHomeState extends State<SettingHome> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              '설정',
+              '설정 및 활동',
               style: AppTextStyles.st1.copyWith(color: AppColors.g6),
             ),
           ),
           Gaps.v24,
-          const SettingList(
-            onTapScreen: AlarmSetting(),
-            thisText: "알림 설정",
-          ),
           const SettingList(
             onTapScreen: SettingTermWebview(
               url: 'https://www.startingblock.co.kr/term', //링크 1차 수정

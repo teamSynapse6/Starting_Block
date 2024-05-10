@@ -15,27 +15,30 @@ class CuriousVote26 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Ink(
-      height: 26,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          isMine ? AppIcon.vote_active_18 : AppIcon.vote_inactive_18,
-          Gaps.h2,
-          Text(
-            '궁금해요',
-            style: isMine
-                ? AppTextStyles.btn2.copyWith(color: AppColors.blue)
-                : AppTextStyles.btn2.copyWith(color: AppColors.g4),
-          ),
-          Gaps.h2,
-          Text(
-            heartCount.toString(),
-            style: isMine
-                ? AppTextStyles.btn2.copyWith(color: AppColors.blue)
-                : AppTextStyles.btn2.copyWith(color: AppColors.g4),
-          )
-        ],
+    return GestureDetector(
+      onTap: () {},
+      child: Ink(
+        height: 26,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            isMine ? AppIcon.vote_active_18 : AppIcon.vote_inactive_18,
+            Gaps.h2,
+            Text(
+              '궁금해요',
+              style: isMine
+                  ? AppTextStyles.btn2.copyWith(color: AppColors.blue)
+                  : AppTextStyles.btn2.copyWith(color: AppColors.g4),
+            ),
+            Gaps.h2,
+            Text(
+              heartCount.toString(),
+              style: isMine
+                  ? AppTextStyles.btn2.copyWith(color: AppColors.blue)
+                  : AppTextStyles.btn2.copyWith(color: AppColors.g4),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -57,7 +60,8 @@ class CuriousVote36 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Ink(
       height: 36,
-      child: InkWell(
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: thisTap,
         child: Row(
           mainAxisSize: MainAxisSize.min,

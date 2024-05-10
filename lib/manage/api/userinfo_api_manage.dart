@@ -121,6 +121,7 @@ class UserInfoManageApi {
           retryCount: retryCount - 1 // 재시도 횟수 감소
           ); // 재귀 호출
     } else {
+      print('정보 업데이트 실패: ${response.statusCode}');
       return false; // 실패 시 false 반환
     }
   }

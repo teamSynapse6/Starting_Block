@@ -2,10 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
-import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/on_campus_screen/widget/oncampus_notify_delegate.dart';
@@ -18,7 +16,7 @@ class OnCampusNotify extends StatefulWidget {
 }
 
 class _OnCampusNotifyState extends State<OnCampusNotify> {
-  List<OnCampusNotifyModel> _notifyList = [];
+  final List _notifyList = [];
   bool isLoading = false;
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
@@ -27,7 +25,6 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _loadFilteredOnCampusNotify();
   }
 
   @override
@@ -37,28 +34,28 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
     super.dispose();
   }
 
-  Future<void> _loadFilteredOnCampusNotify() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      String selectedProgram = prefs.getString('selectedProgram') ?? "전체";
-      String selectedSorting =
-          prefs.getString('selectedOnCaSorting') ?? "latest";
-      List<OnCampusNotifyModel> notifyList =
-          await OnCampusAPI.getOnCampusNotifyFiltered(
-        program: selectedProgram,
-        sorting: selectedSorting,
-      );
-      setState(() {
-        _notifyList = notifyList;
-        isLoading = false;
-      });
-    } catch (e) {
-      print('공고 정보 로드 실패: $e');
-    }
-  }
+  // Future<void> _loadFilteredOnCampusNotify() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     String selectedProgram = prefs.getString('selectedProgram') ?? "전체";
+  //     String selectedSorting =
+  //         prefs.getString('selectedOnCaSorting') ?? "latest";
+  //     List<OnCampusNotifyModel> notifyList =
+  //         await OnCampusAPI.getOnCampusNotifyFiltered(
+  //       program: selectedProgram,
+  //       sorting: selectedSorting,
+  //     );
+  //     setState(() {
+  //       _notifyList = notifyList;
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print('공고 정보 로드 실패: $e');
+  //   }
+  // }
 
   void _onScroll() {
     if (_scrollController.offset == 0) {
@@ -225,8 +222,8 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                 : Consumer<OnCaFilterModel>(
                     builder: (context, filterModel, child) {
                       if (filterModel.hasChanged) {
-                        _loadFilteredOnCampusNotify()
-                            .then((_) => filterModel.resetChangeFlag());
+                        // _loadFilteredOnCampusNotify()
+                        //     .then((_) => filterModel.resetChangeFlag());
                       }
                       return SingleChildScrollView(
                         child: Padding(
@@ -239,8 +236,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                                     const NeverScrollableScrollPhysics(), // 부모 스크롤과의 충돌 방지
                                 itemCount: _notifyList.length,
                                 itemBuilder: (context, index) {
-                                  OnCampusNotifyModel notify =
-                                      _notifyList[index];
+                                  final notify = _notifyList[index];
                                   return Column(
                                     children: [
                                       OnCampusNotifyListCard(

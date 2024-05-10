@@ -7,8 +7,9 @@ class OnCampusClassListCard extends StatelessWidget {
       thisLiberal,
       thisCredit,
       thisInstructor,
-      thisContent;
-  final List<String> thisSession;
+      thisContent,
+      thisSession;
+  final bool isBookmarked;
 
   const OnCampusClassListCard({
     super.key,
@@ -19,6 +20,7 @@ class OnCampusClassListCard extends StatelessWidget {
     required this.thisInstructor,
     required this.thisContent,
     required this.thisSession,
+    required this.isBookmarked,
   });
 
   @override
@@ -44,7 +46,10 @@ class OnCampusClassListCard extends StatelessWidget {
                   style: AppTextStyles.bd1.copyWith(color: AppColors.black),
                 ),
                 const Spacer(),
-                // BookMarkButton(id: thisId, classification: "창업강의"),
+                BookMarkButton(
+                  isSaved: isBookmarked,
+                  thisID: thisId,
+                )
               ],
             ),
             Gaps.v12,
@@ -58,14 +63,7 @@ class OnCampusClassListCard extends StatelessWidget {
                 Gaps.h8,
                 ClassCreditsChips(thisTextNum: thisCredit),
                 Gaps.h8,
-                Wrap(
-                  // Row 대신 Wrap 위젯을 사용합니다.
-                  spacing: 8, // 각 칩 사이의 간격
-                  children: thisSession
-                      .map((session) =>
-                          ClassSessionChips(thisTextSession: session))
-                      .toList(),
-                ),
+                ClassSessionChips(thisTextSession: thisSession),
               ],
             ),
             Gaps.v12,

@@ -54,7 +54,9 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const BackTitleAppBarForGptList(),
+        appBar: const BackTitleAppBarForGptList(
+          title: 'AI로 공고 분석하기',
+        ),
         body: Column(
           children: [
             Gaps.v16,

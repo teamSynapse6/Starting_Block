@@ -23,6 +23,7 @@ class QuestionContactComment extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                padding: const EdgeInsets.all(7),
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
@@ -33,7 +34,7 @@ class QuestionContactComment extends StatelessWidget {
                     width: 1,
                   ),
                 ),
-                child: AppIcon.contact_logo_18,
+                child: AppIcon.contact_logo,
               ),
               Gaps.h10,
               Expanded(

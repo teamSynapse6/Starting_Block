@@ -26,6 +26,7 @@ export 'package:starting_block/constants/widgets/setting_widget/setting_list.dar
 export 'package:starting_block/constants/widgets/setting_widget/profile_icon_list.dart'; //설정_프로필 수정 리스트 위젯
 export 'package:starting_block/constants/widgets/comment_widget/question_list.dart'; //질문 홈_리스트 위젯
 export 'package:starting_block/constants/widgets/scroll_to_top.dart'; //상단으로 자동 스크롤 위젯
+export 'package:starting_block/constants/widgets/pointer_pop_ignore.dart'; //뒤로가기 무시 컴포넌트
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트
@@ -45,7 +46,11 @@ export 'package:starting_block/constants/widgets/home_widget/question_stepper.da
 export 'package:starting_block/constants/widgets/home_widget/dash_stroke.dart'; //질문 단계_dash 위젯
 export 'package:starting_block/constants/widgets/home_widget/notify_recommend_list.dart'; //공고 추천 위젯
 export 'package:starting_block/constants/widgets/home_widget/question_recommend_list.dart'; //질문 추천 위젯
+export 'package:starting_block/constants/widgets/home_widget/question_detail_stepper.dart'; //질문_상세 스텝퍼 위젯
+export 'package:starting_block/constants/widgets/home_widget/question_detail_steptext.dart'; //질문_상세 스텝퍼 텍스트 위젯
 export 'package:starting_block/constants/widgets/home_widget/ofca_onca_chip.dart'; //교내교외 구분 칩
+export 'package:starting_block/constants/widgets/home_widget/question_expanded_list.dart'; //질문 홈_확장 리스트
+export 'package:starting_block/constants/widgets/home_widget/question_expanded_stepper.dart'; //질문 홈_확장 스텝퍼 위젯
 
 //로드맵 컴포넌트 관리
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_gotosave.dart'; //로드맵_지원사업 저장하러 가기

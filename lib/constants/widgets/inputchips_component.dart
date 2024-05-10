@@ -110,11 +110,14 @@ class DefaultInputChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: chipTap,
       child: Ink(
-        height: 32,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 6,
+        ),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.blue : AppColors.g1,
           borderRadius: BorderRadius.circular(16),
@@ -123,14 +126,12 @@ class DefaultInputChip extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Gaps.h12,
             Text(
               text,
               style: AppTextStyles.btn1.copyWith(
                 color: isSelected ? AppColors.white : AppColors.g5,
               ),
             ),
-            Gaps.h12,
           ],
         ),
       ),

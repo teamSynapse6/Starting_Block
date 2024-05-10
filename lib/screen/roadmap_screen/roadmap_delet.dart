@@ -80,7 +80,7 @@ class _RoadMapDeleteState extends State<RoadMapDelete> {
                     color: AppColors.g6,
                   ),
                 ),
-                Gaps.v50,
+                Gaps.v42,
               ],
             ),
           ),

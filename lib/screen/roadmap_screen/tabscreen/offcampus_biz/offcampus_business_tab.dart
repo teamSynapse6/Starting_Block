@@ -54,8 +54,10 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
     setState(() {
       _isLoading = true;
     });
-    var loadedData =
-        await RoadMapApi.getSavedListOffcampus(widget.thisSelectedId);
+    var loadedData = await RoadMapApi.getSavedListOffcampus(
+      roadmapId: widget.thisSelectedId,
+      type: 'OFF-CAMPUS',
+    );
     setState(() {
       offCampusData = loadedData;
       _isLoading = false;

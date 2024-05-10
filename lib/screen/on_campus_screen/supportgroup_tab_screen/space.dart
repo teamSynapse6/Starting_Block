@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/oncampus_api_group_manage.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -14,7 +14,7 @@ class OnCaGroupSpace extends StatefulWidget {
 }
 
 class _OnCaGroupSpaceState extends State<OnCaGroupSpace> {
-  List<OnCaSpaceModel> _spaceList = []; // 공간 리스트를 저장할 변수
+  List<OncaSupportGroupModel> _spaceList = []; // 공간 리스트를 저장할 변수
   bool isLoading = false;
 
   @override
@@ -28,7 +28,8 @@ class _OnCaGroupSpaceState extends State<OnCaGroupSpace> {
       isLoading = true;
     });
     try {
-      List<OnCaSpaceModel> spaceList = await OnCampusGroupApi.getOnCaSpace();
+      List<OncaSupportGroupModel> spaceList =
+          await OnCapmusApi.getOncaSupportGroup(keyword: 'SPACE');
       setState(() {
         _spaceList = spaceList;
         isLoading = false;

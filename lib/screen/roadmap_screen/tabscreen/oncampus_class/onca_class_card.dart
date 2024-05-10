@@ -7,8 +7,8 @@ class OnCaClassCard extends StatefulWidget {
       thisLiberal,
       thisCredit,
       thisContent,
-      thisInstructor;
-  final List<String> thisSession;
+      thisInstructor,
+      thisSession;
 
   const OnCaClassCard({
     super.key,
@@ -80,13 +80,7 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
                     Gaps.h8,
                     ClassCreditsChips(thisTextNum: widget.thisCredit),
                     Gaps.h8,
-                    Wrap(
-                      spacing: 8,
-                      children: widget.thisSession
-                          .map((session) =>
-                              ClassSessionChips(thisTextSession: session))
-                          .toList(),
-                    ),
+                    ClassSessionChips(thisTextSession: widget.thisSession),
                   ],
                 ),
                 Gaps.v12,

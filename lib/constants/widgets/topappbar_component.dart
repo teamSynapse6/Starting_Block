@@ -8,10 +8,7 @@ import 'package:starting_block/manage/screen_manage.dart';
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({
     super.key,
-    required this.newAlarm,
   });
-
-  final bool newAlarm;
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -27,26 +24,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: AppColors.g1,
         leadingWidth: 38,
         leading: AppIcon.topapplogo,
-        actions: <Widget>[
-          InkWell(
-            borderRadius: BorderRadius.circular(24),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeAlarmScreen(),
-                ),
-              );
-            },
-            child: SizedBox(
-              height: 48,
-              width: 48,
-              child: !newAlarm
-                  ? AppIcon.notification_inactived
-                  : AppIcon.notification_actived,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -359,6 +336,29 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+class BackAppBarWithBlueBG extends StatelessWidget
+    implements PreferredSizeWidget {
+  const BackAppBarWithBlueBG({
+    super.key,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: AppColors.blue,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: AppIcon.back_white,
+      ),
+    );
+  }
+}
+
 class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final state;
 
@@ -482,8 +482,11 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class BackTitleAppBarForGptList extends StatelessWidget
     implements PreferredSizeWidget {
+  final String title;
+
   const BackTitleAppBarForGptList({
     super.key,
+    required this.title,
   });
 
   @override
@@ -501,7 +504,7 @@ class BackTitleAppBarForGptList extends StatelessWidget
       ),
       titleSpacing: 4,
       title: Text(
-        'AI로 공고 분석하기',
+        title,
         style: AppTextStyles.st1.copyWith(color: AppColors.white),
       ),
     );

@@ -89,9 +89,12 @@ export 'package:starting_block/screen/myprofile_screen/myprofile_gpt_list.dart';
 //홈_페이지
 export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면
 export 'package:starting_block/screen/home_screen/home_question_step.dart'; //홈_질문 단계
+export 'package:starting_block/screen/home_screen/home_question_step_expend.dart'; //홈_질문 단계 확장 영역
+export 'package:starting_block/screen/home_screen/home_question_screen/home_question_step_1.dart'; //홈_질문 단계 상세_1단계(질문접수) 화면
+export 'package:starting_block/screen/home_screen/home_question_screen/home_question_step_2.dart'; //홈_질문 단계 상세_2단계(질문발송) 화면
+export 'package:starting_block/screen/home_screen/home_question_screen/home_question_step_3.dart'; //홈_질문 단계 상세_3단계(답변도착) 화면
 export 'package:starting_block/screen/home_screen/home_notify_recommend.dart'; //홈_공고 추천 영역
 export 'package:starting_block/screen/home_screen/home_question_recommend.dart'; //홈_질문 추천 영역
-export 'package:starting_block/screen/home_screen/home_alarm_screen.dart'; //홈_알림 화면
 
 //인앱웹뷰 페이지 관리용
 export 'package:starting_block/screen/webview_screen/offcampus_webview.dart'; //교외지원사업 웹뷰
@@ -122,4 +125,5 @@ export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_system_ske
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_class_skeleton.dart'; //교내지원사업_강의 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_supportgroup_skeleton.dart'; //교내지원사업_창업지원단 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_search_skeleton.dart'; //교내지원사업_검색 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/home_skeleton/home_notift_rec_skeleton.dart'; //홈_공고 추천 영역 스켈레톤 로더 화면
 

@@ -99,20 +99,15 @@ class _RoadmapScreenAddState extends State<RoadmapScreenAdd> {
               Gaps.v20,
               Text(
                 '단계를 추가해 보세요',
-                style: AppTextStyles.h5.copyWith(color: AppColors.black),
+                style: AppTextStyles.h5.copyWith(color: AppColors.g6),
               ),
-              Gaps.v10,
-              Text(
-                '기존 단계 선택이 아닌 직접 추가 시, 추천 지원사업은 제외됩니다',
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v24,
+              Gaps.v40,
               TextField(
                 controller: _textController,
                 maxLength: 20,
                 decoration: InputDecoration(
                   hintText: '원하는 단계명을 추가해 주세요',
-                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g4),
+                  hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g2),
                   counterText: '', // 기본 카운터 숨김
                 ),
               ),
@@ -122,24 +117,27 @@ class _RoadmapScreenAddState extends State<RoadmapScreenAdd> {
                   const Spacer(),
                   Text(
                     '$_currentLength',
-                    style:
-                        AppTextStyles.caption.copyWith(color: AppColors.blue),
+                    style: _currentLength == 0
+                        ? AppTextStyles.caption.copyWith(color: AppColors.g3)
+                        : AppTextStyles.caption.copyWith(color: AppColors.blue),
                   ),
                   Text(
                     '/20',
-                    style: AppTextStyles.caption.copyWith(color: AppColors.g5),
+                    style: _currentLength == 0
+                        ? AppTextStyles.caption.copyWith(color: AppColors.g3)
+                        : AppTextStyles.caption.copyWith(color: AppColors.g5),
                   ),
                 ],
               ),
-              Gaps.v32,
+              Gaps.v52,
               Text(
-                '기존 단계로 추가하시고 싶으신가요',
-                style: AppTextStyles.bd4.copyWith(color: AppColors.g5),
+                '추천 사업이 제공되는 단계로 추가해 볼까요?',
+                style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
               ),
               Gaps.v20,
               Wrap(
-                runSpacing: 16,
                 spacing: 16,
+                runSpacing: 14,
                 children: [
                   for (var list in existing)
                     DefaultInputChip(

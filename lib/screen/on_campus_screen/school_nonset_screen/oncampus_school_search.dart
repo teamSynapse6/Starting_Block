@@ -139,6 +139,7 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
             if (_schoolInfo.isNotEmpty &&
                 filteredSchoolList.isNotEmpty) // 조건 추가
               ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 shrinkWrap: true,
                 itemCount: filteredSchoolList.length > 3
                     ? 3
@@ -154,7 +155,6 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
                       splashColor: AppColors.bluebg,
                       child: Row(
                         children: [
-                          Gaps.h24,
                           Text(
                             filteredSchoolList[index],
                             style:
