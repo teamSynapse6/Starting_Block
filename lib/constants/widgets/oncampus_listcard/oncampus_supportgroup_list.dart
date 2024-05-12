@@ -23,15 +23,21 @@ class OnCampusGroupList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              thisTitle,
-              style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
-            ),
-            Gaps.v4,
-            Text(
-              thisContent,
-              style: AppTextStyles.bd2.copyWith(color: AppColors.g5),
-            )
+            if (thisTitle.isNotEmpty)
+              Text(
+                thisTitle,
+                style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+              ),
+            if (thisContent.isNotEmpty || thisContent != '.')
+              Column(
+                children: [
+                  Gaps.v4,
+                  Text(
+                    thisContent,
+                    style: AppTextStyles.bd2.copyWith(color: AppColors.g5),
+                  ),
+                ],
+              )
           ],
         ),
       ),

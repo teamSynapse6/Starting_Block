@@ -38,7 +38,7 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
       isLoading = true;
     });
     try {
-      List<OncaSystemModel> systemList = await OnCapmusApi.getOncaSystem();
+      List<OncaSystemModel> systemList = await OnCampusApi.getOncaSystem();
       setState(() {
         _systemList = systemList;
         isLoading = false;

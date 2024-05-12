@@ -77,6 +77,8 @@ class RoadMapApi {
   static Future<void> addAnnouncementToRoadMap(
       int roadmapId, String announcementId,
       {int retryCount = 1}) async {
+    print('아이디: $announcementId, 로드맵 아이디: $roadmapId');
+
     final url = Uri.parse(
         '$baseUrl/api/v1/roadmaps/$roadmapId/announcement?announcementId=$announcementId');
     Map<String, String> headers = await getHeaders();
@@ -113,7 +115,7 @@ class RoadMapApi {
     }
   }
 
-  // 로드맵의 해당 ID가 저장되어 있는지 확인하는 메소드
+  // 로드맵에 해당 ID가 저장되어 있는지 확인하는 메소드
   static Future<List<RoadMapAnnounceModel>> getRoadMapAnnounceList(
       String announcementId,
       {int retryCount = 1}) async {
@@ -138,7 +140,71 @@ class RoadMapApi {
     }
   }
 
-// 로드맵 도약하기 메소드
+  // 로드맵에 창업 강의 저장 메소드
+  static Future<void> addLectureToRoadMap(int roadmapId, String lectureId,
+      {int retryCount = 1}) async {
+    print('강의 아이디: $lectureId, 로드맵 아이디: $roadmapId');
+
+    final url = Uri.parse(
+        '$baseUrl/api/v1/roadmaps/$roadmapId/lecture?lectureId=$lectureId');
+    Map<String, String> headers = await getHeaders();
+    final response = await http.post(url, headers: headers);
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      // 성공적으로 처리됨
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return addLectureToRoadMap(roadmapId, lectureId,
+          retryCount: retryCount - 1); // 재귀 호출
+    } else {
+      throw Exception('공고를 로드맵에 추가하는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  //로드맵에서 창업강의 삭제 메소드
+  static Future<void> deleteLectureFromRoadMap(int roadmapId, String lectureId,
+      {int retryCount = 1}) async {
+    final url = Uri.parse(
+        '$baseUrl/api/v1/roadmaps/$roadmapId/lecture?lectureId=$lectureId');
+    Map<String, String> headers = await getHeaders();
+    final response = await http.delete(url, headers: headers);
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      // 성공적으로 처리됨
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return deleteLectureFromRoadMap(roadmapId, lectureId,
+          retryCount: retryCount - 1); // 재귀 호출
+    } else {
+      throw Exception('공고를 로드맵에서 삭제하는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  //로드맵에 해당 창업강의 ID가 저장되어 있는지 확인하는 메소드
+  static Future<List<RoadMapAnnounceModel>> getRoadMapLectureList(
+      String announcementId,
+      {int retryCount = 1}) async {
+    final url = Uri.parse('$baseUrl/api/v1/roadmaps/lecture/$announcementId');
+    Map<String, String> headers = await getHeaders();
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      String utf8Body = utf8.decode(response.bodyBytes);
+      List<dynamic> body = jsonDecode(utf8Body);
+      List<RoadMapAnnounceModel> announces = body
+          .map((dynamic item) => RoadMapAnnounceModel.fromJson(item))
+          .toList();
+      return announces;
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getRoadMapLectureList(announcementId,
+          retryCount: retryCount - 1); // 재귀 호출
+    } else {
+      throw Exception('로드맵 공고를 불러오는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  // 로드맵 도약하기 메소드
   static Future<bool> roadMapLeap({int retryCount = 1}) async {
     final url = Uri.parse('$baseUrl/api/v1/roadmaps/leap');
     Map<String, String> headers = await getHeaders();

@@ -8,12 +8,15 @@ export 'package:starting_block/manage/models/roadmap_models/roadmap_announce_mod
 export 'package:starting_block/manage/models/roadmap_models/roadmap_savedlist_offcampus.dart'; //로드맵_로드맵에 저장된 공고(교외사업)
 
 //교내지원사업 Model 파일 관리용
-export 'package:starting_block/manage/models/oncampus_model/onca_supportgroup_model.dart'; //교내_창업지원공고 모델
+export 'package:starting_block/manage/models/oncampus_model/onca_supportgroup_model.dart'; //교내_창업지원단 모델
+export 'package:starting_block/manage/models/oncampus_model/onca_supportgroup_tab_model.dart'; //교내_창업지원단 탭 모델
 export 'package:starting_block/manage/models/oncampus_model/onca_system_model.dart'; //교내_창업 제도 모델
 export 'package:starting_block/manage/models/oncampus_model/onca_class_model.dart'; //교내_창업 강의 모델
+export 'package:starting_block/manage/models/oncampus_model/onca_announcement_model.dart'; //교내_지원공고 모델
 
 //유저 정보 Model파일 관리용
 export 'package:starting_block/manage/models/userinfo_models/signin_model.dart'; //유저_로그인 모델
+export 'package:starting_block/manage/models/userinfo_models/user_data_model.dart'; //유저_유저 정보 모델
 
 //마이페이지_Model파일 관리용
 export 'package:starting_block/manage/models/myprofile_models/my_heart_model.dart'; //내 궁금해요 모델

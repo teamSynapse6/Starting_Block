@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class OnCampusClassListCard extends StatelessWidget {
@@ -41,14 +43,17 @@ class OnCampusClassListCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  thisTitle,
-                  style: AppTextStyles.bd1.copyWith(color: AppColors.black),
+                Expanded(
+                  child: Text(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    thisTitle,
+                    style: AppTextStyles.bd1.copyWith(color: AppColors.black),
+                  ),
                 ),
-                const Spacer(),
-                BookMarkButton(
+                BookMarkLectureButton(
                   isSaved: isBookmarked,
-                  thisID: thisId,
+                  thisLectureID: thisId,
                 )
               ],
             ),

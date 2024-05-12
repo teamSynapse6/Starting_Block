@@ -18,6 +18,6 @@ class OnCampusNotifyDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(OnCampusNotifyDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }

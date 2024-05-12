@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/on_campus_screen/widget/oncampus_supportgroup_delegate.dart';
@@ -17,14 +18,8 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
     with TickerProviderStateMixin {
   String _schoolName = "";
   TabController? _tabController;
-  List<Tab> myTabs = [
-    const Tab(text: '멘토링'),
-    const Tab(text: '동아리'),
-    const Tab(text: '특강'),
-    const Tab(text: '경진대회 및 캠프'),
-    const Tab(text: '공간'),
-    const Tab(text: '기타'),
-  ];
+  List<Tab> myTabs = [];
+
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
 
@@ -33,7 +28,28 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
     super.initState();
     _loadSchoolName();
     _scrollController.addListener(_onScroll);
-    _tabController = TabController(vsync: this, length: myTabs.length);
+    _loadTabs();
+  }
+
+  //서버로부터 tab 데이터를 가져오는 메소드
+  Future<void> _loadTabs() async {
+    try {
+      List<String> tabTitles = await OnCampusApi.getSupportGroupTab();
+      List<Tab> tabs = tabTitles.map((tabText) => Tab(text: tabText)).toList();
+
+      setState(() {
+        // try-catch 블록을 사용하여 _tabController의 초기화 여부를 확인
+        try {
+          _tabController?.dispose();
+        } catch (e) {
+          print(e);
+        }
+        myTabs = tabs;
+        _tabController = TabController(length: myTabs.length, vsync: this);
+      });
+    } catch (e) {
+      print("탭 데이터 로드 실패: $e");
+    }
   }
 
   @override
@@ -186,8 +202,8 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
                       if (isTabPresent('멘토링')) const OnCaGroupMentoring(),
                       if (isTabPresent('동아리')) const OnCaGroupClub(),
                       if (isTabPresent('특강')) const OnCaGroupLecture(),
-                      if (isTabPresent('경진대회 및 캠프'))
-                        const OnCaGroupCompetition(),
+                      if (isTabPresent('경진대회')) const OnCaGroupCompetition(),
+                      if (isTabPresent('캠프')) const OnCaGroupCamp(),
                       if (isTabPresent('공간')) const OnCaGroupSpace(),
                       if (isTabPresent('기타')) const OnCaGroupEtc(),
                     ],

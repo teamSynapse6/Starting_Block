@@ -5,6 +5,8 @@ import 'package:starting_block/manage/screen_manage.dart';
 class OnCampusNotifyListCard extends StatelessWidget {
   final String thisProgramText, thisId, thisTitle, thisStartDate, thisUrl;
 
+  final bool isSaved;
+
   const OnCampusNotifyListCard({
     super.key,
     required this.thisProgramText,
@@ -12,6 +14,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
     required this.thisTitle,
     required this.thisStartDate,
     required this.thisUrl,
+    required this.isSaved,
   });
 
   @override
@@ -39,6 +42,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
               children: [
                 OrganizeChip(text: thisProgramText),
                 const Spacer(),
+                BookMarkButton(isSaved: isSaved, thisID: thisId)
               ],
             ),
             Gaps.v12,

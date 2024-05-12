@@ -38,7 +38,7 @@ class _OnCampusClassState extends State<OnCampusClass> {
       isLoading = true;
     });
     try {
-      List<OncaClassModel> classList = await OnCapmusApi.getOncaClass();
+      List<OncaClassModel> classList = await OnCampusApi.getOncaClass();
       setState(() {
         _classList = classList;
         isLoading = false;

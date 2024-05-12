@@ -29,7 +29,7 @@ class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
     });
     try {
       List<OncaSupportGroupModel> lectureList =
-          await OnCapmusApi.getOncaSupportGroup(keyword: 'LECTURE');
+          await OnCampusApi.getOncaSupportGroup(keyword: 'LECTURE');
       setState(() {
         _lectureList = lectureList;
         isLoading = false;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/oncampus_filter/model/onca_filter_model.dart';
 
@@ -21,6 +22,11 @@ class ProgramChipsSheet extends StatefulWidget {
 }
 
 class _ProgramChipsSheetState extends State<ProgramChipsSheet> {
+  void _saveSelectedProgram(String program) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedProgram', program);
+  }
+
   void _onProgramBottom(BuildContext context) async {
     final filterModel = Provider.of<OnCaFilterModel>(context, listen: false);
     await showModalBottomSheet(
@@ -57,7 +63,11 @@ class _ProgramChipsSheetState extends State<ProgramChipsSheet> {
                                 ? AppColors.g1
                                 : AppColors.white,
                             thisTapAction: () {
-                              filterModel.setSelectedProgram(program);
+                              setStateBottomSheet(() {
+                                filterModel.setSelectedProgram(program);
+                              });
+
+                              _saveSelectedProgram(program);
                               Navigator.pop(context); // 모달 닫기
                             },
                           );

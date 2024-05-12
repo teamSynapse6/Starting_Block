@@ -29,7 +29,7 @@ class _OnCaGroupSpaceState extends State<OnCaGroupSpace> {
     });
     try {
       List<OncaSupportGroupModel> spaceList =
-          await OnCapmusApi.getOncaSupportGroup(keyword: 'SPACE');
+          await OnCampusApi.getOncaSupportGroup(keyword: 'SPACE');
       setState(() {
         _spaceList = spaceList;
         isLoading = false;

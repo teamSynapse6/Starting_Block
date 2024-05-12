@@ -6,36 +6,36 @@ import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class OnCaGroupCompetition extends StatefulWidget {
-  const OnCaGroupCompetition({super.key});
+class OnCaGroupCamp extends StatefulWidget {
+  const OnCaGroupCamp({super.key});
 
   @override
-  State<OnCaGroupCompetition> createState() => _OnCaGroupCompetitionState();
+  State<OnCaGroupCamp> createState() => _OnCaGroupCampState();
 }
 
-class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
-  List<OncaSupportGroupModel> _competitionList = []; // 경진대회 리스트를 저장할 변수
+class _OnCaGroupCampState extends State<OnCaGroupCamp> {
+  List<OncaSupportGroupModel> _clubList = []; // 동아리 리스트를 저장할 변수
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadCompetitionData(); // 경진대회 데이터를 로드하는 메서드를 호출합니다.
+    _loadClubData(); // 동아리 데이터를 로드하는 메서드를 호출합니다.
   }
 
-  Future<void> _loadCompetitionData() async {
+  Future<void> _loadClubData() async {
     setState(() {
       isLoading = true;
     });
     try {
-      List<OncaSupportGroupModel> competitionList =
-          await OnCampusApi.getOncaSupportGroup(keyword: 'CONTEST');
+      List<OncaSupportGroupModel> clubList =
+          await OnCampusApi.getOncaSupportGroup(keyword: 'CAMP');
       setState(() {
-        _competitionList = competitionList;
+        _clubList = clubList;
         isLoading = false;
       });
     } catch (e) {
-      print('경진대회 정보 로드 실패: $e');
+      print('동아리 정보 로드 실패: $e');
     }
   }
 
@@ -47,12 +47,12 @@ class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
           ? const OncaSkeletonSupportGroup()
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              itemCount: _competitionList.length,
+              itemCount: _clubList.length,
               itemBuilder: (context, index) {
-                final item = _competitionList[index];
+                final item = _clubList[index];
                 return Column(
                   children: [
-                    if (index == 0) Gaps.v20,
+                    if (index == 0) Gaps.v16,
                     OnCampusGroupList(
                       thisTitle: item.title,
                       thisContent: item.content,

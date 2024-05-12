@@ -11,7 +11,7 @@ class OnCampusHome extends StatefulWidget {
 
 class _OnCampusHomeState extends State<OnCampusHome> {
   String _schoolName = "";
-  final List _notifyList = [];
+  final List<OncaAnnouncementModel> _notifyList = [];
 
   @override
   void initState() {
@@ -127,11 +127,12 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                 return Column(
                   children: [
                     OnCampusNotifyListCard(
-                      thisProgramText: notifyitem.classification,
-                      thisId: notifyitem.id,
+                      thisProgramText: notifyitem.keyword,
+                      thisId: notifyitem.announcementId.toString(),
                       thisTitle: notifyitem.title,
-                      thisStartDate: notifyitem.startdate,
-                      thisUrl: notifyitem.detailurl,
+                      thisStartDate: notifyitem.insertDate,
+                      thisUrl: notifyitem.detailUrl,
+                      isSaved: notifyitem.isBookmarked,
                     ),
                     if (index < _notifyList.length) const CustomDividerH2G1(),
                   ],

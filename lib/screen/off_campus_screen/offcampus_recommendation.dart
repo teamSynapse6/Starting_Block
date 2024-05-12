@@ -51,6 +51,8 @@ class Recommendation extends StatelessWidget {
                             thisEndDate: item.endDate,
                             thisClassification: '교외사업',
                             isSaved: item.isBookmarked,
+                            isContactExist: item.isContactExist,
+                            isFileUploaded: item.isFileUploaded,
                           ),
                           Gaps.v16,
                           if (index != filteredData.length - 1)
