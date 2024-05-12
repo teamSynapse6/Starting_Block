@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/offcampus_api_manage.dart';
 import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -22,27 +22,35 @@ class OncampusWebViewScreen extends StatefulWidget {
 
 class _OncampusWebViewScreenState extends State<OncampusWebViewScreen> {
   String _questionCount = '0';
-  final List<OffCampusDetailModel> _offcampusDetail = [];
   bool _isBottomAppBarVisible = true;
   int _lastScrollY = 0;
   bool _isScrollingDown = false;
+  bool _isSaved = false;
 
   @override
   void initState() {
     super.initState();
-    loadoffCampusDetailData();
+    loadIsSavedData();
     loadQuestionData();
   }
 
-  Future<void> loadoffCampusDetailData() async {
-    int id = int.parse(widget.id);
-    // API 호출을 통해 상세 데이터를 가져옵니다.
-    OffCampusDetailModel detailData =
-        await OffCampusApi.getOffcampusDetailInfo(id);
-    setState(() {
-      _offcampusDetail.clear();
-      _offcampusDetail.add(detailData);
-    });
+  void loadIsSavedData() async {
+    try {
+      // API를 호출하여 저장된 공고 목록을 가져옵니다.
+      List<RoadMapAnnounceModel> savedAnnouncements =
+          await RoadMapApi.getRoadMapAnnounceList(widget.id);
+
+      // `isAnnouncementSaved`가 true인 항목이 있는지 확인합니다.
+      bool isSaved = savedAnnouncements.any((item) => item.isAnnouncementSaved);
+
+      // 상태 업데이트
+      setState(() {
+        _isSaved = isSaved; // _isSaved 상태를 업데이트합니다.
+        print('저장?: $_isSaved');
+      });
+    } catch (e) {
+      print('로드맵 공고 데이터 로드 실패: $e');
+    }
   }
 
   void loadQuestionData() async {
@@ -58,20 +66,17 @@ class _OncampusWebViewScreenState extends State<OncampusWebViewScreen> {
     return Consumer<BookMarkNotifier>(
       builder: (context, bookMarkNotifier, child) {
         if (bookMarkNotifier.isUpdated) {
-          loadoffCampusDetailData();
-          loadoffCampusDetailData();
+          loadIsSavedData();
           bookMarkNotifier.resetUpdate();
         }
 
         return Scaffold(
-          appBar: _offcampusDetail.isNotEmpty
-              ? SaveAppBar(
-                  thisBookMark: BookMarkButton(
-                    isSaved: _offcampusDetail[0].isBookmarked,
-                    thisID: widget.id,
-                  ),
-                )
-              : null,
+          appBar: SaveAppBar(
+            thisBookMark: BookMarkButton(
+              isSaved: _isSaved,
+              thisID: widget.id,
+            ),
+          ),
           body: Stack(
             children: [
               InAppWebView(

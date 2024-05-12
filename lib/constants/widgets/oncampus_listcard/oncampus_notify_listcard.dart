@@ -17,8 +17,30 @@ class OnCampusNotifyListCard extends StatelessWidget {
     required this.isSaved,
   });
 
+  String formatedStartDate(String date) {
+    // '20240102'와 같은 문자열을 '2024-01-02' 형식으로 변환
+    String startDate = date.substring(0, 10);
+    return startDate;
+  }
+
+  // 매핑 함수 추가
+  String mapProgramText(String program) {
+    Map<String, String> programMapping = {
+      'CLUB': '창업 동아리',
+      'CAMP': '창업 캠프',
+      'CONTEST': '창업 경진대회',
+      'LECTURE': '창업 특강',
+      'MENTORING': '멘토링',
+      'ETC': '기타',
+    };
+    return programMapping[program] ?? program; // 매핑 테이블에 없는 경우 원래 값을 반환
+  }
+
   @override
   Widget build(BuildContext context) {
+    String formattedStartDate = formatedStartDate(thisStartDate);
+    String formattedProgramText = mapProgramText(thisProgramText);
+
     return Container(
       color: AppColors.white,
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -40,7 +62,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                OrganizeChip(text: thisProgramText),
+                OrganizeChip(text: formattedProgramText),
                 const Spacer(),
                 BookMarkButton(isSaved: isSaved, thisID: thisId)
               ],
@@ -52,7 +74,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
             ),
             Gaps.v8,
             Text(
-              '등록일 $thisStartDate',
+              '등록일 $formattedStartDate',
               style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
             ),
           ],

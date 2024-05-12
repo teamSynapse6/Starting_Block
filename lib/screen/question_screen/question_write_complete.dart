@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class QuestionWriteComplete extends StatelessWidget {
+class QuestionWriteComplete extends StatefulWidget {
   const QuestionWriteComplete({super.key});
 
+  @override
+  State<QuestionWriteComplete> createState() => _QuestionWriteCompleteState();
+}
+
+class _QuestionWriteCompleteState extends State<QuestionWriteComplete> {
   @override
   Widget build(BuildContext context) {
     Color topColor = const Color(0xFF5E8BFF);
@@ -15,6 +20,7 @@ class QuestionWriteComplete extends StatelessWidget {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         systemNavigationBarColor: bottomColor,
       ));
+
       Future.delayed(
         const Duration(seconds: 3),
         () {
@@ -25,7 +31,12 @@ class QuestionWriteComplete extends StatelessWidget {
                 Brightness.dark, // 네비게이션 바 아이콘 색상 설정
           ));
 
+          // Navigator.pop을 호출하기 전에 안전성을 검사합니다.
+          // if (Navigator.canPop(context) && mounted) {
           Navigator.of(context).pop();
+          // } else {
+          //   debugPrint('No navigation stack to pop');
+          // }
         },
       );
     });
@@ -39,10 +50,7 @@ class QuestionWriteComplete extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                topColor,
-                bottomColor,
-              ],
+              colors: [topColor, bottomColor],
             ),
           ),
           child: SafeArea(

@@ -169,14 +169,15 @@ class _BookMarkButtonState extends State<BookMarkButton> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () => _bookMarkTap(context),
       child: SizedBox(
-          height: 24,
-          width: 24,
-          child: widget.isSaved
-              ? AppIcon.bookmark_actived
-              : AppIcon.bookmark_inactived),
+        height: 24,
+        width: 24,
+        child: widget.isSaved
+            ? AppIcon.bookmark_actived
+            : AppIcon.bookmark_inactived,
+      ),
     );
   }
 }

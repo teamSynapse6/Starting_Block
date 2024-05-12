@@ -59,7 +59,6 @@ class _OfcampusWebViewScreenState extends State<OfcampusWebViewScreen> {
       builder: (context, bookMarkNotifier, child) {
         if (bookMarkNotifier.isUpdated) {
           loadoffCampusDetailData();
-          loadoffCampusDetailData();
           bookMarkNotifier.resetUpdate();
         }
 
