@@ -7,6 +7,8 @@ class OffCampusListModel {
   final String startDate;
   final String endDate;
   final bool isBookmarked;
+  final bool isContactExist;
+  final bool isFileUploaded;
 
   static String decodeHtmlEntities(String htmlString) {
     var document = parse(htmlString);
@@ -19,5 +21,7 @@ class OffCampusListModel {
         title = decodeHtmlEntities(json['title'] ?? ''),
         startDate = json['startDate'] ?? '',
         endDate = json['endDate'] ?? '',
-        isBookmarked = json['isBookmarked'] as bool;
+        isBookmarked = json['isBookmarked'] as bool,
+        isContactExist = json['isContactExist'] as bool,
+        isFileUploaded = json['isFileUploaded'] as bool;
 }

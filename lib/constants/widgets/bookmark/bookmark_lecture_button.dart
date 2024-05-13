@@ -8,21 +8,21 @@ import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class BookMarkButton extends StatefulWidget {
+class BookMarkLectureButton extends StatefulWidget {
   final bool isSaved;
-  final String thisID;
+  final String thisLectureID;
 
-  const BookMarkButton({
+  const BookMarkLectureButton({
     super.key,
     required this.isSaved,
-    required this.thisID,
+    required this.thisLectureID,
   });
 
   @override
-  State<BookMarkButton> createState() => _BookMarkButtonState();
+  State<BookMarkLectureButton> createState() => _BookMarkLectureButtonState();
 }
 
-class _BookMarkButtonState extends State<BookMarkButton> {
+class _BookMarkLectureButtonState extends State<BookMarkLectureButton> {
   List<RoadMapAnnounceModel>? roadMaps;
 
   @override
@@ -32,9 +32,9 @@ class _BookMarkButtonState extends State<BookMarkButton> {
   }
 
   void loadRoadMaps() async {
-    // widget.thisID를 통해 announcementId를 받아오고, API를 호출합니다.
+    // widget.thisLectureID를 통해 announcementId를 받아오고, API를 호출합니다.
     final roadMapAnnounceList =
-        await RoadMapApi.getRoadMapAnnounceList(widget.thisID);
+        await RoadMapApi.getRoadMapLectureList(widget.thisLectureID);
     // 받아온 데이터로 상태를 업데이트합니다.
     setState(() {
       roadMaps = roadMapAnnounceList;
@@ -43,7 +43,7 @@ class _BookMarkButtonState extends State<BookMarkButton> {
 
   void _saveAction(int roadmapId, StateSetter setStateModal) async {
     try {
-      await RoadMapApi.addAnnouncementToRoadMap(roadmapId, widget.thisID);
+      await RoadMapApi.addLectureToRoadMap(roadmapId, widget.thisLectureID);
       // 성공적으로 추가된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
       print('공고가 성공적으로 추가되었습니다.');
       _updateRoadMapsModal(setStateModal);
@@ -58,7 +58,8 @@ class _BookMarkButtonState extends State<BookMarkButton> {
 
   void _deleteAction(int roadmapId, StateSetter setStateModal) async {
     try {
-      await RoadMapApi.deleteAnnouncementFromRoadMap(roadmapId, widget.thisID);
+      await RoadMapApi.deleteLectureFromRoadMap(
+          roadmapId, widget.thisLectureID);
       // 성공적으로 삭제된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
       print('공고가 성공적으로 삭제되었습니다.');
       _updateRoadMapsModal(setStateModal);
@@ -73,7 +74,7 @@ class _BookMarkButtonState extends State<BookMarkButton> {
 
   void _updateRoadMapsModal(StateSetter setStateModal) async {
     final roadMapAnnounceList =
-        await RoadMapApi.getRoadMapAnnounceList(widget.thisID);
+        await RoadMapApi.getRoadMapLectureList(widget.thisLectureID);
     setStateModal(() {
       roadMaps = roadMapAnnounceList;
     });
@@ -169,15 +170,14 @@ class _BookMarkButtonState extends State<BookMarkButton> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () => _bookMarkTap(context),
       child: SizedBox(
-        height: 24,
-        width: 24,
-        child: widget.isSaved
-            ? AppIcon.bookmark_actived
-            : AppIcon.bookmark_inactived,
-      ),
+          height: 24,
+          width: 24,
+          child: widget.isSaved
+              ? AppIcon.bookmark_actived
+              : AppIcon.bookmark_inactived),
     );
   }
 }

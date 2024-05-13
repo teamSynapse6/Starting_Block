@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
+import 'package:starting_block/constants/widgets/oncampus_filter/model/onca_sorting_textbuttonsheet.dart';
+import 'package:starting_block/manage/api/oncampus_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/on_campus_screen/widget/oncampus_notify_delegate.dart';
@@ -16,14 +17,18 @@ class OnCampusNotify extends StatefulWidget {
 }
 
 class _OnCampusNotifyState extends State<OnCampusNotify> {
-  final List _notifyList = [];
-  bool isLoading = false;
+  List<OncaAnnouncementModel> _notifyList = [];
+  bool isLoading = true;
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
+
+  String _selectedProgram = '';
+  // String _selectedSorting = '';
 
   @override
   void initState() {
     super.initState();
+    loadFilterValue();
     _scrollController.addListener(_onScroll);
   }
 
@@ -34,28 +39,46 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
     super.dispose();
   }
 
-  // Future<void> _loadFilteredOnCampusNotify() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   try {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     String selectedProgram = prefs.getString('selectedProgram') ?? "전체";
-  //     String selectedSorting =
-  //         prefs.getString('selectedOnCaSorting') ?? "latest";
-  //     List<OnCampusNotifyModel> notifyList =
-  //         await OnCampusAPI.getOnCampusNotifyFiltered(
-  //       program: selectedProgram,
-  //       sorting: selectedSorting,
-  //     );
-  //     setState(() {
-  //       _notifyList = notifyList;
-  //       isLoading = false;
-  //     });
-  //   } catch (e) {
-  //     print('공고 정보 로드 실패: $e');
-  //   }
-  // }
+  void loadFilterValue() async {
+    // selectedProgram 값에 따른 키워드 매핑
+    Map<String, String?> programKeywords = {
+      '전체': 'null',
+      '창업 멘토링': 'MENTORING',
+      '창업 동아리': 'CLUB',
+      '창업 특강': 'LECTURE',
+      '창업 경진대회': 'CONTEST',
+      '창업 캠프': 'CAMP',
+      '기타': 'ETC'
+    };
+
+    var oncaFilterValue = Provider.of<OnCaFilterModel>(context, listen: false);
+    String selectedProgram = oncaFilterValue.selectedProgram;
+    // String selectedSorting = oncaFilterValue.selectedSorting;
+
+    String? keyword = programKeywords[selectedProgram];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _selectedProgram = keyword!;
+        // _selectedSorting = selectedSorting;
+      });
+      _loadFilteredOnCampusNotify();
+    });
+  }
+
+  Future<void> _loadFilteredOnCampusNotify() async {
+    try {
+      // API 호출
+      List<OncaAnnouncementModel> notifyList =
+          await OnCampusApi.getOncaAnnouncement(keyword: _selectedProgram);
+
+      setState(() {
+        _notifyList = notifyList;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('공고 정보 로드 실패: $e');
+    }
+  }
 
   void _onScroll() {
     if (_scrollController.offset == 0) {
@@ -80,195 +103,212 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(0),
-          child: Container(
-            color: AppColors.white,
-          )),
-      body: Stack(
-        children: [
-          NestedScrollView(
-            controller: _scrollController,
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  snap: true,
-                  floating: true,
-                  elevation: 0,
-                  forceElevated: innerBoxIsScrolled,
-                  backgroundColor: AppColors.white,
-                  pinned: true,
-                  expandedHeight: 128,
-                  collapsedHeight: 56,
-                  leading: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: AppIcon.back,
-                    ),
-                  ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const OnCampusSearch()),
-                          );
-                        },
-                        child: SizedBox(
-                          height: 48,
-                          width: 48,
-                          child: AppIcon.search,
+    return Consumer<OnCaFilterModel>(
+      builder: (context, filterModel, child) {
+        if (filterModel.hasChanged) {
+          loadFilterValue();
+          filterModel.resetChangeFlag();
+        }
+        return Scaffold(
+          backgroundColor: AppColors.white,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(0),
+            child: Container(
+              color: AppColors.white,
+            ),
+          ),
+          body: Stack(
+            children: [
+              NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                      snap: true,
+                      floating: true,
+                      elevation: 0,
+                      forceElevated: innerBoxIsScrolled,
+                      backgroundColor: AppColors.white,
+                      pinned: true,
+                      expandedHeight: 128,
+                      collapsedHeight: 56,
+                      leading: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: AppIcon.back,
                         ),
                       ),
-                    ),
-                  ],
-                  flexibleSpace: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      // AppBar의 최대 높이와 현재 높이를 기준으로 패딩 값을 계산
-                      double appBarHeight = constraints.biggest.height;
-                      double maxPaddingTop = 20;
-                      double minPaddingTop = 16;
-                      double paddingTopRange = maxPaddingTop - minPaddingTop;
-                      double heightRange =
-                          128 - 56; // expandedHeight - collapsedHeight
-
-                      // 선형적으로 paddingBottom 계산
-                      double paddingBottom = minPaddingTop +
-                          paddingTopRange * ((appBarHeight - 56) / heightRange);
-
-                      return FlexibleSpaceBar(
-                        expandedTitleScale: 24 / 18,
-                        titlePadding: EdgeInsets.only(
-                          top: 16,
-                          bottom: paddingBottom,
-                          left: 60,
-                        ),
-                        title: Text(
-                          '지원 공고',
-                          style:
-                              AppTextStyles.st2.copyWith(color: AppColors.g6),
-                        ),
-                        background: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Gaps.v80,
-                              SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: SchoolLogoWidget(),
-                              ),
-                            ],
+                      actions: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const OnCampusSearch(),
+                                ),
+                              );
+                            },
+                            child: SizedBox(
+                              height: 48,
+                              width: 48,
+                              child: AppIcon.search,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: OnCampusNotifyDelegate(
-                    child: Container(
-                      color: AppColors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            const OnCaIntergrateFilter(),
-                            Gaps.v12,
-                            Container(
-                              height: 32,
-                              decoration: const BoxDecoration(
-                                border: BorderDirectional(
-                                  top:
-                                      BorderSide(width: 2, color: AppColors.g1),
-                                  bottom:
-                                      BorderSide(width: 2, color: AppColors.g1),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                      ],
+                      flexibleSpace: LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          // AppBar의 최대 높이와 현재 높이를 기준으로 패딩 값을 계산
+                          double appBarHeight = constraints.biggest.height;
+                          double maxPaddingTop = 20;
+                          double minPaddingTop = 16;
+                          double paddingTopRange =
+                              maxPaddingTop - minPaddingTop;
+                          double heightRange =
+                              128 - 56; // expandedHeight - collapsedHeight
+
+                          // 선형적으로 paddingBottom 계산
+                          double paddingBottom = minPaddingTop +
+                              paddingTopRange *
+                                  ((appBarHeight - 56) / heightRange);
+
+                          return FlexibleSpaceBar(
+                            expandedTitleScale: 24 / 18,
+                            titlePadding: EdgeInsets.only(
+                              top: 16,
+                              bottom: paddingBottom,
+                              left: 60,
+                            ),
+                            title: Text(
+                              '지원 공고',
+                              style: AppTextStyles.st2
+                                  .copyWith(color: AppColors.g6),
+                            ),
+                            background: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '${_notifyList.length}개의 공고',
-                                    style: AppTextStyles.bd4
-                                        .copyWith(color: AppColors.g4),
+                                  Gaps.v80,
+                                  SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: SchoolLogoWidget(),
                                   ),
-                                  const Spacer(), // 왼쪽 텍스트와 오른쪽 버튼 사이의 공간을 만듦
-                                  const OnCampusSortingButton()
                                 ],
                               ),
                             ),
-                          ],
+                          );
+                        },
+                      ),
+                    ),
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: OnCampusNotifyDelegate(
+                        child: Container(
+                          color: AppColors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const ProgramChipsSheet(),
+                                Gaps.v12,
+                                Container(
+                                  height: 32,
+                                  decoration: const BoxDecoration(
+                                    border: BorderDirectional(
+                                      top: BorderSide(
+                                          width: 2, color: AppColors.g1),
+                                      bottom: BorderSide(
+                                          width: 2, color: AppColors.g1),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${_notifyList.length}개의 공고',
+                                        style: AppTextStyles.bd4
+                                            .copyWith(color: AppColors.g4),
+                                      ),
+                                      const Spacer(),
+                                      const OnCampusSortingButton()
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ];
-            },
-            body: isLoading
-                ? const OncaSkeletonNotify()
-                : Consumer<OnCaFilterModel>(
-                    builder: (context, filterModel, child) {
-                      if (filterModel.hasChanged) {
-                        // _loadFilteredOnCampusNotify()
-                        //     .then((_) => filterModel.resetChangeFlag());
-                      }
-                      return SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true, // 내부 스크롤 없이 전체 높이를 표시
-                                physics:
-                                    const NeverScrollableScrollPhysics(), // 부모 스크롤과의 충돌 방지
-                                itemCount: _notifyList.length,
-                                itemBuilder: (context, index) {
-                                  final notify = _notifyList[index];
-                                  return Column(
-                                    children: [
-                                      OnCampusNotifyListCard(
-                                        thisProgramText: notify.type,
-                                        thisId: notify.id,
-                                        thisTitle: notify.title,
-                                        thisStartDate: notify.startdate,
-                                        thisUrl: notify.detailurl,
-                                      ),
-                                      if (index < _notifyList.length - 1)
-                                        const CustomDividerH2G1(),
-                                    ],
-                                  );
-                                },
+                  ];
+                },
+                body: isLoading
+                    ? const OncaSkeletonNotify()
+                    : Consumer<BookMarkNotifier>(
+                        builder: (context, bookmarkNotifier, child) {
+                          if (bookmarkNotifier.isUpdated) {
+                            loadFilterValue();
+                            bookmarkNotifier.resetUpdate();
+                          }
+                          return SingleChildScrollView(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              child: Column(
+                                children: [
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: _notifyList.length,
+                                    itemBuilder: (context, index) {
+                                      final notify = _notifyList[index];
+                                      return Column(
+                                        children: [
+                                          OnCampusNotifyListCard(
+                                            thisProgramText: notify.keyword,
+                                            thisId: notify.announcementId
+                                                .toString(),
+                                            thisTitle: notify.title,
+                                            thisStartDate: notify.insertDate,
+                                            thisUrl: notify.detailUrl,
+                                            isSaved: notify.isBookmarked,
+                                          ),
+                                          if (index < _notifyList.length - 1)
+                                            const CustomDividerH2G1(),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+              _isScrolled
+                  ? Positioned(
+                      right: 24,
+                      bottom: 12,
+                      child: ScrollToTopButton(
+                        thisBackToTopTap: backToTopTap,
+                      ),
+                    )
+                  : Container()
+            ],
           ),
-          _isScrolled
-              ? Positioned(
-                  right: 24,
-                  bottom: 12,
-                  child: ScrollToTopButton(
-                    thisBackToTopTap: backToTopTap,
-                  ))
-              : Container()
-        ],
-      ),
+        );
+      },
     );
   }
 }

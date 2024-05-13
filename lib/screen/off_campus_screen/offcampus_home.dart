@@ -250,6 +250,8 @@ class _OffCampusHomeState extends State<OffCampusHome> {
                                           thisEndDate: item.endDate,
                                           thisClassification: '교외사업',
                                           isSaved: item.isBookmarked,
+                                          isContactExist: item.isContactExist,
+                                          isFileUploaded: item.isFileUploaded,
                                         ),
                                         Gaps.v16,
                                         if (index != _offcampusList.length - 1)

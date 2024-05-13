@@ -31,7 +31,7 @@ class ItemList extends StatelessWidget {
       thisStartDate,
       thisEndDate,
       thisClassification;
-  final bool isSaved;
+  final bool isSaved, isContactExist, isFileUploaded;
 
   const ItemList({
     super.key,
@@ -42,6 +42,8 @@ class ItemList extends StatelessWidget {
     required this.thisEndDate,
     required this.thisClassification,
     required this.isSaved,
+    required this.isContactExist,
+    required this.isFileUploaded,
   });
 
   @override
@@ -71,10 +73,20 @@ class ItemList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 OrganizeChip(text: thisOrganize),
-                Gaps.h4,
-                const ConatactChip(),
-                Gaps.h4,
-                const AIChip(),
+                if (isContactExist)
+                  const Row(
+                    children: [
+                      Gaps.h4,
+                      ConatactChip(),
+                    ],
+                  ),
+                if (isFileUploaded)
+                  const Row(
+                    children: [
+                      Gaps.h4,
+                      AIChip(),
+                    ],
+                  ),
                 const Spacer(),
                 BookMarkButton(
                   isSaved: isSaved,

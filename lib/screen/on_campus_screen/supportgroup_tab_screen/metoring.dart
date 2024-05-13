@@ -29,7 +29,7 @@ class _OnCaGroupMentoringState extends State<OnCaGroupMentoring> {
     });
     try {
       List<OncaSupportGroupModel> mentoringList =
-          await OnCapmusApi.getOncaSupportGroup(keyword: 'MENTORING');
+          await OnCampusApi.getOncaSupportGroup(keyword: 'MENTORING');
       setState(() {
         _mentoringList = mentoringList;
         isLoading = false;

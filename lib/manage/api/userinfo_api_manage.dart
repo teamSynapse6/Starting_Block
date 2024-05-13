@@ -81,7 +81,30 @@ class UserInfoManageApi {
     }
   }
 
-//유저 세부정보 입력
+  // 로그인 시 유저 정보를 불러오는 메소드 추가
+  static Future<UserDataModel> getUserInfoData({int retryCount = 1}) async {
+    String url = '$baseUrl/api/v1/users/me';
+    Map<String, String> headers = await getHeaders();
+
+    // 서버로부터 데이터를 GET 요청을 통해 받아옴
+    http.Response response = await http.get(Uri.parse(url), headers: headers);
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // UTF-8로 인코딩하여 JSON 데이터 파싱
+      Map<String, dynamic> responseData =
+          json.decode(utf8.decode(response.bodyBytes));
+      return UserDataModel.fromJson(responseData); // 모델 객체로 변환
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await updateAccessToken();
+      return await getUserInfoData(retryCount: retryCount - 1);
+    } else {
+      // 다른 오류가 발생한 경우 예외 던지기
+      throw Exception(
+          '정보 불러오기 실패: ${response.statusCode}, Body: ${response.body}');
+    }
+  }
+
+  //유저 세부정보 입력
   static Future<bool> patchUserInfo(
       {required String nickname,
       required String birth,
@@ -99,6 +122,7 @@ class UserInfoManageApi {
       'residence': residence,
       'university': university
     };
+    print('본문: ${json.encode(body)}');
 
     http.Response response = await http.patch(
       Uri.parse(url),
@@ -121,7 +145,7 @@ class UserInfoManageApi {
           retryCount: retryCount - 1 // 재시도 횟수 감소
           ); // 재귀 호출
     } else {
-      print('정보 업데이트 실패: ${response.statusCode}');
+      print('정보 업데이트 실패: ${response.statusCode}, Body: ${response.body}');
       return false; // 실패 시 false 반환
     }
   }

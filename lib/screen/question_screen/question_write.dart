@@ -43,6 +43,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
 
   void _thisWriteTap() {
     if (!_isTextEntered) return;
+    FocusScope.of(context).requestFocus(FocusNode());
     showDialog(
       context: context,
       builder: (context) {

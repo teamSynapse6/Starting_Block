@@ -3,6 +3,7 @@ import 'package:starting_block/constants/constants.dart';
 
 class OnCaListSystem extends StatelessWidget {
   final String thisTitle, thisId, thisContent, thisTarget;
+  final bool isSaved;
 
   const OnCaListSystem({
     super.key,
@@ -10,6 +11,7 @@ class OnCaListSystem extends StatelessWidget {
     required this.thisId,
     required this.thisContent,
     required this.thisTarget,
+    required this.isSaved,
   });
 
   @override
@@ -28,7 +30,10 @@ class OnCaListSystem extends StatelessWidget {
                   style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
                 ),
                 const Spacer(),
-                // BookMarkButton(id: thisId, classification: '창업제도'),
+                BookMarkButton(
+                  isSaved: isSaved,
+                  thisID: thisId,
+                )
               ],
             ),
             Gaps.v10,
@@ -58,14 +63,14 @@ class OnCaListSystem extends StatelessWidget {
             ),
             Gaps.v10,
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Spacer(),
                 Text(
                   '더보기',
                   style: AppTextStyles.btn2.copyWith(color: AppColors.g4),
                 ),
                 Gaps.h4,
-                AppIcon.next_rightsorted_g4
+                AppIcon.arrow_down_16,
               ],
             ),
           ],

@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // 회원가입 완료 상태에 따른 화면 이동
       if (signInData.isSignUpComplete) {
+        await SaveUserData.fetchAndSaveUserData();
         UserInfo().setLoginStatus(true);
         if (mounted) {
           Navigator.pushAndRemoveUntil(

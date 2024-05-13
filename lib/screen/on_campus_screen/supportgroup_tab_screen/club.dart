@@ -29,7 +29,7 @@ class _OnCaGroupClubState extends State<OnCaGroupClub> {
     });
     try {
       List<OncaSupportGroupModel> clubList =
-          await OnCapmusApi.getOncaSupportGroup(keyword: 'CLUB');
+          await OnCampusApi.getOncaSupportGroup(keyword: 'CLUB');
       setState(() {
         _clubList = clubList;
         isLoading = false;

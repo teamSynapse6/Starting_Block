@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/constants/widgets/onca_sorting_textbuttonsheet.dart';
+import 'package:starting_block/constants/widgets/oncampus_filter/model/onca_sorting_textbuttonsheet.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/recentsearch_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
@@ -31,8 +31,8 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
   }
 
   Future<void> _fetchOnCampusSearchResults() async {
-    String selectedProgram = OnCaFilterModel().selectedProgram;
-    String selectedSorting = OnCaFilterModel().selectedSorting;
+    // String selectedProgram = OnCaFilterModel().selectedProgram;
+    // String selectedSorting = OnCaFilterModel().selectedSorting;
 
     // try {
     //   List<OffCampusModel> offcampusList =
@@ -74,7 +74,7 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
             child: Column(
               children: [
                 Gaps.v12,
-                const OnCaIntergrateFilter(),
+                const ProgramChipsSheet(),
                 Gaps.v12,
                 Container(
                   height: 32,

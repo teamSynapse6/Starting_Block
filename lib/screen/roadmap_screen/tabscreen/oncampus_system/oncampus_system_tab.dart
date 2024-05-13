@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_system/onca_system_recommend.dart';
 
@@ -34,17 +35,30 @@ class TabScreenOnCaSystem extends StatefulWidget {
 
 class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
   List<int> savedIds = [];
-  List<OncaSystemModel> onCampusSystemData = [];
+  List<RoadMapSavedSystemModel> onCampusSystemData = [];
 
   @override
   void initState() {
     super.initState();
+    loadOnCampusSystemData();
   }
 
   @override
   void didUpdateWidget(TabScreenOnCaSystem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.thisSelectedText != widget.thisSelectedText) {}
+    if (oldWidget.thisSelectedText != widget.thisSelectedText) {
+      loadOnCampusSystemData();
+    }
+  }
+
+  void loadOnCampusSystemData() async {
+    List<RoadMapSavedSystemModel> loadedData =
+        await RoadMapApi.getSavedListSystem(
+      roadmapId: widget.thisSelectedId,
+    );
+    setState(() {
+      onCampusSystemData = loadedData;
+    });
   }
 
   @override
@@ -95,9 +109,10 @@ class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
                     children: [
                       OnCaListSystem(
                         thisTitle: item.title,
-                        thisId: item.systemId.toString(),
+                        thisId: item.announcementId.toString(),
                         thisContent: item.content,
                         thisTarget: item.target,
+                        isSaved: item.isBookmarked,
                       ),
                       if (index < onCampusSystemData.length - 1)
                         const Padding(

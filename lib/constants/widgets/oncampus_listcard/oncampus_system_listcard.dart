@@ -40,26 +40,42 @@ class OnCampusSysListCard extends StatelessWidget {
                 ),
               ],
             ),
-            Gaps.v8,
-            Text(
-              '내용',
-              style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-            ),
-            Gaps.v4,
-            Text(
-              thisContent,
-              style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
-            ),
-            Gaps.v12,
-            Text(
-              '지원 대상',
-              style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-            ),
-            Gaps.v4,
-            Text(
-              thisTarget,
-              style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
-            ),
+            if (thisContent.isNotEmpty ||
+                thisContent != '.' ||
+                thisTarget.isNotEmpty ||
+                thisTarget != '.')
+              Gaps.v8,
+            if (thisContent.isNotEmpty || thisContent != '.')
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '내용',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                  ),
+                  Gaps.v4,
+                  Text(
+                    thisContent,
+                    style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v12,
+                ],
+              ),
+            if (thisTarget.isNotEmpty || thisTarget != '.')
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '지원 대상',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                  ),
+                  Gaps.v4,
+                  Text(
+                    thisTarget,
+                    style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

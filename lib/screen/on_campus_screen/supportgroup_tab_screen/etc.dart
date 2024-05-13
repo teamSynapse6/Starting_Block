@@ -29,7 +29,7 @@ class _OnCaGroupEtcState extends State<OnCaGroupEtc> {
     });
     try {
       List<OncaSupportGroupModel> etcList =
-          await OnCapmusApi.getOncaSupportGroup(keyword: 'ETC');
+          await OnCampusApi.getOncaSupportGroup(keyword: 'ETC');
       setState(() {
         _etcList = etcList;
         isLoading = false;

@@ -1,7 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_recommend.dart';
 
 const List<String> validTextsNotify = [
@@ -35,69 +36,33 @@ class TabScreenOnCaNotify extends StatefulWidget {
 
 class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
   List<int> savedIds = [];
-  List onCampusNotifyData = [];
+  List<RoadMapSavedOncaModel> onCampusNotifyData = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadSavedIds();
+    loadOnCampusNotifyData();
   }
 
   @override
   void didUpdateWidget(TabScreenOnCaNotify oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.thisSelectedText != widget.thisSelectedText) {
-      _loadSavedIds();
+      loadOnCampusNotifyData();
     }
   }
 
-  Future<void> _loadSavedIds() async {
-    final ids = await getIdsForSelectedText();
+  void loadOnCampusNotifyData() async {
+    List<RoadMapSavedOncaModel> loadedData =
+        await RoadMapApi.getSavedListOncampus(
+      roadmapId: widget.thisSelectedId,
+    );
     setState(() {
-      savedIds = ids;
-      onCampusNotifyData =
-          ids.isNotEmpty ? onCampusNotifyData : []; // 이전 데이터를 클리어함
+      onCampusNotifyData = loadedData;
+      _isLoading = false;
     });
-
-    if (ids.isNotEmpty) {
-      // _loadOnCampusNotifyDataByIds(); // 변경: _loadOffCampusDataByIds()를 _loadOnCampusNotifyDataByIds()로 변경
-    }
   }
-
-  Future<List<int>> getIdsForSelectedText() async {
-    final prefs = await SharedPreferences.getInstance();
-    String key = widget.thisSelectedText;
-    String? savedDataString = prefs.getString(key);
-
-    if (savedDataString != null) {
-      List<dynamic> savedDataList = json.decode(savedDataString);
-      List<int> ids = savedDataList
-          .where((data) => data['classification'] == '교내사업')
-          .map((data) => int.tryParse(data['id'].toString()) ?? 0)
-          .toList();
-      return ids;
-    } else {
-      return [];
-    }
-  }
-
-  // void _loadOnCampusNotifyDataByIds() async {
-  //   if (savedIds.isNotEmpty) {
-  //     try {
-  //       final data = await OnCampusAPI.getOnCampusNotifyByIds(
-  //           savedIds); // 변경: OffCampusApiService.getOffCampusDataByIds()를 OnCampusAPI.getOnCampusNotifyByIds()로 변경
-  //       setState(() {
-  //         onCampusNotifyData = data;
-  //       });
-  //     } catch (e) {
-  //       // 에러 처리 로직
-  //     }
-  //   } else {
-  //     setState(() {
-  //       onCampusNotifyData = [];
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -133,51 +98,43 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
               ],
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final item = onCampusNotifyData[
-                    index]; // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
-                // ListTile로 반환하여 title만 표시
-                return Container(
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.zero, // 조건부 BorderRadius 적용
-                  ),
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    children: [
-                      OnCaListNotify(
-                        thisProgramType: item.type,
-                        thisID: item.id,
-                        thisClassification: item.classification,
-                        thisTitle: item.title,
-                        thisUrl: item.detailurl,
-                        thisStartDate: item.startdate,
-                      ),
-                      if (index < onCampusNotifyData.length - 1)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: CustomDivider(),
+          _isLoading
+              ? const RoadMapOfcaOncaTabSkeleton()
+              : SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final item = onCampusNotifyData[index];
+
+                      return Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius:
+                              BorderRadius.zero, // 조건부 BorderRadius 적용
                         ),
-                    ],
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          children: [
+                            OnCaListNotify(
+                              thisProgramType: item.keyword,
+                              thisID: item.announcementId.toString(),
+                              thisTitle: item.title,
+                              thisUrl: item.detailUrl,
+                              thisStartDate: item.insertDate,
+                              thisIsSaved: item.isBookmarked,
+                            ),
+                            if (index < onCampusNotifyData.length - 1)
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                child: CustomDivider(),
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: onCampusNotifyData
+                        .length, // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
                   ),
-                );
-              },
-              childCount: onCampusNotifyData
-                  .length, // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
-            ),
-          )
+                )
         ]));
   }
-  // else {
-  //   // 업데이트가 없으면 여기서 처리
-  //   return SliverToBoxAdapter(
-  //     child: GotoSaveItem(
-  //       tapAction: () {
-  //         IntergrateScreen.setSelectedIndexToOne(context);
-  //       },
-  //     ),
-  //   );
-  // }
 }

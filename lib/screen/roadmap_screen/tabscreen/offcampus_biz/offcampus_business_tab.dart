@@ -34,7 +34,7 @@ class TabScreenOfCaBiz extends StatefulWidget {
 }
 
 class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
-  List<RoadMapSavedOffcampus> offCampusData = [];
+  List<RoadMapSavedOffcampusModel> offCampusData = [];
   bool _isLoading = false;
   @override
   void initState() {
@@ -56,7 +56,6 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
     });
     var loadedData = await RoadMapApi.getSavedListOffcampus(
       roadmapId: widget.thisSelectedId,
-      type: 'OFF-CAMPUS',
     );
     setState(() {
       offCampusData = loadedData;
@@ -96,7 +95,7 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
             ),
           ),
           _isLoading
-              ? const RoadMapOfcaTabSkeleton()
+              ? const RoadMapOfcaOncaTabSkeleton()
               : offCampusData.isNotEmpty
                   ? SliverList(
                       delegate: SliverChildBuilderDelegate(

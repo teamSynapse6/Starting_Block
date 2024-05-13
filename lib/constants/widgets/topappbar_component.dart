@@ -396,12 +396,12 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final Widget thisBookMark; // 이 부분을 Widget으로 변경
+
   const SaveAppBar({
     super.key,
     required this.thisBookMark, // 이 부분을 Widget으로 변경
   });
-
-  final Widget thisBookMark; // 이 부분을 Widget으로 변경
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
