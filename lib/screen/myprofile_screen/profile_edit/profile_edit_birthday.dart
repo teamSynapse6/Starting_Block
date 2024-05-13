@@ -41,11 +41,9 @@ class _BirthdayEditState extends State<BirthdayEdit> {
   }
 
   Future<void> _saveBirthday() async {
-    // Provider를 사용하여 UserInfo 인스턴스에 접근
-    final userInfo = Provider.of<UserInfo>(context, listen: false);
-
-    // UserInfo 인스턴스의 setUserBirthday 메소드를 호출하여 생년월일 저장
-    await userInfo.setUserBirthday(_birthday.replaceAll('.', ''));
+    // SaveUserData의 loadFromLocalAndFetchToServer 메서드를 호출하고 inputUserBirthday 매개변수로 넘깁니다.
+    await SaveUserData.loadFromLocalAndFetchToServer(
+        inputUserBirthday: _birthday.replaceAll('.', ''));
   }
 
   void _onNextTap() {

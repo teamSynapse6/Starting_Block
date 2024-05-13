@@ -3,21 +3,17 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class OnCaListNotify extends StatelessWidget {
-  final String thisProgramType,
-      thisID,
-      thisClassification,
-      thisTitle,
-      thisUrl,
-      thisStartDate;
+  final String thisProgramType, thisID, thisTitle, thisUrl, thisStartDate;
+  final bool thisIsSaved;
 
   const OnCaListNotify({
     super.key,
     required this.thisProgramType,
     required this.thisID,
-    required this.thisClassification,
     required this.thisTitle,
     required this.thisUrl,
     required this.thisStartDate,
+    required this.thisIsSaved,
   });
 
   // 날짜 형식 변환 메소드
@@ -59,10 +55,10 @@ class OnCaListNotify extends StatelessWidget {
                     text: thisProgramType,
                   ),
                   const Spacer(),
-                  // BookMarkButton(
-                  //   id: thisID,
-                  //   classification: thisClassification,
-                  // ),
+                  BookMarkButton(
+                    isSaved: thisIsSaved,
+                    thisID: thisID,
+                  ),
                 ],
               ),
               Gaps.v10,

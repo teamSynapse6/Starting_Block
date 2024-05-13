@@ -3,9 +3,6 @@ export 'package:starting_block/manage/models/offcampus_model.dart';
 export 'package:starting_block/manage/models/offcampus_recommend_model.dart';
 export 'package:starting_block/manage/models/offcampus_models/offcampus_list_model.dart'; //교외지원사업 리스트 모델
 export 'package:starting_block/manage/models/offcampus_models/offcampus_detail_model.dart';
-export 'package:starting_block/manage/models/roadmap_models/roadmap_model.dart'; //로드맵 리스트 모델
-export 'package:starting_block/manage/models/roadmap_models/roadmap_announce_model.dart'; //로드맵_공고저장여부 리스트 모델
-export 'package:starting_block/manage/models/roadmap_models/roadmap_savedlist_offcampus.dart'; //로드맵_로드맵에 저장된 공고(교외사업)
 
 //교내지원사업 Model 파일 관리용
 export 'package:starting_block/manage/models/oncampus_model/onca_supportgroup_model.dart'; //교내_창업지원단 모델
@@ -27,6 +24,14 @@ export 'package:starting_block/manage/models/myprofile_models/my_question_modls.
 export 'package:starting_block/manage/models/home_models/home_question_status_model.dart'; //홈_질문 상태 모델
 export 'package:starting_block/manage/models/home_models/home_notify_rec_model.dart'; //홈_맞춤 지원사업 모델
 export 'package:starting_block/manage/models/home_models/home_waiting_question_model.dart'; //홈_질문 추천 모델
+
+//로드맵_Model파일 관리용
+export 'package:starting_block/manage/models/roadmap_models/roadmap_model.dart'; //로드맵 리스트 모델
+export 'package:starting_block/manage/models/roadmap_models/roadmap_announce_model.dart'; //로드맵_공고저장여부 리스트 모델
+export 'package:starting_block/manage/models/roadmap_models/roadmap_savedlist_offcampus_model.dart'; //로드맵_로드맵에 저장된 공고(교외사업) 모델
+export 'package:starting_block/manage/models/roadmap_models/roadmap_savedlist_onca_model.dart'; //로드맵_로드맵에 저장된 공고(교내사업) 모델
+export 'package:starting_block/manage/models/roadmap_models/roadmap_savedlist_system_model.dart'; //로드맵_로드맵에 저장된 창업제도 모델
+export 'package:starting_block/manage/models/roadmap_models/roadmap_savedlist_class_model.dart'; //로드맵_로드맵에 저장된 창업강의 모델
 
 //채팅 모델 관리용
 export 'package:starting_block/manage/models/gpt_chat_models/message_model.dart'; //채팅 모델

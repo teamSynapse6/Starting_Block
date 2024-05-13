@@ -41,7 +41,7 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _IntergrateScreenState extends State<IntergrateScreen> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 3;
   String _schoolName = "";
   bool _isRoadmapSet = true;
 

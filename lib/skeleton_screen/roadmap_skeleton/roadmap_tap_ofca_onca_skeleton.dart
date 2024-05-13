@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class RoadMapOfcaTabSkeleton extends StatelessWidget {
-  const RoadMapOfcaTabSkeleton({super.key});
+class RoadMapOfcaOncaTabSkeleton extends StatelessWidget {
+  const RoadMapOfcaOncaTabSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {

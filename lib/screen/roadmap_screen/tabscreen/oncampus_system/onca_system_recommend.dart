@@ -20,7 +20,7 @@ class OnCaSystemRecommend extends StatefulWidget {
 }
 
 class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
-  List<OncaSystemModel> systemList = [];
+  List<RoadMapSavedSystemModel> systemList = [];
   final GlobalKey _cardKey = GlobalKey(); // GlobalKey 추가
   double _cardHeight = 268; // 카드의 높이를 저장할 변수
 
@@ -107,7 +107,7 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
                 child: OnCaSystemCard(
                   key: _cardKey,
                   thisTitle: systemList[0].title,
-                  thisId: systemList[0].systemId.toString(),
+                  thisId: systemList[0].announcementId.toString(),
                   thisContent: systemList[0].content,
                   thisTarget: systemList[0].target,
                 ),

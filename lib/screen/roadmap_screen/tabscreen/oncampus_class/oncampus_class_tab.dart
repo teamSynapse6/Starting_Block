@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/onca_class_recommend.dart';
 
@@ -36,34 +35,29 @@ class TabScreenOnCaClass extends StatefulWidget {
 
 class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
   List<int> savedIds = [];
-  List<OncaClassModel> onCampusClassData = [];
+  List<RoadMapSavedClassModel> onCampusClassData = [];
 
   @override
   void initState() {
     super.initState();
+    loadOnCampusClassData();
   }
 
   @override
   void didUpdateWidget(TabScreenOnCaClass oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.thisSelectedText != widget.thisSelectedText) {}
+    if (oldWidget.thisSelectedText != widget.thisSelectedText) {
+      loadOnCampusClassData();
+    }
   }
 
-  Future<List<int>> getIdsForSelectedText() async {
-    final prefs = await SharedPreferences.getInstance();
-    String key = widget.thisSelectedText;
-    String? savedDataString = prefs.getString(key);
-
-    if (savedDataString != null) {
-      List<dynamic> savedDataList = json.decode(savedDataString);
-      List<int> ids = savedDataList
-          .where((data) => data['classification'] == '창업강의')
-          .map((data) => int.tryParse(data['id'].toString()) ?? 0)
-          .toList();
-      return ids;
-    } else {
-      return [];
-    }
+  void loadOnCampusClassData() async {
+    List<RoadMapSavedClassModel> loadedData = await RoadMapApi.getSavedLecture(
+      roadmapId: widget.thisSelectedId,
+    );
+    setState(() {
+      onCampusClassData = loadedData;
+    });
   }
 
   @override
@@ -104,29 +98,19 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 final item = onCampusClassData[index];
-                return Container(
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.zero,
-                  ),
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    children: [
-                      OnCaListClass(
-                        thisTitle: item.title,
-                        thisId: item.lectureId.toString(),
-                        thisLiberal: item.liberal,
-                        thisCredit: item.credit.toString(),
-                        thisContent: item.content,
-                        thisSession: item.session.toString(),
-                      ),
-                      if (index < onCampusClassData.length - 1)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: CustomDivider(),
-                        ),
-                    ],
-                  ),
+                return Column(
+                  children: [
+                    OnCaListClass(
+                      thisTitle: item.title,
+                      // thisId: item..toString(),
+                      thisLiberal: item.liberal,
+                      thisCredit: item.credit.toString(),
+                      thisContent: item.content,
+                      thisSession: item.session.toString(),
+                      thisTeacher: item.instructor,
+                    ),
+                    Gaps.v16,
+                  ],
                 );
               },
               childCount: onCampusClassData.length,
