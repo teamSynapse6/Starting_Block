@@ -260,18 +260,18 @@ class AppIcon {
           fit: BoxFit.scaleDown);
 
   // Profile Image
-  static Widget get profile_image_1 =>
-      SvgPicture.asset('assets/icon/profile_image/stage1.svg',
-          fit: BoxFit.scaleDown);
-  static Widget get profile_image_2 =>
-      SvgPicture.asset('assets/icon/profile_image/stage2.svg',
-          fit: BoxFit.scaleDown);
-  static Widget get profile_image_3 =>
-      SvgPicture.asset('assets/icon/profile_image/stage3.svg',
-          fit: BoxFit.scaleDown);
-  static Widget get profile_image_4 =>
-      SvgPicture.asset('assets/icon/profile_image/stage4.svg',
-          fit: BoxFit.scaleDown);
+  static Widget get profile_image_1 => SvgPicture.asset(
+        'assets/icon/profile_image/stage1.svg',
+      );
+  static Widget get profile_image_2 => SvgPicture.asset(
+        'assets/icon/profile_image/stage2.svg',
+      );
+  static Widget get profile_image_3 => SvgPicture.asset(
+        'assets/icon/profile_image/stage3.svg',
+      );
+  static Widget get profile_image_4 => SvgPicture.asset(
+        'assets/icon/profile_image/stage4.svg',
+      );
 
   // Exceptional Image
   static Widget get kako_icon =>

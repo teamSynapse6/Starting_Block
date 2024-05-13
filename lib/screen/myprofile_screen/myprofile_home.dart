@@ -17,7 +17,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
   String _schoolName = "";
   String _entrepreneurCheck = "사업자 등록 미완료"; // 사업자 등록 여부를 저장할 변수
   String _residenceName = ""; // 거주지 정보를 저장할 변수
-  Widget _selectedProfileIcon = Container(); // 현재 선택된 프로필 아이콘을 저장하는 위젯 변수
+  int _selectedProfileIcon = 1; // 현재 선택된 프로필 아이콘을 저장하는 위젯 변수
   late TabController _tabController;
 
   @override
@@ -68,19 +68,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
   Future<void> _loadSelectedProfileIcon() async {
     int selectedIconIndex = await UserInfo.getSelectedIconIndex();
     setState(() {
-      switch (selectedIconIndex) {
-        case 1:
-          _selectedProfileIcon = AppIcon.profile_image_1;
-          break;
-        case 2:
-          _selectedProfileIcon = AppIcon.profile_image_2;
-          break;
-        case 3:
-          _selectedProfileIcon = AppIcon.profile_image_3;
-          break;
-        default:
-          _selectedProfileIcon = Container();
-      }
+      _selectedProfileIcon = selectedIconIndex;
     });
   }
 
@@ -221,7 +209,8 @@ class _MyProfileHomeState extends State<MyProfileHome>
                               color: AppColors.g2,
                             ),
                           ),
-                          child: _selectedProfileIcon,
+                          child: ProfileIconWidget(
+                              iconIndex: _selectedProfileIcon),
                         ),
                       ),
                     ],
