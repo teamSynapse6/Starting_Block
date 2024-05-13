@@ -17,6 +17,7 @@ class HomeNotifyRecommendList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: thisTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,14 +34,20 @@ class HomeNotifyRecommendList extends StatelessWidget {
           Gaps.v10,
           Text(
             thisTitle,
+            overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
             maxLines: 2,
           ),
-          Gaps.v8,
-          Text(
-            'D-$thisDday',
-            style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
-          )
+          if (thisAnnouncementType == '교외')
+            Column(
+              children: [
+                Gaps.v8,
+                Text(
+                  'D-$thisDday',
+                  style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
+                ),
+              ],
+            ),
         ],
       ),
     );

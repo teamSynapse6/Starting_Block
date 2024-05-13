@@ -71,10 +71,7 @@ class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
                           String thisResidence = residence[index];
                           return BottomSheetList(
                             thisText: thisResidence,
-                            thisColor:
-                                filterModel.selectedResidence == thisResidence
-                                    ? AppColors.g1
-                                    : AppColors.white,
+                            thisColor: AppColors.white,
                             thisTapAction: () {
                               setStateBottomSheet(() {
                                 filterModel.setSelectedResidence(thisResidence);

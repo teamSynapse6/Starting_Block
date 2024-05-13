@@ -104,14 +104,14 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
       _isLoading = true;
     });
 
-    String thisMessage = '1003에서 찾아줘, $message'; // 예시용으로 사용하는 ID
+    String thisMessage = '${widget.thisID}에서찾아. $message';
 
     try {
       if (_threadId != null) {
-        String chatResponse =
-            await GptApi.postGptChat(_threadId!, '1003', thisMessage);
+        String chatResponse = await GptApi.postGptChat(_threadId!, thisMessage);
         final currentTime = DateTime.now();
         final formattedTime = _formatCurrentTime(currentTime);
+        print('보낸 메시지: $thisMessage, ID: $_threadId');
 
         setState(() {
           _messages.add(Message(

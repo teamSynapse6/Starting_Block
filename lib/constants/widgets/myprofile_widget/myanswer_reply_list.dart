@@ -75,9 +75,19 @@ class MyAnswerList extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CircleAvatar(
-                      radius: 14,
-                      backgroundColor: AppColors.g1,
+                    Container(
+                      width: 28,
+                      height: 28,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.g1,
+                        border: Border.all(
+                          width: 0.34,
+                          color: AppColors.g2,
+                        ),
+                      ),
+                      child: const ProfileIconWidget(iconIndex: 2),
                     ),
                     Gaps.h8,
                     Column(
@@ -205,9 +215,19 @@ class MyAnswerList extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CircleAvatar(
-                      radius: 14,
-                      backgroundColor: AppColors.g1,
+                    Container(
+                      width: 28,
+                      height: 28,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.g1,
+                        border: Border.all(
+                          width: 0.34,
+                          color: AppColors.g2,
+                        ),
+                      ),
+                      child: const ProfileIconWidget(iconIndex: 2),
                     ),
                     Gaps.h8,
                     Column(
@@ -234,9 +254,19 @@ class MyAnswerList extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(
-                        radius: 14,
-                        backgroundColor: AppColors.g1,
+                      Container(
+                        width: 28,
+                        height: 28,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.g1,
+                          border: Border.all(
+                            width: 0.34,
+                            color: AppColors.g2,
+                          ),
+                        ),
+                        child: const ProfileIconWidget(iconIndex: 2),
                       ),
                       Gaps.h4,
                       Column(
@@ -331,9 +361,20 @@ class MyAnswerList extends StatelessWidget {
                             : Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const CircleAvatar(
-                                    radius: 14,
-                                    backgroundColor: AppColors.g1,
+                                  Container(
+                                    width: 28,
+                                    height: 28,
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.g1,
+                                      border: Border.all(
+                                        width: 0.34,
+                                        color: AppColors.g2,
+                                      ),
+                                    ),
+                                    child:
+                                        const ProfileIconWidget(iconIndex: 2),
                                   ),
                                   Gaps.h8,
                                   Column(

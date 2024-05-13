@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -65,92 +66,101 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.secondaryBG,
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Gaps.v24,
-                if (validTextsBiz.contains(widget.thisSelectedText))
-                  OfCaRecommend(
-                    thisSelectedText: widget.thisSelectedText,
-                    thisCurrentStage: widget.thisCurrentStage,
-                  ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('저장한 사업으로 도약하기',
-                          style:
-                              AppTextStyles.bd1.copyWith(color: AppColors.g6)),
-                      Gaps.v16,
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          _isLoading
-              ? const RoadMapOfcaOncaTabSkeleton()
-              : offCampusData.isNotEmpty
-                  ? SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final item = offCampusData[index];
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: index == 0
-                                  ? const BorderRadius.only(
-                                      topLeft: Radius.circular(2),
-                                      topRight: Radius.circular(2),
-                                    )
-                                  : index == offCampusData.length - 1
-                                      ? const BorderRadius.only(
-                                          bottomLeft: Radius.circular(2),
-                                          bottomRight: Radius.circular(2),
-                                        )
-                                      : null,
-                            ),
-                            margin: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Column(
-                              children: [
-                                OfCaList(
-                                  thisOrganize: item.department,
-                                  thisID: item.announcementId.toString(),
-                                  thisClassification: '',
-                                  thisTitle: item.title,
-                                  thisDDay: item.dday.toString(),
-                                  isSaved: item.isBookMarked,
-                                ),
-                                if (index < offCampusData.length - 1)
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: CustomDivider(),
-                                  ),
-                              ],
-                            ),
-                          );
-                        },
-                        childCount: offCampusData.length,
-                      ),
-                    )
-                  : SliverFillRemaining(
-                      fillOverscroll: true,
-                      hasScrollBody: false,
-                      child: GotoSaveItem(
-                        tapAction: () {
-                          IntergrateScreen.setSelectedIndexToZero(context);
-                        },
-                      ),
+    return Consumer<BookMarkNotifier>(
+        builder: (context, bookMarkNotifier, child) {
+      if (bookMarkNotifier.isUpdated) {
+        loadOffCampusData();
+        bookMarkNotifier.resetUpdate();
+      }
+
+      return Scaffold(
+        backgroundColor: AppColors.secondaryBG,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v24,
+                  if (validTextsBiz.contains(widget.thisSelectedText))
+                    OfCaRecommend(
+                      thisSelectedText: widget.thisSelectedText,
+                      thisCurrentStage: widget.thisCurrentStage,
                     ),
-        ],
-      ),
-    );
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('저장한 사업으로 도약하기',
+                            style: AppTextStyles.bd1
+                                .copyWith(color: AppColors.g6)),
+                        Gaps.v16,
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            _isLoading
+                ? const RoadMapOfcaOncaTabSkeleton()
+                : offCampusData.isNotEmpty
+                    ? SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final item = offCampusData[index];
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: index == 0
+                                    ? const BorderRadius.only(
+                                        topLeft: Radius.circular(2),
+                                        topRight: Radius.circular(2),
+                                      )
+                                    : index == offCampusData.length - 1
+                                        ? const BorderRadius.only(
+                                            bottomLeft: Radius.circular(2),
+                                            bottomRight: Radius.circular(2),
+                                          )
+                                        : null,
+                              ),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              child: Column(
+                                children: [
+                                  OfCaList(
+                                    thisOrganize: item.department,
+                                    thisID: item.announcementId.toString(),
+                                    thisClassification: '',
+                                    thisTitle: item.title,
+                                    thisDDay: item.dday.toString(),
+                                    isSaved: item.isBookMarked,
+                                  ),
+                                  if (index < offCampusData.length - 1)
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 16),
+                                      child: CustomDivider(),
+                                    ),
+                                ],
+                              ),
+                            );
+                          },
+                          childCount: offCampusData.length,
+                        ),
+                      )
+                    : SliverFillRemaining(
+                        fillOverscroll: true,
+                        hasScrollBody: false,
+                        child: GotoSaveItem(
+                          tapAction: () {
+                            IntergrateScreen.setSelectedIndexToZero(context);
+                          },
+                        ),
+                      ),
+          ],
+        ),
+      );
+    });
   }
 }

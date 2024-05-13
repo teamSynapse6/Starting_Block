@@ -15,23 +15,23 @@ class ProfileIconWidget extends StatelessWidget {
     Widget profileIcon;
     switch (iconIndex) {
       case 1:
-        profileIcon = AppIcon.profile_image_1; // 실제 아이콘 경로를 입력하세요.
+        profileIcon = AppIcon.profile_image_1;
         break;
       case 2:
-        profileIcon = AppIcon.profile_image_2; // 실제 아이콘 경로를 입력하세요.
+        profileIcon = AppIcon.profile_image_2;
         break;
       case 3:
-        profileIcon = AppIcon.profile_image_3; // 실제 아이콘 경로를 입력하세요.
+        profileIcon = AppIcon.profile_image_3;
         break;
       case 4:
-        profileIcon = AppIcon.profile_image_4; // 실제 아이콘 경로를 입력하세요.
+        profileIcon = AppIcon.profile_image_4;
         break;
       default:
-        profileIcon = Container(); // 기본값 설정, 빈 컨테이너나 기본 이미지를 표시할 수 있습니다.
+        profileIcon = AppIcon.profile_image_1;
     }
 
     return FittedBox(
-      fit: BoxFit.contain, // 이미지가 부모 컨테이너에 맞춰 조절되도록 설정
+      fit: BoxFit.contain,
       child: profileIcon,
     );
   }

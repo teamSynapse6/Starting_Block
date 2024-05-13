@@ -84,11 +84,7 @@ class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
                       Text('저장한 사업으로 도약하기',
                           style:
                               AppTextStyles.bd1.copyWith(color: AppColors.g6)),
-                      Gaps.v4,
-                      Text('신청 완료한 사업은 도약 완료 버튼으로 진행도 확인하기',
-                          style:
-                              AppTextStyles.bd6.copyWith(color: AppColors.g5)),
-                      Gaps.v18,
+                      Gaps.v16,
                     ],
                   ),
                 ),

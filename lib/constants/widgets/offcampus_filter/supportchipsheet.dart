@@ -62,10 +62,7 @@ class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
                           String supportType = supporttype[index];
                           return BottomSheetList(
                             thisText: supportType,
-                            thisColor:
-                                filterModel.selectedSupportType == supportType
-                                    ? AppColors.g1
-                                    : AppColors.white,
+                            thisColor: AppColors.white,
                             thisTapAction: () {
                               setStateBottomSheet(() {
                                 filterModel.setSelectedSupportType(supportType);

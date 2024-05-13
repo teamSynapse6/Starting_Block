@@ -143,7 +143,7 @@ class RoadMapListState extends State<RoadMapList> {
                       ),
                       Gaps.v6,
                       roadMaps == null
-                          ? const Center(child: CircularProgressIndicator())
+                          ? Container()
                           : Expanded(
                               child: ListView.builder(
                                 itemCount: roadMaps!.length,
@@ -230,33 +230,33 @@ class RoadMapListState extends State<RoadMapList> {
                               ),
                             ),
                       Container(
+                        padding: const EdgeInsets.fromLTRB(24, 6, 24, 24),
                         decoration: const BoxDecoration(color: AppColors.white),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 6, 20, 24),
-                          child: Container(
-                            height: 48 - 14,
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(24, 14, 24, 12),
+                          decoration: BoxDecoration(
                             color: AppColors.bluebg,
-                            child: Center(
-                              child: Wrap(
-                                children: [
-                                  Text(
-                                    "현재 ${roadMaps!.length}단계 중 ",
-                                    style: AppTextStyles.bd2
-                                        .copyWith(color: AppColors.g5),
-                                  ),
-                                  Text(
-                                    "${roadMaps!.indexWhere((roadMap) => roadMap.roadmapStatus == "IN_PROGRESS") + 1}단계를 ",
-                                    style: AppTextStyles.bd1
-                                        .copyWith(color: AppColors.g6),
-                                  ),
-                                  Text(
-                                    "도약했어요 :)",
-                                    style: AppTextStyles.bd2
-                                        .copyWith(color: AppColors.g5),
-                                  ),
-                                ],
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "현재 ${roadMaps!.length}단계 중 ",
+                                style: AppTextStyles.bd2
+                                    .copyWith(color: AppColors.g5),
                               ),
-                            ),
+                              Text(
+                                "${roadMaps!.indexWhere((roadMap) => roadMap.roadmapStatus == "IN_PROGRESS") + 1}단계를 ",
+                                style: AppTextStyles.bd1
+                                    .copyWith(color: AppColors.g6),
+                              ),
+                              Text(
+                                "도약했어요 :)",
+                                style: AppTextStyles.bd2
+                                    .copyWith(color: AppColors.g5),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -266,7 +266,7 @@ class RoadMapListState extends State<RoadMapList> {
                 const Positioned(
                   left: 0,
                   right: 0,
-                  bottom: 64,
+                  bottom: 78,
                   child: Column(
                     children: [
                       BottomGradient(),

@@ -65,7 +65,7 @@ class OffCampusDetailInfo extends StatelessWidget {
           Gaps.v16,
           Row(
             children: [
-              OrganizeChip(text: organize),
+              OrganizeChipForOfca(text: organize),
               const Spacer(),
             ],
           ),

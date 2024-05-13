@@ -80,7 +80,7 @@ class ItemList extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                OrganizeChip(text: thisOrganize),
+                OrganizeChipForOfca(text: thisOrganize),
                 if (isContactExist)
                   const Row(
                     children: [

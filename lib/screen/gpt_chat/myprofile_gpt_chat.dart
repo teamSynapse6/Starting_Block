@@ -104,18 +104,20 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
       _isLoading = true;
     });
 
-    String thisMessage = '1003에서 찾아줘, $message'; // 예시용으로 사용하는 ID
+    String thisMessage = '${widget.thisID}에서찾아. $message';
 
     try {
       if (_threadId != null) {
-        String chatResponse =
-            await GptApi.postGptChat(_threadId!, '1003', thisMessage);
+        String chatResponse = await GptApi.postGptChat(_threadId!, thisMessage);
         final currentTime = DateTime.now();
         final formattedTime = _formatCurrentTime(currentTime);
 
         setState(() {
           _messages.add(Message(
-              isUser: false, message: chatResponse, time: formattedTime));
+            isUser: false,
+            message: chatResponse,
+            time: formattedTime,
+          ));
           _isLoading = false;
         });
 
@@ -259,7 +261,7 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
           leading: GestureDetector(
             onTap: () {
               _deleteGptEnd();
-              Navigator.pop(context, true);
+              Navigator.pop(context);
             },
             child: AppIcon.back,
           ),
@@ -276,6 +278,8 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   widget.thisTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bd3.copyWith(color: AppColors.g5),
                 ),
               ),
@@ -333,7 +337,7 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                       if (index == _messages.length) {
                         // 마지막 아이템이 로딩 인디케이터
                         return Padding(
-                          padding: const EdgeInsets.only(left: 16),
+                          padding: const EdgeInsets.only(left: 24, bottom: 22),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -347,10 +351,9 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   SizedBox(
-                                    height: 38,
-                                    child: AppAnimation
-                                        .chatting_progress_indicator,
-                                  ),
+                                      height: 38,
+                                      child: AppAnimation
+                                          .chatting_progress_indicator),
                                   Gaps.h4,
                                 ],
                               ),
@@ -406,8 +409,8 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                             padding: EdgeInsets.only(
                               top: isFirstItem ? 10 : 0,
                               bottom: isLastItem && !_isLoading ? 10 : 0,
-                              left: 16,
-                              right: 16,
+                              left: 24,
+                              right: 24,
                             ),
                             child: Align(
                               alignment: message.isUser
@@ -415,9 +418,8 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                                   : Alignment.centerLeft,
                               child: message.isUser
                                   ? Padding(
-                                      padding: !message.isUser
-                                          ? const EdgeInsets.only(bottom: 22)
-                                          : const EdgeInsets.only(bottom: 12),
+                                      padding:
+                                          const EdgeInsets.only(bottom: 22),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -460,9 +462,8 @@ class _MyProfileGptChatState extends State<MyProfileGptChat> {
                                       ),
                                     )
                                   : Padding(
-                                      padding: message.isUser
-                                          ? const EdgeInsets.only(bottom: 50)
-                                          : const EdgeInsets.only(bottom: 12),
+                                      padding:
+                                          const EdgeInsets.only(bottom: 22),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
