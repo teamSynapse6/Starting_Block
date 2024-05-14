@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class OnCaListClass extends StatelessWidget {
+class OnCaListClass extends StatefulWidget {
   final String thisTitle,
       // thisId,
       thisLiberal,
@@ -22,13 +22,20 @@ class OnCaListClass extends StatelessWidget {
   });
 
   @override
+  State<OnCaListClass> createState() => _OnCaListClassState();
+}
+
+class _OnCaListClassState extends State<OnCaListClass> {
+  bool _isExpanded = false; // 콘텐츠 확장 상태를 관리할 변수
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
-      color: AppColors.white,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 20,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +43,7 @@ class OnCaListClass extends StatelessWidget {
           Row(
             children: [
               Text(
-                thisTitle,
+                widget.thisTitle,
                 style: AppTextStyles.bd1.copyWith(color: AppColors.black),
               ),
               const Spacer(),
@@ -51,11 +58,11 @@ class OnCaListClass extends StatelessWidget {
           Gaps.v12,
           Row(
             children: [
-              ClassLiberalChips(thisText: thisLiberal),
+              ClassLiberalChips(thisText: widget.thisLiberal),
               Gaps.h8,
-              ClassCreditsChips(thisTextNum: thisCredit),
+              ClassCreditsChips(thisTextNum: widget.thisCredit),
               Gaps.h8,
-              ClassSessionChips(thisTextSession: thisSession),
+              ClassSessionChips(thisTextSession: widget.thisSession),
             ],
           ),
           Gaps.v12,
@@ -65,7 +72,7 @@ class OnCaListClass extends StatelessWidget {
           ),
           Gaps.v2,
           Text(
-            thisTeacher,
+            widget.thisTeacher,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
@@ -77,22 +84,30 @@ class OnCaListClass extends StatelessWidget {
           ),
           Gaps.v2,
           Text(
-            thisContent,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
+            widget.thisContent,
+            maxLines: _isExpanded ? null : 2,
+            overflow:
+                _isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
             style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
           ),
           Gaps.v10,
-          Row(
-            children: [
-              const Spacer(),
-              Text(
-                '상세 내용 확인하기',
-                style: AppTextStyles.btn2.copyWith(color: AppColors.g4),
-              ),
-              Gaps.h4,
-              AppIcon.next_rightsorted_g4
-            ],
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded; // 확장 상태를 토글
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  '더보기',
+                  style: AppTextStyles.btn2.copyWith(color: AppColors.g4),
+                ),
+                Gaps.h4,
+                _isExpanded ? AppIcon.arrow_up_18 : AppIcon.arrow_down_18,
+              ],
+            ),
           ),
         ],
       ),

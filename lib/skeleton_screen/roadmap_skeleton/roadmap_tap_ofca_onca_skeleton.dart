@@ -78,7 +78,7 @@ class RoadMapOfcaTapCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int itemCount = 5;
+    int itemCount = 3;
 
     return Row(
       children: [

@@ -81,7 +81,7 @@ class SplashScreenState extends State<SplashScreen> {
           ),
         );
         SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.transparent, // 원래 색상으로 설정
+          systemNavigationBarColor: AppColors.white, // 원래 색상으로 설정
         ));
       },
     );

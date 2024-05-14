@@ -73,7 +73,6 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Gaps.v24,
                 if (validTextsNotify.contains(widget.thisSelectedText))
                   OnCaNotifyRecommend(
                     thisSelectedText: widget.thisSelectedText,

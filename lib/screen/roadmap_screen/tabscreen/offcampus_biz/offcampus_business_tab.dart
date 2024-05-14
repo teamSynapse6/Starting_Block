@@ -81,12 +81,12 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gaps.v24,
                   if (validTextsBiz.contains(widget.thisSelectedText))
                     OfCaRecommend(
                       thisSelectedText: widget.thisSelectedText,
                       thisCurrentStage: widget.thisCurrentStage,
                     ),
+                  Gaps.v24,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
