@@ -41,9 +41,19 @@ class _ReplyListState extends State<ReplyList> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
-                radius: 12,
-                backgroundColor: AppColors.g3,
+              Container(
+                width: 24,
+                height: 24,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.g1,
+                  border: Border.all(
+                    width: 0.29,
+                    color: AppColors.g2,
+                  ),
+                ),
+                child: const ProfileIconWidget(iconIndex: 1),
               ),
               Gaps.h8,
               Column(
@@ -80,7 +90,7 @@ class _ReplyListState extends State<ReplyList> {
                 Gaps.v4,
                 Ink(
                   height: 26,
-                  child: InkWell(
+                  child: GestureDetector(
                     onTap: widget.isMyHeart
                         ? widget.thisReplyHeartDeleteTap
                         : widget.thisReplyHeartTap,

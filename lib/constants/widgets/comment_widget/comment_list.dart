@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 String formatDate(String date) {
@@ -50,9 +51,19 @@ class _CommentListState extends State<CommentList> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
-                radius: 16,
-                backgroundColor: AppColors.g3,
+              Container(
+                width: 32,
+                height: 32,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.g1,
+                  border: Border.all(
+                    width: 0.39,
+                    color: AppColors.g2,
+                  ),
+                ),
+                child: const ProfileIconWidget(iconIndex: 1),
               ),
               Gaps.h10,
               Column(

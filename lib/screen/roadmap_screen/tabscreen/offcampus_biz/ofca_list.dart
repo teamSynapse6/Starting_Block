@@ -18,7 +18,17 @@ class OfCaList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //D-Day와 그냥 문자열 처리
+    String displayDDay;
+    // Check if thisDDay is a number
+    if (int.tryParse(thisDDay) != null) {
+      displayDDay = 'D-$thisDDay';
+    } else {
+      displayDDay = thisDDay;
+    }
+
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         Navigator.push(
           context,
@@ -54,7 +64,7 @@ class OfCaList extends StatelessWidget {
             ),
             Gaps.v10,
             Text(
-              'D-$thisDDay',
+              displayDDay,
               style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
             ),
           ],

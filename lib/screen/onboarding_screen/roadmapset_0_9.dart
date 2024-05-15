@@ -62,6 +62,24 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     await prefs.setStringList('roadmapItems', _initialRoadmapItems);
   }
 
+  Future<bool> _saveUserInfoToServer() async {
+    String nickName = await UserInfo.getNickName();
+    bool isEnterpreneurCheck = await UserInfo.getEntrepreneurCheck();
+    String residence = await UserInfo.getResidence();
+    String university = await UserInfo.getSchoolName();
+    String birth = await UserInfo.getUserBirthday();
+    String formattedBirth =
+        DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
+
+    return await UserInfoManageApi.patchUserInfo(
+      nickname: nickName,
+      birth: formattedBirth,
+      isCompletedBusinessRegistration: isEnterpreneurCheck,
+      residence: residence,
+      university: university,
+    );
+  }
+
   //완료하기 버튼 클릭 시
   void _onNextTap() async {
     List<Map<String, dynamic>> roadMaps =
@@ -89,41 +107,29 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     }
   }
 
-  Future<bool> _saveUserInfoToServer() async {
-    String nickName = await UserInfo.getNickName();
-    bool isEnterpreneurCheck = await UserInfo.getEntrepreneurCheck();
-    String residence = await UserInfo.getResidence();
-    String university = await UserInfo.getSchoolName();
-    String birth = await UserInfo.getUserBirthday();
-    String formattedBirth =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
-
-    return await UserInfoManageApi.patchUserInfo(
-      nickname: nickName,
-      birth: formattedBirth,
-      isCompletedBusinessRegistration: isEnterpreneurCheck,
-      residence: residence,
-      university: university,
-    );
-  }
-
   //다음에 설정 버튼 클릭 시
   void _onSkipTap() async {
-    _saveLoginStatus();
-    await UserInfo().setTempInitialRoadmapItems([]);
-    if (mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const CompleteScreen()),
-        (Route<dynamic> route) => false,
-      );
+    try {
+      bool isSuccess = await _saveUserInfoToServer();
+      if (isSuccess) {
+        _saveLoginStatus();
+        await UserInfo().setTempInitialRoadmapItems([]);
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const CompleteScreen()),
+            (Route<dynamic> route) => false,
+          );
+        }
+      }
+    } catch (e) {
+      print('다음에 설정하기_서버 저장 중 오류가 발생했습니다: $e');
     }
   }
 
   //자동로그인 설정
   Future<void> _saveLoginStatus() async {
-    final userInfo = Provider.of<UserInfo>(context, listen: false);
-    await userInfo.setLoginStatus(true);
+    UserInfo().setLoginStatus(true);
   }
 
   @override

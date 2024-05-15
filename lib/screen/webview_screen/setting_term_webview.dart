@@ -13,7 +13,7 @@ class SettingTermWebview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TermAppBar(),
+      appBar: const BackAppBar(),
       body: InAppWebView(
         initialUrlRequest: URLRequest(url: WebUri(url)), // 여기를 수정합니다
       ),

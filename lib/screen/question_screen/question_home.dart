@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
+import 'package:starting_block/manage/api/question_answer_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -18,6 +18,7 @@ class QuestionHome extends StatefulWidget {
 
 class _QuestionHomeState extends State<QuestionHome> {
   List<QuestionListModel> _questionData = [];
+  bool isHeartLoading = false;
 
   @override
   void initState() {
@@ -27,9 +28,43 @@ class _QuestionHomeState extends State<QuestionHome> {
 
   void loadQuestionData() async {
     final questions = await QuestionAnswerApi.getQuestionList(
-        int.tryParse(widget.thisID) ?? 0);
+        int.tryParse(widget.thisID) ?? 0); //8062 ID로 테스트 가능
     setState(() {
       _questionData = questions; // _questionData 업데이트
+    });
+  }
+
+  /*좋아요 메소드*/
+
+  // 질문에 대한 궁금해요 전송 메소드
+  void postHeartForQuestion(int questionId) async {
+    if (isHeartLoading) return;
+
+    setState(() {
+      isHeartLoading = true;
+    });
+    bool success = await QuestionAnswerApi.postHeart(questionId, 'QUESTION');
+    if (success) {
+      loadQuestionData();
+    }
+    setState(() {
+      isHeartLoading = false;
+    });
+  }
+
+  // 질문에 대한 궁금해요 취소 메소드
+  void deleteHeartForQuestion(int heartId) async {
+    if (isHeartLoading) return;
+
+    setState(() {
+      isHeartLoading = true;
+    });
+    bool success = await QuestionAnswerApi.deleteHeart(heartId);
+    if (success) {
+      loadQuestionData();
+    }
+    setState(() {
+      isHeartLoading = false;
     });
   }
 
@@ -79,7 +114,7 @@ class _QuestionHomeState extends State<QuestionHome> {
                               thisQuestion: item.content,
                               thisLike: item.heartCount,
                               thisAnswerCount: item.answerCount,
-                              thisContactAnswer: false,
+                              thisContactAnswer: item.isHaveContactAnswer,
                               isMine: item.isMyHeart,
                               thisOnTap: () async {
                                 final dynamic result = await Navigator.push(
@@ -94,6 +129,10 @@ class _QuestionHomeState extends State<QuestionHome> {
                                   loadQuestionData();
                                 }
                               },
+                              thisLikeTap: () =>
+                                  postHeartForQuestion(item.questionId),
+                              thisLikeDeleteTap: () =>
+                                  deleteHeartForQuestion(item.heartId),
                             ),
                           );
                         }),

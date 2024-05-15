@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class OnCaListSystem extends StatelessWidget {
+class OnCaListSystem extends StatefulWidget {
   final String thisTitle, thisId, thisContent, thisTarget;
   final bool isSaved;
 
@@ -15,54 +15,71 @@ class OnCaListSystem extends StatelessWidget {
   });
 
   @override
+  State<OnCaListSystem> createState() => _OnCaListSystemState();
+}
+
+class _OnCaListSystemState extends State<OnCaListSystem> {
+  bool _isExpanded = false; // 콘텐츠 확장 상태를 관리할 변수
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.white,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  thisTitle,
-                  style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
-                ),
-                const Spacer(),
-                BookMarkButton(
-                  isSaved: isSaved,
-                  thisID: thisId,
-                )
-              ],
-            ),
-            Gaps.v10,
-            const CustomDivider(),
-            Gaps.v10,
-            Text(
-              '지원 대상',
-              style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-            ),
-            Gaps.v4,
-            Text(
-              thisTarget,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-            ),
-            Text(
-              '내용',
-              style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-            ),
-            Gaps.v4,
-            Text(
-              thisContent,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-            ),
-            Gaps.v10,
-            Row(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                widget.thisTitle,
+                style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+              ),
+              const Spacer(),
+              BookMarkButton(
+                isSaved: widget.isSaved,
+                thisID: widget.thisId,
+              )
+            ],
+          ),
+          Gaps.v10,
+          const CustomDivider(),
+          Gaps.v10,
+          Text(
+            '지원 대상',
+            style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+          ),
+          Gaps.v4,
+          Text(
+            widget.thisTarget,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+          ),
+          Text(
+            '내용',
+            style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+          ),
+          Gaps.v4,
+          Text(
+            widget.thisContent,
+            maxLines: _isExpanded ? null : 2,
+            overflow:
+                _isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+            style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+          ),
+          Gaps.v10,
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded; // 확장 상태를 토글
+              });
+            },
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
@@ -70,11 +87,11 @@ class OnCaListSystem extends StatelessWidget {
                   style: AppTextStyles.btn2.copyWith(color: AppColors.g4),
                 ),
                 Gaps.h4,
-                AppIcon.arrow_down_16,
+                _isExpanded ? AppIcon.arrow_up_16 : AppIcon.arrow_down_16,
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserInfo extends ChangeNotifier {
   static late SharedPreferences _prefs;
+  static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   bool _hasChanged = false; // 데이터 변경 플래그
   bool get hasChanged => _hasChanged;
 
@@ -17,7 +19,7 @@ class UserInfo extends ChangeNotifier {
     });
   }
 
-  //닉네임 메소드
+  // 닉네임 메소드
   Future<void> setNickName(String nickName) async {
     await _prefs.setString('userNickName', nickName);
     _hasChanged = true;
@@ -31,17 +33,16 @@ class UserInfo extends ChangeNotifier {
 
   // 생일 메소드
   Future<void> setUserBirthday(String birthday) async {
-    await _prefs.setString('userBirthday', birthday);
+    await _secureStorage.write(key: 'userBirthday', value: birthday);
     _hasChanged = true;
     notifyListeners(); // 생일 정보 변경 후 리스너에게 알림
   }
 
   static Future<String> getUserBirthday() async {
-    await initialize();
-    return _prefs.getString('userBirthday') ?? "";
+    return await _secureStorage.read(key: 'userBirthday') ?? "";
   }
 
-  //사업자 등록 메소드
+  // 사업자 등록 메소드
   Future<void> setEntrepreneurCheck(bool isEntrepreneur) async {
     await _prefs.setBool('enterpreneurCheck', isEntrepreneur);
     _hasChanged = true;
@@ -53,34 +54,26 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getBool('enterpreneurCheck') ?? false;
   }
 
-  //거주지 메소드
+  // 거주지 메소드
   Future<void> setResidence(String residence) async {
-    await _prefs.setString('userResidence', residence);
+    await _secureStorage.write(key: 'userResidence', value: residence);
     _hasChanged = true;
     notifyListeners();
   }
 
   static Future<String> getResidence() async {
-    await initialize(); // SharedPreferences 인스턴스를 초기화합니다.
-    return _prefs.getString('userResidence') ?? "";
+    return await _secureStorage.read(key: 'userResidence') ?? "";
   }
 
-  //학교명 메소드
+  // 학교명 메소드
   Future<void> setSchoolName(String schoolName) async {
-    await _prefs.setString('userSchoolName', schoolName);
+    await _secureStorage.write(key: 'userSchoolName', value: schoolName);
     _hasChanged = true;
     notifyListeners();
   }
 
   static Future<String> getSchoolName() async {
-    await initialize();
-    return _prefs.getString('userSchoolName') ?? "";
-  }
-
-  // UUID 메소드
-  static Future<String> getUserUUID() async {
-    await initialize();
-    return _prefs.getString('userUuid') ?? "";
+    return await _secureStorage.read(key: 'userSchoolName') ?? "";
   }
 
   // 아이콘 메소드
@@ -95,7 +88,7 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getInt('selectedIconIndex') ?? 1;
   }
 
-  //로그인 확인 메소드
+  // 로그인 확인 메소드
   Future<void> setLoginStatus(bool isLogined) async {
     await _prefs.setBool('LoginStatus', isLogined);
     _hasChanged = true;
@@ -118,7 +111,7 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getString('gptThreadID') ?? "";
   }
 
-  //초기 로드맵 설정 메소드
+  // 초기 로드맵 설정 메소드
   Future<void> setTempInitialRoadmapItems(List<String> roadmapItems) async {
     await _prefs.setStringList('roadmapItems', roadmapItems);
     _hasChanged = true;
@@ -130,7 +123,7 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getStringList('roadmapItems') ?? [];
   }
 
-  //로드맵 팝업 1회성 확인 여부
+  // 로드맵 팝업 1회성 확인 여부
   Future<void> setRoadMapPopUp(bool roadmapPopUp) async {
     await _prefs.setBool('roadmapPopUp', roadmapPopUp);
     _hasChanged = true;

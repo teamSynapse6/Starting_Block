@@ -61,10 +61,7 @@ class _EnterPreneurChipsSheetState extends State<EnterPreneurChipsSheet> {
                           String entrepreneur = enterpreneur[index];
                           return BottomSheetList(
                             thisText: entrepreneur,
-                            thisColor:
-                                filterModel.selectedEntrepreneur == entrepreneur
-                                    ? AppColors.g1
-                                    : AppColors.white,
+                            thisColor: AppColors.white,
                             thisTapAction: () {
                               setStateBottomSheet(() {
                                 filterModel

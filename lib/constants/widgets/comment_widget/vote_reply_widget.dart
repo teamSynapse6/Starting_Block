@@ -6,17 +6,19 @@ import 'package:starting_block/constants/constants.dart';
 class CuriousVote26 extends StatelessWidget {
   final bool isMine;
   final int heartCount;
+  final VoidCallback thisHeartTap;
 
   const CuriousVote26({
     super.key,
     required this.isMine,
     required this.heartCount,
+    required this.thisHeartTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: thisHeartTap,
       child: Ink(
         height: 26,
         child: Row(

@@ -104,14 +104,14 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
       _isLoading = true;
     });
 
-    String thisMessage = '1003에서 찾아줘, $message'; // 예시용으로 사용하는 ID
+    String thisMessage = '${widget.thisID}에서찾아. $message';
 
     try {
       if (_threadId != null) {
-        String chatResponse =
-            await GptApi.postGptChat(_threadId!, '1003', thisMessage);
+        String chatResponse = await GptApi.postGptChat(_threadId!, thisMessage);
         final currentTime = DateTime.now();
         final formattedTime = _formatCurrentTime(currentTime);
+        print('보낸 메시지: $thisMessage, ID: $_threadId');
 
         setState(() {
           _messages.add(Message(
@@ -332,13 +332,14 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                     ],
                   )
                 : ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     controller: _scrollController,
                     itemCount: _messages.length + (_isLoading ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index == _messages.length) {
                         // 마지막 아이템이 로딩 인디케이터
                         return Padding(
-                          padding: const EdgeInsets.only(left: 24, bottom: 22),
+                          padding: const EdgeInsets.only(bottom: 22),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -410,8 +411,6 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                             padding: EdgeInsets.only(
                               top: isFirstItem ? 10 : 0,
                               bottom: isLastItem && !_isLoading ? 10 : 0,
-                              left: 24,
-                              right: 24,
                             ),
                             child: Align(
                               alignment: message.isUser

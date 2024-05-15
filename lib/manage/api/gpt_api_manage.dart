@@ -16,15 +16,13 @@ class GptApi {
   }
 
   //채팅 메소드
-  static Future<String> postGptChat(
-      String threadId, String announcementId, String message) async {
+  static Future<String> postGptChat(String threadId, String message) async {
     final gptChatUrl = Uri.parse('$baseUrl/$gptChat');
     final response = await http.post(
       gptChatUrl,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'thread_id': threadId,
-        'announcement_id': announcementId,
         'message': message,
       }),
     );

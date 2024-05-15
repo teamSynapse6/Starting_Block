@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
+import 'package:starting_block/manage/api/question_answer_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -27,6 +27,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
   bool _isTyped = false;
   String? replyingToUserName; // 답글 대상 사용자 이름
   bool isReplying = false; // 답글 작성 UI 표시 여부
+  bool isHeartLoading = false;
 
   @override
   void initState() {
@@ -56,8 +57,11 @@ class _QuestionDetailState extends State<QuestionDetail> {
 
   // 질문 상세 정보를 로드하는 메서드
   void _loadQuestionDetail() {
-    _questionDetailFuture =
-        QuestionAnswerApi.getQuestionDetail(widget.questionID);
+    Future<QuestionDetailModel> questionDetailFuture =
+        QuestionAnswerApi.getQuestionDetail(widget.questionID); //여기 임시 데이터
+    setState(() {
+      _questionDetailFuture = questionDetailFuture;
+    });
   }
 
   Widget _sendMessageButton() {
@@ -131,79 +135,106 @@ class _QuestionDetailState extends State<QuestionDetail> {
 
 // 질문에 대한 궁금해요 전송 메소드
   void postHeartForQuestion() async {
+    if (isHeartLoading) return;
+
+    setState(() {
+      isHeartLoading = true;
+    });
     bool success =
         await QuestionAnswerApi.postHeart(widget.questionID, 'QUESTION');
     if (success) {
-      // 하트 전송 성공 시, 질문 상세 정보를 다시 로드
-      setState(() {
-        // _questionDetailFuture 업데이트를 위해 setState 내에서 호출
-        _questionDetailFuture =
-            QuestionAnswerApi.getQuestionDetail(widget.questionID);
-      });
+      _loadQuestionDetail();
     }
+    setState(() {
+      isHeartLoading = false;
+    });
   }
 
 // 질문에 대한 하트 취소 메소드
   void deleteHeartForQuestion() async {
+    if (isHeartLoading) return;
+    setState(() {
+      isHeartLoading = true;
+    });
+
     final questionDetail = await _questionDetailFuture;
     if (questionDetail?.heartId != null) {
       bool success =
           await QuestionAnswerApi.deleteHeart(questionDetail!.heartId);
       if (success) {
-        setState(() {
-          _questionDetailFuture =
-              QuestionAnswerApi.getQuestionDetail(widget.questionID);
-        });
+        _loadQuestionDetail();
       }
     } else {
       print('No heartId found for question.');
     }
+    setState(() {
+      isHeartLoading = false;
+    });
   }
 
   // 댓글에 대한 도움 하트 메소드
   void postHeartForAnswer(int answerId) async {
+    if (isHeartLoading) return;
+    setState(() {
+      isHeartLoading = true;
+    });
+
     bool success = await QuestionAnswerApi.postHeart(answerId, 'ANSWER');
     if (success) {
       // 하트 전송 성공 시, 질문 상세 정보를 다시 로드
-      setState(() {
-        // _questionDetailFuture 업데이트를 위해 setState 내에서 호출
-        _questionDetailFuture =
-            QuestionAnswerApi.getQuestionDetail(widget.questionID);
-      });
+      _loadQuestionDetail();
     }
+    setState(() {
+      isHeartLoading = false;
+    });
   }
 
   // 댓글에 대한 도움 하트 취소 메소드
   void deleteHeartForAnswer(int heartId) async {
+    if (isHeartLoading) return;
+    setState(() {
+      isHeartLoading = true;
+    });
+
     bool success = await QuestionAnswerApi.deleteHeart(heartId);
     if (success) {
-      setState(() {
-        _questionDetailFuture =
-            QuestionAnswerApi.getQuestionDetail(widget.questionID);
-      });
+      _loadQuestionDetail();
     }
+    setState(() {
+      isHeartLoading = false;
+    });
   }
 
   //답글(대댓글)에 대한 도움 하트 메소드
   void postHeartForReply(int replyId) async {
+    if (isHeartLoading) return;
+    setState(() {
+      isHeartLoading = true;
+    });
+
     bool success = await QuestionAnswerApi.postHeart(replyId, 'REPLY');
     if (success) {
-      setState(() {
-        _questionDetailFuture =
-            QuestionAnswerApi.getQuestionDetail(widget.questionID);
-      });
+      _loadQuestionDetail();
     }
+    setState(() {
+      isHeartLoading = false;
+    });
   }
 
   //답글(대댓글)에 대한 도움 하트 취소 메소드
   void deleteHeartForReply(int replyHeartId) async {
+    if (isHeartLoading) return;
+    setState(() {
+      isHeartLoading = true;
+    });
+
     bool success = await QuestionAnswerApi.deleteHeart(replyHeartId);
     if (success) {
-      setState(() {
-        _questionDetailFuture =
-            QuestionAnswerApi.getQuestionDetail(widget.questionID);
-      });
+      _loadQuestionDetail();
     }
+    setState(() {
+      isHeartLoading = false;
+    });
   }
 
   @override
@@ -239,7 +270,8 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisQuestionHeardID: questionDetail.heartId,
                       ),
                       const CustomDividerH8G1(),
-                      const QuestionContactComment(),
+                      QuestionContactComment(
+                          contactAnswer: questionDetail.contactAnswer),
                       QuestionUserComment(
                         thisReplyTap: (int answerId, String userName) {
                           _handleReplyTap(answerId, userName);

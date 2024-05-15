@@ -62,7 +62,7 @@ class OnCampusNotifyListCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                OrganizeChip(text: formattedProgramText),
+                OrganizeChipForOnca(text: formattedProgramText),
                 const Spacer(),
                 BookMarkButton(isSaved: isSaved, thisID: thisId)
               ],

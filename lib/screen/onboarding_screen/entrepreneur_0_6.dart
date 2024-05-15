@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class EnterprenutScreen extends StatefulWidget {
@@ -27,9 +27,8 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
   }
 
   Future<void> _saveEntrepreneurCheck() async {
-    final prefs = await SharedPreferences.getInstance();
     bool isEntrepreneur = selectedCard == 1; // '네' 선택 시 true, '아니오' 선택 시 false
-    await prefs.setBool('enterpreneurCheck', isEntrepreneur);
+    await UserInfo().setEntrepreneurCheck(isEntrepreneur);
   }
 
   void _onNextTap() async {

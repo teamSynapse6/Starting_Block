@@ -1,8 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/qestion_answer_api_manage.dart';
+import 'package:starting_block/manage/api/question_answer_api_manage.dart';
 import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
@@ -46,10 +48,9 @@ class _OncampusWebViewScreenState extends State<OncampusWebViewScreen> {
       // 상태 업데이트
       setState(() {
         _isSaved = isSaved; // _isSaved 상태를 업데이트합니다.
-        print('저장?: $_isSaved');
       });
     } catch (e) {
-      print('로드맵 공고 데이터 로드 실패: $e');
+      print(e);
     }
   }
 

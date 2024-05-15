@@ -18,7 +18,6 @@ export 'package:starting_block/constants/widgets/dialog_component.dart'; //다�
 export 'package:starting_block/constants/widgets/bookmark/bookmark_button.dart'; //로드맵에 저장 버튼
 export 'package:starting_block/constants/widgets/bookmark/bookmark_lecture_button.dart'; //로드맵에 창업 강의 저장 버튼
 export 'package:starting_block/constants/widgets/bookmark/bookmark_gotoset.dart'; //로드맵에 저장된 게시물이 없을 때
-export 'package:starting_block/constants/widgets/bookmark/web_bookmark.dart'; //인앱웹뷰_북마크 버튼
 export 'package:starting_block/constants/widgets/reorder_list.dart'; //로드맵 순서 변경 리스트
 export 'package:starting_block/constants/widgets/bottom_gradiant.dart'; //하단 투명 Gradient
 export 'package:starting_block/constants/widgets/offcampus_filter/model/ofca_sorting_textbuttonsheet.dart'; //정렬_(최신순, 저장순)정렬 설정
@@ -28,6 +27,7 @@ export 'package:starting_block/constants/widgets/setting_widget/profile_icon_lis
 export 'package:starting_block/constants/widgets/comment_widget/question_list.dart'; //질문 홈_리스트 위젯
 export 'package:starting_block/constants/widgets/scroll_to_top.dart'; //상단으로 자동 스크롤 위젯
 export 'package:starting_block/constants/widgets/pointer_pop_ignore.dart'; //뒤로가기 무시 컴포넌트
+export 'package:starting_block/constants/widgets/profile_icon_widget.dart'; //프로필 아이콘 컴포넌트
 
 //교외지원사업 바텀시트
 export 'package:starting_block/constants/widgets/offcampus_filter/enterpreneurchipsheet.dart'; //사업자 형태 리스트 및 칩스 컴포넌트

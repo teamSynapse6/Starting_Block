@@ -37,9 +37,19 @@ class QuestionDetailInfo extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
-                radius: 20,
-                backgroundColor: AppColors.g3,
+              Container(
+                width: 40,
+                height: 40,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.g1,
+                  border: Border.all(
+                    width: 0.39,
+                    color: AppColors.g2,
+                  ),
+                ),
+                child: const ProfileIconWidget(iconIndex: 1),
               ),
               Gaps.h12,
               Column(

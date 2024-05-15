@@ -4,23 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-String formatedStartDate(String date) {
-  // '20240102'와 같은 문자열을 '2024-01-02' 형식으로 변환
-  String startDate = date.substring(0, 10);
-  return startDate;
-}
-
-String formatedEndDate(String date) {
+String formatedStartDate(String startDate) {
   // 정규 표현식을 사용하여 날짜 형식 (예: 2024-01-01 00:00:00)인지 확인합니다.
-  RegExp datePattern = RegExp(r'^\d{4}-\d{2}-\d{2}');
+  RegExp startDatePattern = RegExp(r'^\d{4}-\d{2}-\d{2}');
 
   // 문자열이 정규 표현식 패턴에 매치되는 경우
-  if (datePattern.hasMatch(date)) {
+  if (startDatePattern.hasMatch(startDate)) {
     // '2024-01-02 00:00:00.000000'와 같은 문자열을 '2024-01-02' 형식으로 변환
-    return date.substring(0, 10);
+    return startDate.substring(0, 10);
   } else {
-    // 패턴에 매치되지 않는 경우, 원본 문자열을 그대로 반환
-    return date;
+    // 패턴에 매치되지 않는 경우, "날짜 정보 없음" 반환
+    return startDate;
+  }
+}
+
+String formatedEndDate(String endDate) {
+  // 정규 표현식을 사용하여 날짜 형식 (예: 2024-01-01 00:00:00)인지 확인합니다.
+  RegExp endDatePattern = RegExp(r'^\d{4}-\d{2}-\d{2}');
+
+  // 문자열이 정규 표현식 패턴에 매치되는 경우
+  if (endDatePattern.hasMatch(endDate)) {
+    // '2024-01-02 00:00:00.000000'와 같은 문자열을 '2024-01-02' 형식으로 변환
+    return endDate.substring(0, 10);
+  } else {
+    // 패턴에 매치되지 않는 경우, "날짜 정보 없음" 반환
+    return endDate;
   }
 }
 
@@ -72,7 +80,7 @@ class ItemList extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                OrganizeChip(text: thisOrganize),
+                OrganizeChipForOfca(text: thisOrganize),
                 if (isContactExist)
                   const Row(
                     children: [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class BirthdayScreen extends StatefulWidget {
@@ -25,8 +25,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   }
 
   Future<void> _saveBirthday() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userBirthday', _birthday);
+    await UserInfo().setUserBirthday(_birthday);
   }
 
   void _onNextTap() {

@@ -2,40 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-String calculateDDay(String endDate) {
-  int year = int.parse(endDate.substring(0, 4));
-  int month = int.parse(endDate.substring(4, 6));
-  int day = int.parse(endDate.substring(6, 8));
+class OfCaCardOne extends StatelessWidget {
+  final String thisOrganize, thisID, thisTitle;
+  final int index;
 
-  DateTime endDateTime = DateTime(year, month, day);
-  DateTime now = DateTime.now();
-  Duration difference = endDateTime.difference(now);
-
-  if (difference.inDays < 0) {
-    return 'D+${-difference.inDays}';
-  } else if (difference.inDays == 0) {
-    return 'D-Day';
-  } else {
-    return 'D-${difference.inDays}';
-  }
-}
-
-class OfCaCard extends StatelessWidget {
-  final String thisOrganize, thisID, thisClassification, thisTitle, thisEnddate;
-
-  const OfCaCard({
+  const OfCaCardOne({
     super.key,
     required this.thisOrganize,
     required this.thisID,
-    required this.thisClassification,
     required this.thisTitle,
-    required this.thisEnddate,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
-    String dDay = calculateDDay(thisEnddate);
-
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -47,42 +27,55 @@ class OfCaCard extends StatelessWidget {
         );
       },
       child: Container(
-        width: 312,
+        width: 152,
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
         decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(2),
+          gradient: index == 0
+              ? const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xff5E8BFF), Color(0xff8FAEFF)],
+                )
+              : index == 1
+                  ? const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xffCB98FF), Color(0xffD8B2FF)],
+                    )
+                  : const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xffB1C5F6), Color(0xffC8D6F9)],
+                    ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  OrganizeChip(
-                    text: thisOrganize,
-                  ),
-                  const Spacer(),
-                  // BookMarkButton(
-                  //   id: thisID,
-                  //   classification: thisClassification,
-                  // ),
-                ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(2),
+                color: AppColors.white.withOpacity(0.1),
               ),
-              Gaps.v10,
-              Text(
-                thisTitle,
-                style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              child: Center(
+                child: Text(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  thisOrganize,
+                  style: AppTextStyles.caption.copyWith(color: AppColors.white),
+                ),
               ),
-              Gaps.v8,
-              Text(
-                dDay,
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
-              ),
-            ],
-          ),
+            ),
+            Gaps.v10,
+            Text(
+              thisTitle,
+              style: AppTextStyles.bd1.copyWith(color: AppColors.white),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );
