@@ -21,13 +21,13 @@ class _NickNameEditState extends State<NickNameEdit> {
   String _nicknameAvailabilityMessage = "";
   bool _isNicknameChecked = false;
   bool _isInputStarted = false;
-  String _uuid = "";
+  final String _uuid = "";
 
   @override
   void initState() {
     super.initState();
     _initNickname();
-    _loadUUID();
+
     _nicknameController.addListener(() {
       final currentText = _nicknameController.text;
       if (!_isInputStarted && currentText.isNotEmpty) {
@@ -104,13 +104,6 @@ class _NickNameEditState extends State<NickNameEdit> {
     // UserInfo에서 현재 닉네임을 가져와서 TextField에 설정
     String currentNickname = await UserInfo.getNickName();
     _nicknameController.text = currentNickname;
-  }
-
-  Future<void> _loadUUID() async {
-    String uuid = await UserInfo.getUserUUID();
-    setState(() {
-      _uuid = uuid;
-    });
   }
 
   void _onNextTap() async {

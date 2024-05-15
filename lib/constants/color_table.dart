@@ -27,6 +27,10 @@ class AppColors {
 
   // chipsColor
   static const Color chipsColor = Color(0XFFC8C8C8);
+  static const Color chipsColorForOnca = Color(0XFFE8EDF5);
+
+  // Divider Color
+  static const Color dividerColor = Color(0XFFDDE1E5);
 
   // BG Color
   static const Color secondaryBG = Color(0XFFF3F4F6); //secondary BG 컬러

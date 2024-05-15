@@ -28,7 +28,7 @@ class HomeNotifyRecommendList extends StatelessWidget {
                 isOfca: thisAnnouncementType == '교외' ? true : false,
               ),
               Gaps.h8,
-              OrganizeChip(text: thisOrganize),
+              OrganizeChipForHome(text: thisOrganize),
             ],
           ),
           Gaps.v10,

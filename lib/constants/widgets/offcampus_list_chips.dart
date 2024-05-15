@@ -69,6 +69,40 @@ class OrganizeChipForOfca extends StatelessWidget {
   }
 }
 
+class OrganizeChipForHome extends StatelessWidget {
+  final String text;
+
+  const OrganizeChipForHome({
+    super.key,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String displayText =
+        text.length > 16 ? '${text.substring(0, 13)}...' : text;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 6,
+        vertical: 3,
+      ),
+      decoration: const BoxDecoration(
+        color: AppColors.g1,
+        borderRadius: BorderRadius.all(Radius.circular(2)),
+      ),
+      child: Center(
+        child: Text(
+          displayText,
+          style: AppTextStyles.caption.copyWith(color: AppColors.g4),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
+      ),
+    );
+  }
+}
+
 class ConatactChip extends StatelessWidget {
   const ConatactChip({
     super.key,
@@ -89,6 +123,40 @@ class ConatactChip extends StatelessWidget {
         child: Text(
           '문의처 질문',
           style: AppTextStyles.caption.copyWith(color: AppColors.blue),
+        ),
+      ),
+    );
+  }
+}
+
+class OrganizeChipForOnca extends StatelessWidget {
+  final String text;
+
+  const OrganizeChipForOnca({
+    super.key,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String displayText =
+        text.length > 16 ? '${text.substring(0, 13)}...' : text;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 6,
+        vertical: 3,
+      ),
+      decoration: const BoxDecoration(
+        color: AppColors.chipsColorForOnca,
+        borderRadius: BorderRadius.all(Radius.circular(2)),
+      ),
+      child: Center(
+        child: Text(
+          displayText,
+          style: AppTextStyles.caption.copyWith(color: AppColors.g5),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
         ),
       ),
     );

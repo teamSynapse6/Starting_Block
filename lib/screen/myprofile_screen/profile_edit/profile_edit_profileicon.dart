@@ -101,7 +101,7 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
                   ),
                   Gaps.v8,
                   Text(
-                    "프로필 아이콘으로 자신의 단계를 표현해 보세요",
+                    "프로필 아이콘으로 자신의 단계를 표현해 보세요!",
                     style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
                   ),
                   Gaps.v24,
@@ -146,7 +146,10 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
                 ],
               ),
             ),
-            const CustomDividerH8G2(),
+            Container(
+              height: 8,
+              color: AppColors.g2.withOpacity(0.4),
+            ),
             ListView.builder(
               shrinkWrap: true,
               physics:
@@ -175,7 +178,7 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
                           left: 88,
                           right: 24,
                         ),
-                        child: CustomDividerG2(),
+                        child: CustomDividerDDE1E5(),
                       ),
                   ],
                 );

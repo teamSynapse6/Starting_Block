@@ -112,8 +112,6 @@ class _RoadmapHomeState extends State<RoadmapHome>
               forceElevated: true,
               backgroundColor: AppColors.blue,
               pinned: true,
-              snap: true,
-              floating: true,
               expandedHeight: 152,
               collapsedHeight: 56,
               flexibleSpace: FlexibleSpaceBar(

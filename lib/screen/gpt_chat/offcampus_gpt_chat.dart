@@ -332,13 +332,14 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                     ],
                   )
                 : ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     controller: _scrollController,
                     itemCount: _messages.length + (_isLoading ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index == _messages.length) {
                         // 마지막 아이템이 로딩 인디케이터
                         return Padding(
-                          padding: const EdgeInsets.only(left: 24, bottom: 22),
+                          padding: const EdgeInsets.only(bottom: 22),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -410,8 +411,6 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                             padding: EdgeInsets.only(
                               top: isFirstItem ? 10 : 0,
                               bottom: isLastItem && !_isLoading ? 10 : 0,
-                              left: 24,
-                              right: 24,
                             ),
                             child: Align(
                               alignment: message.isUser

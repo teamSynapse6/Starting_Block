@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class ResidenceScreen extends StatefulWidget {
@@ -125,8 +125,7 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
   }
 
   Future<void> _saveUserResidence() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userResidence', selectedRegion ?? "");
+    await UserInfo().setResidence(selectedRegion ?? "");
   }
 
   void _onNextTap() async {

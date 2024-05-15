@@ -58,7 +58,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
   // 질문 상세 정보를 로드하는 메서드
   void _loadQuestionDetail() {
     Future<QuestionDetailModel> questionDetailFuture =
-        QuestionAnswerApi.getQuestionDetail(widget.questionID);
+        QuestionAnswerApi.getQuestionDetail(widget.questionID); //여기 임시 데이터
     setState(() {
       _questionDetailFuture = questionDetailFuture;
     });
@@ -270,7 +270,8 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisQuestionHeardID: questionDetail.heartId,
                       ),
                       const CustomDividerH8G1(),
-                      const QuestionContactComment(),
+                      QuestionContactComment(
+                          contactAnswer: questionDetail.contactAnswer),
                       QuestionUserComment(
                         thisReplyTap: (int answerId, String userName) {
                           _handleReplyTap(answerId, userName);

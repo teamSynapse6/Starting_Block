@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
@@ -46,10 +48,9 @@ class _OncampusWebViewScreenState extends State<OncampusWebViewScreen> {
       // 상태 업데이트
       setState(() {
         _isSaved = isSaved; // _isSaved 상태를 업데이트합니다.
-        print('저장?: $_isSaved');
       });
     } catch (e) {
-      print('로드맵 공고 데이터 로드 실패: $e');
+      print(e);
     }
   }
 

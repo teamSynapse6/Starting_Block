@@ -28,7 +28,7 @@ class _QuestionHomeState extends State<QuestionHome> {
 
   void loadQuestionData() async {
     final questions = await QuestionAnswerApi.getQuestionList(
-        int.tryParse(widget.thisID) ?? 0);
+        int.tryParse(widget.thisID) ?? 0); //8062 ID로 테스트 가능
     setState(() {
       _questionData = questions; // _questionData 업데이트
     });
