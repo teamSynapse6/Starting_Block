@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kr.co.synapse.startingblock">
+    package="com.synapse.startingblock">
     <application
         android:label="스타팅블록"
         android:enableOnBackInvokedCallback="true"

@@ -63,20 +63,20 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   }
 
   Future<bool> _saveUserInfoToServer() async {
-    String nickName = await UserInfo.getNickName();
     bool isEnterpreneurCheck = await UserInfo.getEntrepreneurCheck();
     String residence = await UserInfo.getResidence();
     String university = await UserInfo.getSchoolName();
     String birth = await UserInfo.getUserBirthday();
     String formattedBirth =
         DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
+    int profileNumber = await UserInfo.getSelectedIconIndex();
 
     return await UserInfoManageApi.patchUserInfo(
-      nickname: nickName,
       birth: formattedBirth,
       isCompletedBusinessRegistration: isEnterpreneurCheck,
       residence: residence,
       university: university,
+      profileNumber: profileNumber,
     );
   }
 

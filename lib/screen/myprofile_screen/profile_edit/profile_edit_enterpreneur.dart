@@ -1,9 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/save_fetch_userdata.dart';
 
 class EnterprenutEdit extends StatefulWidget {
   const EnterprenutEdit({super.key});
@@ -22,12 +21,9 @@ class _EnterprenutEditState extends State<EnterprenutEdit> {
   }
 
   Future<void> _saveEntrepreneurCheck() async {
-    // Provider를 사용하여 UserInfo 인스턴스에 접근
-    final userInfo = Provider.of<UserInfo>(context, listen: false);
-
-    // UserInfo 인스턴스의 setEntrepreneurCheck 메소드를 호출하여 사업자 등록 여부 저장
     bool isEntrepreneur = selectedCard == 1; // '네' 선택 시 true, '아니오' 선택 시 false
-    await userInfo.setEntrepreneurCheck(isEntrepreneur);
+    await SaveUserData.loadFromLocalAndFetchToServer(
+        inputEntrepreneurCheck: isEntrepreneur);
   }
 
   void _onNextTap() async {

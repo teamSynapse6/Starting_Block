@@ -23,6 +23,7 @@ class SaveUserData {
           .setEntrepreneurCheck(userData.isCompletedBusinessRegistration);
       await UserInfo().setResidence(userData.residence);
       await UserInfo().setSchoolName(userData.university);
+      await UserInfo().setSelectedIconIndex(userData.profileNumber);
       print('사용자 정보 저장 완료');
     } catch (e) {
       // 예외 발생 시 오류 메시지 출력
@@ -31,15 +32,15 @@ class SaveUserData {
   }
 
   static Future<void> loadFromLocalAndFetchToServer({
-    String? inputNickName,
     String? inputUserBirthday,
     bool? inputEntrepreneurCheck,
     String? inputResidence,
     String? inputSchoolName,
+    int? inputProfileNumber,
   }) async {
     try {
       // UserInfo 클래스에서 데이터를 가져옵니다.
-      String finalNickName = inputNickName ?? await UserInfo.getNickName();
+
       String finalUserBirthday = inputUserBirthday != null
           ? DateFormat('yyyy-MM-dd').format(DateTime.parse(inputUserBirthday))
           : DateFormat('yyyy-MM-dd')
@@ -49,27 +50,30 @@ class SaveUserData {
       String finalResidence = inputResidence ?? await UserInfo.getResidence();
       String finalSchoolName =
           inputSchoolName ?? await UserInfo.getSchoolName();
+      int finalProfileNumber =
+          inputProfileNumber ?? await UserInfo.getSelectedIconIndex();
 
       // 가져온 데이터를 출력하여 확인합니다.
       print(
-          '유저 데이터: $finalNickName, $finalUserBirthday, $finalEntrepreneurCheck, $finalResidence, $finalSchoolName');
+          '유저 데이터: $finalUserBirthday, $finalEntrepreneurCheck, $finalResidence, $finalSchoolName, $finalProfileNumber');
 
       //이 데이터를 서버에 Fetch하여 저장.
       bool result = await UserInfoManageApi.patchUserInfo(
-        nickname: finalNickName,
         birth: finalUserBirthday,
         isCompletedBusinessRegistration: finalEntrepreneurCheck,
         residence: finalResidence,
         university: finalSchoolName,
+        profileNumber: finalProfileNumber,
       );
       if (result) {
         // 로컬 저장 시 '-'를 제거하여 YYYYMMDD 형식으로 저장
         String formattedBirth = finalUserBirthday.replaceAll('-', '');
-        await UserInfo().setNickName(finalNickName);
+
         await UserInfo().setUserBirthday(formattedBirth);
         await UserInfo().setEntrepreneurCheck(finalEntrepreneurCheck);
         await UserInfo().setResidence(finalResidence);
         await UserInfo().setSchoolName(finalSchoolName);
+        await UserInfo().setSelectedIconIndex(finalProfileNumber);
       } else {
         print('사용자 정보 저장 실패');
       }

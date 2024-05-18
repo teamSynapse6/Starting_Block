@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
-import 'package:starting_block/manage/screen_manage.dart'; // schoolList가 여기에 정의되어 있다고 가정
+import 'package:starting_block/manage/screen_manage.dart';
 
 class OnCampusSchoolSearch extends StatefulWidget {
   const OnCampusSchoolSearch({super.key});
@@ -62,20 +62,20 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
   }
 
   Future<bool> _saveUserInfoToServer() async {
-    String nickName = await UserInfo.getNickName();
     bool isEnterpreneurCheck = await UserInfo.getEntrepreneurCheck();
     String residence = await UserInfo.getResidence();
     String university = _schoolInfo;
     String birth = await UserInfo.getUserBirthday();
     String formattedBirth =
         DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
+    int profileNumber = await UserInfo.getSelectedIconIndex();
 
     return await UserInfoManageApi.patchUserInfo(
-      nickname: nickName,
       birth: formattedBirth,
       isCompletedBusinessRegistration: isEnterpreneurCheck,
       residence: residence,
       university: university,
+      profileNumber: profileNumber,
     );
   }
 

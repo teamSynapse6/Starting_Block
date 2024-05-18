@@ -19,7 +19,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
   String _schoolName = "";
   String _entrepreneurCheck = "사업자 등록 미완료";
   String _residenceName = "";
-  Widget _selectedProfileIcon = Container(); // 현재 선택된 프로필 아이콘을 저장하는 위젯 변수
+  int _iconIndex = 0;
 
   @override
   void initState() {
@@ -82,19 +82,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
   Future<void> _loadSelectedProfileIcon() async {
     int selectedIconIndex = await UserInfo.getSelectedIconIndex();
     setState(() {
-      switch (selectedIconIndex) {
-        case 1:
-          _selectedProfileIcon = AppIcon.profile_image_1;
-          break;
-        case 2:
-          _selectedProfileIcon = AppIcon.profile_image_2;
-          break;
-        case 3:
-          _selectedProfileIcon = AppIcon.profile_image_3;
-          break;
-        default:
-          _selectedProfileIcon = Container();
-      }
+      _iconIndex = selectedIconIndex;
     });
   }
 
@@ -134,19 +122,20 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                         color: AppColors.g2,
                       ),
                     ),
-                    child: _selectedProfileIcon,
+                    child: ProfileIconWidget(iconIndex: _iconIndex),
                   ),
                 ),
                 Gaps.v4,
                 Align(
                   alignment: Alignment.center,
                   child: InkWell(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ProfileIconEdit()),
                       );
+                      _loadUserInfo();
                     },
                     child: SizedBox(
                       width: 88,
@@ -171,12 +160,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const NickNameEdit()),
                     );
+                    _loadUserInfo();
                   },
                   child: SizedBox(
                     height: 56,
@@ -213,12 +203,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const BirthdayEdit()),
                     );
+                    _loadUserInfo();
                   },
                   child: SizedBox(
                     height: 56,
@@ -255,12 +246,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const SchoolNameEdit()),
                     );
+                    _loadUserInfo();
                   },
                   child: SizedBox(
                     height: 56,
@@ -303,12 +295,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const ResidenceEdit()),
                     );
+                    _loadUserInfo();
                   },
                   child: SizedBox(
                     height: 56,
@@ -345,12 +338,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const EnterprenutEdit()),
                     );
+                    _loadUserInfo();
                   },
                   child: SizedBox(
                     height: 56,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:korean_profanity_filter/korean_profanity_filter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/system_api_manage.dart';
+import 'package:starting_block/manage/api/userinfo_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class NickNameScreen extends StatefulWidget {
@@ -24,8 +24,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
   bool _isCheacking = false;
 
   Future<void> _saveNickname() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userNickName', _nickname);
+    await UserInfo().setNickName(_nickname);
   }
 
   @override
@@ -104,7 +103,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
 
     FocusScope.of(context).requestFocus(FocusNode());
     try {
-      bool isAvailable = await SystemApiManage.getNickNameCheck(_nickname);
+      bool isAvailable = await UserInfoManageApi.patchUserNickName(_nickname);
       _isNicknameChecked = true; // 중복 확인 완료
       setState(() {
         _isNicknameAvailable = isAvailable;
