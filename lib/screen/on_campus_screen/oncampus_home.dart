@@ -31,7 +31,10 @@ class _OnCampusHomeState extends State<OnCampusHome> {
 
   Future<void> _loadOnCampusHomeNotify() async {
     List<OncaAnnouncementModel> notifyList =
-        await OnCampusApi.getOncaAnnouncement(keyword: 'null');
+        await OnCampusApi.getOncaAnnouncement(
+      keyword: 'null',
+      search: 'null',
+    );
 
     // 최신순으로 정렬 (insertDate를 기준으로 내림차순)
     notifyList.sort((a, b) => b.insertDate.compareTo(a.insertDate));

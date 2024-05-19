@@ -18,9 +18,8 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
     '서울',
     '창업',
     '청년창업지원',
-    '서울',
-    '창업',
-    '청년창업지원'
+    '대학',
+    '대학원',
   ];
 
   @override
@@ -87,14 +86,7 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
           controller: _controller,
           recentSearchManager: recentSearchManager,
           onBackTap: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const IntergrateScreen(
-                        switchIndex: SwitchIndex.toZero,
-                      )),
-              (Route<dynamic> route) => false,
-            );
+            Navigator.pop(context);
           },
         ),
         body: Column(

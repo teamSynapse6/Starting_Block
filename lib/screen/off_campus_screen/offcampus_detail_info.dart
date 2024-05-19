@@ -34,6 +34,7 @@ class OffCampusDetailInfo extends StatelessWidget {
       thisID,
       classification,
       questionCount;
+  final bool isContatcExist;
   final VoidCallback thisLoadAction;
 
   const OffCampusDetailInfo({
@@ -50,6 +51,7 @@ class OffCampusDetailInfo extends StatelessWidget {
     required this.content,
     required this.questionCount,
     required this.thisLoadAction,
+    required this.isContatcExist,
   });
 
   @override
@@ -110,6 +112,7 @@ class OffCampusDetailInfo extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => QuestionHome(
                         thisID: thisID,
+                        isContactExist: isContatcExist,
                       ),
                     ),
                   );
@@ -127,9 +130,10 @@ class OffCampusDetailInfo extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OfcampusWebViewScreen(
+                      builder: (context) => OffCampusWebViewScreen(
                         url: link,
                         id: thisID,
+                        isContactExist: isContatcExist,
                       ),
                     ),
                   );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 
@@ -34,8 +33,7 @@ class ResidenceChipsSheet extends StatefulWidget {
 
 class _ResidenceChipsSheetState extends State<ResidenceChipsSheet> {
   Future<void> _saveSelectedResidence(String thisResidence) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedResidence', thisResidence);
+    FilterModel().setSelectedResidence(thisResidence);
   }
 
   void _onResidenceBottom(BuildContext context) async {

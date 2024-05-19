@@ -69,7 +69,10 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
     try {
       // API 호출
       List<OncaAnnouncementModel> notifyList =
-          await OnCampusApi.getOncaAnnouncement(keyword: _selectedProgram);
+          await OnCampusApi.getOncaAnnouncement(
+        keyword: _selectedProgram,
+        search: 'null',
+      );
 
       setState(() {
         _notifyList = notifyList;
@@ -105,10 +108,12 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
   Widget build(BuildContext context) {
     return Consumer<OnCaFilterModel>(
       builder: (context, filterModel, child) {
-        if (filterModel.hasChanged) {
-          loadFilterValue();
-          filterModel.resetChangeFlag();
-        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (filterModel.hasChanged) {
+            loadFilterValue();
+            filterModel.resetChangeFlag();
+          }
+        });
         return Scaffold(
           backgroundColor: AppColors.white,
           appBar: PreferredSize(
@@ -144,13 +149,14 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                         Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
+                            onTap: () async {
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const OnCampusSearch(),
                                 ),
                               );
+                              loadFilterValue();
                             },
                             child: SizedBox(
                               height: 48,

@@ -176,21 +176,11 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
         controller: _controller,
         recentSearchManager: recentSearchManager,
         onBackTap: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const IntergrateScreen(
-                      switchIndex: SwitchIndex.toZero,
-                    )),
-            (Route<dynamic> route) => false,
-          );
+          Navigator.pop(context);
+          Navigator.pop(context);
         },
         onCloseTap: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const OffCampusSearch()),
-            (Route<dynamic> route) => false,
-          );
+          Navigator.pop(context);
         },
       ),
       body: Consumer<FilterModel>(

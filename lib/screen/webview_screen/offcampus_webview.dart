@@ -7,20 +7,22 @@ import 'package:starting_block/manage/api/question_answer_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class OfcampusWebViewScreen extends StatefulWidget {
+class OffCampusWebViewScreen extends StatefulWidget {
   final String url, id;
+  final bool isContactExist;
 
-  const OfcampusWebViewScreen({
+  const OffCampusWebViewScreen({
     super.key,
     required this.url,
     required this.id,
+    required this.isContactExist,
   });
 
   @override
-  State<OfcampusWebViewScreen> createState() => _OfcampusWebViewScreenState();
+  State<OffCampusWebViewScreen> createState() => _OffCampusWebViewScreenState();
 }
 
-class _OfcampusWebViewScreenState extends State<OfcampusWebViewScreen> {
+class _OffCampusWebViewScreenState extends State<OffCampusWebViewScreen> {
   String _questionCount = '0';
   final List<OffCampusDetailModel> _offcampusDetail = [];
   bool _isBottomAppBarVisible = true;
@@ -119,6 +121,7 @@ class _OfcampusWebViewScreenState extends State<OfcampusWebViewScreen> {
                       MaterialPageRoute(
                         builder: (context) => QuestionHome(
                           thisID: widget.id,
+                          isContactExist: widget.isContactExist,
                         ),
                       ),
                     );

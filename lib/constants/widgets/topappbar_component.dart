@@ -82,12 +82,12 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final searchTapScreen, thisBackGroundColor;
+  final thisBackGroundColor, thisSearchTapAction;
 
   const SearchAppBar({
     super.key,
-    required this.searchTapScreen,
     this.thisBackGroundColor,
+    required this.thisSearchTapAction,
   });
 
   @override
@@ -104,12 +104,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: thisBackGroundColor ?? AppColors.white,
         actions: <Widget>[
           GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => searchTapScreen),
-              );
-            },
+            onTap: thisSearchTapAction,
             child: SizedBox(
               height: 48,
               width: 48,
@@ -251,10 +246,160 @@ class SearchResultAppBar extends StatelessWidget
   void _onSearchSubmitted(BuildContext context, String query) async {
     // 검색 내역을 추가하고 결과 화면으로 이동하는 로직
     await recentSearchManager.addSearch(query);
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => OffCampusSearchResult(searchWord: query),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: GestureDetector(
+        onTap: onBackTap,
+        child: Container(
+          width: 48,
+          height: 48,
+          margin: const EdgeInsets.only(left: 4),
+          child: AppIcon.back,
+        ),
+      ),
+      titleSpacing: 0,
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: TextField(
+              style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+              controller: controller,
+              onSubmitted: (query) => _onSearchSubmitted(context, query),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                contentPadding: EdgeInsets.zero,
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: onCloseTap,
+          child: Container(
+            width: 48,
+            height: 48,
+            margin: const EdgeInsets.only(right: 12),
+            child: AppIcon.close24,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SearchFiledAppBarForOnca extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String hintText;
+  final TextEditingController controller;
+  final VoidCallback onBackTap;
+  final RecentSearchManager recentSearchManager;
+
+  const SearchFiledAppBarForOnca({
+    super.key,
+    required this.hintText,
+    required this.controller,
+    required this.onBackTap,
+    required this.recentSearchManager, // RecentSearchManager 인스턴스 추가
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  void _onSearchSubmitted(BuildContext context, String query) async {
+    // 검색 내역을 추가하고 결과 화면으로 이동하는 로직
+    await recentSearchManager.addSearch(query);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OnCampusSearchResult(searchWord: query),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: GestureDetector(
+        onTap: onBackTap,
+        child: Container(
+          width: 48,
+          height: 48,
+          margin: const EdgeInsets.only(left: 4),
+          child: AppIcon.back,
+        ),
+      ),
+      titleSpacing: 0,
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: TextField(
+              style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+              controller: controller,
+              onSubmitted: (query) => _onSearchSubmitted(context, query),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: AppTextStyles.bd2.copyWith(color: AppColors.g3),
+                contentPadding: EdgeInsets.zero,
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SearchResultAppBarForOnca extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String hintText;
+  final TextEditingController controller;
+  final VoidCallback onBackTap, onCloseTap;
+  final RecentSearchManager recentSearchManager;
+
+  const SearchResultAppBarForOnca({
+    super.key,
+    required this.hintText,
+    required this.controller,
+    required this.onBackTap,
+    required this.recentSearchManager,
+    required this.onCloseTap,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+
+  void _onSearchSubmitted(BuildContext context, String query) async {
+    // 검색 내역을 추가하고 결과 화면으로 이동하는 로직
+    await recentSearchManager.addSearch(query);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OnCampusSearchResult(searchWord: query),
       ),
     );
   }
