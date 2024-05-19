@@ -114,15 +114,21 @@ class OnCampusApi {
     }
   }
 
-  //교내 지원공고 메소드
+  // 교내 지원공고 메소드
   static Future<List<OncaAnnouncementModel>> getOncaAnnouncement(
-      {String? keyword, int retryCount = 1}) async {
+      {String? keyword, String? search, int retryCount = 1}) async {
     Map<String, String> headers = await getHeaders();
 
-    // URL에 keyword 파라미터를 추가할지 결정
-    String queryString = keyword != 'null' ? '?keyword=$keyword' : '';
+    // URL에 keyword와 search 파라미터를 추가할지 결정
+    List<String> queryParams = [];
+    if (keyword != 'null') queryParams.add('keyword=$keyword');
+    if (search != 'null') queryParams.add('search=$search');
+    String queryString =
+        queryParams.isNotEmpty ? '?${queryParams.join('&')}' : '';
+
     final url =
         Uri.parse('$baseUrl/api/v1/announcements/list/on-campus$queryString');
+    print('교내 공고 URL: $url');
 
     final response = await http.get(url, headers: headers);
 
@@ -136,7 +142,8 @@ class OnCampusApi {
     } else if (response.statusCode == 401 && retryCount > 0) {
       // 토큰 갱신 후 다시 시도
       await UserInfoManageApi.updateAccessToken();
-      return getOncaAnnouncement(keyword: keyword, retryCount: retryCount - 1);
+      return getOncaAnnouncement(
+          keyword: keyword, search: search, retryCount: retryCount - 1);
     } else {
       throw Exception('서버 오류: ${response.statusCode}, 본문: ${response.body}');
     }

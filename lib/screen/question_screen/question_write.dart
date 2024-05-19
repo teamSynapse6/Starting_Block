@@ -7,10 +7,12 @@ import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionWrite extends StatefulWidget {
   final String thisID;
+  final bool isContactExist;
 
   const QuestionWrite({
     super.key,
     required this.thisID,
+    required this.isContactExist,
   });
 
   @override
@@ -182,35 +184,39 @@ class _QuestionWriteState extends State<QuestionWrite> {
           padding: MediaQuery.of(context).viewInsets,
           child: BottomAppBar(
             height: 44,
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  _isChecked = !_isChecked;
-                });
-              },
-              child: Container(
-                height: 44,
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  border: BorderDirectional(
-                    top: BorderSide(width: 1, color: AppColors.g2),
+            child: IgnorePointer(
+              ignoring: !widget.isContactExist,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    _isChecked = !_isChecked;
+                  });
+                },
+                child: Container(
+                  height: 44,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                      top: BorderSide(width: 1, color: AppColors.g2),
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _isChecked
-                          ? AppIcon.checkbox_actived
-                          : AppIcon.checkbox_inactived,
-                      Gaps.h10,
-                      Text(
-                        '문의처에 질문하기',
-                        style: AppTextStyles.bd2.copyWith(color: AppColors.g5),
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _isChecked
+                            ? AppIcon.checkbox_actived
+                            : AppIcon.checkbox_inactived,
+                        Gaps.h10,
+                        Text(
+                          '문의처에 질문하기',
+                          style:
+                              AppTextStyles.bd2.copyWith(color: AppColors.g5),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

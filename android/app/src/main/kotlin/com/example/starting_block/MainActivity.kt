@@ -1,4 +1,4 @@
-package com.example.starting_block
+package com.synapse.startingblock
 
 import io.flutter.embedding.android.FlutterActivity
 

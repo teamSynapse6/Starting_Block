@@ -98,12 +98,13 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
                   children: [
                     OnCaListClass(
                       thisTitle: item.title,
-                      // thisId: item..toString(),
+                      thisId: item.lectureId.toString(),
                       thisLiberal: item.liberal,
                       thisCredit: item.credit.toString(),
                       thisContent: item.content,
                       thisSession: item.session.toString(),
                       thisTeacher: item.instructor,
+                      thisBookMaekSaved: item.isBookmarked,
                     ),
                     Gaps.v16,
                   ],

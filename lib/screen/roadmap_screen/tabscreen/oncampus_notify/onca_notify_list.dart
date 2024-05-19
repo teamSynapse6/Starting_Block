@@ -31,7 +31,7 @@ class OnCaListNotify extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OfcampusWebViewScreen(
+            builder: (context) => OncampusWebViewScreen(
               url: thisUrl,
               id: thisID,
             ),

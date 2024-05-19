@@ -1,9 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class SchoolNameEdit extends StatefulWidget {
@@ -53,9 +51,8 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
   }
 
   Future<void> _saveSchoolName() async {
-    // Provider를 사용하여 UserInfo 인스턴스에 접근
-    final userInfo = Provider.of<UserInfo>(context, listen: false);
-    await userInfo.setSchoolName(_schoolInfo);
+    await SaveUserData.loadFromLocalAndFetchToServer(
+        inputSchoolName: _schoolInfo);
   }
 
   void _onNextTap() async {

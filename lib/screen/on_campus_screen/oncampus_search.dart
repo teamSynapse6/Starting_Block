@@ -18,9 +18,8 @@ class _OnCampusSearchState extends State<OnCampusSearch> {
     '서울',
     '창업',
     '청년창업지원',
-    '서울',
-    '창업',
-    '청년창업지원'
+    '대학',
+    '대학원',
   ];
 
   @override
@@ -82,19 +81,12 @@ class _OnCampusSearchState extends State<OnCampusSearch> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        appBar: SearchFiledAppBar(
+        appBar: SearchFiledAppBarForOnca(
           hintText: '검색어를 입력하세요',
           controller: _controller,
           recentSearchManager: recentSearchManager,
           onBackTap: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const IntergrateScreen(
-                        switchIndex: SwitchIndex.toZero,
-                      )),
-              (Route<dynamic> route) => false,
-            );
+            Navigator.pop(context);
           },
         ),
         body: Column(

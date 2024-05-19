@@ -1,9 +1,8 @@
 // ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class ResidenceEdit extends StatefulWidget {
   const ResidenceEdit({super.key});
@@ -121,11 +120,8 @@ class _ResidenceEditState extends State<ResidenceEdit> {
   }
 
   Future<void> _saveUserResidence() async {
-    // Provider를 사용하여 UserInfo 인스턴스에 접근
-    final userInfo = Provider.of<UserInfo>(context, listen: false);
-
-    // UserInfo 인스턴스의 setResidence 메소드를 호출하여 거주지 정보 저장
-    await userInfo.setResidence(selectedRegion ?? "");
+    await SaveUserData.loadFromLocalAndFetchToServer(
+        inputResidence: selectedRegion);
   }
 
   void _onNextTap() async {

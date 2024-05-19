@@ -15,7 +15,7 @@ class OffCampusDetailModel {
       postTarget,
       classification,
       contact;
-  final bool isBookmarked;
+  final bool isBookmarked, isContactExist, isFileUploaded;
 
   static String decodeHtmlEntities(String htmlString) {
     var document = parse(htmlString);
@@ -38,5 +38,7 @@ class OffCampusDetailModel {
         saved = json['saved'] as int,
         classification = json['classification'] ?? '',
         contact = json['contact'] ?? '',
-        isBookmarked = json['isBookmarked'] ?? false;
+        isBookmarked = json['isBookmarked'] ?? false,
+        isContactExist = json['isContactExist'] ?? false,
+        isFileUploaded = json['isFileUploaded'] ?? false;
 }

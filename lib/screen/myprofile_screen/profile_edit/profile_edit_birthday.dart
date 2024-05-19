@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:starting_block/constants/constants.dart';
@@ -39,7 +41,6 @@ class _BirthdayEditState extends State<BirthdayEdit> {
   }
 
   Future<void> _saveBirthday() async {
-    // SaveUserData의 loadFromLocalAndFetchToServer 메서드를 호출하고 inputUserBirthday 매개변수로 넘깁니다.
     await SaveUserData.loadFromLocalAndFetchToServer(
         inputUserBirthday: _birthday.replaceAll('.', ''));
   }

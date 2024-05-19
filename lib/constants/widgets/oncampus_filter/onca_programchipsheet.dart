@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/oncampus_filter/model/onca_filter_model.dart';
 
@@ -23,8 +22,7 @@ class ProgramChipsSheet extends StatefulWidget {
 
 class _ProgramChipsSheetState extends State<ProgramChipsSheet> {
   void _saveSelectedProgram(String program) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedProgram', program);
+    OnCaFilterModel().setSelectedProgram(program);
   }
 
   void _onProgramBottom(BuildContext context) async {

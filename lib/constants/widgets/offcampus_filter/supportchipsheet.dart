@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 
@@ -25,8 +24,7 @@ class SupportTypeChipsSheet extends StatefulWidget {
 
 class _SupportTypeChipsSheetState extends State<SupportTypeChipsSheet> {
   Future<void> _saveSelectedSupportType(String supportType) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedSupportType', supportType);
+    FilterModel().setSelectedSupportType(supportType);
   }
 
   void _onSupportTypeBottom(BuildContext context) async {

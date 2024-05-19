@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class ProfileIconEdit extends StatefulWidget {
   const ProfileIconEdit({super.key});
@@ -60,9 +60,8 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
   }
 
   Future<void> _saveSelectedIcon() async {
-    // UserInfo 인스턴스에 접근합니다.
-    final userInfo = Provider.of<UserInfo>(context, listen: false);
-    await userInfo.setSelectedIconIndex(_selectedIconIndex!); // 수정된 부분
+    await SaveUserData.loadFromLocalAndFetchToServer(
+        inputProfileNumber: _selectedIconIndex);
   }
 
   void _onNextTap() async {
@@ -160,10 +159,12 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
                 return Column(
                   children: <Widget>[
                     InkWell(
-                      onTap: () => setState(() {
-                        _selectedIconIndex = index + 1;
-                        _isButtonDisabled = false;
-                      }),
+                      onTap: () {
+                        setState(() {
+                          _selectedIconIndex = index + 1;
+                          _isButtonDisabled = false;
+                        });
+                      },
                       child: ProfileEditIconList(
                         thisIcon: item['icon'],
                         thisTitle: item['title'],

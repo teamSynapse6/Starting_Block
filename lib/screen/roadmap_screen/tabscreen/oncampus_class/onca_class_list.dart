@@ -3,22 +3,24 @@ import 'package:starting_block/constants/constants.dart';
 
 class OnCaListClass extends StatefulWidget {
   final String thisTitle,
-      // thisId,
+      thisId,
       thisLiberal,
       thisCredit,
       thisContent,
       thisTeacher,
       thisSession;
+  final bool thisBookMaekSaved;
 
   const OnCaListClass({
     super.key,
     required this.thisTitle,
-    // required this.thisId,
+    required this.thisId,
     required this.thisLiberal,
     required this.thisCredit,
     required this.thisContent,
     required this.thisSession,
     required this.thisTeacher,
+    required this.thisBookMaekSaved,
   });
 
   @override
@@ -47,10 +49,9 @@ class _OnCaListClassState extends State<OnCaListClass> {
                 style: AppTextStyles.bd1.copyWith(color: AppColors.black),
               ),
               const Spacer(),
-              // BookMarkButton(
-              //   id: thisId,
-              //   classification: '창업강의',
-              // ),
+              BookMarkLectureButton(
+                  isSaved: widget.thisBookMaekSaved,
+                  thisLectureID: widget.thisId)
             ],
           ),
           Gaps.v20,

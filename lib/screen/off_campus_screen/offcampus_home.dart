@@ -155,8 +155,16 @@ class _OffCampusHomeState extends State<OffCampusHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SearchAppBar(
-        searchTapScreen: OffCampusSearch(),
+      appBar: SearchAppBar(
+        thisSearchTapAction: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const OffCampusSearch(),
+            ),
+          );
+          loadFilterValue();
+        },
       ),
       body: Consumer<FilterModel>(
         builder: (context, filterModel, child) {

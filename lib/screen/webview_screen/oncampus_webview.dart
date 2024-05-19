@@ -126,6 +126,7 @@ class _OncampusWebViewScreenState extends State<OncampusWebViewScreen> {
                       MaterialPageRoute(
                         builder: (context) => QuestionHome(
                           thisID: widget.id,
+                          isContactExist: false,
                         ),
                       ),
                     );

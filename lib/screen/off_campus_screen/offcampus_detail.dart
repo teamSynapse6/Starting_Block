@@ -93,8 +93,10 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                     content: _offcampusDetail[0].content,
                     questionCount: _questionCount,
                     thisLoadAction: loadQuestionData,
+                    isContatcExist: _offcampusDetail[0].isContactExist,
                   ),
-                if (_offcampusDetail.isNotEmpty)
+                if (_offcampusDetail.isNotEmpty &&
+                    _offcampusDetail[0].isFileUploaded)
                   OffCampusDetailGptCard(
                     thisTitle: _offcampusDetail[0].title,
                     thisID: widget.thisID,

@@ -106,21 +106,21 @@ class UserInfoManageApi {
 
   //유저 세부정보 입력
   static Future<bool> patchUserInfo(
-      {required String nickname,
-      required String birth,
+      {required String birth,
       required bool isCompletedBusinessRegistration,
       required String residence,
       required String university,
+      required int profileNumber,
       int retryCount = 1 // 재시도 횟수를 추가
       }) async {
     String url = '$baseUrl/api/v1/users';
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> body = {
-      'nickname': nickname,
       'birth': birth,
       'isCompletedBusinessRegistration': isCompletedBusinessRegistration,
       'residence': residence,
-      'university': university
+      'university': university,
+      'profileNumber': profileNumber
     };
     print('본문: ${json.encode(body)}');
 
@@ -137,13 +137,13 @@ class UserInfoManageApi {
     } else if (response.statusCode == 401 && retryCount > 0) {
       await updateAccessToken();
       return await patchUserInfo(
-          nickname: nickname,
-          birth: birth,
-          isCompletedBusinessRegistration: isCompletedBusinessRegistration,
-          residence: residence,
-          university: university,
-          retryCount: retryCount - 1 // 재시도 횟수 감소
-          ); // 재귀 호출
+        birth: birth,
+        isCompletedBusinessRegistration: isCompletedBusinessRegistration,
+        residence: residence,
+        university: university,
+        profileNumber: profileNumber,
+        retryCount: retryCount - 1, // 재시도 횟수 감소
+      ); // 재귀 호출
     } else {
       print('정보 업데이트 실패: ${response.statusCode}, Body: ${response.body}');
       return false; // 실패 시 false 반환
@@ -194,6 +194,31 @@ class UserInfoManageApi {
       print(
           '계정 비활성화 실패 or Maximum retry attempts exceeded: ${response.statusCode}, Body: ${response.body}');
       return false; // 계정 비활성화 실패 시 false 반환
+    }
+  }
+
+// 닉네임 중복 확인 메소드 및 이름 변경 메소드
+  static Future<bool> patchUserNickName(String nickname,
+      {int retryCount = 1}) async {
+    String url = '$baseUrl/api/v1/users/nickname?nickname=$nickname';
+    Map<String, String> headers = await getHeaders();
+
+    http.Response response = await http.patch(
+      Uri.parse(url),
+      headers: headers,
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return true; // 성공 시 true 반환
+    } else if (response.statusCode == 400) {
+      return false; // 중복 시 false 반환
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await updateAccessToken();
+      return await patchUserNickName(nickname,
+          retryCount: retryCount - 1); // 재귀 호출
+    } else {
+      print('닉네임 확인 중 오류 발생: ${response.statusCode}, Body: ${response.body}');
+      return false; // 실패 시 false 반환
     }
   }
 }

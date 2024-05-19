@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/constants/widgets/offcampus_filter/model/filter_model.dart';
 
@@ -24,8 +23,7 @@ class EnterPreneurChipsSheet extends StatefulWidget {
 
 class _EnterPreneurChipsSheetState extends State<EnterPreneurChipsSheet> {
   Future<void> _saveSelectedEntrepreneur(String entrepreneur) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedEntrepreneur', entrepreneur);
+    FilterModel().setSelectedEntrepreneur(entrepreneur);
   }
 
   void _onEntrePreneurBottom(BuildContext context) async {

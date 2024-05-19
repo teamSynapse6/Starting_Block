@@ -13,10 +13,7 @@ class UserInfo extends ChangeNotifier {
   }
 
   void resetChangeFlag() {
-    Future.microtask(() {
-      _hasChanged = false;
-      notifyListeners();
-    });
+    _hasChanged = false;
   }
 
   // 닉네임 메소드

@@ -6,10 +6,12 @@ import 'package:starting_block/manage/screen_manage.dart';
 
 class QuestionHome extends StatefulWidget {
   final String thisID;
+  final bool isContactExist;
 
   const QuestionHome({
     super.key,
     required this.thisID,
+    required this.isContactExist,
   });
 
   @override
@@ -81,6 +83,7 @@ class _QuestionHomeState extends State<QuestionHome> {
             MaterialPageRoute(
               builder: (context) => QuestionWrite(
                 thisID: widget.thisID,
+                isContactExist: widget.isContactExist,
               ),
             ),
           );
