@@ -55,8 +55,9 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.secondaryBG,
-        body: CustomScrollView(slivers: <Widget>[
+      backgroundColor: AppColors.secondaryBG,
+      body: CustomScrollView(
+        slivers: <Widget>[
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,41 +86,53 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
           ),
           _isLoading
               ? const RoadMapOfcaOncaTabSkeleton()
-              : SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final item = onCampusNotifyData[index];
-
-                      return Container(
-                        decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius:
-                              BorderRadius.zero, // 조건부 BorderRadius 적용
-                        ),
-                        margin: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            OnCaListNotify(
-                              thisProgramType: item.keyword,
-                              thisID: item.announcementId.toString(),
-                              thisTitle: item.title,
-                              thisUrl: item.detailUrl,
-                              thisStartDate: item.insertDate,
-                              thisIsSaved: item.isBookmarked,
+              : onCampusNotifyData.isNotEmpty
+                  ? SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final item = onCampusNotifyData[index];
+                          return Container(
+                            decoration: const BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius:
+                                  BorderRadius.zero, // 조건부 BorderRadius 적용
                             ),
-                            if (index < onCampusNotifyData.length - 1)
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: CustomDivider(),
-                              ),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: onCampusNotifyData
-                        .length, // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
-                  ),
-                )
-        ]));
+                            margin: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Column(
+                              children: [
+                                OnCaListNotify(
+                                  thisProgramType: item.keyword,
+                                  thisID: item.announcementId.toString(),
+                                  thisTitle: item.title,
+                                  thisUrl: item.detailUrl,
+                                  thisStartDate: item.insertDate,
+                                  thisIsSaved: item.isBookmarked,
+                                ),
+                                if (index < onCampusNotifyData.length - 1)
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16),
+                                    child: CustomDivider(),
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                        childCount: onCampusNotifyData
+                            .length, // 변경: OffCampusModel을 OnCampusNotifyModel로 변경
+                      ),
+                    )
+                  : SliverFillRemaining(
+                      fillOverscroll: true,
+                      hasScrollBody: false,
+                      child: GotoSaveItem(
+                        tapAction: () {
+                          IntergrateScreen.setSelectedIndexToOne(context);
+                        },
+                      ),
+                    ),
+        ],
+      ),
+    );
   }
 }

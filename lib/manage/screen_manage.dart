@@ -131,4 +131,6 @@ export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_search_ske
 export 'package:starting_block/skeleton_screen/home_skeleton/home_notify_rec_skeleton.dart'; //홈_공고 추천 영역 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/home_skeleton/home_question_rec_skeleton.dart'; //홈_질문 추천 영역 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_ofca_onca_skeleton.dart'; //로드맵_교외사업 탭 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_class_skeleton.dart'; //로드맵_교내강의 탭 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_system_skeleton.dart'; //로드맵_교내제도 탭 스켈레톤 로더 화면
 

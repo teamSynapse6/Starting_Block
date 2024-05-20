@@ -24,8 +24,8 @@ class OnCaSystemRecommend extends StatefulWidget {
 
 class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
   RoadMapSystemRecModel? systemRec;
-  final GlobalKey _cardKey = GlobalKey(); // GlobalKey 추가
-  double _cardHeight = 268; // 카드의 높이를 저장할 변수
+  final GlobalKey _cardKeyForSystem = GlobalKey(); // GlobalKey 추가
+  double _cardHeight = 214; // 카드의 높이를 저장할 변수
 
   final List<String> textToType = ['창업 교육', '아이디어 창출', '자금 확보', '사업화'];
 
@@ -60,7 +60,7 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
 
   void _updateCardHeight() {
     final RenderObject? renderObject =
-        _cardKey.currentContext?.findRenderObject();
+        _cardKeyForSystem.currentContext?.findRenderObject();
     if (renderObject is RenderBox) {
       // is 연산자를 사용하여 안전하게 타입 체크
       final size = renderObject.size;
@@ -82,6 +82,8 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             children: [
+              AppIcon.mail,
+              Gaps.h6,
               Text('추천 사업',
                   style: AppTextStyles.bd1.copyWith(color: AppColors.blue)),
               Text('이 도착했습니다',
@@ -96,7 +98,7 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: OnCaSystemCard(
-                    key: _cardKey,
+                    key: _cardKeyForSystem,
                     thisTitle: systemRec!.title,
                     thisId: systemRec!.announcementId.toString(),
                     thisContent: systemRec!.content,
@@ -111,7 +113,7 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
                 height: _cardHeight,
                 child: ClipRRect(
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                     child: Container(
                       height: 140,
                       width: MediaQuery.of(context).size.width,

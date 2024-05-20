@@ -24,7 +24,7 @@ class OnCaClassRecommend extends StatefulWidget {
 
 class _OnCaClassRecState extends State<OnCaClassRecommend> {
   RoadMapClassRecModel? classRec;
-  final GlobalKey _cardKey = GlobalKey(); // GlobalKey 추가
+  final GlobalKey _cardKeyFirClass = GlobalKey(); // GlobalKey 추가
   double _cardHeight = 268; // 카드의 높이를 저장할 변수
 
   final List boolToClass = ['창업 교육', '아이디어 창출', '공간 마련', '사업 계획서'];
@@ -61,7 +61,7 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
 
   void _updateCardHeight() {
     final RenderObject? renderObject =
-        _cardKey.currentContext?.findRenderObject();
+        _cardKeyFirClass.currentContext?.findRenderObject();
     if (renderObject is RenderBox) {
       // is 연산자를 사용하여 안전하게 타입 체크
       final size = renderObject.size;
@@ -83,6 +83,8 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             children: [
+              AppIcon.mail,
+              Gaps.h6,
               Text('추천 사업',
                   style: AppTextStyles.bd1.copyWith(color: AppColors.blue)),
               Text('이 도착했습니다',
@@ -97,7 +99,7 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: OnCaClassCard(
-                  key: _cardKey,
+                  key: _cardKeyFirClass,
                   thisTitle: classRec!.title,
                   thisId: classRec!.lectureId.toString(),
                   thisLiberal: classRec!.liberal,
