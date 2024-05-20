@@ -20,7 +20,7 @@ class RoadmapScreen extends StatefulWidget {
 class _RoadmapScreenState extends State<RoadmapScreen> {
   int? draggingIndex = -1;
   String? userNickname; // 사용자 닉네임을 저장할 변수 추가
-  List<String> roadmapItems = ableText;
+  List<String> roadmapItems = globalDataRoadmapList;
   List<String> _initialRoadmapItems = [];
 
   @override

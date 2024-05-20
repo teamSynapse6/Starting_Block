@@ -44,3 +44,16 @@ class GptListModel {
         lastMessage = json['lastMessage'] ?? '',
         lastDate = json['lastDate'] ?? 0;
 }
+
+class DeleteAllChatData {
+  // 'chat_'로 시작하는 모든 키의 데이터를 삭제하는 static 메소드
+  static Future<void> deleteAllGptChatData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys();
+    final filteredKeys = keys.where((key) => key.startsWith('chat_'));
+
+    for (String key in filteredKeys) {
+      await prefs.remove(key);
+    }
+  }
+}

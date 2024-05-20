@@ -14,7 +14,6 @@ class ProfileIconEdit extends StatefulWidget {
 
 class _ProfileIconEditState extends State<ProfileIconEdit> {
   int? _selectedIconIndex;
-  bool _isButtonDisabled = true;
 
   List<Map<String, dynamic>> iconStageData = [
     {
@@ -54,8 +53,6 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
     int index = await UserInfo.getSelectedIconIndex();
     setState(() {
       _selectedIconIndex = index;
-      // 인덱스가 0이 아니면 선택된 것으로 간주하고 버튼을 활성화합니다.
-      _isButtonDisabled = index == 0;
     });
   }
 
@@ -68,6 +65,16 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
     if (_selectedIconIndex == null) return;
     await _saveSelectedIcon();
     Navigator.of(context).pop();
+  }
+
+  void iconListTap({required int index}) async {
+    setState(() {
+      _selectedIconIndex = index + 1;
+    });
+    _saveSelectedIcon();
+    await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+      _onNextTap();
+    });
   }
 
   @override
@@ -159,12 +166,7 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
                 return Column(
                   children: <Widget>[
                     InkWell(
-                      onTap: () {
-                        setState(() {
-                          _selectedIconIndex = index + 1;
-                          _isButtonDisabled = false;
-                        });
-                      },
+                      onTap: () => iconListTap(index: index),
                       child: ProfileEditIconList(
                         thisIcon: item['icon'],
                         thisTitle: item['title'],
@@ -186,19 +188,6 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
               },
             ),
           ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        height: 92,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-          child: GestureDetector(
-            onTap: _isButtonDisabled ? null : _onNextTap,
-            child: NextContained(
-              text: "저장",
-              disabled: _isButtonDisabled,
-            ),
-          ),
         ),
       ),
     );

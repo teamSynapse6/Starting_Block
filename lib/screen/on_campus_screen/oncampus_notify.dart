@@ -10,7 +10,12 @@ import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/on_campus_screen/widget/oncampus_notify_delegate.dart';
 
 class OnCampusNotify extends StatefulWidget {
-  const OnCampusNotify({super.key});
+  final bool hasNotifyData;
+
+  const OnCampusNotify({
+    super.key,
+    required this.hasNotifyData,
+  });
 
   @override
   State<OnCampusNotify> createState() => _OnCampusNotifyState();
@@ -21,6 +26,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
   bool isLoading = true;
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
+  String _userNickName = '';
 
   String _selectedProgram = '';
   // String _selectedSorting = '';
@@ -66,6 +72,12 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
   }
 
   Future<void> _loadFilteredOnCampusNotify() async {
+    if (!widget.hasNotifyData) {
+      final nickName = await UserInfo.getNickName();
+      setState(() {
+        _userNickName = nickName;
+      });
+    }
     try {
       // API 호출
       List<OncaAnnouncementModel> notifyList =
@@ -259,58 +271,63 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                 },
                 body: isLoading
                     ? const OncaSkeletonNotify()
-                    : Consumer<BookMarkNotifier>(
-                        builder: (context, bookmarkNotifier, child) {
-                          if (bookmarkNotifier.isUpdated) {
-                            loadFilterValue();
-                            bookmarkNotifier.resetUpdate();
-                          }
-                          return SingleChildScrollView(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24),
-                              child: Column(
-                                children: [
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: _notifyList.length,
-                                    itemBuilder: (context, index) {
-                                      final notify = _notifyList[index];
-                                      return Column(
-                                        children: [
-                                          OnCampusNotifyListCard(
-                                            thisProgramText: notify.keyword,
-                                            thisId: notify.announcementId
-                                                .toString(),
-                                            thisTitle: notify.title,
-                                            thisStartDate: notify.insertDate,
-                                            thisUrl: notify.detailUrl,
-                                            isSaved: notify.isBookmarked,
-                                          ),
-                                          if (index < _notifyList.length - 1)
-                                            const CustomDividerH2G1(),
-                                        ],
-                                      );
-                                    },
+                    : widget.hasNotifyData
+                        ? Consumer<BookMarkNotifier>(
+                            builder: (context, bookmarkNotifier, child) {
+                              if (bookmarkNotifier.isUpdated) {
+                                loadFilterValue();
+                                bookmarkNotifier.resetUpdate();
+                              }
+                              return SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24),
+                                  child: Column(
+                                    children: [
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: _notifyList.length,
+                                        itemBuilder: (context, index) {
+                                          final notify = _notifyList[index];
+                                          return Column(
+                                            children: [
+                                              OnCampusNotifyListCard(
+                                                thisProgramText: notify.keyword,
+                                                thisId: notify.announcementId
+                                                    .toString(),
+                                                thisTitle: notify.title,
+                                                thisStartDate:
+                                                    notify.insertDate,
+                                                thisUrl: notify.detailUrl,
+                                                isSaved: notify.isBookmarked,
+                                              ),
+                                              if (index <
+                                                  _notifyList.length - 1)
+                                                const CustomDividerH2G1(),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                                ),
+                              );
+                            },
+                          )
+                        : OnCampusEmptyDisplay(
+                            userNickName: _userNickName,
+                          ),
               ),
-              _isScrolled
-                  ? Positioned(
-                      right: 24,
-                      bottom: 12,
-                      child: ScrollToTopButton(
-                        thisBackToTopTap: backToTopTap,
-                      ),
-                    )
-                  : Container()
+              if (_isScrolled && _notifyList.isNotEmpty)
+                Positioned(
+                  right: 24,
+                  bottom: 12,
+                  child: ScrollToTopButton(
+                    thisBackToTopTap: backToTopTap,
+                  ),
+                )
             ],
           ),
         );

@@ -77,12 +77,25 @@ class OrganizeChipForHome extends StatelessWidget {
     required this.text,
   });
 
+  // 매핑 함수 추가
+  String mapProgramText(String program) {
+    Map<String, String> programMapping = {
+      'CLUB': '창업 동아리',
+      'CAMP': '창업 캠프',
+      'CONTEST': '창업 경진대회',
+      'LECTURE': '창업 특강',
+      'MENTORING': '멘토링',
+      'ETC': '기타',
+    };
+    return programMapping[program] ?? program; // 매핑 테이블에 없는 경우 원래 값을 반환
+  }
+
   @override
   Widget build(BuildContext context) {
-    String displayText =
-        text.length > 16 ? '${text.substring(0, 13)}...' : text;
+    String programChip = mapProgramText(text);
 
     return Container(
+      margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(
         horizontal: 6,
         vertical: 3,
@@ -91,13 +104,11 @@ class OrganizeChipForHome extends StatelessWidget {
         color: AppColors.g1,
         borderRadius: BorderRadius.all(Radius.circular(2)),
       ),
-      child: Center(
-        child: Text(
-          displayText,
-          style: AppTextStyles.caption.copyWith(color: AppColors.g4),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
+      child: Text(
+        programChip,
+        style: AppTextStyles.caption.copyWith(color: AppColors.g4),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
       ),
     );
   }

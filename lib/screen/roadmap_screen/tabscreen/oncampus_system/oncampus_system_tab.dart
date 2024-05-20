@@ -6,7 +6,7 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_system/onca_system_recommend.dart';
 
-const List<String> validTextsSystem = ableText;
+const List<String> validTextsSystem = globalDataRoadmapList;
 
 class TabScreenOnCaSystem extends StatefulWidget {
   final String thisSelectedText;
@@ -110,12 +110,7 @@ class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
                                   thisTarget: item.target,
                                   isSaved: item.isBookmarked,
                                 ),
-                                if (index < onCampusSystemData.length - 1)
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: CustomDivider(),
-                                  ),
+                                Gaps.v16,
                               ],
                             );
                           },

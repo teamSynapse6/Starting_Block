@@ -69,7 +69,7 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (ableText.contains(widget.thisSelectedText))
+                  if (globalDataRoadmapList.contains(widget.thisSelectedText))
                     OfCaRecommend(
                       thisSelectedText: widget.thisSelectedText,
                       thisCurrentStage: widget.thisCurrentStage,

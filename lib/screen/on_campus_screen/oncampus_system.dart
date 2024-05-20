@@ -19,12 +19,14 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
   bool isLoading = true;
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
+  String _userNickName = '';
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _loadOnCampusSystem();
+    loadUserNickName();
   }
 
   @override
@@ -51,6 +53,13 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
         });
       });
     }
+  }
+
+  void loadUserNickName() async {
+    String userNickName = await UserInfo.getNickName();
+    setState(() {
+      _userNickName = userNickName;
+    });
   }
 
   void _onScroll() {
@@ -92,102 +101,107 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
         body: Stack(
           children: [
             NestedScrollView(
-              controller: _scrollController,
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                    snap: true,
-                    floating: true,
-                    elevation: 0,
-                    forceElevated: innerBoxIsScrolled,
-                    backgroundColor: AppColors.g1,
-                    pinned: true,
-                    expandedHeight: 128,
-                    collapsedHeight: 56,
-                    leading: GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: AppIcon.back,
+                controller: _scrollController,
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                      snap: true,
+                      floating: true,
+                      elevation: 0,
+                      forceElevated: innerBoxIsScrolled,
+                      backgroundColor: AppColors.g1,
+                      pinned: true,
+                      expandedHeight: 128,
+                      collapsedHeight: 56,
+                      leading: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: AppIcon.back,
+                        ),
                       ),
-                    ),
-                    flexibleSpace: LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        // AppBar의 최대 높이와 현재 높이를 기준으로 패딩 값을 계산
-                        double appBarHeight = constraints.biggest.height;
-                        double maxPaddingTop = 20;
-                        double minPaddingTop = 16;
-                        double paddingTopRange = maxPaddingTop - minPaddingTop;
-                        double heightRange =
-                            128 - 56; // expandedHeight - collapsedHeight
+                      flexibleSpace: LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          // AppBar의 최대 높이와 현재 높이를 기준으로 패딩 값을 계산
+                          double appBarHeight = constraints.biggest.height;
+                          double maxPaddingTop = 20;
+                          double minPaddingTop = 16;
+                          double paddingTopRange =
+                              maxPaddingTop - minPaddingTop;
+                          double heightRange =
+                              128 - 56; // expandedHeight - collapsedHeight
 
-                        // 선형적으로 paddingBottom 계산
-                        double paddingBottom = minPaddingTop +
-                            paddingTopRange *
-                                ((appBarHeight - 56) / heightRange);
+                          // 선형적으로 paddingBottom 계산
+                          double paddingBottom = minPaddingTop +
+                              paddingTopRange *
+                                  ((appBarHeight - 56) / heightRange);
 
-                        return FlexibleSpaceBar(
-                            expandedTitleScale: 24 / 18,
-                            titlePadding: EdgeInsets.only(
-                              top: 16,
-                              bottom: paddingBottom,
-                              left: 60,
-                            ),
-                            title: Text(
-                              '창업 관련 학사 제도',
-                              style: AppTextStyles.st2
-                                  .copyWith(color: AppColors.g6),
-                            ),
-                            background: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 24),
+                          return FlexibleSpaceBar(
+                              expandedTitleScale: 24 / 18,
+                              titlePadding: EdgeInsets.only(
+                                top: 16,
+                                bottom: paddingBottom,
+                                left: 60,
+                              ),
+                              title: Text(
+                                '창업 관련 학사 제도',
+                                style: AppTextStyles.st2
+                                    .copyWith(color: AppColors.g6),
+                              ),
+                              background: const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 24),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Gaps.v80,
+                                    SizedBox(
+                                      height: 24,
+                                      width: 24,
+                                      child: SchoolLogoWidget(),
+                                    ),
+                                  ],
+                                ),
+                              ));
+                        },
+                      ),
+                    )
+                  ];
+                },
+                body: isLoading
+                    ? const OncaSkeletonSystem()
+                    : _systemList.isNotEmpty
+                        ? SingleChildScrollView(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Gaps.v80,
-                                  SizedBox(
-                                    height: 24,
-                                    width: 24,
-                                    child: SchoolLogoWidget(),
+                                  ListView.builder(
+                                    shrinkWrap: true, // 스크롤뷰 내부의 리스트뷰에 필요
+                                    physics:
+                                        const NeverScrollableScrollPhysics(), // 중첩 스크롤 문제 방지
+                                    itemCount: _systemList.length,
+                                    itemBuilder: (context, index) {
+                                      OncaSystemModel item = _systemList[index];
+                                      return OnCampusSysListCard(
+                                        thisTitle: item.title,
+                                        thisId: item.systemId.toString(),
+                                        thisContent: item.content,
+                                        thisTarget: item.target,
+                                        isBookmarked: item.isBookmarked,
+                                      );
+                                    },
                                   ),
                                 ],
                               ),
-                            ));
-                      },
-                    ),
-                  )
-                ];
-              },
-              body: isLoading
-                  ? const OncaSkeletonSystem()
-                  : SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true, // 스크롤뷰 내부의 리스트뷰에 필요
-                              physics:
-                                  const NeverScrollableScrollPhysics(), // 중첩 스크롤 문제 방지
-                              itemCount: _systemList.length,
-                              itemBuilder: (context, index) {
-                                OncaSystemModel item = _systemList[index];
-                                return OnCampusSysListCard(
-                                  thisTitle: item.title,
-                                  thisId: item.systemId.toString(),
-                                  thisContent: item.content,
-                                  thisTarget: item.target,
-                                  isBookmarked: item.isBookmarked,
-                                );
-                              },
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-            ),
-            if (_isScrolled)
+                          )
+                        : OnCampusEmptyDisplay(
+                            userNickName: _userNickName,
+                          )),
+            if (_isScrolled && _systemList.isNotEmpty)
               Positioned(
                   right: 24,
                   bottom: 12,

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class HomeNotifyRecommendList extends StatelessWidget {
@@ -28,7 +30,7 @@ class HomeNotifyRecommendList extends StatelessWidget {
                 isOfca: thisAnnouncementType == '교외' ? true : false,
               ),
               Gaps.h8,
-              OrganizeChipForHome(text: thisOrganize),
+              Flexible(child: OrganizeChipForHome(text: thisOrganize)),
             ],
           ),
           Gaps.v10,

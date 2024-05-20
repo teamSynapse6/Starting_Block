@@ -47,7 +47,7 @@ class _OnCaSystemCardState extends State<OnCaSystemCard> {
         return Container(
           color: AppColors.white,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -79,6 +79,7 @@ class _OnCaSystemCardState extends State<OnCaSystemCard> {
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
                 ),
+                Gaps.v10,
                 Text(
                   '내용',
                   style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
@@ -91,27 +92,29 @@ class _OnCaSystemCardState extends State<OnCaSystemCard> {
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
                 ),
                 Gaps.v10,
-                if (_isExpandable) // '_isExpandable' 상태에 따라 '더보기'/'접기' 버튼 표시
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isExpanded = !_isExpanded;
-                        });
-                      },
+                if (_isExpandable)
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      setState(() {
+                        _isExpanded = !_isExpanded; // 확장 상태를 토글
+                      });
+                    },
+                    child: SizedBox(
+                      height: 36,
+                      width: double.infinity,
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            _isExpanded ? '접기' : '더보기',
+                            '더보기',
                             style: AppTextStyles.btn2
                                 .copyWith(color: AppColors.g4),
                           ),
                           Gaps.h4,
                           _isExpanded
-                              ? AppIcon.arrow_up_18
-                              : AppIcon.arrow_down_18
+                              ? AppIcon.arrow_up_16
+                              : AppIcon.arrow_down_16,
                         ],
                       ),
                     ),

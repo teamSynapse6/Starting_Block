@@ -6,7 +6,7 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/onca_class_recommend.dart';
 
-const List<String> validTextsClass = ableText;
+const List<String> validTextsClass = globalDataRoadmapList;
 
 class TabScreenOnCaClass extends StatefulWidget {
   final String thisSelectedText;

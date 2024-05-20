@@ -15,26 +15,7 @@ class ResidenceScreen extends StatefulWidget {
 class _ResidenceScreenState extends State<ResidenceScreen> {
   String? selectedRegion; // 선택된 지역을 추적
 
-  final List<String> regions = [
-    '서울',
-    '부산',
-    '대구',
-    '인천',
-    '경기',
-    '강원',
-    '충북',
-    '충남',
-    '전북',
-    '광주',
-    '대전',
-    '울산',
-    '세종',
-    '전남',
-    '경북',
-    '경남',
-    '제주',
-    '',
-  ];
+  final List<String> regions = globalDataRegionList;
 
   Widget residenceGrid() {
     return GridView.builder(

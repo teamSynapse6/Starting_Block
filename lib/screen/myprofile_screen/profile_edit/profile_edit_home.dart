@@ -1,6 +1,8 @@
 // ignore_for_file: unused_field
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -128,7 +130,8 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                 Gaps.v4,
                 Align(
                   alignment: Alignment.center,
-                  child: InkWell(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
                     onTap: () async {
                       await Navigator.push(
                         context,
@@ -159,7 +162,8 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
                   ),
                 ),
-                InkWell(
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   onTap: () async {
                     await Navigator.push(
                       context,
@@ -202,7 +206,8 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
                   ),
                 ),
-                InkWell(
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   onTap: () async {
                     await Navigator.push(
                       context,
@@ -245,7 +250,8 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
                   ),
                 ),
-                InkWell(
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   onTap: () async {
                     await Navigator.push(
                       context,
@@ -294,7 +300,8 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
                   ),
                 ),
-                InkWell(
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   onTap: () async {
                     await Navigator.push(
                       context,
@@ -337,7 +344,8 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     style: AppTextStyles.bd5.copyWith(color: AppColors.g6),
                   ),
                 ),
-                InkWell(
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   onTap: () async {
                     await Navigator.push(
                       context,

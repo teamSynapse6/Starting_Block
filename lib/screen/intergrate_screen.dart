@@ -41,7 +41,7 @@ class IntergrateScreen extends StatefulWidget {
 }
 
 class _IntergrateScreenState extends State<IntergrateScreen> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
   String _schoolName = "";
   bool _isRoadmapSet = true;
 
@@ -111,7 +111,7 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
       case 0:
         return const OffCampusHome();
       case 1:
-        if (_schoolName == '') {
+        if (_schoolName.isEmpty) {
           return const OnCampusSchoolSet();
         } else {
           return const OnCampusHome();
@@ -139,6 +139,8 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
             builder: (context, userInfo, child) {
               if (userInfo.hasChanged) {
                 _loadSchoolName();
+                _loadRoadMap();
+                print('호출됨');
                 userInfo.resetChangeFlag();
               }
               return _getCurrentScreen();

@@ -18,7 +18,7 @@ class RoadmapListSet extends StatefulWidget {
 class _RoadmapListSetState extends State<RoadmapListSet> {
   int? draggingIndex = -1;
   String? userNickname; // 사용자 닉네임을 저장할 변수 추가
-  List<String> roadmapItems = ableText;
+  List<String> roadmapItems = globalDataRoadmapList;
   List<String> _initialRoadmapItems = [];
 
   @override
@@ -98,7 +98,7 @@ class _RoadmapListSetState extends State<RoadmapListSet> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Gaps.v52,
+                        Gaps.v20,
                         Text(
                           "로드맵을 설정해보세요",
                           style: AppTextStyles.h5.copyWith(color: AppColors.g6),

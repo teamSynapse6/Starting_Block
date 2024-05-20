@@ -16,7 +16,7 @@ class _RoadmapListSetAddState extends State<RoadmapListSetAdd> {
   int _currentLength = 0;
   String? _selectedChip;
   bool _isNextButtonEnabled = false;
-  final existing = ableText;
+  final existing = globalDataRoadmapList;
 
   @override
   void initState() {
@@ -90,7 +90,7 @@ class _RoadmapListSetAddState extends State<RoadmapListSetAdd> {
               Gaps.v20,
               Text(
                 '단계를 추가해 보세요',
-                style: AppTextStyles.h5.copyWith(color: AppColors.black),
+                style: AppTextStyles.h5.copyWith(color: AppColors.g6),
               ),
               Gaps.v32,
               TextField(

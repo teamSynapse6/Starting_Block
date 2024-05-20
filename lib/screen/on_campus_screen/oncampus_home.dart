@@ -104,7 +104,9 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                         ],
                       ),
                       Gaps.v28,
-                      const OnCampusCardLarge(),
+                      OnCampusCardLarge(
+                        hasNotifyData: _notifyList.isNotEmpty,
+                      ),
                       Gaps.v12,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,13 +133,14 @@ class _OnCampusHomeState extends State<OnCampusHome> {
                 ),
               ),
               Gaps.v44,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Text(
-                  '최신 교내 지원 사업',
-                  style: AppTextStyles.st2.copyWith(color: AppColors.g6),
+              if (_notifyList.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '최신 교내 지원 사업',
+                    style: AppTextStyles.st2.copyWith(color: AppColors.g6),
+                  ),
                 ),
-              ),
               Gaps.v8,
               ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 24),

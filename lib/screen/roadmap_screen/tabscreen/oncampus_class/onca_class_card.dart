@@ -56,7 +56,7 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
         return Container(
           color: AppColors.white,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -76,9 +76,9 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
                     ),
                   ],
                 ),
-                Gaps.v20,
-                const CustomDivider(),
                 Gaps.v12,
+                const CustomDivider(),
+                Gaps.v16,
                 Row(
                   children: [
                     ClassLiberalChips(thisText: widget.thisLiberal),
@@ -93,7 +93,7 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
                   '교강사',
                   style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
                 ),
-                Gaps.v4,
+                Gaps.v2,
                 Text(
                   widget.thisInstructor,
                   maxLines: 2,
@@ -105,25 +105,27 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
                   '강의 개요',
                   style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
                 ),
-                Gaps.v4,
+                Gaps.v2,
                 Text(
                   widget.thisContent,
                   maxLines: _isExpanded ? null : 2,
                   overflow: _isExpanded ? null : TextOverflow.ellipsis,
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
                 ),
-                Gaps.v10,
+                Gaps.v4,
                 if (_isExpandable)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isExpanded = !_isExpanded;
-                        });
-                      },
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      setState(() {
+                        _isExpanded = !_isExpanded;
+                      });
+                    },
+                    child: SizedBox(
+                      height: 36,
+                      width: double.infinity,
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
                             _isExpanded ? '접기' : '더보기',

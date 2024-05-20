@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class OnCampusCardLarge extends StatefulWidget {
+class OnCampusCardLarge extends StatelessWidget {
+  final bool hasNotifyData;
+
   const OnCampusCardLarge({
     super.key,
+    required this.hasNotifyData,
   });
 
-  @override
-  State<OnCampusCardLarge> createState() => _OnCampusCardLargeState();
-}
-
-class _OnCampusCardLargeState extends State<OnCampusCardLarge> {
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
@@ -34,7 +32,9 @@ class _OnCampusCardLargeState extends State<OnCampusCardLarge> {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const OnCampusNotify(),
+                  builder: (context) => OnCampusNotify(
+                    hasNotifyData: hasNotifyData,
+                  ),
                 ),
               );
             },

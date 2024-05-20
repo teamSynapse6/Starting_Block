@@ -36,7 +36,7 @@ export 'package:starting_block/screen/roadmap_screen/roadmaplist_edit.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmaplist_add.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmap_delet.dart';
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_list.dart'; //로드맵 단계 리스트 뷰 버튼
-export 'package:starting_block/manage/roadmap_list.dart'; //추천 가능한 리스트
+export 'package:starting_block/manage/svc_global_data.dart'; //추천 가능한 리스트
 
 //로드맵 탭 화면
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/offcampus_business_tab.dart';
@@ -63,6 +63,7 @@ export 'package:starting_block/screen/on_campus_screen/oncampus_search.dart'; //
 export 'package:starting_block/screen/on_campus_screen/oncampus_searchresult.dart'; //교내 검색 화면
 export 'package:starting_block/screen/on_campus_screen/school_nonset_screen/oncampus_school_set.dart'; //학교 설정없을 시 화면
 export 'package:starting_block/screen/on_campus_screen/school_nonset_screen/oncampus_school_search.dart'; //학교 설정없을 학교 설정 화면
+export 'package:starting_block/screen/on_campus_screen/widget/oncampus_empty_display.dart'; //교내 정보 준비중 화면
 
 //교내지원사업_창업지원단_페이지
 export 'package:starting_block/screen/on_campus_screen/supportgroup_tab_screen/metoring.dart'; //멘토링 화면

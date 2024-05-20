@@ -62,7 +62,7 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (ableText.contains(widget.thisSelectedText))
+                if (globalDataRoadmapList.contains(widget.thisSelectedText))
                   OnCaNotifyRecommend(
                     thisSelectedText: widget.thisSelectedText,
                     thisCurrentStage: widget.thisCurrentStage,

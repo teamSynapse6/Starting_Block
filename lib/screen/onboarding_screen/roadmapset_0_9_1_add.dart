@@ -16,7 +16,7 @@ class _RoadmapScreenAddState extends State<RoadmapScreenAdd> {
   int _currentLength = 0;
   String? _selectedChip;
   bool _isNextButtonEnabled = false;
-  final existing = ableText;
+  final existing = globalDataRoadmapList;
 
   @override
   void initState() {

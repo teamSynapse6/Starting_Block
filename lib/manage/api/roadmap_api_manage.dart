@@ -383,7 +383,6 @@ class RoadMapApi {
     Map<String, String> headers = await getHeaders();
 
     final response = await http.get(url, headers: headers);
-    print('상태: ${response.statusCode}, 본문: ${response.body}');
 
     if (response.statusCode == 200) {
       String utf8Body = utf8.decode(response.bodyBytes);

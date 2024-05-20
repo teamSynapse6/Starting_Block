@@ -75,7 +75,7 @@ class _RoadmapListSetDeleteState extends State<RoadmapListSetDelete> {
                 Gaps.v22,
                 Text(
                   '로드맵 단계 삭제',
-                  style: AppTextStyles.h5.copyWith(color: AppColors.black),
+                  style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                 ),
                 Gaps.v50,
               ],
