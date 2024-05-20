@@ -18,17 +18,7 @@ class RoadmapListSet extends StatefulWidget {
 class _RoadmapListSetState extends State<RoadmapListSet> {
   int? draggingIndex = -1;
   String? userNickname; // 사용자 닉네임을 저장할 변수 추가
-  List<String> roadmapItems = [
-    '창업 교육',
-    '아이디어 창출',
-    '공간 마련',
-    '사업 계획서',
-    'R&D / 시제품 제작',
-    '사업 검증',
-    'IR Deck 작성',
-    '자금 확보',
-    '사업화',
-  ];
+  List<String> roadmapItems = ableText;
   List<String> _initialRoadmapItems = [];
 
   @override

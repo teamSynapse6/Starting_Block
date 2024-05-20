@@ -36,6 +36,8 @@ export 'package:starting_block/screen/roadmap_screen/roadmaplist_edit.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmaplist_add.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmap_delet.dart';
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_list.dart'; //로드맵 단계 리스트 뷰 버튼
+export 'package:starting_block/manage/roadmap_list.dart'; //추천 가능한 리스트
+
 //로드맵 탭 화면
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/offcampus_business_tab.dart';
 export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/oncampus_notify_tab.dart';

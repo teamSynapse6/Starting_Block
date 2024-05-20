@@ -345,7 +345,7 @@ class RoadMapApi {
           .toList();
       return savedLectureList;
     } else if (response.statusCode == 400) {
-      return []; //해당 코드는 임의로 추가한 코드입니다. 400일 경우 빈 리스트를 반환합니다.-> 위험요소
+      return []; //해당 코드는 임의로 추가한 코드입니다. 400일 경우 빈 리스트를 반환합니다.-> 추후 관리 위험요소
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return getSavedLecture(
@@ -372,6 +372,31 @@ class RoadMapApi {
     } else {
       throw Exception(
           '초기 로드맵 설정을 서버에 등록하는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  // 로드맵에 저장된 교외 공고 추천 리스트를 불러오는 메소드
+  static Future<List<RoadMapOffCampusRecModel>> getOffCampusRec(int roadmapId,
+      {int retryCount = 1}) async {
+    final url =
+        Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId/recommend/off-campus');
+    Map<String, String> headers = await getHeaders();
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      String utf8Body = utf8.decode(response.bodyBytes);
+      List<dynamic> body = jsonDecode(utf8Body);
+      List<RoadMapOffCampusRecModel> recommendations = body
+          .map((dynamic item) => RoadMapOffCampusRecModel.fromJson(item))
+          .toList();
+      return recommendations;
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getOffCampusRec(roadmapId, retryCount: retryCount - 1); // 재귀 호출
+    } else {
+      throw Exception(
+          '교외 공고 추천 목록을 불러오는 데 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }
 }

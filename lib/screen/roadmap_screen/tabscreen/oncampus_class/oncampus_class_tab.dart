@@ -2,19 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/onca_class_recommend.dart';
 
-const List<String> validTextsClass = [
-  '창업 교육',
-  '아이디어 창출',
-  '공간 마련',
-  '사업 계획서',
-  'R&D / 시제품 제작',
-  '사업 검증',
-  'IR Deck 작성',
-  '자금 확보',
-  '사업화',
-];
+const List<String> validTextsClass = ableText;
 
 class TabScreenOnCaClass extends StatefulWidget {
   final String thisSelectedText;

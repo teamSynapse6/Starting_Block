@@ -1,17 +1,20 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class OfCaRecommend extends StatefulWidget {
   final String thisSelectedText;
   final bool thisCurrentStage;
+  final int roadmapId;
 
   const OfCaRecommend({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
+    required this.roadmapId,
   });
 
   @override
@@ -19,7 +22,7 @@ class OfCaRecommend extends StatefulWidget {
 }
 
 class _OfCaRecommendState extends State<OfCaRecommend> {
-  List<OffCampusModel> offCampusData = [];
+  List<RoadMapOffCampusRecModel> _offCampusRecData = [];
   bool isEntrepreneur = false;
   String residence = '';
   String userBirthday = '';
@@ -40,26 +43,18 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
   }
 
   void _loadOffCampusData() async {
-    // isEntrepreneur = await UserInfo.getEntrepreneurCheck();
-    // residence = await UserInfo.getResidence();
-    // userBirthday = await UserInfo.getUserBirthday();
-    // int age = calculateAge(userBirthday);
+    final offCampusRecData = await RoadMapApi.getOffCampusRec(widget.roadmapId);
 
-    // List<String>? supportTypes = textToSupportType[widget.thisSelectedText];
-    // offCampusData = await OffCampusApi.getOffCampusRoadmapRec(
-    //   posttarget: isEntrepreneur,
-    //   region: residence,
-    //   age: age,
-    //   supporttypes: supportTypes,
-    // );
-    // setState(() {});
+    setState(() {
+      _offCampusRecData = offCampusRecData;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // if (offCampusData.isEmpty) {
-    //   return Container();
-    // }
+    if (_offCampusRecData.isEmpty) {
+      return Container();
+    }
 
     return Column(
       children: [
@@ -87,16 +82,16 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: 3,
+                      itemCount: _offCampusRecData.length,
                       itemBuilder: (context, index) {
-                        // final item = offCampusData[index];
+                        final offCampusRec = _offCampusRecData[index];
                         return Row(
                           children: [
                             if (index == 0) Gaps.h24,
                             OfCaCardOne(
-                              thisOrganize: '1',
-                              thisID: 'offCampusData[index].id',
-                              thisTitle: 'offCampusData[index].title',
+                              thisOrganize: offCampusRec.department,
+                              thisID: offCampusRec.announcementId.toString(),
+                              thisTitle: offCampusRec.title,
                               index: index,
                             ),
                             index < 2 ? Gaps.h8 : Gaps.h24,

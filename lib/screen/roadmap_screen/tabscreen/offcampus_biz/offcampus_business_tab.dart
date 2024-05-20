@@ -6,18 +6,6 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_recommend.dart';
 
-const List<String> validTextsBiz = [
-  '창업 교육',
-  '아이디어 창출',
-  '공간 마련',
-  '사업 계획서',
-  'R&D / 시제품 제작',
-  '사업 검증',
-  'IR Deck 작성',
-  '자금 확보',
-  '사업화',
-];
-
 class TabScreenOfCaBiz extends StatefulWidget {
   final String thisSelectedText;
   final int thisSelectedId;
@@ -81,10 +69,11 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (validTextsBiz.contains(widget.thisSelectedText))
+                  if (ableText.contains(widget.thisSelectedText))
                     OfCaRecommend(
                       thisSelectedText: widget.thisSelectedText,
                       thisCurrentStage: widget.thisCurrentStage,
+                      roadmapId: widget.thisSelectedId,
                     ),
                   Gaps.v24,
                   Padding(

@@ -5,17 +5,7 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_recommend.dart';
 
-const List<String> validTextsNotify = [
-  '창업 교육',
-  '아이디어 창출',
-  '공간 마련',
-  '사업 계획서',
-  'R&D / 시제품 제작',
-  '사업 검증',
-  'IR Deck 작성',
-  '자금 확보',
-  '사업화',
-];
+const List<String> validTextsNotify = ableText;
 
 class TabScreenOnCaNotify extends StatefulWidget {
   final String thisSelectedText;
