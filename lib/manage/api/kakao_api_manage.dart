@@ -8,6 +8,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 Future<void> signInWithKakao(BuildContext context) async {
+  print(await KakaoSdk.origin);
+
   // 카카오톡 실행 가능 여부 확인
   if (await isKakaoTalkInstalled()) {
     try {
