@@ -171,7 +171,7 @@ class UserInfoManageApi {
       await updateAccessToken();
       return await postDeleteAccount(retryCount: retryCount - 1);
     } else {
-      print('로그아웃 실패: ${response.statusCode}');
+      print('로그아웃 실패: ${response.statusCode}, Body: ${response.body}');
       return false; // 로그아웃 실패시 false 반환
     }
   }

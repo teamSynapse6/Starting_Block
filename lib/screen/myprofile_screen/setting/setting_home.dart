@@ -5,6 +5,7 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
+import 'package:starting_block/manage/userdata/gpt_list_manage.dart';
 
 class SettingHome extends StatefulWidget {
   const SettingHome({super.key});
@@ -17,19 +18,18 @@ class _SettingHomeState extends State<SettingHome> {
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   void _logOutTap() async {
-    bool success = await UserInfoManageApi.postUserLogOut();
-    if (success) {
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+        (Route<dynamic> route) => false,
+      );
       await secureStorage.deleteAll();
+      await DeleteAllChatData.deleteAllGptChatData();
       await UserInfo().setLoginStatus(false);
-      if (mounted) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ),
-          (Route<dynamic> route) => false,
-        );
-      }
+      await UserInfoManageApi.postUserLogOut();
     }
   }
 

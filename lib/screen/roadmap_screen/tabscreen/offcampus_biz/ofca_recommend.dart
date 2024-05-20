@@ -4,62 +4,31 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class OfCaRecommend extends StatefulWidget {
+class OfCaRecommend extends StatelessWidget {
   final String thisSelectedText;
   final bool thisCurrentStage;
+  final int roadmapId;
+  final List<RoadMapOffCampusRecModel> thisOffCampusRecData;
+  final bool isRecLoading;
 
   const OfCaRecommend({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
+    required this.roadmapId,
+    required this.thisOffCampusRecData,
+    required this.isRecLoading,
   });
 
   @override
-  State<OfCaRecommend> createState() => _OfCaRecommendState();
-}
-
-class _OfCaRecommendState extends State<OfCaRecommend> {
-  List<OffCampusModel> offCampusData = [];
-  bool isEntrepreneur = false;
-  String residence = '';
-  String userBirthday = '';
-  final bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadOffCampusData();
-  }
-
-  @override
-  void didUpdateWidget(OfCaRecommend oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.thisSelectedText != widget.thisSelectedText) {
-      _loadOffCampusData();
-    }
-  }
-
-  void _loadOffCampusData() async {
-    // isEntrepreneur = await UserInfo.getEntrepreneurCheck();
-    // residence = await UserInfo.getResidence();
-    // userBirthday = await UserInfo.getUserBirthday();
-    // int age = calculateAge(userBirthday);
-
-    // List<String>? supportTypes = textToSupportType[widget.thisSelectedText];
-    // offCampusData = await OffCampusApi.getOffCampusRoadmapRec(
-    //   posttarget: isEntrepreneur,
-    //   region: residence,
-    //   age: age,
-    //   supporttypes: supportTypes,
-    // );
-    // setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // if (offCampusData.isEmpty) {
-    //   return Container();
-    // }
+    final List<RoadMapOffCampusRecModel> offCampusRecData =
+        thisOffCampusRecData;
+    final bool isLoading = isRecLoading;
+
+    if (offCampusRecData.isEmpty) {
+      return Container();
+    }
 
     return Column(
       children: [
@@ -78,7 +47,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
           ),
         ),
         Gaps.v16,
-        !_isLoading
+        isLoading
             ? const RoadMapOfcaTapCarousel()
             : Stack(
                 children: [
@@ -87,16 +56,16 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: 3,
+                      itemCount: offCampusRecData.length,
                       itemBuilder: (context, index) {
-                        // final item = offCampusData[index];
+                        final offCampusRec = offCampusRecData[index];
                         return Row(
                           children: [
                             if (index == 0) Gaps.h24,
                             OfCaCardOne(
-                              thisOrganize: '1',
-                              thisID: 'offCampusData[index].id',
-                              thisTitle: 'offCampusData[index].title',
+                              thisOrganize: offCampusRec.department,
+                              thisID: offCampusRec.announcementId.toString(),
+                              thisTitle: offCampusRec.title,
                               index: index,
                             ),
                             index < 2 ? Gaps.h8 : Gaps.h24,
@@ -105,7 +74,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
                       },
                     ),
                   ),
-                  if (!widget.thisCurrentStage)
+                  if (!thisCurrentStage)
                     Positioned(
                       top: 0,
                       left: 0,
@@ -113,7 +82,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
                       height: 140,
                       child: ClipRRect(
                         child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                           child: Container(
                             height: 140,
                             width: MediaQuery.of(context).size.width,
@@ -122,7 +91,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
                         ),
                       ),
                     ),
-                  if (!widget.thisCurrentStage)
+                  if (!thisCurrentStage)
                     const Positioned(
                       top: 0,
                       left: 0,

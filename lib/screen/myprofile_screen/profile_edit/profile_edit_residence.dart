@@ -14,26 +14,7 @@ class ResidenceEdit extends StatefulWidget {
 class _ResidenceEditState extends State<ResidenceEdit> {
   String? selectedRegion; // 선택된 지역을 추적
 
-  final List<String> regions = [
-    '서울',
-    '부산',
-    '대구',
-    '인천',
-    '경기',
-    '강원',
-    '충북',
-    '충남',
-    '전북',
-    '광주',
-    '대전',
-    '울산',
-    '세종',
-    '전남',
-    '경북',
-    '경남',
-    '제주',
-    '',
-  ];
+  final List<String> regions = globalDataRegionList;
 
   Widget residenceGrid() {
     return GridView.builder(
@@ -113,9 +94,13 @@ class _ResidenceEditState extends State<ResidenceEdit> {
     );
   }
 
-  void _onRegionTap(String region) {
+  void _onRegionTap(String region) async {
     setState(() {
       selectedRegion = region;
+    });
+    await _saveUserResidence();
+    await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+      _onNextTap();
     });
   }
 
@@ -124,9 +109,8 @@ class _ResidenceEditState extends State<ResidenceEdit> {
         inputResidence: selectedRegion);
   }
 
-  void _onNextTap() async {
-    if (selectedRegion == null) return; // 지역이 선택되지 않으면 반환
-    await _saveUserResidence();
+  void _onNextTap() {
+    if (selectedRegion == null) return;
     Navigator.of(context).pop();
   }
 
@@ -146,24 +130,8 @@ class _ResidenceEditState extends State<ResidenceEdit> {
                 "거주지를 선택해주세요",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
               ),
-              Gaps.v10,
-              Text(
-                "주민등록상의 거주지를 선택해주세요",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-              ),
               Gaps.v32,
               residenceGrid(),
-              const Spacer(), // 나머지 공간을 채우는 위젯
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24),
-                child: GestureDetector(
-                  onTap: _onNextTap,
-                  child: NextContained(
-                    text: "다음",
-                    disabled: selectedRegion == null,
-                  ),
-                ),
-              ),
             ],
           ),
         ),

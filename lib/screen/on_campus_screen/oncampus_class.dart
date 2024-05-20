@@ -19,12 +19,14 @@ class _OnCampusClassState extends State<OnCampusClass> {
   bool isLoading = true;
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
+  String _userNickName = '';
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _loadOnCampusClass();
+    loadUserNickName();
   }
 
   @override
@@ -56,6 +58,13 @@ class _OnCampusClassState extends State<OnCampusClass> {
         });
       });
     }
+  }
+
+  void loadUserNickName() async {
+    String userNickName = await UserInfo.getNickName();
+    setState(() {
+      _userNickName = userNickName;
+    });
   }
 
   void _onScroll() {
@@ -167,43 +176,46 @@ class _OnCampusClassState extends State<OnCampusClass> {
               },
               body: isLoading
                   ? const OncaSkeletonClass()
-                  : SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true, // 스크롤뷰 내부의 리스트뷰에 필요
-                              physics:
-                                  const NeverScrollableScrollPhysics(), // 중첩 스크롤 문제 방지
-                              itemCount: _classList.length,
-                              itemBuilder: (context, index) {
-                                OncaClassModel item = _classList[index];
-                                return OnCampusClassListCard(
-                                  thisTitle: item.title,
-                                  thisId: item.lectureId.toString(),
-                                  thisLiberal: item.liberal,
-                                  thisCredit: item.credit.toString(),
-                                  thisInstructor: item.instructor,
-                                  thisContent: item.content,
-                                  thisSession: item.session.toString(),
-                                  isBookmarked: item.isBookmarked,
-                                );
-                              },
+                  : _classList.isNotEmpty
+                      ? SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  shrinkWrap: true, // 스크롤뷰 내부의 리스트뷰에 필요
+                                  physics:
+                                      const NeverScrollableScrollPhysics(), // 중첩 스크롤 문제 방지
+                                  itemCount: _classList.length,
+                                  itemBuilder: (context, index) {
+                                    OncaClassModel item = _classList[index];
+                                    return OnCampusClassListCard(
+                                      thisTitle: item.title,
+                                      thisId: item.lectureId.toString(),
+                                      thisLiberal: item.liberal,
+                                      thisCredit: item.credit.toString(),
+                                      thisInstructor: item.instructor,
+                                      thisContent: item.content,
+                                      thisSession: item.session.toString(),
+                                      isBookmarked: item.isBookmarked,
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
+                        )
+                      : OnCampusEmptyDisplay(
+                          userNickName: _userNickName,
                         ),
-                      ),
-                    ),
             ),
-            _isScrolled
-                ? Positioned(
-                    right: 24,
-                    bottom: 12,
-                    child: ScrollToTopButton(
-                      thisBackToTopTap: backToTopTap,
-                    ))
-                : Container()
+            if (_isScrolled && _classList.isNotEmpty)
+              Positioned(
+                  right: 24,
+                  bottom: 12,
+                  child: ScrollToTopButton(
+                    thisBackToTopTap: backToTopTap,
+                  ))
           ],
         ),
       );

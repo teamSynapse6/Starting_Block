@@ -11,6 +11,7 @@ class QuestionUserComment extends StatefulWidget {
   final void Function(int replyHeartId) thisReplyHeartDeleteTap;
   final List<AnswerModel> answers;
   final VoidCallback thisAnswerDeleteTap, thisReplyDeleteTap;
+  final String myNickName;
 
   const QuestionUserComment({
     super.key,
@@ -22,6 +23,7 @@ class QuestionUserComment extends StatefulWidget {
     required this.thisReplyHeartDeleteTap,
     required this.thisAnswerDeleteTap,
     required this.thisReplyDeleteTap,
+    required this.myNickName,
   });
 
   @override
@@ -80,6 +82,7 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                             widget.thisCommenHeartDeleteTap(answer.heartId!);
                           },
                           thisAnswerDeleteTap: widget.thisAnswerDeleteTap,
+                          myNickName: widget.myNickName,
                         ),
                         if (answer.replyResponse.isNotEmpty &&
                             answer.replyResponse.length > 3)
@@ -122,6 +125,7 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                             widget.thisReplyHeartDeleteTap(replyHeartId);
                           },
                           thisReplyDeleteTap: widget.thisReplyDeleteTap,
+                          myNickName: widget.myNickName,
                         ),
                         if (index < widget.answers.length - 1)
                           const Padding(

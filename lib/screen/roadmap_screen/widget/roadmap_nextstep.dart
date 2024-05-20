@@ -32,6 +32,9 @@ class _NextStepState extends State<NextStep> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      highlightColor: AppColors.g1.withOpacity(0.08),
+      splashColor: AppColors.g2.withOpacity(0.08),
+      borderRadius: BorderRadius.circular(4),
       onTap: _thisNextTap,
       child: Container(
         decoration: BoxDecoration(

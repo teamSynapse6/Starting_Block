@@ -55,9 +55,9 @@ class HomeQuestionRecommendList extends StatelessWidget {
                   Gaps.h12,
                   Expanded(
                     child: Text(
+                      thisTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      thisTitle,
                       style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
                     ),
                   ),

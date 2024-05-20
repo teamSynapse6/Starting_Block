@@ -51,6 +51,7 @@ class OnCampusClassListCard extends StatelessWidget {
                     style: AppTextStyles.bd1.copyWith(color: AppColors.black),
                   ),
                 ),
+                Gaps.h15,
                 BookMarkLectureButton(
                   isSaved: isBookmarked,
                   thisLectureID: thisId,
@@ -62,35 +63,56 @@ class OnCampusClassListCard extends StatelessWidget {
             Gaps.v16,
             Row(
               children: [
-                ClassLiberalChips(
-                  thisText: thisLiberal,
-                ),
-                Gaps.h8,
-                ClassCreditsChips(thisTextNum: thisCredit),
-                Gaps.h8,
-                ClassSessionChips(thisTextSession: thisSession),
+                if (thisLiberal.isNotEmpty)
+                  Row(
+                    children: [
+                      ClassLiberalChips(thisText: thisLiberal),
+                      Gaps.h8,
+                    ],
+                  ),
+                if (thisCredit != '0')
+                  Row(
+                    children: [
+                      ClassCreditsChips(thisTextNum: thisCredit),
+                      Gaps.h8,
+                    ],
+                  ),
+                if (thisSession.isNotEmpty)
+                  ClassSessionChips(thisTextSession: thisSession),
               ],
             ),
             Gaps.v12,
-            Text(
-              '교강사',
-              style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-            ),
-            Gaps.v2,
-            Text(
-              thisInstructor,
-              style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
-            ),
-            Gaps.v12,
-            Text(
-              '강의 개요',
-              style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-            ),
-            Gaps.v2,
-            Text(
-              thisContent,
-              style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
-            ),
+            if (thisInstructor.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '교강사',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                  ),
+                  Gaps.v2,
+                  Text(
+                    thisInstructor,
+                    style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                  ),
+                  Gaps.v12,
+                ],
+              ),
+            if (thisContent.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '강의 개요',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                  ),
+                  Gaps.v2,
+                  Text(
+                    thisContent,
+                    style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

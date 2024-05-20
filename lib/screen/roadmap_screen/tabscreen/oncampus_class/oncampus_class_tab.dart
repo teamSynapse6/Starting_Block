@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/onca_class_recommend.dart';
 
-const List<String> validTextsClass = [
-  '창업 교육',
-  '아이디어 창출',
-  '공간 마련',
-  '사업 계획서',
-  'R&D / 시제품 제작',
-  '사업 검증',
-  'IR Deck 작성',
-  '자금 확보',
-  '사업화',
-];
+const List<String> validTextsClass = globalDataRoadmapList;
 
 class TabScreenOnCaClass extends StatefulWidget {
   final String thisSelectedText;
   final int thisSelectedId;
-
   final bool thisCurrentStage;
 
   const TabScreenOnCaClass({
@@ -36,6 +27,8 @@ class TabScreenOnCaClass extends StatefulWidget {
 class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
   List<int> savedIds = [];
   List<RoadMapSavedClassModel> onCampusClassData = [];
+  bool isLoading = true;
+  bool bookMarkIsUpdated = false;
 
   @override
   void initState() {
@@ -57,71 +50,88 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
     );
     setState(() {
       onCampusClassData = loadedData;
+      isLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<BookMarkNotifier>(
+        builder: (context, bookMarkNotifier, child) {
+      if (bookMarkNotifier.isUpdated) {
+        loadOnCampusClassData();
+        print('호출됨');
+        bookMarkNotifier.resetUpdate();
+      }
+
+      return Scaffold(
         backgroundColor: AppColors.secondaryBG,
-        body: CustomScrollView(slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Gaps.v24,
-                if (validTextsClass.contains(widget.thisSelectedText))
-                  OnCaClassRecommend(
-                    thisSelectedText: widget.thisSelectedText,
-                    thisCurrentStage: widget.thisCurrentStage,
-                  ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('저장한 사업으로 도약하기',
-                          style:
-                              AppTextStyles.bd1.copyWith(color: AppColors.g6)),
-                      Gaps.v16,
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final item = onCampusClassData[index];
-                return Column(
-                  children: [
-                    OnCaListClass(
-                      thisTitle: item.title,
-                      thisId: item.lectureId.toString(),
-                      thisLiberal: item.liberal,
-                      thisCredit: item.credit.toString(),
-                      thisContent: item.content,
-                      thisSession: item.session.toString(),
-                      thisTeacher: item.instructor,
-                      thisBookMaekSaved: item.isBookmarked,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v24,
+                  if (validTextsClass.contains(widget.thisSelectedText))
+                    OnCaClassRecommend(
+                      thisSelectedText: widget.thisSelectedText,
+                      thisCurrentStage: widget.thisCurrentStage,
+                      roadmapId: widget.thisSelectedId,
                     ),
-                    Gaps.v16,
-                  ],
-                );
-              },
-              childCount: onCampusClassData.length,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('저장한 사업으로 도약하기',
+                            style: AppTextStyles.bd1
+                                .copyWith(color: AppColors.g6)),
+                        Gaps.v16,
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
-        ]));
+            isLoading
+                ? const RoadMapClassTabSkeleton()
+                : onCampusClassData.isNotEmpty
+                    ? SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final item = onCampusClassData[index];
+                            return Column(
+                              children: [
+                                OnCaListClass(
+                                  thisTitle: item.title,
+                                  thisId: item.lectureId.toString(),
+                                  thisLiberal: item.liberal,
+                                  thisCredit: item.credit.toString(),
+                                  thisContent: item.content,
+                                  thisSession: item.session.toString(),
+                                  thisInstructor: item.instructor,
+                                  thisBookMaekSaved: item.isBookmarked,
+                                ),
+                                Gaps.v16,
+                              ],
+                            );
+                          },
+                          childCount: onCampusClassData.length,
+                        ),
+                      )
+                    : SliverFillRemaining(
+                        fillOverscroll: true,
+                        hasScrollBody: false,
+                        child: GotoSaveItem(
+                          tapAction: () {
+                            IntergrateScreen.setSelectedIndexToOne(context);
+                          },
+                        ),
+                      ),
+          ],
+        ),
+      );
+    });
   }
-  // else {
-  //   return SliverToBoxAdapter(
-  //     child: GotoSaveItem(
-  //       tapAction: () {
-  //         IntergrateScreen.setSelectedIndexToOne(context);
-  //       },
-  //     ),
-  //   );
-  // }
 }

@@ -53,7 +53,12 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
     setState(() {
       _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
-      _isSchoolSelected = true; // 사용자가 리스트에서 학교를 선택했음을 표시
+      _isSchoolSelected = true;
+    });
+    await _saveSchoolName();
+    await _saveUserInfoToServer();
+    await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+      _onNextTap();
     });
   }
 
@@ -175,17 +180,6 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
                 ),
               )
           ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-          height: 92,
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-          child: InkWell(
-            onTap: _onNextTap,
-            child: NextContained(
-              disabled: !_isSchoolSelected,
-              text: '완료하기',
-            ),
-          ),
         ),
       ),
     );

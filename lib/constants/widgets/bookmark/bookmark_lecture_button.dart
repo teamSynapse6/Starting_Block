@@ -35,6 +35,7 @@ class _BookMarkLectureButtonState extends State<BookMarkLectureButton> {
     // widget.thisLectureID를 통해 announcementId를 받아오고, API를 호출합니다.
     final roadMapAnnounceList =
         await RoadMapApi.getRoadMapLectureList(widget.thisLectureID);
+
     // 받아온 데이터로 상태를 업데이트합니다.
     setState(() {
       roadMaps = roadMapAnnounceList;
@@ -49,6 +50,7 @@ class _BookMarkLectureButtonState extends State<BookMarkLectureButton> {
       _updateRoadMapsModal(setStateModal);
       if (mounted) {
         Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
+        Navigator.pop(context);
       }
     } catch (e) {
       print('공고 추가에 실패했습니다: $e');
@@ -65,6 +67,7 @@ class _BookMarkLectureButtonState extends State<BookMarkLectureButton> {
       _updateRoadMapsModal(setStateModal);
       if (mounted) {
         Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
+        Navigator.pop(context);
       }
     } catch (e) {
       print('공고 삭제에 실패했습니다: $e');

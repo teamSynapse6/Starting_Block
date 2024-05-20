@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class ReplyList extends StatefulWidget {
-  final String thisUserName, thisDate, thisAnswer;
+  final String thisUserName, thisDate, thisAnswer, myNickName;
   final int thisLike, thisReplyId;
   final bool isMyHeart, isMyReply;
   final VoidCallback thisReplyHeartTap,
@@ -21,6 +21,7 @@ class ReplyList extends StatefulWidget {
     required this.isMyReply,
     required this.thisReplyId,
     required this.thisReplyDeleteTap,
+    required this.myNickName,
   });
 
   @override
@@ -31,6 +32,7 @@ class _ReplyListState extends State<ReplyList> {
   @override
   Widget build(BuildContext context) {
     String formattedDate = formatDate(widget.thisDate);
+    bool isMyReply = widget.thisUserName == widget.myNickName;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(66 - 24, 8, 0, 8),
@@ -70,7 +72,7 @@ class _ReplyListState extends State<ReplyList> {
                 ],
               ),
               const Spacer(),
-              widget.isMyReply
+              isMyReply
                   ? ReplyCommentDelete(
                       thisId: widget.thisReplyId,
                       thisDeleteAction: widget.thisReplyDeleteTap)

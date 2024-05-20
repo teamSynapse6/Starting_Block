@@ -36,6 +36,8 @@ export 'package:starting_block/screen/roadmap_screen/roadmaplist_edit.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmaplist_add.dart';
 export 'package:starting_block/screen/roadmap_screen/roadmap_delet.dart';
 export 'package:starting_block/screen/roadmap_screen/widget/roadmap_list.dart'; //로드맵 단계 리스트 뷰 버튼
+export 'package:starting_block/manage/svc_global_data.dart'; //추천 가능한 리스트
+
 //로드맵 탭 화면
 export 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/offcampus_business_tab.dart';
 export 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/oncampus_notify_tab.dart';
@@ -61,6 +63,7 @@ export 'package:starting_block/screen/on_campus_screen/oncampus_search.dart'; //
 export 'package:starting_block/screen/on_campus_screen/oncampus_searchresult.dart'; //교내 검색 화면
 export 'package:starting_block/screen/on_campus_screen/school_nonset_screen/oncampus_school_set.dart'; //학교 설정없을 시 화면
 export 'package:starting_block/screen/on_campus_screen/school_nonset_screen/oncampus_school_search.dart'; //학교 설정없을 학교 설정 화면
+export 'package:starting_block/screen/on_campus_screen/widget/oncampus_empty_display.dart'; //교내 정보 준비중 화면
 
 //교내지원사업_창업지원단_페이지
 export 'package:starting_block/screen/on_campus_screen/supportgroup_tab_screen/metoring.dart'; //멘토링 화면
@@ -126,6 +129,9 @@ export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_system_ske
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_class_skeleton.dart'; //교내지원사업_강의 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_supportgroup_skeleton.dart'; //교내지원사업_창업지원단 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_search_skeleton.dart'; //교내지원사업_검색 화면 스켈레톤 로더 화면
-export 'package:starting_block/skeleton_screen/home_skeleton/home_notift_rec_skeleton.dart'; //홈_공고 추천 영역 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/home_skeleton/home_notify_rec_skeleton.dart'; //홈_공고 추천 영역 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/home_skeleton/home_question_rec_skeleton.dart'; //홈_질문 추천 영역 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_ofca_onca_skeleton.dart'; //로드맵_교외사업 탭 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_class_skeleton.dart'; //로드맵_교내강의 탭 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_system_skeleton.dart'; //로드맵_교내제도 탭 스켈레톤 로더 화면
 

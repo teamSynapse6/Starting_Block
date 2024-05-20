@@ -1,5 +1,4 @@
-// ignore_for_file: avoid_print
-
+import 'dart:async'; // 추가된 임포트
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/question_answer_api_manage.dart';
@@ -28,11 +27,13 @@ class _QuestionDetailState extends State<QuestionDetail> {
   String? replyingToUserName; // 답글 대상 사용자 이름
   bool isReplying = false; // 답글 작성 UI 표시 여부
   bool isHeartLoading = false;
+  String userNickName = ''; // 유저 닉네임으로 내 글인지 아닌지 판단
 
   @override
   void initState() {
     super.initState();
     _loadQuestionDetail();
+    _loadUserNickName();
 
     _controller.addListener(() {
       if (_controller.text.isNotEmpty && !_isTyped) {
@@ -55,10 +56,18 @@ class _QuestionDetailState extends State<QuestionDetail> {
     super.dispose();
   }
 
+  // 유저 닉네임 로드 메소드
+  void _loadUserNickName() async {
+    final user = await UserInfo.getNickName();
+    setState(() {
+      userNickName = user;
+    });
+  }
+
   // 질문 상세 정보를 로드하는 메서드
   void _loadQuestionDetail() {
     Future<QuestionDetailModel> questionDetailFuture =
-        QuestionAnswerApi.getQuestionDetail(widget.questionID); //여기 임시 데이터
+        QuestionAnswerApi.getQuestionDetail(widget.questionID); // 여기 임시 데이터
     setState(() {
       _questionDetailFuture = questionDetailFuture;
     });
@@ -100,7 +109,6 @@ class _QuestionDetailState extends State<QuestionDetail> {
             // 답글 작성 API 호출
             await QuestionAnswerApi.postReplyWrite(
                 replyingToAnswerId!, content);
-            print("답글이 성공적으로 등록되었습니다.");
 
             // 성공적으로 답글이 작성된 후의 처리
             _controller.clear(); // 입력 필드 초기화
@@ -111,7 +119,6 @@ class _QuestionDetailState extends State<QuestionDetail> {
             });
           } catch (e) {
             // 답글 작성 중 오류 발생 시 처리
-            print("답글 등록 중 오류가 발생했습니다: $e");
           }
         }
       },
@@ -131,28 +138,30 @@ class _QuestionDetailState extends State<QuestionDetail> {
     });
   }
 
-  /*좋아요 메소드*/
-
-// 질문에 대한 궁금해요 전송 메소드
+  // 질문에 대한 궁금해요 전송 메소드
   void postHeartForQuestion() async {
     if (isHeartLoading) return;
 
     setState(() {
       isHeartLoading = true;
     });
+
     bool success =
         await QuestionAnswerApi.postHeart(widget.questionID, 'QUESTION');
     if (success) {
       _loadQuestionDetail();
     }
+
+    await Future.delayed(const Duration(milliseconds: 200));
     setState(() {
       isHeartLoading = false;
     });
   }
 
-// 질문에 대한 하트 취소 메소드
+  // 질문에 대한 하트 취소 메소드
   void deleteHeartForQuestion() async {
     if (isHeartLoading) return;
+
     setState(() {
       isHeartLoading = true;
     });
@@ -164,9 +173,9 @@ class _QuestionDetailState extends State<QuestionDetail> {
       if (success) {
         _loadQuestionDetail();
       }
-    } else {
-      print('No heartId found for question.');
-    }
+    } else {}
+
+    await Future.delayed(const Duration(milliseconds: 200));
     setState(() {
       isHeartLoading = false;
     });
@@ -175,15 +184,17 @@ class _QuestionDetailState extends State<QuestionDetail> {
   // 댓글에 대한 도움 하트 메소드
   void postHeartForAnswer(int answerId) async {
     if (isHeartLoading) return;
+
     setState(() {
       isHeartLoading = true;
     });
 
     bool success = await QuestionAnswerApi.postHeart(answerId, 'ANSWER');
     if (success) {
-      // 하트 전송 성공 시, 질문 상세 정보를 다시 로드
       _loadQuestionDetail();
     }
+
+    await Future.delayed(const Duration(milliseconds: 200));
     setState(() {
       isHeartLoading = false;
     });
@@ -192,6 +203,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
   // 댓글에 대한 도움 하트 취소 메소드
   void deleteHeartForAnswer(int heartId) async {
     if (isHeartLoading) return;
+
     setState(() {
       isHeartLoading = true;
     });
@@ -200,14 +212,17 @@ class _QuestionDetailState extends State<QuestionDetail> {
     if (success) {
       _loadQuestionDetail();
     }
+
+    await Future.delayed(const Duration(milliseconds: 200));
     setState(() {
       isHeartLoading = false;
     });
   }
 
-  //답글(대댓글)에 대한 도움 하트 메소드
+  // 답글(대댓글)에 대한 도움 하트 메소드
   void postHeartForReply(int replyId) async {
     if (isHeartLoading) return;
+
     setState(() {
       isHeartLoading = true;
     });
@@ -216,14 +231,17 @@ class _QuestionDetailState extends State<QuestionDetail> {
     if (success) {
       _loadQuestionDetail();
     }
+
+    await Future.delayed(const Duration(milliseconds: 200));
     setState(() {
       isHeartLoading = false;
     });
   }
 
-  //답글(대댓글)에 대한 도움 하트 취소 메소드
+  // 답글(대댓글)에 대한 도움 하트 취소 메소드
   void deleteHeartForReply(int replyHeartId) async {
     if (isHeartLoading) return;
+
     setState(() {
       isHeartLoading = true;
     });
@@ -232,6 +250,8 @@ class _QuestionDetailState extends State<QuestionDetail> {
     if (success) {
       _loadQuestionDetail();
     }
+
+    await Future.delayed(const Duration(milliseconds: 200));
     setState(() {
       isHeartLoading = false;
     });
@@ -252,7 +272,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                      child: Text('질문을 로딩하는 중 서버에서 오류가 발생했습니다.'));
+                      child: Text("질문의 '나도 궁금해요' 기능에서 오류가 발생했습니다."));
                 } else if (snapshot.hasData) {
                   final questionDetail = snapshot.data!;
 
@@ -264,10 +284,11 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisQuestion: questionDetail.content,
                         thisDate: questionDetail.createdAt,
                         thisLike: questionDetail.heartCount,
-                        isMine: questionDetail.isMyHeart,
+                        isMyHeart: questionDetail.isMyHeart,
                         thisQuestionLikeTap: postHeartForQuestion,
                         thisQuestionLikeCancelTap: deleteHeartForQuestion,
                         thisQuestionHeardID: questionDetail.heartId,
+                        myNickName: userNickName,
                       ),
                       const CustomDividerH8G1(),
                       QuestionContactComment(
@@ -295,6 +316,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisReplyDeleteTap: () {
                           _loadQuestionDetail();
                         },
+                        myNickName: userNickName,
                       ),
                     ],
                   );

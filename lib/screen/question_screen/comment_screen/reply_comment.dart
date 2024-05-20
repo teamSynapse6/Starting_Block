@@ -7,6 +7,7 @@ class QuestionUserReply extends StatelessWidget {
   final void Function(int replyId) thisReplyHeartTap;
   final void Function(int replyHeartId) thisReplyHeartDeleteTap;
   final VoidCallback thisReplyDeleteTap;
+  final String myNickName;
 
   const QuestionUserReply({
     super.key,
@@ -14,6 +15,7 @@ class QuestionUserReply extends StatelessWidget {
     required this.thisReplyHeartTap,
     required this.thisReplyHeartDeleteTap,
     required this.thisReplyDeleteTap,
+    required this.myNickName,
   });
 
   @override
@@ -39,6 +41,7 @@ class QuestionUserReply extends StatelessWidget {
             isMyReply: reply.isMyReply,
             thisReplyId: reply.replyId,
             thisReplyDeleteTap: thisReplyDeleteTap,
+            myNickName: myNickName,
           );
         });
   }

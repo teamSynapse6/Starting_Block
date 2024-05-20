@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class QuestionDetailInfo extends StatelessWidget {
-  final String thisUserName, thisQuestion, thisDate;
+  final String thisUserName, thisQuestion, thisDate, myNickName;
   final int thisLike, thisQuestionHeardID;
-  final bool isMine;
+  final bool isMyHeart;
   final VoidCallback thisQuestionLikeTap, thisQuestionLikeCancelTap;
 
   const QuestionDetailInfo({
@@ -13,10 +13,11 @@ class QuestionDetailInfo extends StatelessWidget {
     required this.thisQuestion,
     required this.thisDate,
     required this.thisLike,
-    required this.isMine,
+    required this.isMyHeart,
     required this.thisQuestionLikeTap,
     required this.thisQuestionLikeCancelTap,
     required this.thisQuestionHeardID,
+    required this.myNickName,
   });
 
   String formatDate(String date) {
@@ -29,6 +30,7 @@ class QuestionDetailInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedDate = formatDate(thisDate);
+    bool isMyQuestion = thisUserName == myNickName;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
@@ -36,6 +38,7 @@ class QuestionDetailInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 width: 40,
@@ -64,9 +67,10 @@ class QuestionDetailInfo extends StatelessWidget {
                     formattedDate,
                     style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                   ),
-                  Gaps.v4,
                 ],
               ),
+              const Spacer(),
+              isMyQuestion ? Container() : const ReplyCommentReport(),
             ],
           ),
           Gaps.v16,
@@ -76,7 +80,7 @@ class QuestionDetailInfo extends StatelessWidget {
           ),
           Gaps.v4,
           CuriousVote36(
-            isMine: isMine,
+            isMine: isMyHeart,
             heartCount: thisLike,
             thisTap: thisQuestionHeardID == 0
                 ? thisQuestionLikeTap

@@ -49,6 +49,7 @@ class _BookMarkButtonState extends State<BookMarkButton> {
       _updateRoadMapsModal(setStateModal);
       if (mounted) {
         Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
+        Navigator.pop(context);
       }
     } catch (e) {
       print('공고 추가에 실패했습니다: $e');
@@ -64,6 +65,7 @@ class _BookMarkButtonState extends State<BookMarkButton> {
       _updateRoadMapsModal(setStateModal);
       if (mounted) {
         Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
+        Navigator.pop(context);
       }
     } catch (e) {
       print('공고 삭제에 실패했습니다: $e');

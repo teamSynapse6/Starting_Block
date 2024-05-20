@@ -65,90 +65,92 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
                   ),
                   Gaps.v42,
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () => _onCardTap(1),
-                        child: Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                            side: BorderSide(
-                                color: selectedCard == 1
-                                    ? AppColors.blue
-                                    : AppColors.g2,
-                                width: selectedCard == 1 ? 3 : 1),
-                          ),
-                          color: selectedCard == 1
-                              ? AppColors.bluebg
-                              : AppColors.white,
-                          child: SizedBox(
-                            width: 360 * (148 / 360),
-                            height: 148,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                AppIcon.run_yes,
-                                const Text(
-                                  '네,',
-                                  style: TextStyle(
-                                      fontFamily: 'pretendard',
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                      color: AppColors.g6),
-                                ),
-                                const Text(
-                                  '완료했습니다',
-                                  style: TextStyle(
-                                      fontFamily: 'pretendard',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: AppColors.g6),
-                                ),
-                              ],
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _onCardTap(1),
+                          child: Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                              side: BorderSide(
+                                  color: selectedCard == 1
+                                      ? AppColors.blue
+                                      : AppColors.g2,
+                                  width: selectedCard == 1 ? 3 : 1),
+                            ),
+                            color: selectedCard == 1
+                                ? AppColors.bluebg
+                                : AppColors.white,
+                            child: SizedBox(
+                              height: 148,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  AppIcon.run_yes,
+                                  const Text(
+                                    '네,',
+                                    style: TextStyle(
+                                        fontFamily: 'pretendard',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                        color: AppColors.g6),
+                                  ),
+                                  const Text(
+                                    '완료했습니다',
+                                    style: TextStyle(
+                                        fontFamily: 'pretendard',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        color: AppColors.g6),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () => _onCardTap(2),
-                        child: Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                            side: BorderSide(
-                                color: selectedCard == 2
-                                    ? AppColors.blue
-                                    : AppColors.g2,
-                                width: selectedCard == 2 ? 3 : 1),
-                          ),
-                          color: selectedCard == 2
-                              ? AppColors.bluebg
-                              : AppColors.white,
-                          child: SizedBox(
-                            width: 360 * (148 / 360),
-                            height: 148,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                AppIcon.run_no,
-                                const Text(
-                                  '아니요,',
-                                  style: TextStyle(
-                                      fontFamily: 'pretendard',
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                      color: AppColors.g6),
-                                ),
-                                const Text(
-                                  '준비중입니다',
-                                  style: TextStyle(
-                                      fontFamily: 'pretendard',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: AppColors.g6),
-                                ),
-                              ],
+                      Gaps.h10,
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _onCardTap(2),
+                          child: Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                              side: BorderSide(
+                                  color: selectedCard == 2
+                                      ? AppColors.blue
+                                      : AppColors.g2,
+                                  width: selectedCard == 2 ? 3 : 1),
+                            ),
+                            color: selectedCard == 2
+                                ? AppColors.bluebg
+                                : AppColors.white,
+                            child: SizedBox(
+                              height: 148,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  AppIcon.run_no,
+                                  const Text(
+                                    '아니요,',
+                                    style: TextStyle(
+                                        fontFamily: 'pretendard',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                        color: AppColors.g6),
+                                  ),
+                                  const Text(
+                                    '준비중입니다',
+                                    style: TextStyle(
+                                        fontFamily: 'pretendard',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        color: AppColors.g6),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class SchoolNameEdit extends StatefulWidget {
@@ -43,14 +44,20 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
     }
   }
 
-  void _onSchoolTap(String selectedSchool) {
+  void _onSchoolTap(String selectedSchool) async {
+    FocusScope.of(context).requestFocus(FocusNode());
     setState(() {
       _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
     });
+    await _saveSchoolName();
+    await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+      _onNextTap();
+    });
   }
 
   Future<void> _saveSchoolName() async {
+    await UserInfo().setSchoolName(_schoolInfo);
     await SaveUserData.loadFromLocalAndFetchToServer(
         inputSchoolName: _schoolInfo);
   }
@@ -80,11 +87,6 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
               Text(
                 "대학교(원)을 선택해주세요",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v10,
-              Text(
-                "현재 일부 대학의 교내 지원 사업을 제공해 드립니다",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
               ),
               Gaps.v32,
               TextField(
@@ -124,16 +126,6 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
                   ),
                 ),
               const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24),
-                child: GestureDetector(
-                  onTap: _onNextTap,
-                  child: NextContained(
-                    text: "다음",
-                    disabled: _schoolInfo.isEmpty,
-                  ),
-                ),
-              ),
             ],
           ),
         ),

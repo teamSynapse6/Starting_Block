@@ -117,6 +117,7 @@ class _ReplyCommentReportState extends State<ReplyCommentReport> {
     }
 
     return InkWell(
+      radius: 5,
       onTap: () => reportTap(context),
       child: Container(
         child: AppIcon.more,

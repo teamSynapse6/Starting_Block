@@ -258,6 +258,9 @@ class AppIcon {
   static Widget get stepper_octagon =>
       SvgPicture.asset('assets/icon/other/stepper_octagon.svg',
           fit: BoxFit.scaleDown);
+  static Widget get starter_emptylist =>
+      SvgPicture.asset('assets/icon/other/starter_emptylist.svg',
+          fit: BoxFit.scaleDown);
 
   // Profile Image
   static Widget get profile_image_1 => SvgPicture.asset(

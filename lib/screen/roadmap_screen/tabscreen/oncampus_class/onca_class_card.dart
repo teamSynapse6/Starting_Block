@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class OnCaClassCard extends StatefulWidget {
@@ -9,6 +10,7 @@ class OnCaClassCard extends StatefulWidget {
       thisContent,
       thisInstructor,
       thisSession;
+  final bool isSaved;
 
   const OnCaClassCard({
     super.key,
@@ -19,6 +21,7 @@ class OnCaClassCard extends StatefulWidget {
     required this.thisContent,
     required this.thisSession,
     required this.thisInstructor,
+    required this.isSaved,
   });
 
   @override
@@ -51,90 +54,115 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
         }
 
         return Container(
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
           color: AppColors.white,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
                       widget.thisTitle,
                       style: AppTextStyles.bd1.copyWith(color: AppColors.black),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const Spacer(),
-                    // BookMarkButton(
-                    //   id: widget.thisId,
-                    //   classification: '창업강의',
-                    // ),
-                  ],
-                ),
-                Gaps.v20,
-                const CustomDivider(),
-                Gaps.v12,
-                Row(
-                  children: [
-                    ClassLiberalChips(thisText: widget.thisLiberal),
-                    Gaps.h8,
-                    ClassCreditsChips(thisTextNum: widget.thisCredit),
-                    Gaps.h8,
+                  ),
+                  Gaps.h15,
+                  BookMarkLectureButton(
+                    isSaved: widget.isSaved,
+                    thisLectureID: widget.thisId,
+                  ),
+                ],
+              ),
+              Gaps.v12,
+              const CustomDivider(),
+              Gaps.v16,
+              Row(
+                children: [
+                  if (widget.thisLiberal.isNotEmpty)
+                    Row(
+                      children: [
+                        ClassLiberalChips(thisText: widget.thisLiberal),
+                        Gaps.h8,
+                      ],
+                    ),
+                  if (widget.thisCredit != '0')
+                    Row(
+                      children: [
+                        ClassCreditsChips(thisTextNum: widget.thisCredit),
+                        Gaps.h8,
+                      ],
+                    ),
+                  if (widget.thisSession.isNotEmpty)
                     ClassSessionChips(thisTextSession: widget.thisSession),
+                ],
+              ),
+              Gaps.v12,
+              if (widget.thisInstructor.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '교강사',
+                      style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                    ),
+                    Gaps.v2,
+                    Text(
+                      widget.thisInstructor,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+                    ),
+                    Gaps.v12,
                   ],
                 ),
-                Gaps.v12,
-                Text(
-                  '교강사',
-                  style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+              if (widget.thisContent.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '강의 개요',
+                      style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                    ),
+                    Gaps.v2,
+                    Text(
+                      widget.thisContent,
+                      maxLines: _isExpanded ? null : 2,
+                      overflow: _isExpanded ? null : TextOverflow.ellipsis,
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+                    ),
+                    Gaps.v4,
+                  ],
                 ),
-                Gaps.v4,
-                Text(
-                  widget.thisInstructor,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-                ),
-                Gaps.v12,
-                Text(
-                  '강의 개요',
-                  style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-                ),
-                Gaps.v4,
-                Text(
-                  widget.thisContent,
-                  maxLines: _isExpanded ? null : 2,
-                  overflow: _isExpanded ? null : TextOverflow.ellipsis,
-                  style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-                ),
-                Gaps.v10,
-                if (_isExpandable)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isExpanded = !_isExpanded;
-                        });
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            _isExpanded ? '접기' : '더보기',
-                            style: AppTextStyles.btn2
-                                .copyWith(color: AppColors.g4),
-                          ),
-                          Gaps.h4,
-                          _isExpanded
-                              ? AppIcon.arrow_up_18
-                              : AppIcon.arrow_down_18
-                        ],
-                      ),
+              if (_isExpandable)
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    setState(() {
+                      _isExpanded = !_isExpanded;
+                    });
+                  },
+                  child: SizedBox(
+                    height: 36,
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          _isExpanded ? '접기' : '더보기',
+                          style:
+                              AppTextStyles.btn2.copyWith(color: AppColors.g4),
+                        ),
+                        Gaps.h4,
+                        _isExpanded
+                            ? AppIcon.arrow_up_18
+                            : AppIcon.arrow_down_18
+                      ],
                     ),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         );
       },

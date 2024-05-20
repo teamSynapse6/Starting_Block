@@ -128,7 +128,6 @@ class OnCampusApi {
 
     final url =
         Uri.parse('$baseUrl/api/v1/announcements/list/on-campus$queryString');
-    print('교내 공고 URL: $url');
 
     final response = await http.get(url, headers: headers);
 

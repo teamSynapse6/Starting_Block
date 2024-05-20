@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/save_fetch_userdata.dart';
@@ -14,9 +12,13 @@ class EnterprenutEdit extends StatefulWidget {
 class _EnterprenutEditState extends State<EnterprenutEdit> {
   int? selectedCard; // 선택된 카드의 인덱스를 추적
 
-  void _onCardTap(int cardIndex) {
+  void _onCardTap(int cardIndex) async {
     setState(() {
       selectedCard = cardIndex;
+    });
+    await _saveEntrepreneurCheck();
+    await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+      _onNextTap();
     });
   }
 
@@ -27,8 +29,7 @@ class _EnterprenutEditState extends State<EnterprenutEdit> {
   }
 
   void _onNextTap() async {
-    if (selectedCard == null) return; // 카드가 선택되지 않으면 반환
-    await _saveEntrepreneurCheck();
+    if (selectedCard == null) return;
     Navigator.of(context).pop();
   }
 
@@ -48,114 +49,99 @@ class _EnterprenutEditState extends State<EnterprenutEdit> {
                 "사업자 등록을 완료하셨나요?",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
               ),
-              Gaps.v10,
-              Text(
-                "지원공고 맞춤 추천을 위해 사용됩니다",
-                style: AppTextStyles.bd6.copyWith(color: AppColors.g6),
-              ),
-              Gaps.v36,
+              Gaps.v32,
               Row(
                 children: [
-                  GestureDetector(
-                    onTap: () => _onCardTap(1),
-                    child: Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                        side: BorderSide(
-                            color: selectedCard == 1
-                                ? AppColors.blue
-                                : AppColors.g2,
-                            width: selectedCard == 1 ? 3 : 1),
-                      ),
-                      color: selectedCard == 1
-                          ? AppColors.bluebg
-                          : AppColors.white,
-                      child: SizedBox(
-                        width: 148,
-                        height: 148,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            AppIcon.run_yes,
-                            const Text(
-                              '네,',
-                              style: TextStyle(
-                                  fontFamily: 'pretendard',
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                  color: AppColors.g6),
-                            ),
-                            const Text(
-                              '완료했습니다',
-                              style: TextStyle(
-                                  fontFamily: 'pretendard',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: AppColors.g6),
-                            ),
-                          ],
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => _onCardTap(1),
+                      child: Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                          side: BorderSide(
+                              color: selectedCard == 1
+                                  ? AppColors.blue
+                                  : AppColors.g2,
+                              width: selectedCard == 1 ? 3 : 1),
+                        ),
+                        color: selectedCard == 1
+                            ? AppColors.bluebg
+                            : AppColors.white,
+                        child: SizedBox(
+                          height: 148,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              AppIcon.run_yes,
+                              const Text(
+                                '네,',
+                                style: TextStyle(
+                                    fontFamily: 'pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: AppColors.g6),
+                              ),
+                              const Text(
+                                '완료했습니다',
+                                style: TextStyle(
+                                    fontFamily: 'pretendard',
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    color: AppColors.g6),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () => _onCardTap(2),
-                    child: Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                        side: BorderSide(
-                            color: selectedCard == 2
-                                ? AppColors.blue
-                                : AppColors.g2,
-                            width: selectedCard == 2 ? 3 : 1),
-                      ),
-                      color: selectedCard == 2
-                          ? AppColors.bluebg
-                          : AppColors.white,
-                      child: SizedBox(
-                        width: 148,
-                        height: 148,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            AppIcon.run_no,
-                            const Text(
-                              '아니요,',
-                              style: TextStyle(
-                                  fontFamily: 'pretendard',
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                  color: AppColors.g6),
-                            ),
-                            const Text(
-                              '준비중입니다',
-                              style: TextStyle(
-                                  fontFamily: 'pretendard',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: AppColors.g6),
-                            ),
-                          ],
+                  Gaps.h10,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => _onCardTap(2),
+                      child: Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                          side: BorderSide(
+                              color: selectedCard == 2
+                                  ? AppColors.blue
+                                  : AppColors.g2,
+                              width: selectedCard == 2 ? 3 : 1),
+                        ),
+                        color: selectedCard == 2
+                            ? AppColors.bluebg
+                            : AppColors.white,
+                        child: SizedBox(
+                          height: 148,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              AppIcon.run_no,
+                              const Text(
+                                '아니요,',
+                                style: TextStyle(
+                                    fontFamily: 'pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: AppColors.g6),
+                              ),
+                              const Text(
+                                '준비중입니다',
+                                style: TextStyle(
+                                    fontFamily: 'pretendard',
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    color: AppColors.g6),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ],
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: Sizes.size24,
-                ),
-                child: GestureDetector(
-                  onTap: _onNextTap,
-                  child: NextContained(
-                    text: "저장",
-                    disabled: selectedCard == null, // 선택된 카드가 없으면 비활성화
-                  ),
-                ),
               ),
             ],
           ),

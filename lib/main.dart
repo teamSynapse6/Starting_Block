@@ -89,6 +89,9 @@ class SplashScreenState extends State<SplashScreen> {
 
   void loadLogInStatus() async {
     bool isLogIned = await UserInfo.getLoginStatus();
+    if (isLogIned) {
+      await SaveUserData.fetchAndSaveUserData();
+    }
     setState(() {
       _isLogIned = isLogIned;
     });

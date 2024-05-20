@@ -6,18 +6,6 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/offcampus_biz/ofca_recommend.dart';
 
-const List<String> validTextsBiz = [
-  '창업 교육',
-  '아이디어 창출',
-  '공간 마련',
-  '사업 계획서',
-  'R&D / 시제품 제작',
-  '사업 검증',
-  'IR Deck 작성',
-  '자금 확보',
-  '사업화',
-];
-
 class TabScreenOfCaBiz extends StatefulWidget {
   final String thisSelectedText;
   final int thisSelectedId;
@@ -36,11 +24,15 @@ class TabScreenOfCaBiz extends StatefulWidget {
 
 class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
   List<RoadMapSavedOffcampusModel> offCampusData = [];
-  bool _isLoading = false;
+  List<RoadMapOffCampusRecModel> _offCampusRecData = [];
+  bool _isLoading = true;
+  bool _isRecLoading = true;
+
   @override
   void initState() {
     super.initState();
     loadOffCampusData();
+    _loadOffCampusRecData();
   }
 
   @override
@@ -48,13 +40,11 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.thisSelectedText != widget.thisSelectedText) {
       loadOffCampusData();
+      _loadOffCampusRecData();
     }
   }
 
   void loadOffCampusData() async {
-    setState(() {
-      _isLoading = true;
-    });
     var loadedData = await RoadMapApi.getSavedListOffcampus(
       roadmapId: widget.thisSelectedId,
     );
@@ -64,12 +54,23 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
     });
   }
 
+  void _loadOffCampusRecData() async {
+    final offCampusRecData =
+        await RoadMapApi.getOffCampusRec(widget.thisSelectedId);
+
+    setState(() {
+      _offCampusRecData = offCampusRecData;
+      _isRecLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<BookMarkNotifier>(
         builder: (context, bookMarkNotifier, child) {
       if (bookMarkNotifier.isUpdated) {
         loadOffCampusData();
+        _loadOffCampusRecData();
         bookMarkNotifier.resetUpdate();
       }
 
@@ -81,10 +82,13 @@ class _TabScreenOfCaBizState extends State<TabScreenOfCaBiz> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (validTextsBiz.contains(widget.thisSelectedText))
+                  if (globalDataRoadmapList.contains(widget.thisSelectedText))
                     OfCaRecommend(
                       thisSelectedText: widget.thisSelectedText,
                       thisCurrentStage: widget.thisCurrentStage,
+                      roadmapId: widget.thisSelectedId,
+                      thisOffCampusRecData: _offCampusRecData,
+                      isRecLoading: _isRecLoading,
                     ),
                   Gaps.v24,
                   Padding(
