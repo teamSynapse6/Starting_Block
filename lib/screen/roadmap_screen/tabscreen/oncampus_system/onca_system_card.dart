@@ -45,82 +45,95 @@ class _OnCaSystemCardState extends State<OnCaSystemCard> {
         }
 
         return Container(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
           color: AppColors.white,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.thisTitle,
-                        style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
-                      ),
-                    ),
-                    BookMarkButton(
-                      isSaved: widget.isSaved,
-                      thisID: widget.thisId,
-                    ),
-                  ],
-                ),
-                Gaps.v10,
-                const CustomDivider(),
-                Gaps.v10,
-                Text(
-                  '지원 대상',
-                  style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-                ),
-                Gaps.v4,
-                Text(
-                  widget.thisTarget,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-                ),
-                Gaps.v10,
-                Text(
-                  '내용',
-                  style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
-                ),
-                Gaps.v4,
-                Text(
-                  widget.thisContent,
-                  maxLines: _isExpanded ? null : 2,
-                  overflow: _isExpanded ? null : TextOverflow.ellipsis,
-                  style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-                ),
-                Gaps.v10,
-                if (_isExpandable)
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      setState(() {
-                        _isExpanded = !_isExpanded; // 확장 상태를 토글
-                      });
-                    },
-                    child: SizedBox(
-                      height: 36,
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            '더보기',
-                            style: AppTextStyles.btn2
-                                .copyWith(color: AppColors.g4),
-                          ),
-                          Gaps.h4,
-                          _isExpanded
-                              ? AppIcon.arrow_up_16
-                              : AppIcon.arrow_down_16,
-                        ],
-                      ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.thisTitle,
+                      style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-              ],
-            ),
+                  Gaps.h15,
+                  BookMarkButton(
+                    isSaved: widget.isSaved,
+                    thisID: widget.thisId,
+                  ),
+                ],
+              ),
+              Gaps.v10,
+              const CustomDivider(),
+              Gaps.v10,
+              if (widget.thisTarget.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '지원 대상',
+                      style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                    ),
+                    Gaps.v4,
+                    Text(
+                      widget.thisTarget,
+                      maxLines: _isExpanded ? null : 2,
+                      overflow: _isExpanded ? null : TextOverflow.ellipsis,
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+                    ),
+                    Gaps.v10,
+                  ],
+                ),
+              if (widget.thisContent.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '내용',
+                      style: AppTextStyles.bd5.copyWith(color: AppColors.g4),
+                    ),
+                    Gaps.v4,
+                    Text(
+                      widget.thisContent,
+                      maxLines: _isExpanded ? null : 2,
+                      overflow: _isExpanded ? null : TextOverflow.ellipsis,
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+                    ),
+                    Gaps.v10,
+                    if (_isExpandable)
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          setState(() {
+                            _isExpanded = !_isExpanded; // 확장 상태를 토글
+                          });
+                        },
+                        child: SizedBox(
+                          height: 36,
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                _isExpanded ? '접기' : '더보기',
+                                style: AppTextStyles.btn2
+                                    .copyWith(color: AppColors.g4),
+                              ),
+                              Gaps.h4,
+                              _isExpanded
+                                  ? AppIcon.arrow_up_16
+                                  : AppIcon.arrow_down_16,
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                )
+            ],
           ),
         );
       },

@@ -391,6 +391,8 @@ class RoadMapApi {
           .map((dynamic item) => RoadMapOffCampusRecModel.fromJson(item))
           .toList();
       return recommendations;
+    } else if (response.statusCode == 400) {
+      return []; //해당 코드는 임의로 추가한 코드입니다. 400일 경우 빈 리스트를 반환합니다.-> 추후 관리 위험요소
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return getOffCampusRec(roadmapId, retryCount: retryCount - 1); // 재귀 호출

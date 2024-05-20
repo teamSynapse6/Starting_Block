@@ -1,58 +1,32 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class OfCaRecommend extends StatefulWidget {
+class OfCaRecommend extends StatelessWidget {
   final String thisSelectedText;
   final bool thisCurrentStage;
   final int roadmapId;
+  final List<RoadMapOffCampusRecModel> thisOffCampusRecData;
+  final bool isRecLoading;
 
   const OfCaRecommend({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
     required this.roadmapId,
+    required this.thisOffCampusRecData,
+    required this.isRecLoading,
   });
 
   @override
-  State<OfCaRecommend> createState() => _OfCaRecommendState();
-}
-
-class _OfCaRecommendState extends State<OfCaRecommend> {
-  List<RoadMapOffCampusRecModel> _offCampusRecData = [];
-  bool isEntrepreneur = false;
-  String residence = '';
-  String userBirthday = '';
-  final bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadOffCampusData();
-  }
-
-  @override
-  void didUpdateWidget(OfCaRecommend oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.thisSelectedText != widget.thisSelectedText) {
-      _loadOffCampusData();
-    }
-  }
-
-  void _loadOffCampusData() async {
-    final offCampusRecData = await RoadMapApi.getOffCampusRec(widget.roadmapId);
-
-    setState(() {
-      _offCampusRecData = offCampusRecData;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_offCampusRecData.isEmpty) {
+    final List<RoadMapOffCampusRecModel> offCampusRecData =
+        thisOffCampusRecData;
+    final bool isLoading = isRecLoading;
+
+    if (offCampusRecData.isEmpty) {
       return Container();
     }
 
@@ -73,7 +47,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
           ),
         ),
         Gaps.v16,
-        !_isLoading
+        isLoading
             ? const RoadMapOfcaTapCarousel()
             : Stack(
                 children: [
@@ -82,9 +56,9 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: _offCampusRecData.length,
+                      itemCount: offCampusRecData.length,
                       itemBuilder: (context, index) {
-                        final offCampusRec = _offCampusRecData[index];
+                        final offCampusRec = offCampusRecData[index];
                         return Row(
                           children: [
                             if (index == 0) Gaps.h24,
@@ -100,7 +74,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
                       },
                     ),
                   ),
-                  if (!widget.thisCurrentStage)
+                  if (!thisCurrentStage)
                     Positioned(
                       top: 0,
                       left: 0,
@@ -117,7 +91,7 @@ class _OfCaRecommendState extends State<OfCaRecommend> {
                         ),
                       ),
                     ),
-                  if (!widget.thisCurrentStage)
+                  if (!thisCurrentStage)
                     const Positioned(
                       top: 0,
                       left: 0,

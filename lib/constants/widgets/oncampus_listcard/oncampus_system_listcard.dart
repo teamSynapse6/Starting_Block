@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class OnCampusSysListCard extends StatelessWidget {
@@ -29,11 +30,15 @@ class OnCampusSysListCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  thisTitle,
-                  style: AppTextStyles.bd1.copyWith(color: AppColors.black),
+                Expanded(
+                  child: Text(
+                    thisTitle,
+                    style: AppTextStyles.bd1.copyWith(color: AppColors.black),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                const Spacer(),
+                Gaps.h15,
                 BookMarkButton(
                   thisID: thisId,
                   isSaved: isBookmarked,

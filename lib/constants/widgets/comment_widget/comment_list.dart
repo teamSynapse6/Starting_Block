@@ -9,7 +9,7 @@ String formatDate(String date) {
 }
 
 class CommentList extends StatefulWidget {
-  final String thisUserName, thisAnswer, thisDate;
+  final String thisUserName, thisAnswer, thisDate, myNickName;
   final int thisLike, thisAnswerId;
   final bool isMyHeart, isMyAnswer;
   final VoidCallback thisReplyTap,
@@ -30,6 +30,7 @@ class CommentList extends StatefulWidget {
     required this.thisCommenHeartDeleteTap,
     required this.isMyAnswer,
     required this.thisAnswerDeleteTap,
+    required this.myNickName,
   });
 
   @override
@@ -40,6 +41,7 @@ class _CommentListState extends State<CommentList> {
   @override
   Widget build(BuildContext context) {
     String formattedDate = formatDate(widget.thisDate);
+    bool isMyComment = widget.thisUserName == widget.myNickName;
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -75,7 +77,7 @@ class _CommentListState extends State<CommentList> {
                 ],
               ),
               const Spacer(),
-              widget.isMyAnswer
+              isMyComment
                   ? AnswerCommentDelete(
                       thisId: widget.thisAnswerId,
                       thisDeleteAction: widget.thisAnswerDeleteTap,

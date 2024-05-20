@@ -14,7 +14,7 @@ class HomeQuestionRecommend extends StatefulWidget {
 }
 
 class _HomeQuestionRecommendState extends State<HomeQuestionRecommend> {
-  List<HomeWaitingQuestionModel> notifyList = [];
+  List<HomeWaitingQuestionModel> questionList = [];
   bool isLoading = true;
 
   @override
@@ -27,7 +27,7 @@ class _HomeQuestionRecommendState extends State<HomeQuestionRecommend> {
     try {
       List<HomeWaitingQuestionModel> list = await HomeApi.getWaitingQuestion();
       setState(() {
-        notifyList = list;
+        questionList = list;
         isLoading = false;
       });
     } catch (e) {
@@ -52,55 +52,58 @@ class _HomeQuestionRecommendState extends State<HomeQuestionRecommend> {
       return const HomeQuestionSkeleton();
     }
 
-    return Material(
-      color: AppColors.white,
-      borderRadius: BorderRadius.circular(4),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 20,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '답변을 기다리는 질문이 있어요',
-              style: AppTextStyles.bd1.copyWith(color: AppColors.black),
+    return questionList.isNotEmpty
+        ? Material(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(4),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 20,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '답변을 기다리는 질문이 있어요',
+                    style: AppTextStyles.bd1.copyWith(color: AppColors.black),
+                  ),
+                  Gaps.v4,
+                  Text(
+                    '답변 제공이 다른 창업자에게 큰 도움이 됩니다',
+                    style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                  ),
+                  Gaps.v16,
+                  const CustomDividerH1G1(),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: questionList.length,
+                    itemBuilder: (context, index) {
+                      final item = questionList[index];
+                      return Column(
+                        children: [
+                          Gaps.v16,
+                          HomeQuestionRecommendList(
+                            thisAnnouncementType: item.announcementType,
+                            thisTitle: item.announcementTitle,
+                            thisContent: item.questionContent,
+                            thisHeartCount: item.heartCount.toString(),
+                            thisDate: item.createdAt,
+                            thisTap: () =>
+                                thisOnTap(questionID: item.questionId),
+                          ),
+                          if (index < questionList.length - 1) Gaps.v20,
+                          if (index < questionList.length - 1)
+                            const CustomDividerH1G1(),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-            Gaps.v4,
-            Text(
-              '답변 제공이 다른 창업자에게 큰 도움이 됩니다',
-              style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
-            ),
-            Gaps.v16,
-            const CustomDividerH1G1(),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: notifyList.length,
-              itemBuilder: (context, index) {
-                final item = notifyList[index];
-                return Column(
-                  children: [
-                    Gaps.v16,
-                    HomeQuestionRecommendList(
-                      thisAnnouncementType: item.announcementType,
-                      thisTitle: item.announcementTitle,
-                      thisContent: item.questionContent,
-                      thisHeartCount: item.heartCount.toString(),
-                      thisDate: item.createdAt,
-                      thisTap: () => thisOnTap(questionID: item.questionId),
-                    ),
-                    if (index < notifyList.length - 1) Gaps.v20,
-                    if (index < notifyList.length - 1)
-                      const CustomDividerH1G1(),
-                  ],
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+          )
+        : Container();
   }
 }

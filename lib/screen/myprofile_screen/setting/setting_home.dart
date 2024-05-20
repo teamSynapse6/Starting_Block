@@ -30,7 +30,6 @@ class _SettingHomeState extends State<SettingHome> {
       await DeleteAllChatData.deleteAllGptChatData();
       await UserInfo().setLoginStatus(false);
       await UserInfoManageApi.postUserLogOut();
-      print('최종 로그아웃 성공');
     }
   }
 

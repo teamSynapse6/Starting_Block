@@ -28,11 +28,13 @@ class _QuestionDetailState extends State<QuestionDetail> {
   String? replyingToUserName; // 답글 대상 사용자 이름
   bool isReplying = false; // 답글 작성 UI 표시 여부
   bool isHeartLoading = false;
+  String userNickName = ''; //유저 닉네임으로 내 글인지 아닌지 판단
 
   @override
   void initState() {
     super.initState();
     _loadQuestionDetail();
+    _loadUserNickName();
 
     _controller.addListener(() {
       if (_controller.text.isNotEmpty && !_isTyped) {
@@ -53,6 +55,14 @@ class _QuestionDetailState extends State<QuestionDetail> {
   void dispose() {
     _controller.dispose(); // 리소스를 정리합니다.
     super.dispose();
+  }
+
+  //유저 닉네임 로드 메소드
+  void _loadUserNickName() async {
+    final user = await UserInfo.getNickName();
+    setState(() {
+      userNickName = user;
+    });
   }
 
   // 질문 상세 정보를 로드하는 메서드
@@ -252,7 +262,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
-                      child: Text('질문을 로딩하는 중 서버에서 오류가 발생했습니다.'));
+                      child: Text("질문의 '나도 궁금해요' 기능에서 오류가 발생했습니다."));
                 } else if (snapshot.hasData) {
                   final questionDetail = snapshot.data!;
 
@@ -264,10 +274,11 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisQuestion: questionDetail.content,
                         thisDate: questionDetail.createdAt,
                         thisLike: questionDetail.heartCount,
-                        isMine: questionDetail.isMyHeart,
+                        isMyHeart: questionDetail.isMyHeart,
                         thisQuestionLikeTap: postHeartForQuestion,
                         thisQuestionLikeCancelTap: deleteHeartForQuestion,
                         thisQuestionHeardID: questionDetail.heartId,
+                        myNickName: userNickName,
                       ),
                       const CustomDividerH8G1(),
                       QuestionContactComment(
@@ -295,6 +306,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisReplyDeleteTap: () {
                           _loadQuestionDetail();
                         },
+                        myNickName: userNickName,
                       ),
                     ],
                   );

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
 class SchoolLogoWidget extends StatefulWidget {
-  const SchoolLogoWidget({super.key});
+  final String? userSchoolNameInput;
+
+  const SchoolLogoWidget({
+    super.key,
+    this.userSchoolNameInput,
+  });
 
   @override
   State<SchoolLogoWidget> createState() => _SchoolLogoWidgetState();
@@ -52,7 +57,14 @@ class _SchoolLogoWidgetState extends State<SchoolLogoWidget> {
   };
 
   Future<int> getSchoolNumber() async {
-    String schoolName = await UserInfo.getSchoolName(); // 비동기 호출로 학교명을 가져옵니다.
+    String schoolName;
+
+    if (widget.userSchoolNameInput != null) {
+      schoolName = widget.userSchoolNameInput!;
+    } else {
+      schoolName = await UserInfo.getSchoolName(); // 비동기 호출로 학교명을 가져옵니다.
+    }
+
     return schoolNameToNumber[schoolName] ?? 0; // 맵에서 학교 번호를 찾고, 없으면 0을 반환합니다.
   }
 

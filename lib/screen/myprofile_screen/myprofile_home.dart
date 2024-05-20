@@ -23,11 +23,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
   @override
   void initState() {
     super.initState();
-    _loadNickName();
-    _loadSchoolName();
-    _loadEntrepreneurCheck();
-    _loadResidenceName();
-    _loadSelectedProfileIcon(); // 프로필 아이콘 로드
+    _loadUserData();
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -37,37 +33,17 @@ class _MyProfileHomeState extends State<MyProfileHome>
     super.dispose();
   }
 
-  Future<void> _loadNickName() async {
+  Future<void> _loadUserData() async {
     String nickName = await UserInfo.getNickName();
-    setState(() {
-      _nickName = nickName;
-    });
-  }
-
-  Future<void> _loadSchoolName() async {
     String schoolName = await UserInfo.getSchoolName();
-    setState(() {
-      _schoolName = schoolName;
-    });
-  }
-
-  Future<void> _loadEntrepreneurCheck() async {
     bool isEntrepreneur = await UserInfo.getEntrepreneurCheck();
-    setState(() {
-      _entrepreneurCheck = isEntrepreneur ? "사업자 등록 완료" : "사업자 등록 미완료";
-    });
-  }
-
-  Future<void> _loadResidenceName() async {
     String residenceName = await UserInfo.getResidence();
-    setState(() {
-      _residenceName = residenceName;
-    });
-  }
-
-  Future<void> _loadSelectedProfileIcon() async {
     int selectedIconIndex = await UserInfo.getSelectedIconIndex();
     setState(() {
+      _nickName = nickName;
+      _schoolName = schoolName;
+      _entrepreneurCheck = isEntrepreneur ? "사업자 등록 완료" : "사업자 등록 미완료";
+      _residenceName = residenceName;
       _selectedProfileIcon = selectedIconIndex;
     });
   }
@@ -80,11 +56,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
       body: Consumer<UserInfo>(
         builder: (context, userInfo, child) {
           if (userInfo.hasChanged) {
-            _loadNickName();
-            _loadSchoolName();
-            _loadEntrepreneurCheck();
-            _loadResidenceName();
-            _loadSelectedProfileIcon(); // 프로필 아이콘 로드
+            _loadUserData();
             userInfo.resetChangeFlag(); // 데이터 로딩 후 플래그 리셋
           }
           return Column(
@@ -112,10 +84,12 @@ class _MyProfileHomeState extends State<MyProfileHome>
                                 Gaps.v8,
                                 Row(
                                   children: [
-                                    const SizedBox(
+                                    SizedBox(
                                       height: 18,
                                       width: 18,
-                                      child: SchoolLogoWidget(),
+                                      child: SchoolLogoWidget(
+                                        userSchoolNameInput: _schoolName,
+                                      ),
                                     ),
                                     Gaps.h5,
                                     Text(
@@ -169,13 +143,14 @@ class _MyProfileHomeState extends State<MyProfileHome>
                           ),
                           GestureDetector(
                             behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              Navigator.push(
+                            onTap: () async {
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const ProfileEditHome(),
                                 ),
                               );
+                              _loadUserData();
                             },
                             child: SizedBox(
                               height: 36,

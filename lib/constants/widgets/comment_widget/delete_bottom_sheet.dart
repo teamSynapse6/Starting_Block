@@ -60,6 +60,7 @@ class _AnswerCommentDeleteState extends State<AnswerCommentDelete> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      radius: 5,
       onTap: () => deleteTap(context),
       child: Container(
         child: AppIcon.more,
@@ -126,6 +127,7 @@ class _ReplyCommentDeleteState extends State<ReplyCommentDelete> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      radius: 5,
       onTap: () => deleteTap(context),
       child: Container(
         child: AppIcon.more,

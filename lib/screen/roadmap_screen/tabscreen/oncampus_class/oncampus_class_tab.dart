@@ -61,6 +61,7 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
         loadOnCampusClassData();
         bookMarkNotifier.resetUpdate();
       }
+
       return Scaffold(
         backgroundColor: AppColors.secondaryBG,
         body: CustomScrollView(
@@ -107,7 +108,7 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
                                   thisCredit: item.credit.toString(),
                                   thisContent: item.content,
                                   thisSession: item.session.toString(),
-                                  thisTeacher: item.instructor,
+                                  thisInstructor: item.instructor,
                                   thisBookMaekSaved: item.isBookmarked,
                                 ),
                                 Gaps.v16,

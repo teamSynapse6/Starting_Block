@@ -2,55 +2,32 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
-import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_card.dart';
 
-class OnCaNotifyRecommend extends StatefulWidget {
+class OnCaNotifyRecommend extends StatelessWidget {
   final String thisSelectedText;
   final bool thisCurrentStage;
   final int roadmapId;
+  final List<RoadMapOnCampusRecModel> thisOnCampusRecData;
+  final bool thisRecLoading;
 
   const OnCaNotifyRecommend({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
     required this.roadmapId,
+    required this.thisOnCampusRecData,
+    required this.thisRecLoading,
   });
 
   @override
-  State<OnCaNotifyRecommend> createState() => _OnCaNotifyRecommendState();
-}
-
-class _OnCaNotifyRecommendState extends State<OnCaNotifyRecommend> {
-  List<RoadMapOnCampusRecModel> _onCampusRecData = []; // 로드된 데이터를 저장할 리스트
-  final bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    loadOnCaNotifyRec(); // 데이터 로드
-  }
-
-  @override
-  void didUpdateWidget(OnCaNotifyRecommend oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.thisSelectedText != widget.thisSelectedText) {
-      loadOnCaNotifyRec();
-    }
-  }
-
-  Future<void> loadOnCaNotifyRec() async {
-    final onCampusRecData = await RoadMapApi.getOnCampusRec(widget.roadmapId);
-    setState(() {
-      _onCampusRecData = onCampusRecData;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_onCampusRecData.isEmpty) {
+    List<RoadMapOnCampusRecModel> onCampusRecData = thisOnCampusRecData;
+    final bool isLoading = thisRecLoading;
+
+    if (onCampusRecData.isEmpty) {
       return Container();
     }
 
@@ -71,7 +48,7 @@ class _OnCaNotifyRecommendState extends State<OnCaNotifyRecommend> {
           ),
         ),
         Gaps.v16,
-        !_isLoading
+        isLoading
             ? const RoadMapOfcaTapCarousel()
             : Stack(
                 children: [
@@ -80,9 +57,9 @@ class _OnCaNotifyRecommendState extends State<OnCaNotifyRecommend> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: _onCampusRecData.length,
+                      itemCount: onCampusRecData.length,
                       itemBuilder: (context, index) {
-                        final onCampusData = _onCampusRecData[index];
+                        final onCampusData = onCampusRecData[index];
                         return Row(
                           children: [
                             if (index == 0) Gaps.h24,
@@ -99,7 +76,7 @@ class _OnCaNotifyRecommendState extends State<OnCaNotifyRecommend> {
                       },
                     ),
                   ),
-                  if (!widget.thisCurrentStage)
+                  if (!thisCurrentStage)
                     Positioned(
                       top: 0,
                       left: 0,
@@ -116,7 +93,7 @@ class _OnCaNotifyRecommendState extends State<OnCaNotifyRecommend> {
                         ),
                       ),
                     ),
-                  if (!widget.thisCurrentStage)
+                  if (!thisCurrentStage)
                     const Positioned(
                       top: 0,
                       left: 0,
