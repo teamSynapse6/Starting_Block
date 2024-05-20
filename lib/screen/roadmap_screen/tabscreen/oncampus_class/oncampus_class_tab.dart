@@ -28,6 +28,7 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
   List<int> savedIds = [];
   List<RoadMapSavedClassModel> onCampusClassData = [];
   bool isLoading = true;
+  bool bookMarkIsUpdated = false;
 
   @override
   void initState() {
@@ -59,6 +60,7 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
         builder: (context, bookMarkNotifier, child) {
       if (bookMarkNotifier.isUpdated) {
         loadOnCampusClassData();
+        print('호출됨');
         bookMarkNotifier.resetUpdate();
       }
 

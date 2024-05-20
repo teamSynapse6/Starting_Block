@@ -45,12 +45,14 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
     }
   }
 
-  Future<void> loadClassData() async {
+  void loadClassData() async {
     // boolToClass에서 현재 선택된 텍스트에 대한 값이 true인지 확인
     if (boolToClass.contains(widget.thisSelectedText)) {
       final classRecData = await RoadMapApi.getClassRec(widget.roadmapId);
       setState(() {
         classRec = classRecData;
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => _updateCardHeight()); // 클래스 데이터를 로드한 후 카드 높이 업데이트
       });
     } else {
       setState(() {
@@ -95,21 +97,20 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
         Gaps.v16,
         Stack(
           children: [
-            if (classRec != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: OnCaClassCard(
-                  key: _cardKeyFirClass,
-                  thisTitle: classRec!.title,
-                  thisId: classRec!.lectureId.toString(),
-                  thisLiberal: classRec!.liberal,
-                  thisCredit: classRec!.credit.toString(),
-                  thisContent: classRec!.content,
-                  thisSession: classRec!.session.toString(),
-                  thisInstructor: classRec!.instructor,
-                  isSaved: classRec!.isBookmarked,
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: OnCaClassCard(
+                key: _cardKeyFirClass,
+                thisTitle: classRec!.title,
+                thisId: classRec!.lectureId.toString(),
+                thisLiberal: classRec!.liberal,
+                thisCredit: classRec!.credit.toString(),
+                thisContent: classRec!.content,
+                thisSession: classRec!.session.toString(),
+                thisInstructor: classRec!.instructor,
+                isSaved: classRec!.isBookmarked,
               ),
+            ),
             if (!widget.thisCurrentStage)
               Positioned(
                 top: 0,
@@ -120,7 +121,7 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                     child: Container(
-                      height: 140,
+                      height: _cardHeight,
                       width: MediaQuery.of(context).size.width,
                       color: Colors.transparent,
                     ),

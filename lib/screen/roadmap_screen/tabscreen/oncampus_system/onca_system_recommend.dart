@@ -50,6 +50,8 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
       final systemRecData = await RoadMapApi.getSystemRec(widget.roadmapId);
       setState(() {
         systemRec = systemRecData;
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => _updateCardHeight()); // 시스템 데이터를 로드한 후 카드 높이 업데이트
       });
     } else {
       setState(() {
@@ -94,17 +96,16 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
         Gaps.v16,
         Stack(
           children: [
-            if (systemRec != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: OnCaSystemCard(
-                    key: _cardKeyForSystem,
-                    thisTitle: systemRec!.title,
-                    thisId: systemRec!.announcementId.toString(),
-                    thisContent: systemRec!.content,
-                    thisTarget: systemRec!.target,
-                    isSaved: systemRec!.isBookmarked),
-              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: OnCaSystemCard(
+                  key: _cardKeyForSystem,
+                  thisTitle: systemRec!.title,
+                  thisId: systemRec!.announcementId.toString(),
+                  thisContent: systemRec!.content,
+                  thisTarget: systemRec!.target,
+                  isSaved: systemRec!.isBookmarked),
+            ),
             if (!widget.thisCurrentStage)
               Positioned(
                 top: 0,
@@ -115,7 +116,7 @@ class _OnCaSystemRecommendState extends State<OnCaSystemRecommend> {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                     child: Container(
-                      height: 140,
+                      height: _cardHeight,
                       width: MediaQuery.of(context).size.width,
                       color: Colors.transparent,
                     ),
