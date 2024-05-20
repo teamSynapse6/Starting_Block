@@ -128,6 +128,7 @@ export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_system_ske
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_class_skeleton.dart'; //교내지원사업_강의 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_supportgroup_skeleton.dart'; //교내지원사업_창업지원단 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_search_skeleton.dart'; //교내지원사업_검색 화면 스켈레톤 로더 화면
-export 'package:starting_block/skeleton_screen/home_skeleton/home_notift_rec_skeleton.dart'; //홈_공고 추천 영역 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/home_skeleton/home_notify_rec_skeleton.dart'; //홈_공고 추천 영역 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/home_skeleton/home_question_rec_skeleton.dart'; //홈_질문 추천 영역 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_ofca_onca_skeleton.dart'; //로드맵_교외사업 탭 스켈레톤 로더 화면
 

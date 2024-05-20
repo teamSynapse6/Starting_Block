@@ -5,8 +5,6 @@ import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_notify/onca_notify_recommend.dart';
 
-const List<String> validTextsNotify = ableText;
-
 class TabScreenOnCaNotify extends StatefulWidget {
   final String thisSelectedText;
   final int thisSelectedId;
@@ -63,11 +61,13 @@ class _TabScreenOnCaNotifyState extends State<TabScreenOnCaNotify> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (validTextsNotify.contains(widget.thisSelectedText))
+                if (ableText.contains(widget.thisSelectedText))
                   OnCaNotifyRecommend(
                     thisSelectedText: widget.thisSelectedText,
                     thisCurrentStage: widget.thisCurrentStage,
+                    roadmapId: widget.thisSelectedId,
                   ),
+                Gaps.v24,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(

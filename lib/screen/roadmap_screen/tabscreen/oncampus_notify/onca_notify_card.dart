@@ -3,7 +3,7 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
 class OncaNotifyCard extends StatelessWidget {
-  final String thisOrganize, thisID, thisTitle;
+  final String thisOrganize, thisID, thisTitle, thisUrl;
   final int index;
 
   const OncaNotifyCard({
@@ -12,6 +12,7 @@ class OncaNotifyCard extends StatelessWidget {
     required this.thisID,
     required this.thisTitle,
     required this.index,
+    required this.thisUrl,
   });
 
   @override
@@ -21,7 +22,10 @@ class OncaNotifyCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OffCampusDetail(thisID: thisID),
+            builder: (context) => OncampusWebViewScreen(
+              url: thisUrl,
+              id: thisID,
+            ),
             fullscreenDialog: false,
           ),
         );

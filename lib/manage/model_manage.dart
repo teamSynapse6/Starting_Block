@@ -34,6 +34,9 @@ export 'package:starting_block/manage/models/roadmap_models/roadmap_savedlist_cl
 
 //로드맵_추천 Model 파일 관리용
 export 'package:starting_block/manage/models/roadmap_rec_models/roadmap_offcampus_rec.dart'; //로드맵_추천_교외지원사업 모델
+export 'package:starting_block/manage/models/roadmap_rec_models/roadmap_oncampus_rec.dart'; //로드맵_추천_교내지원사업 모델
+export 'package:starting_block/manage/models/roadmap_rec_models/roadmap_system_rec.dart'; //로드맵_추천_창업제도 모델
+export 'package:starting_block/manage/models/roadmap_rec_models/roadmap_class_rec.dart'; //로드맵_추천_창업강의 모델
 
 //채팅 모델 관리용
 export 'package:starting_block/manage/models/gpt_chat_models/message_model.dart'; //채팅 모델

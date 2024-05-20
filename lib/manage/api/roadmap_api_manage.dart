@@ -375,7 +375,7 @@ class RoadMapApi {
     }
   }
 
-  // 로드맵에 저장된 교외 공고 추천 리스트를 불러오는 메소드
+  // 로드맵의 교외 공고 추천 리스트를 불러오는 메소드
   static Future<List<RoadMapOffCampusRecModel>> getOffCampusRec(int roadmapId,
       {int retryCount = 1}) async {
     final url =
@@ -383,6 +383,7 @@ class RoadMapApi {
     Map<String, String> headers = await getHeaders();
 
     final response = await http.get(url, headers: headers);
+    print('상태: ${response.statusCode}, 본문: ${response.body}');
 
     if (response.statusCode == 200) {
       String utf8Body = utf8.decode(response.bodyBytes);
@@ -397,6 +398,85 @@ class RoadMapApi {
     } else {
       throw Exception(
           '교외 공고 추천 목록을 불러오는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  // 로드맵의 교내 공고 추천 리스트를 불러오는 메소드
+  static Future<List<RoadMapOnCampusRecModel>> getOnCampusRec(int roadmapId,
+      {int retryCount = 1}) async {
+    final url =
+        Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId/recommend/on-campus');
+    Map<String, String> headers = await getHeaders();
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      String utf8Body = utf8.decode(response.bodyBytes);
+      List<dynamic> body = jsonDecode(utf8Body);
+      List<RoadMapOnCampusRecModel> recommendations = body
+          .map((dynamic item) => RoadMapOnCampusRecModel.fromJson(item))
+          .toList();
+      return recommendations;
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getOnCampusRec(roadmapId, retryCount: retryCount - 1); // 재귀 호출
+    } else {
+      throw Exception(
+          '교내 공고 추천 목록을 불러오는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  // 로드맵의 창업강의 추천 리스트를 불러오는 메소드
+  static Future<RoadMapClassRecModel?> getClassRec(int roadmapId,
+      {int retryCount = 1}) async {
+    final url =
+        Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId/recommend/class');
+    Map<String, String> headers = await getHeaders();
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      String utf8Body = utf8.decode(response.bodyBytes);
+      if (utf8Body.isEmpty) {
+        return null; // 데이터가 없는 경우 null 반환
+      }
+      Map<String, dynamic> body = jsonDecode(utf8Body);
+      RoadMapClassRecModel recommendation = RoadMapClassRecModel.fromJson(body);
+      return recommendation;
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getClassRec(roadmapId, retryCount: retryCount - 1); // 재귀 호출
+    } else {
+      throw Exception(
+          '클래스 추천 목록을 불러오는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+    }
+  }
+
+  // 로드맵의 교내제도 추천 리스트를 불러오는 메소드
+  static Future<RoadMapSystemRecModel?> getSystemRec(int roadmapId,
+      {int retryCount = 1}) async {
+    print('로드맵 ID: $roadmapId');
+    final url =
+        Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId/recommend/system');
+    Map<String, String> headers = await getHeaders();
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      String utf8Body = utf8.decode(response.bodyBytes);
+      if (utf8Body.isEmpty) {
+        return null; // 데이터가 없는 경우 null 반환
+      }
+      Map<String, dynamic> body = jsonDecode(utf8Body);
+      RoadMapSystemRecModel recommendation =
+          RoadMapSystemRecModel.fromJson(body);
+      return recommendation;
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getSystemRec(roadmapId, retryCount: retryCount - 1); // 재귀 호출
+    } else {
+      throw Exception(
+          '시스템 추천 목록을 불러오는 데 실패했습니다. 상태 코드: ${response.statusCode}');
     }
   }
 }

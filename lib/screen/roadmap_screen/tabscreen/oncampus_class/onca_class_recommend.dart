@@ -2,17 +2,20 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/screen/roadmap_screen/tabscreen/oncampus_class/onca_class_card.dart';
 
 class OnCaClassRecommend extends StatefulWidget {
   final String thisSelectedText;
   final bool thisCurrentStage;
+  final int roadmapId;
 
   const OnCaClassRecommend({
     super.key,
     required this.thisSelectedText,
     required this.thisCurrentStage,
+    required this.roadmapId,
   });
 
   @override
@@ -20,27 +23,17 @@ class OnCaClassRecommend extends StatefulWidget {
 }
 
 class _OnCaClassRecState extends State<OnCaClassRecommend> {
-  List<OncaClassModel> classList = [];
+  RoadMapClassRecModel? classRec;
   final GlobalKey _cardKey = GlobalKey(); // GlobalKey 추가
   double _cardHeight = 268; // 카드의 높이를 저장할 변수
 
-  final Map<String, bool> boolToClass = {
-    '창업 교육': true,
-    '아이디어 창출': true,
-    '공간 마련': true,
-    '사업 계획서': true,
-    'R&D / 시제품 제작': false,
-    '사업 검증': false,
-    'IR Deck 작성': false,
-    '자금 확보': false,
-    '사업화': false,
-  };
+  final List boolToClass = ['창업 교육', '아이디어 창출', '공간 마련', '사업 계획서'];
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateCardHeight());
-    // loadClassData();
+    loadClassData();
   }
 
   @override
@@ -48,24 +41,23 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.thisSelectedText != widget.thisSelectedText) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _updateCardHeight());
-      // loadClassData();
+      loadClassData();
     }
   }
 
-  // Future<void> loadClassData() async {
-  //   // boolToClass에서 현재 선택된 텍스트에 대한 값이 true인지 확인
-  //   if (boolToClass[widget.thisSelectedText] ?? false) {
-  //     final OnCampusClassModel classData =
-  //         await OnCampusAPI.getOnCampusClassRec();
-  //     setState(() {
-  //       classList = [classData];
-  //     });
-  //   } else {
-  //     setState(() {
-  //       classList = [];
-  //     });
-  //   }
-  // }
+  Future<void> loadClassData() async {
+    // boolToClass에서 현재 선택된 텍스트에 대한 값이 true인지 확인
+    if (boolToClass.contains(widget.thisSelectedText)) {
+      final classRecData = await RoadMapApi.getClassRec(widget.roadmapId);
+      setState(() {
+        classRec = classRecData;
+      });
+    } else {
+      setState(() {
+        classRec = null;
+      });
+    }
+  }
 
   void _updateCardHeight() {
     final RenderObject? renderObject =
@@ -81,7 +73,7 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
 
   @override
   Widget build(BuildContext context) {
-    if (classList.isEmpty) {
+    if (classRec == null) {
       return Container();
     }
 
@@ -101,18 +93,19 @@ class _OnCaClassRecState extends State<OnCaClassRecommend> {
         Gaps.v16,
         Stack(
           children: [
-            if (classList.isNotEmpty)
+            if (classRec != null)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: OnCaClassCard(
                   key: _cardKey,
-                  thisTitle: classList[0].title,
-                  thisId: classList[0].lectureId.toString(),
-                  thisLiberal: classList[0].liberal,
-                  thisCredit: classList[0].credit.toString(),
-                  thisContent: classList[0].content,
-                  thisSession: classList[0].session.toString(),
-                  thisInstructor: classList[0].instructor,
+                  thisTitle: classRec!.title,
+                  thisId: classRec!.lectureId.toString(),
+                  thisLiberal: classRec!.liberal,
+                  thisCredit: classRec!.credit.toString(),
+                  thisContent: classRec!.content,
+                  thisSession: classRec!.session.toString(),
+                  thisInstructor: classRec!.instructor,
+                  isSaved: classRec!.isBookmarked,
                 ),
               ),
             if (!widget.thisCurrentStage)

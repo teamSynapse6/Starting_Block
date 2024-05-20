@@ -48,6 +48,10 @@ class _HomeQuestionRecommendState extends State<HomeQuestionRecommend> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const HomeQuestionSkeleton();
+    }
+
     return Material(
       color: AppColors.white,
       borderRadius: BorderRadius.circular(4),

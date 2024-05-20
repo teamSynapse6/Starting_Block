@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class OnCaSystemCard extends StatefulWidget {
   final String thisTitle, thisId, thisContent, thisTarget;
+  final bool isSaved;
 
   const OnCaSystemCard({
     super.key,
@@ -10,6 +12,7 @@ class OnCaSystemCard extends StatefulWidget {
     required this.thisId,
     required this.thisContent,
     required this.thisTarget,
+    required this.isSaved,
   });
 
   @override
@@ -50,12 +53,16 @@ class _OnCaSystemCardState extends State<OnCaSystemCard> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      widget.thisTitle,
-                      style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+                    Expanded(
+                      child: Text(
+                        widget.thisTitle,
+                        style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+                      ),
                     ),
-                    const Spacer(),
-                    // BookMarkButton(id: widget.thisId, classification: '창업제도'),
+                    BookMarkButton(
+                      isSaved: widget.isSaved,
+                      thisID: widget.thisId,
+                    ),
                   ],
                 ),
                 Gaps.v10,

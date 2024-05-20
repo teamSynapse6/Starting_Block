@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class OnCaClassCard extends StatefulWidget {
@@ -9,6 +10,7 @@ class OnCaClassCard extends StatefulWidget {
       thisContent,
       thisInstructor,
       thisSession;
+  final bool isSaved;
 
   const OnCaClassCard({
     super.key,
@@ -19,6 +21,7 @@ class OnCaClassCard extends StatefulWidget {
     required this.thisContent,
     required this.thisSession,
     required this.thisInstructor,
+    required this.isSaved,
   });
 
   @override
@@ -59,16 +62,18 @@ class _OnCaClassCardState extends State<OnCaClassCard> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      widget.thisTitle,
-                      style: AppTextStyles.bd1.copyWith(color: AppColors.black),
-                      overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Text(
+                        widget.thisTitle,
+                        style:
+                            AppTextStyles.bd1.copyWith(color: AppColors.black),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    const Spacer(),
-                    // BookMarkButton(
-                    //   id: widget.thisId,
-                    //   classification: '창업강의',
-                    // ),
+                    BookMarkLectureButton(
+                      isSaved: widget.isSaved,
+                      thisLectureID: widget.thisId,
+                    ),
                   ],
                 ),
                 Gaps.v20,

@@ -65,6 +65,7 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
                   OnCaClassRecommend(
                     thisSelectedText: widget.thisSelectedText,
                     thisCurrentStage: widget.thisCurrentStage,
+                    roadmapId: widget.thisSelectedId,
                   ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
