@@ -32,11 +32,8 @@ class _QuestionWriteCompleteState extends State<QuestionWriteComplete> {
           ));
 
           // Navigator.pop을 호출하기 전에 안전성을 검사합니다.
-          // if (Navigator.canPop(context) && mounted) {
+
           Navigator.of(context).pop();
-          // } else {
-          //   debugPrint('No navigation stack to pop');
-          // }
         },
       );
     });

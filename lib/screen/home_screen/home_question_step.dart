@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/home_api_manage.dart';
@@ -44,9 +42,7 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
         questionStatus = fetchedStatus;
         _isLoading = false; // 데이터 로딩 완료
       });
-    } catch (e) {
-      print('Error fetching question status: $e');
-    }
+    } catch (e) {}
   }
 
   @override

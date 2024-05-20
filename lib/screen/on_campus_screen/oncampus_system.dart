@@ -46,7 +46,6 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
         });
       });
     } catch (e) {
-      print('학사 제도 정보 로드 실패: $e');
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
           isLoading = false;

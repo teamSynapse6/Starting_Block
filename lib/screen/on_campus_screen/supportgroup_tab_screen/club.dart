@@ -34,9 +34,7 @@ class _OnCaGroupClubState extends State<OnCaGroupClub> {
         _clubList = clubList;
         isLoading = false;
       });
-    } catch (e) {
-      print('동아리 정보 로드 실패: $e');
-    }
+    } catch (e) {}
   }
 
   @override

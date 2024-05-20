@@ -49,9 +49,7 @@ class _OncampusWebViewScreenState extends State<OncampusWebViewScreen> {
       setState(() {
         _isSaved = isSaved; // _isSaved 상태를 업데이트합니다.
       });
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   void loadQuestionData() async {

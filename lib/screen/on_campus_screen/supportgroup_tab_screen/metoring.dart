@@ -34,9 +34,7 @@ class _OnCaGroupMentoringState extends State<OnCaGroupMentoring> {
         _mentoringList = mentoringList;
         isLoading = false;
       });
-    } catch (e) {
-      print('멘토링 정보 로드 실패: $e');
-    }
+    } catch (e) {}
   }
 
   @override

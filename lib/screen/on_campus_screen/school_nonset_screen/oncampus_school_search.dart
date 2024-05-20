@@ -100,9 +100,7 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
           ),
           (Route<dynamic> route) => false,
         );
-      } else {
-        print('에러 발생');
-      }
+      } else {}
     }
   }
 

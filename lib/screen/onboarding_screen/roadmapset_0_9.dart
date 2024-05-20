@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -89,12 +87,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           );
         }
       }
-      if (!isSuccess) {
-        print('유저 정보 저장 중 오류 발생');
-      }
-    } catch (e) {
-      print('서버 저장 중 오류가 발생했습니다: $e');
-    }
+      if (!isSuccess) {}
+    } catch (e) {}
   }
 
   //다음에 설정 버튼 클릭 시
@@ -112,9 +106,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           );
         }
       }
-    } catch (e) {
-      print('다음에 설정하기_서버 저장 중 오류가 발생했습니다: $e');
-    }
+    } catch (e) {}
   }
 
   //자동로그인 설정

@@ -90,9 +90,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
         _notifyList = notifyList;
         isLoading = false;
       });
-    } catch (e) {
-      print('공고 정보 로드 실패: $e');
-    }
+    } catch (e) {}
   }
 
   void _onScroll() {

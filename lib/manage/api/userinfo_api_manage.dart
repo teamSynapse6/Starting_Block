@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:starting_block/manage/model_manage.dart';
@@ -66,11 +64,9 @@ class UserInfoManageApi {
       headers: headers,
       body: json.encode(body),
     );
-    print('요청 내용: ${json.encode(body)}');
 
     // 200번대 응답 처리
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print('로그인 성공');
       // 성공 응답 데이터를 UserSignInModel 객체로 변환
       UserSignInModel signInData =
           UserSignInModel.fromJson(json.decode(response.body));
@@ -122,17 +118,14 @@ class UserInfoManageApi {
       'university': university,
       'profileNumber': profileNumber
     };
-    print('본문: ${json.encode(body)}');
 
     http.Response response = await http.patch(
       Uri.parse(url),
       headers: headers,
       body: json.encode(body),
     );
-    print('헤더: $headers, 요청 내용: ${json.encode(body)}');
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print('정보 업데이트 성공');
       return true; // 성공 시 true 반환
     } else if (response.statusCode == 401 && retryCount > 0) {
       await updateAccessToken();
@@ -145,7 +138,6 @@ class UserInfoManageApi {
         retryCount: retryCount - 1, // 재시도 횟수 감소
       ); // 재귀 호출
     } else {
-      print('정보 업데이트 실패: ${response.statusCode}, Body: ${response.body}');
       return false; // 실패 시 false 반환
     }
   }
@@ -165,13 +157,11 @@ class UserInfoManageApi {
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print('로그아웃 성공');
       return true; // 성공적으로 로그아웃되면 true 반환
     } else if (response.statusCode == 401) {
       await updateAccessToken();
       return await postDeleteAccount(retryCount: retryCount - 1);
     } else {
-      print('로그아웃 실패: ${response.statusCode}, Body: ${response.body}');
       return false; // 로그아웃 실패시 false 반환
     }
   }
@@ -184,15 +174,12 @@ class UserInfoManageApi {
     http.Response response = await http.post(Uri.parse(url), headers: headers);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print('계정 비활성화 성공');
       return true; // 성공적으로 계정이 비활성화되면 true 반환
     } else if (response.statusCode == 401 && retryCount > 0) {
       await updateAccessToken();
       return await postDeleteAccount(retryCount: retryCount - 1);
     } else {
       // 계정 비활성화 실패 또는 재시도 횟수 초과 처리
-      print(
-          '계정 비활성화 실패 or Maximum retry attempts exceeded: ${response.statusCode}, Body: ${response.body}');
       return false; // 계정 비활성화 실패 시 false 반환
     }
   }
@@ -217,7 +204,6 @@ class UserInfoManageApi {
       return await patchUserNickName(nickname,
           retryCount: retryCount - 1); // 재귀 호출
     } else {
-      print('닉네임 확인 중 오류 발생: ${response.statusCode}, Body: ${response.body}');
       return false; // 실패 시 false 반환
     }
   }

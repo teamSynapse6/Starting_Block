@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
@@ -140,7 +138,6 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
               if (userInfo.hasChanged) {
                 _loadSchoolName();
                 _loadRoadMap();
-                print('호출됨');
                 userInfo.resetChangeFlag();
               }
               return _getCurrentScreen();

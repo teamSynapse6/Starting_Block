@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/home_api_manage.dart';
@@ -32,7 +30,7 @@ class _HomeNotifyRecommendState extends State<HomeNotifyRecommend> {
         isLoading = false;
       });
     } catch (e) {
-      print(e);
+      // 예외 발생 시 오류 메시지 출력
     }
   }
 

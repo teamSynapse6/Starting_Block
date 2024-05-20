@@ -76,9 +76,7 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
         _searchResult = notifyList;
         isLoading = false;
       });
-    } catch (e) {
-      print('공고 정보 로드 실패: $e');
-    }
+    } catch (e) {}
   }
 
   @override

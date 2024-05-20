@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
@@ -30,15 +28,11 @@ class QuestionAnswerApi {
 
     final response = await http.post(url, headers: headers, body: body);
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print(
-          'Question posted successfully. Status code: ${response.statusCode}');
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return postQuestionWrite(announcementId, content, isContact,
           retryCount: retryCount - 1);
-    } else {
-      print('Failed to post question. Status code: ${response.statusCode}');
-    }
+    } else {}
   }
 
   // 질문 리스트 가져오기 메소드
@@ -58,7 +52,6 @@ class QuestionAnswerApi {
       await UserInfoManageApi.updateAccessToken();
       return getQuestionList(announcementId, retryCount: retryCount - 1);
     } else {
-      print('Failed to load questions. Status code: ${response.statusCode}');
       return [];
     }
   }
@@ -78,8 +71,6 @@ class QuestionAnswerApi {
       await UserInfoManageApi.updateAccessToken();
       return getQuestionDetail(questionId, retryCount: retryCount - 1);
     } else {
-      print(
-          'Failed to load question details. Status code: ${response.statusCode}');
       throw Exception('Failed to load question details.');
     }
   }
@@ -98,14 +89,11 @@ class QuestionAnswerApi {
 
     final response = await http.post(url, headers: headers, body: body);
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print('Answer posted successfully. Status code: ${response.statusCode}');
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return postAnswerWrite(questionId, content, isContact,
           retryCount: retryCount - 1);
-    } else {
-      print('Failed to post answer. Status code: ${response.statusCode}');
-    }
+    } else {}
   }
 
   // 답글(대댓글) 작성 메소드
@@ -120,13 +108,10 @@ class QuestionAnswerApi {
 
     final response = await http.post(url, headers: headers, body: body);
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print('Reply posted successfully. Status code: ${response.statusCode}');
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return postReplyWrite(answerId, content, retryCount: retryCount - 1);
-    } else {
-      print('Failed to post reply. Status code: ${response.statusCode}');
-    }
+    } else {}
   }
 
   // 하트(좋아요) 보내기 메소드
@@ -146,7 +131,6 @@ class QuestionAnswerApi {
       await UserInfoManageApi.updateAccessToken();
       return postHeart(id, heartType, retryCount: retryCount - 1);
     } else {
-      print('Failed to send heart. Status code: ${response.statusCode}');
       return false;
     }
   }
@@ -158,13 +142,11 @@ class QuestionAnswerApi {
 
     final response = await http.delete(url, headers: headers);
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      print('Heart deleted successfully. Status code: ${response.statusCode}');
       return true;
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return deleteHeart(heartId, retryCount: retryCount - 1);
     } else {
-      print('Failed to delete heart. Status code: ${response.statusCode}');
       return false;
     }
   }
@@ -180,7 +162,6 @@ class QuestionAnswerApi {
       await UserInfoManageApi.updateAccessToken();
       return deleteAnswer(answerId, retryCount: retryCount - 1);
     } else {
-      print('Failed to delete answer. Status code: ${response.statusCode}');
       return false;
     }
   }
@@ -196,7 +177,6 @@ class QuestionAnswerApi {
       await UserInfoManageApi.updateAccessToken();
       return deleteReply(replyId, retryCount: retryCount - 1);
     } else {
-      print('Failed to delete reply. Status code: ${response.statusCode}');
       return false;
     }
   }

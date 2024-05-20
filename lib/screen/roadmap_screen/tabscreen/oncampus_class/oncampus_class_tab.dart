@@ -60,7 +60,6 @@ class _TabScreenOnCaClassState extends State<TabScreenOnCaClass> {
         builder: (context, bookMarkNotifier, child) {
       if (bookMarkNotifier.isUpdated) {
         loadOnCampusClassData();
-        print('호출됨');
         bookMarkNotifier.resetUpdate();
       }
 

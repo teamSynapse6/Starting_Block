@@ -49,8 +49,6 @@ class _OnCampusClassState extends State<OnCampusClass> {
         });
       });
     } catch (e) {
-      print('클래스 정보 로드 실패: $e');
-
       // 실패 시에도 로딩 상태를 업데이트
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {

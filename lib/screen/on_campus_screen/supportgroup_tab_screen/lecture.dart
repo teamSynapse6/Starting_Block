@@ -34,9 +34,7 @@ class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
         _lectureList = lectureList;
         isLoading = false;
       });
-    } catch (e) {
-      print('강연 정보 로드 실패: $e');
-    }
+    } catch (e) {}
   }
 
   @override

@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';

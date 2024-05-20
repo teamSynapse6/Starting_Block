@@ -38,8 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
       //유저 토큰 저장
       await UserTokenManage().setRefreshToken(signInData.refreshToken);
       await UserTokenManage().setAccessToken(signInData.accessToken);
-      print(
-          '로그인 완료: ${signInData.accessToken}\n 리프레시 토큰: ${signInData.refreshToken}');
 
       // 회원가입 완료 상태에 따른 화면 이동
       if (signInData.isSignUpComplete) {
@@ -66,8 +64,6 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (error) {
       // 오류 처리
-      print('로그인 또는 사용자 정보 확인 중 오류 발생: $error');
-      // 오류가 발생한 경우 적절한 UI 피드백 제공
     }
   }
 
