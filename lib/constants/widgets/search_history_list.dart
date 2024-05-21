@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class SearchHistoryList extends StatelessWidget {
@@ -23,11 +24,14 @@ class SearchHistoryList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             children: [
-              Text(
-                thisText,
-                style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+              Expanded(
+                child: Text(
+                  thisText,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                ),
               ),
-              const Spacer(),
               GestureDetector(
                 onTap: thisDeleteTap,
                 child: AppIcon.close,

@@ -1,5 +1,6 @@
 import 'dart:async'; // 추가된 임포트
 import 'package:flutter/material.dart';
+import 'package:korean_profanity_filter/korean_profanity_filter.dart'; // 비속어 필터링 패키지 추가
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/question_answer_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -28,6 +29,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
   bool isReplying = false; // 답글 작성 UI 표시 여부
   bool isHeartLoading = false;
   String userNickName = ''; // 유저 닉네임으로 내 글인지 아닌지 판단
+  bool hasKoreanProfanity = false; // 비속어 포함 여부
 
   @override
   void initState() {
@@ -36,13 +38,13 @@ class _QuestionDetailState extends State<QuestionDetail> {
     _loadUserNickName();
 
     _controller.addListener(() {
-      if (_controller.text.isNotEmpty && !_isTyped) {
-        // TextField에 값이 있고, _isTyped가 false인 경우
+      final currentText = _controller.text;
+      hasKoreanProfanity = currentText.containsBadWords;
+      if (currentText.isNotEmpty && !_isTyped && !hasKoreanProfanity) {
         setState(() {
           _isTyped = true; // _isTyped를 true로 설정합니다.
         });
-      } else if (_controller.text.isEmpty && _isTyped) {
-        // TextField가 비어있고, _isTyped가 true인 경우
+      } else if (currentText.isEmpty || hasKoreanProfanity) {
         setState(() {
           _isTyped = false; // _isTyped를 false로 설정합니다.
         });
@@ -122,7 +124,9 @@ class _QuestionDetailState extends State<QuestionDetail> {
           }
         }
       },
-      child: _isTyped ? AppIcon.send_actived : AppIcon.send_inactived,
+      child: _isTyped && !hasKoreanProfanity
+          ? AppIcon.send_actived
+          : AppIcon.send_inactived,
     );
   }
 
