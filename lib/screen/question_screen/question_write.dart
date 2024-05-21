@@ -1,6 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
+import 'package:korean_profanity_filter/korean_profanity_filter.dart'; // 비속어 필터링 패키지 추가
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/question_answer_api_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
@@ -23,15 +22,18 @@ class _QuestionWriteState extends State<QuestionWrite> {
   final TextEditingController _textController = TextEditingController();
   bool _isChecked = false;
   bool _isTextEntered = false; // 텍스트 입력 여부를 추적하는 플래그
+  bool hasKoreanProfanity = false; // 비속어 포함 여부
 
   @override
   void initState() {
     super.initState();
 
     _textController.addListener(() {
+      final currentText = _textController.text;
+      hasKoreanProfanity = currentText.containsBadWords;
       setState(() {
         // 텍스트 필드에 텍스트가 있으면 true, 아니면 false
-        _isTextEntered = _textController.text.isNotEmpty;
+        _isTextEntered = currentText.isNotEmpty && !hasKoreanProfanity;
       });
     });
   }
@@ -153,7 +155,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
                             style: AppTextStyles.bd6
                                 .copyWith(color: AppColors.g5)),
                         TextSpan(
-                            text: ' /$maxLength', // 최대 글자수
+                            text: '/$maxLength', // 최대 글자수
                             style: AppTextStyles.bd6
                                 .copyWith(color: AppColors.g4)),
                       ],
