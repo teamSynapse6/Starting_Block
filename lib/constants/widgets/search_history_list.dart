@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class SearchHistoryList extends StatelessWidget {
