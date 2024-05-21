@@ -90,7 +90,9 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
         _notifyList = notifyList;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   void _onScroll() {

@@ -34,7 +34,9 @@ class _OnCaGroupSpaceState extends State<OnCaGroupSpace> {
         _spaceList = spaceList;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

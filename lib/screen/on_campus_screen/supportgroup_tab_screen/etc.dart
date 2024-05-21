@@ -34,7 +34,9 @@ class _OnCaGroupEtcState extends State<OnCaGroupEtc> {
         _etcList = etcList;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

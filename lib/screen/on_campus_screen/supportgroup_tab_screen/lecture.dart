@@ -34,7 +34,9 @@ class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
         _lectureList = lectureList;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

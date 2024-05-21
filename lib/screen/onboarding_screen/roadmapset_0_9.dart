@@ -88,7 +88,9 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         }
       }
       if (!isSuccess) {}
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   //다음에 설정 버튼 클릭 시
@@ -106,7 +108,9 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           );
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   //자동로그인 설정

@@ -34,7 +34,9 @@ class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
         _competitionList = competitionList;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

@@ -76,7 +76,9 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
         _searchResult = notifyList;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

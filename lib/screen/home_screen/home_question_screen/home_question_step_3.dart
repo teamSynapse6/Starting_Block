@@ -35,7 +35,9 @@ class _HomeQuestionStage3State extends State<HomeQuestionStage3> {
       setState(() {
         contactAnswer = questionDetail.contactAnswer?.content ?? '데이터 없음';
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

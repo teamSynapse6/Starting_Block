@@ -70,7 +70,9 @@ class _RoadmapListSetState extends State<RoadmapListSet> {
           );
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

@@ -28,7 +28,9 @@ class _HomeQuestionRecommendState extends State<HomeQuestionRecommend> {
         questionList = list;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   void thisOnTap({required int questionID}) {

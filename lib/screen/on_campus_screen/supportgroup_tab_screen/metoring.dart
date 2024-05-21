@@ -34,7 +34,9 @@ class _OnCaGroupMentoringState extends State<OnCaGroupMentoring> {
         _mentoringList = mentoringList;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

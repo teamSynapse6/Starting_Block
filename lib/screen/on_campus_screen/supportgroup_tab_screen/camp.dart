@@ -34,7 +34,9 @@ class _OnCaGroupCampState extends State<OnCaGroupCamp> {
         _clubList = clubList;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

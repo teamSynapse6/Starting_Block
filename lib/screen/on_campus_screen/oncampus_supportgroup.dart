@@ -41,11 +41,15 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
         // try-catch 블록을 사용하여 _tabController의 초기화 여부를 확인
         try {
           _tabController?.dispose();
-        } catch (e) {}
+        } catch (e) {
+          return;
+        }
         myTabs = tabs;
         _tabController = TabController(length: myTabs.length, vsync: this);
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override

@@ -42,7 +42,9 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
         questionStatus = fetchedStatus;
         _isLoading = false; // 데이터 로딩 완료
       });
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   @override
