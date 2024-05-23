@@ -40,7 +40,7 @@ class OffCampusDetailGptCard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => OffCampusGptChat(
+                            builder: (context) => GptChatScreen(
                                 thisTitle: thisTitle, thisID: thisID),
                           ),
                         );

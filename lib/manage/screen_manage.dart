@@ -27,8 +27,7 @@ export 'package:starting_block/screen/off_campus_screen/offcampus_search.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_searchresult.dart';
 
 //GPT 채팅 페이지
-export 'package:starting_block/screen/gpt_chat/offcampus_gpt_chat.dart';
-export 'package:starting_block/screen/gpt_chat/myprofile_gpt_chat.dart';
+export 'package:starting_block/screen/gpt_chat/gpt_chat_screen.dart';
 
 //로드맵 페이지
 export 'package:starting_block/screen/roadmap_screen/roadmap_home.dart';
