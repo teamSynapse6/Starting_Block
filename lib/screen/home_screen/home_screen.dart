@@ -48,9 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       top: 12,
                       child: Text(
                         '오늘도\n도약을 위한 한걸음',
-                        style: AppTextStyles.st1.copyWith(
-                          color: AppColors.bluedark,
-                        ),
+                        style: AppTextStyles.st1
+                            .copyWith(color: AppColors.bluedark),
                       ),
                     ),
                     Positioned(
