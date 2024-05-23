@@ -6,21 +6,21 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/gpt_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
-class OffCampusGptChat extends StatefulWidget {
+class GptChatScreen extends StatefulWidget {
   final String thisTitle;
   final String thisID;
 
-  const OffCampusGptChat({
+  const GptChatScreen({
     super.key,
     required this.thisTitle,
     required this.thisID,
   });
 
   @override
-  State<OffCampusGptChat> createState() => _OffCampusGptChatState();
+  State<GptChatScreen> createState() => _GptChatScreenState();
 }
 
-class _OffCampusGptChatState extends State<OffCampusGptChat> {
+class _GptChatScreenState extends State<GptChatScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _controller = TextEditingController();
   bool _isTyped = false;
@@ -330,7 +330,6 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                     ],
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     controller: _scrollController,
                     itemCount: _messages.length + (_isLoading ? 1 : 0),
                     itemBuilder: (context, index) {
@@ -416,8 +415,11 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                   : Alignment.centerLeft,
                               child: message.isUser
                                   ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 22),
+                                      padding: const EdgeInsets.only(
+                                        left: 24,
+                                        right: 24,
+                                        bottom: 22,
+                                      ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -455,8 +457,11 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                       ),
                                     )
                                   : Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 22),
+                                      padding: const EdgeInsets.only(
+                                        left: 24,
+                                        right: 24,
+                                        bottom: 22,
+                                      ),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,

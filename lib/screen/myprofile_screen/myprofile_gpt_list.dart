@@ -32,7 +32,7 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MyProfileGptChat(thisTitle: title, thisID: id),
+          builder: (context) => GptChatScreen(thisTitle: title, thisID: id),
         ));
     if (result == true) {
       loadChatData();
