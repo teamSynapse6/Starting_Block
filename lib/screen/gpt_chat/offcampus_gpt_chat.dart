@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -331,6 +330,7 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                     ],
                   )
                 : ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     controller: _scrollController,
                     itemCount: _messages.length + (_isLoading ? 1 : 0),
                     itemBuilder: (context, index) {
@@ -409,8 +409,6 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                             padding: EdgeInsets.only(
                               top: isFirstItem ? 10 : 0,
                               bottom: isLastItem && !_isLoading ? 10 : 0,
-                              left: 24,
-                              right: 24,
                             ),
                             child: Align(
                               alignment: message.isUser
@@ -432,32 +430,27 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                                 .copyWith(color: AppColors.g4),
                                           ),
                                           Gaps.h4,
-                                          Container(
-                                            constraints: BoxConstraints(
-                                              maxWidth: 360 *
-                                                  (232 /
-                                                      MediaQuery.of(context)
-                                                          .size
-                                                          .width),
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppColors.blue,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 9),
-                                              child: Text(
-                                                message.message,
-                                                style: AppTextStyles.bd4
-                                                    .copyWith(
-                                                        color: AppColors.g1),
+                                          Flexible(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.blue,
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12,
+                                                        vertical: 9),
+                                                child: Text(
+                                                  message.message,
+                                                  style: AppTextStyles.bd4
+                                                      .copyWith(
+                                                          color: AppColors.g1),
+                                                ),
                                               ),
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     )
@@ -478,30 +471,26 @@ class _OffCampusGptChatState extends State<OffCampusGptChat> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
                                             children: [
-                                              Container(
-                                                constraints: BoxConstraints(
-                                                  maxWidth: 360 *
-                                                      (252 /
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width),
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 9),
-                                                  child: Text(
-                                                    message.message,
-                                                    style: AppTextStyles.bd4
-                                                        .copyWith(
-                                                            color: AppColors
-                                                                .black),
+                                              Flexible(
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 12,
+                                                        vertical: 9),
+                                                    child: Text(
+                                                      message.message,
+                                                      style: AppTextStyles.bd4
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .black),
+                                                    ),
                                                   ),
                                                 ),
                                               ),

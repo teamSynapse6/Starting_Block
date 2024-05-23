@@ -19,7 +19,6 @@ class OffCampusDetailGptCard extends StatelessWidget {
       children: [
         Gaps.v4,
         Container(
-          height: 132,
           width: MediaQuery.of(context).size.width,
           color: AppColors.bluebg,
           child: Padding(

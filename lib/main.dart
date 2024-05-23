@@ -16,11 +16,12 @@ void main() async {
     systemNavigationBarColor: AppColors.white, // 네비게이션 바 색상
   ));
 
-//kakao login
+  // Kakao 로그인 초기화
   KakaoSdk.init(
     nativeAppKey: '49b9cdd5c3366e805ef2180657040178',
     javaScriptAppKey: '5e1919efb19e574a2d9929e51b51c5a7',
   );
+
   runApp(
     MultiProvider(
       providers: [
@@ -43,6 +44,14 @@ class StartingBlock extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeManage.theme,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+              textScaler: const TextScaler.linear(
+                  1.0)), //전역적으로 시스템 폰트의 크기의 영향을 받지 않겠다고 선언.
+          child: child!,
+        );
+      },
       home: const SplashScreen(),
     );
   }

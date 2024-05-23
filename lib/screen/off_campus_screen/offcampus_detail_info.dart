@@ -81,10 +81,11 @@ class OffCampusDetailInfo extends StatelessWidget {
             '등록일 $formattedStartDate',
             style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
           ),
-          Text(
-            '마감일 $formattedEndDate',
-            style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
-          ),
+          if (endDate.isNotEmpty)
+            Text(
+              '마감일 $formattedEndDate',
+              style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+            ),
           Gaps.v12,
           const CustomDivider(),
           Gaps.v16,
@@ -96,10 +97,19 @@ class OffCampusDetailInfo extends StatelessWidget {
           Gaps.v4,
           Text(type, style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
           Gaps.v20,
-          Text('지원 혜택', style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
-          Gaps.v4,
-          Text(content, style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
-          Gaps.v40,
+          if (content.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('지원 혜택',
+                    style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
+                Gaps.v4,
+                Text(content,
+                    style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
+                Gaps.v20,
+              ],
+            ),
+          Gaps.v20,
           Row(
             children: [
               DeatailContainButton(
