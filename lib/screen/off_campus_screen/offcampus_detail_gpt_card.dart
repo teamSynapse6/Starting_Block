@@ -17,7 +17,6 @@ class OffCampusDetailGptCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Gaps.v4,
         Container(
           width: MediaQuery.of(context).size.width,
           color: AppColors.bluebg,

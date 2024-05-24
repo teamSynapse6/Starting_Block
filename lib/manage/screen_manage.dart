@@ -122,7 +122,8 @@ export 'package:starting_block/screen/onboarding_screen/onboarding_data/school_i
 export 'package:starting_block/manage/theme_manage.dart';
 
 //스켈레톤 로더 화면
-export 'package:starting_block/skeleton_screen/offcampus_home_skeleton.dart'; //교외지원사업 홈, 검색 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/offcampus_skeleton/offcampus_home_skeleton.dart'; //교외지원사업 홈, 검색 화면 스켈레톤 로더 화면
+export 'package:starting_block/skeleton_screen/offcampus_skeleton/offcampus_detail_skeleton.dart'; //교외지원사업 상세 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_notify_skeleton.dart'; //교내지원사업_공고 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_system_skeleton.dart'; //교내지원사업_제도 화면 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/oncampus_skeleton/onca_class_skeleton.dart'; //교내지원사업_강의 화면 스켈레톤 로더 화면
