@@ -40,6 +40,7 @@ export 'package:starting_block/manage/models/roadmap_rec_models/roadmap_class_re
 
 //채팅 모델 관리용
 export 'package:starting_block/manage/models/gpt_chat_models/message_model.dart'; //채팅 모델
+export 'package:starting_block/manage/models/gpt_chat_models/gpt_status_model.dart'; //GPT API 상태 모델
 
 //질문&답변 Model파일 관리용
 export 'package:starting_block/manage/models/question_answer_model/question_list_model.dart'; //질문 리스트(질문 메인화면) 모델

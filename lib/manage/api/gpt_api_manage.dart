@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:starting_block/manage/model_manage.dart';
 
 class GptApi {
   static String baseUrl = 'https://pdfgpt.startingblock.co.kr';
@@ -49,5 +50,19 @@ class GptApi {
     // 'deleted' 키의 값을 확인하여 삭제 성공 여부를 반환합니다.
     // 성공적으로 삭제되었다면 true를, 그렇지 않다면 false를 반환합니다.
     return responseData['deleted'] ?? false;
+  }
+
+  // OpenAi GPT API 서버 Status 호출 메소드
+  static Future<GptStatusModel> getGptApiStatus() async {
+    final statusUrl =
+        Uri.parse('https://status.openai.com/api/v2/incidents/unresolved.json');
+    final response = await http.get(statusUrl);
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      return GptStatusModel.fromJson(responseData);
+    } else {
+      throw Exception('Failed to load status data');
+    }
   }
 }

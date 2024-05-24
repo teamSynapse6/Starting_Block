@@ -21,8 +21,8 @@ class OffCampusDetail extends StatefulWidget {
 class _OffCampusDetailState extends State<OffCampusDetail> {
   final List<OffCampusDetailModel> _offcampusDetail = [];
   String _questionCount = '0';
-
   Future<List<OffCampusListModel>>? futureRecommendations; // 추천 공고 데이터를 저장할 필드
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -40,6 +40,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
     setState(() {
       _offcampusDetail.clear();
       _offcampusDetail.add(detailData);
+      isLoading = false;
     });
   }
 
@@ -73,10 +74,15 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                 )
               : null,
           body: SingleChildScrollView(
+            physics: isLoading
+                ? const NeverScrollableScrollPhysics()
+                : const AlwaysScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (_offcampusDetail.isNotEmpty)
+                if (isLoading)
+                  const OffCampusDetailSkeleton()
+                else if (_offcampusDetail.isNotEmpty && !isLoading)
                   OffCampusDetailInfo(
                     organize: _offcampusDetail[0].organization,
                     title: _offcampusDetail[0].title,
@@ -93,7 +99,8 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                     isContatcExist: _offcampusDetail[0].isContactExist,
                   ),
                 if (_offcampusDetail.isNotEmpty &&
-                    _offcampusDetail[0].isFileUploaded)
+                    _offcampusDetail[0].isFileUploaded &&
+                    !isLoading)
                   OffCampusDetailGptCard(
                     thisTitle: _offcampusDetail[0].title,
                     thisID: widget.thisID,
@@ -102,10 +109,13 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                   height: 8,
                   decoration: const BoxDecoration(color: AppColors.g1),
                 ),
-                Recommendation(
-                  futureRecommendations: futureRecommendations!,
-                  thisID: widget.thisID,
-                ),
+                if (isLoading)
+                  const OffCampusDetailRecommendSkeleton()
+                else if (futureRecommendations != null && !isLoading)
+                  Recommendation(
+                    futureRecommendations: futureRecommendations!,
+                    thisID: widget.thisID,
+                  ),
               ],
             ),
           ),

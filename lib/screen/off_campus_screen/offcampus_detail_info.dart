@@ -87,7 +87,7 @@ class OffCampusDetailInfo extends StatelessWidget {
               style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
             ),
           Gaps.v12,
-          const CustomDivider(),
+          const CustomDividerH2G1(),
           Gaps.v16,
           Text('지원 대상', style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
           Gaps.v4,
@@ -151,7 +151,7 @@ class OffCampusDetailInfo extends StatelessWidget {
               ),
             ],
           ),
-          Gaps.v36,
+          Gaps.v40,
         ],
       ),
     );

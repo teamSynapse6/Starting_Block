@@ -27,6 +27,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
   String? _threadId;
   List<Message> _messages = [];
   bool _isLoading = false; // Changed variable name from _isLoaded to _isLoading
+  bool _isGptApiAvailable = false;
 
   @override
   void initState() {
@@ -249,6 +250,26 @@ class _GptChatScreenState extends State<GptChatScreen> {
     return DateTime.parse(formattedString);
   }
 
+  //GPT API 상태 호출 메소드
+  void getGptApiStauts() async {
+    try {
+      GptStatusModel status = await GptApi.getGptApiStatus();
+      if (status.incidents.isEmpty) {
+        setState(() {
+          _isGptApiAvailable = false;
+        });
+      } else {
+        setState(() {
+          _isGptApiAvailable = true;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isGptApiAvailable = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -269,255 +290,290 @@ class _GptChatScreenState extends State<GptChatScreen> {
             "AI로 공고 분석하기",
             style: AppTextStyles.st2.copyWith(color: AppColors.g6),
           ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(44),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  widget.thisTitle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.bd3.copyWith(color: AppColors.g5),
-                ),
-              ),
-            ),
-          ),
         ),
         body: Stack(
           children: [
-            _messages.isEmpty
-                ? Column(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  color: AppColors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Gaps.v16,
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                height: 1,
-                                color: AppColors.g3,
-                              ),
-                            ),
-                            Gaps.h18,
-                            Text(
-                              DateFormat('yyyy년 MM월 dd일')
-                                  .format(DateTime.now()),
-                              style: AppTextStyles.bd6
-                                  .copyWith(color: AppColors.g4),
-                            ),
-                            Gaps.h18,
-                            Expanded(
-                              child: Container(
-                                height: 1,
-                                color: AppColors.g3,
-                              ),
-                            ),
-                          ],
-                        ),
+                      Text(
+                        widget.thisTitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.bd3.copyWith(color: AppColors.g5),
+                        textAlign: TextAlign.start,
                       ),
-                      Gaps.v24,
-                      Center(
-                        child: Text(
-                          '오늘은 어떤 도움이 필요하세요?\nAI와 공고의 첨푸파일 관련 대화를 시작해 보세요.',
-                          style:
-                              AppTextStyles.btn2.copyWith(color: AppColors.g4),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  )
-                : ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _messages.length + (_isLoading ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index == _messages.length) {
-                        // 마지막 아이템이 로딩 인디케이터
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 24, bottom: 22),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                radius: 18,
-                                backgroundColor: AppColors.blue,
-                                child: AppIcon.chatting_icon,
-                              ),
-                              Gaps.v8,
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                      height: 38,
-                                      child: AppAnimation
-                                          .chatting_progress_indicator),
-                                  Gaps.h4,
-                                ],
-                              ),
-                            ],
+                      Gaps.v8,
+                      if (_isGptApiAvailable) Gaps.v8,
+                      if (_isGptApiAvailable)
+                        Text(
+                          '오류로 인해 일시적으로 AI로 공고 분석하기 기능에 제약이 발생할 수 있습니다',
+                          style: AppTextStyles.caption.copyWith(
+                            color: AppColors.g5,
                           ),
-                        );
-                      }
-                      final message = _messages[index];
-                      final isFirstItem = index == 0;
-                      final isLastItem = index == _messages.length - 1;
-
-                      final messageDate = _parseMessageDateTime(message.time);
-                      bool isFirstMessageOfDay = false;
-                      if (index == 0 ||
-                          _parseMessageDateTime(_messages[index - 1].time)
-                                  .day !=
-                              messageDate.day) {
-                        isFirstMessageOfDay = true;
-                      }
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                    ],
+                  ),
+                ),
+                _messages.isEmpty
+                    ? Column(
                         children: [
-                          if (isFirstMessageOfDay)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: 1,
-                                      color: AppColors.g3,
-                                    ),
-                                  ),
-                                  Gaps.h18,
-                                  Text(
-                                    DateFormat('yyyy년 MM월 dd일')
-                                        .format(messageDate),
-                                    style: AppTextStyles.bd6
-                                        .copyWith(color: AppColors.g4),
-                                  ),
-                                  Gaps.h18,
-                                  Expanded(
-                                    child: Container(
-                                      height: 1,
-                                      color: AppColors.g3,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          Gaps.v8,
                           Padding(
-                            padding: EdgeInsets.only(
-                              top: isFirstItem ? 10 : 0,
-                              bottom: isLastItem && !_isLoading ? 10 : 0,
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 1,
+                                    color: AppColors.g3,
+                                  ),
+                                ),
+                                Gaps.h18,
+                                Text(
+                                  DateFormat('yyyy년 MM월 dd일')
+                                      .format(DateTime.now()),
+                                  style: AppTextStyles.bd6
+                                      .copyWith(color: AppColors.g4),
+                                ),
+                                Gaps.h18,
+                                Expanded(
+                                  child: Container(
+                                    height: 1,
+                                    color: AppColors.g3,
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: Align(
-                              alignment: message.isUser
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              child: message.isUser
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 24,
-                                        right: 24,
-                                        bottom: 22,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            _formatMessageTime(message.time),
-                                            style: AppTextStyles.caption
-                                                .copyWith(color: AppColors.g4),
-                                          ),
-                                          Gaps.h4,
-                                          Flexible(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: AppColors.blue,
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 12,
-                                                        vertical: 9),
-                                                child: Text(
-                                                  message.message,
-                                                  style: AppTextStyles.bd4
-                                                      .copyWith(
-                                                          color: AppColors.g1),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 24,
-                                        right: 24,
-                                        bottom: 22,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 18,
-                                            backgroundColor: AppColors.blue,
-                                            child: AppIcon.chatting_icon,
-                                          ),
-                                          Gaps.v8,
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Flexible(
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                  ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 12,
-                                                        vertical: 9),
-                                                    child: Text(
-                                                      message.message,
-                                                      style: AppTextStyles.bd4
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .black),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Gaps.h4,
-                                              Text(
-                                                _formatMessageTime(
-                                                    message.time),
-                                                style: AppTextStyles.caption
-                                                    .copyWith(
-                                                        color: AppColors.g4),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                          ),
+                          Gaps.v24,
+                          Center(
+                            child: Text(
+                              '오늘은 어떤 도움이 필요하세요?\nAI와 공고의 첨푸파일 관련 대화를 시작해 보세요.',
+                              style: AppTextStyles.btn2
+                                  .copyWith(color: AppColors.g4),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ],
-                      );
-                    },
-                  ),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: _messages.length + (_isLoading ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            if (index == _messages.length) {
+                              // 마지막 아이템이 로딩 인디케이터
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 24, bottom: 22),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 18,
+                                      backgroundColor: AppColors.blue,
+                                      child: AppIcon.chatting_icon,
+                                    ),
+                                    Gaps.v8,
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        SizedBox(
+                                            height: 38,
+                                            child: AppAnimation
+                                                .chatting_progress_indicator),
+                                        Gaps.h4,
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                            final message = _messages[index];
+                            final isFirstItem = index == 0;
+                            final isLastItem = index == _messages.length - 1;
+
+                            final messageDate =
+                                _parseMessageDateTime(message.time);
+                            bool isFirstMessageOfDay = false;
+                            if (index == 0 ||
+                                _parseMessageDateTime(_messages[index - 1].time)
+                                        .day !=
+                                    messageDate.day) {
+                              isFirstMessageOfDay = true;
+                            }
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (isFirstMessageOfDay)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: isFirstItem ? 8 : 0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            height: 1,
+                                            color: AppColors.g3,
+                                          ),
+                                        ),
+                                        Gaps.h18,
+                                        Text(
+                                          DateFormat('yyyy년 MM월 dd일')
+                                              .format(messageDate),
+                                          style: AppTextStyles.bd6
+                                              .copyWith(color: AppColors.g4),
+                                        ),
+                                        Gaps.h18,
+                                        Expanded(
+                                          child: Container(
+                                            height: 1,
+                                            color: AppColors.g3,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: isFirstMessageOfDay ? 16 : 0,
+                                    bottom: isLastItem && !_isLoading ? 10 : 0,
+                                  ),
+                                  child: Align(
+                                    alignment: message.isUser
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: message.isUser
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 24,
+                                              right: 24,
+                                              bottom: 22,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  _formatMessageTime(
+                                                      message.time),
+                                                  style: AppTextStyles.caption
+                                                      .copyWith(
+                                                          color: AppColors.g4),
+                                                ),
+                                                Gaps.h4,
+                                                Flexible(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 12,
+                                                          vertical: 9),
+                                                      child: Text(
+                                                        message.message,
+                                                        style: AppTextStyles.bd4
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .g1),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 24,
+                                              right: 24,
+                                              bottom: 22,
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 18,
+                                                  backgroundColor:
+                                                      AppColors.blue,
+                                                  child: AppIcon.chatting_icon,
+                                                ),
+                                                Gaps.v8,
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              AppColors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      12,
+                                                                  vertical: 9),
+                                                          child: Text(
+                                                            message.message,
+                                                            style: AppTextStyles
+                                                                .bd4
+                                                                .copyWith(
+                                                                    color: AppColors
+                                                                        .black),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Gaps.h4,
+                                                    Text(
+                                                      _formatMessageTime(
+                                                          message.time),
+                                                      style: AppTextStyles
+                                                          .caption
+                                                          .copyWith(
+                                                              color:
+                                                                  AppColors.g4),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+              ],
+            ),
             const Positioned(
               bottom: 0,
               child: BottomGradient(),
