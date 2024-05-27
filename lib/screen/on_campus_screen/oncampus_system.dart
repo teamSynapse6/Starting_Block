@@ -106,6 +106,7 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     SliverAppBar(
+                      centerTitle: false,
                       snap: true,
                       floating: true,
                       elevation: 0,
@@ -139,6 +140,7 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
                                   ((appBarHeight - 56) / heightRange);
 
                           return FlexibleSpaceBar(
+                              centerTitle: false,
                               expandedTitleScale: 24 / 18,
                               titlePadding: EdgeInsets.only(
                                 top: 16,
