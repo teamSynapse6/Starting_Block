@@ -278,6 +278,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
         resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.g1,
         appBar: AppBar(
+          centerTitle: false,
           leading: GestureDetector(
             onTap: () {
               _deleteGptEnd();

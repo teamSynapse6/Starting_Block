@@ -107,6 +107,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
+              centerTitle: false,
               automaticallyImplyLeading: false,
               elevation: 0,
               forceElevated: true,
@@ -115,6 +116,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
               expandedHeight: 152,
               collapsedHeight: 56,
               flexibleSpace: FlexibleSpaceBar(
+                centerTitle: false,
                 titlePadding: const EdgeInsets.symmetric(horizontal: 24),
                 expandedTitleScale: 1.33,
                 title: LayoutBuilder(

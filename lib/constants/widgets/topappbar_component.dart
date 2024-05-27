@@ -21,6 +21,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         right: 12,
       ),
       child: AppBar(
+        centerTitle: false,
         backgroundColor: AppColors.g1,
         leadingWidth: 38,
         leading: AppIcon.topapplogo,
@@ -38,6 +39,7 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 4),
@@ -101,6 +103,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
         right: 12,
       ),
       child: AppBar(
+        centerTitle: false,
         backgroundColor: thisBackGroundColor ?? AppColors.white,
         actions: <Widget>[
           GestureDetector(
@@ -133,6 +136,7 @@ class OnCampusSearchAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       backgroundColor: thisBackGroundColor ?? AppColors.white,
       actions: <Widget>[
         Padding(
@@ -187,6 +191,7 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       leading: GestureDetector(
         onTap: onBackTap,
         child: Container(
@@ -257,6 +262,7 @@ class SearchResultAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       leading: GestureDetector(
         onTap: onBackTap,
         child: Container(
@@ -337,6 +343,7 @@ class SearchFiledAppBarForOnca extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       leading: GestureDetector(
         onTap: onBackTap,
         child: Container(
@@ -407,6 +414,7 @@ class SearchResultAppBarForOnca extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       leading: GestureDetector(
         onTap: onBackTap,
         child: Container(
@@ -493,6 +501,7 @@ class BackAppBarWithBlueBG extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       backgroundColor: AppColors.blue,
       leading: GestureDetector(
         onTap: () {
@@ -523,6 +532,7 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
         right: 12,
       ),
       child: AppBar(
+        centerTitle: false,
         actions: <Widget>[
           GestureDetector(
             onTap: () {
@@ -558,6 +568,8 @@ class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
         right: 12,
       ),
       child: AppBar(
+        centerTitle: false,
+
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
@@ -597,6 +609,7 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       leading: GestureDetector(
         onTap: () {
           Navigator.pop(context, state);
@@ -640,6 +653,7 @@ class BackTitleAppBarForGptList extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       backgroundColor: Colors.transparent,
       leading: GestureDetector(
         onTap: () {
@@ -674,6 +688,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 12.0),
@@ -704,6 +719,7 @@ class TermAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       backgroundColor: thisBgColor ?? AppColors.white,
       leading: GestureDetector(
         onTap: () {
@@ -743,6 +759,7 @@ class BackTitleAppBarForLicense extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       backgroundColor: Colors.transparent,
       leading: InkWell(
         splashColor: Colors.transparent,
