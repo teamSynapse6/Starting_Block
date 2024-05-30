@@ -5,7 +5,7 @@ import 'package:starting_block/constants/constants.dart';
 
 class DialogComponent extends StatelessWidget {
   final String title, description, rightActionText;
-  final rightActionTap;
+  final rightActionTap, leftActionTap;
 
   const DialogComponent({
     super.key,
@@ -13,6 +13,7 @@ class DialogComponent extends StatelessWidget {
     required this.description,
     required this.rightActionText,
     required this.rightActionTap,
+    this.leftActionTap,
   });
 
   @override
@@ -54,9 +55,10 @@ class DialogComponent extends StatelessWidget {
                 children: [
                   Gaps.h152,
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                    onTap: leftActionTap ??
+                        () {
+                          Navigator.pop(context);
+                        },
                     child: SizedBox(
                       width: 76,
                       height: 36,

@@ -34,18 +34,28 @@ class OfCaRecommend extends StatelessWidget {
       children: [
         Gaps.v24,
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Row(
-            children: [
-              AppIcon.mail,
-              Gaps.h6,
-              Text('추천 사업',
-                  style: AppTextStyles.bd1.copyWith(color: AppColors.blue)),
-              Text('이 도착했습니다',
-                  style: AppTextStyles.bd1.copyWith(color: AppColors.g6)),
-            ],
-          ),
-        ),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: thisCurrentStage
+                ? Row(
+                    children: [
+                      Text('추천 사업',
+                          style: AppTextStyles.bd1
+                              .copyWith(color: AppColors.blue)),
+                      Text('이 도착했습니다',
+                          style:
+                              AppTextStyles.bd1.copyWith(color: AppColors.g6)),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Text('도약 후',
+                          style: AppTextStyles.bd1
+                              .copyWith(color: AppColors.blue)),
+                      Text('에 추천 사업을 받아보세요',
+                          style:
+                              AppTextStyles.bd1.copyWith(color: AppColors.g6)),
+                    ],
+                  )),
         Gaps.v16,
         isLoading
             ? const RoadMapOfcaTapCarousel()
@@ -89,16 +99,6 @@ class OfCaRecommend extends StatelessWidget {
                             color: Colors.transparent,
                           ),
                         ),
-                      ),
-                    ),
-                  if (!thisCurrentStage)
-                    const Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 140,
-                      child: Center(
-                        child: RoadMapStepNotify(),
                       ),
                     ),
                 ],

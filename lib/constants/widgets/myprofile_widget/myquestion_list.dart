@@ -80,7 +80,11 @@ class MyQuestionList extends StatelessWidget {
                   style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                 ),
                 Gaps.h6,
-                AppIcon.row_divider,
+                Container(
+                  width: 1,
+                  height: 9,
+                  color: AppColors.g2,
+                ),
                 Gaps.h6,
                 SizedBox(
                   height: 18,
@@ -95,7 +99,11 @@ class MyQuestionList extends StatelessWidget {
                   ),
                 ),
                 Gaps.h6,
-                AppIcon.row_divider,
+                Container(
+                  width: 1,
+                  height: 9,
+                  color: AppColors.g2,
+                ),
                 Gaps.h6,
                 SizedBox(
                   height: 18,

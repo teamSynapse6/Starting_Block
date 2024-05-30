@@ -28,6 +28,7 @@ class QuestionUserReply extends StatelessWidget {
           final reply = replies[index];
           return ReplyList(
             thisUserName: reply.userName,
+            thisProfileNumber: reply.profileNumber,
             thisDate: reply.createdAt,
             thisAnswer: reply.content,
             thisLike: reply.heartCount,

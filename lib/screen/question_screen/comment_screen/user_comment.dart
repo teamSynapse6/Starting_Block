@@ -65,6 +65,7 @@ class _QuestionUserCommentState extends State<QuestionUserComment> {
                       children: [
                         CommentList(
                           thisUserName: answer.userName,
+                          thisProfileNumber: answer.profileNumber,
                           thisAnswer: answer.content,
                           thisDate: answer.createdAt,
                           thisLike: answer.heartCount,

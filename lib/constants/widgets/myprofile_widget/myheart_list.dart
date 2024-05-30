@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 
 class MyProfileHeartList extends StatelessWidget {
@@ -18,7 +19,8 @@ class MyProfileHeartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: InkWell(
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: thisTap,
         child: Ink(
           padding: const EdgeInsets.symmetric(
@@ -48,7 +50,6 @@ class MyProfileHeartList extends StatelessWidget {
                     Expanded(
                       child: Text(
                         thisTitle,
-                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
                       ),
@@ -62,31 +63,34 @@ class MyProfileHeartList extends StatelessWidget {
                 children: [
                   AppIcon.question,
                   Gaps.h8,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        thisQuestion,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.bd3.copyWith(color: AppColors.g6),
-                      ),
-                      Gaps.v4,
-                      SizedBox(
-                        height: 18,
-                        child: Row(
-                          children: [
-                            AppIcon.comments,
-                            Gaps.h3,
-                            Text(
-                              thisCommentCount.toString(),
-                              style: AppTextStyles.btn2
-                                  .copyWith(color: AppColors.g4),
-                            ),
-                          ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          thisQuestion,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              AppTextStyles.bd3.copyWith(color: AppColors.g6),
                         ),
-                      )
-                    ],
+                        Gaps.v4,
+                        SizedBox(
+                          height: 18,
+                          child: Row(
+                            children: [
+                              AppIcon.comments_18,
+                              Gaps.h3,
+                              Text(
+                                thisCommentCount.toString(),
+                                style: AppTextStyles.btn2
+                                    .copyWith(color: AppColors.g4),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               )

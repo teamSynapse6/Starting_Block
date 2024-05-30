@@ -3,7 +3,7 @@ import 'package:starting_block/constants/constants.dart';
 
 class ReplyList extends StatefulWidget {
   final String thisUserName, thisDate, thisAnswer, myNickName;
-  final int thisLike, thisReplyId;
+  final int thisLike, thisReplyId, thisProfileNumber;
   final bool isMyHeart, isMyReply;
   final VoidCallback thisReplyHeartTap,
       thisReplyHeartDeleteTap,
@@ -22,6 +22,7 @@ class ReplyList extends StatefulWidget {
     required this.thisReplyId,
     required this.thisReplyDeleteTap,
     required this.myNickName,
+    required this.thisProfileNumber,
   });
 
   @override
@@ -55,7 +56,7 @@ class _ReplyListState extends State<ReplyList> {
                     color: AppColors.g2,
                   ),
                 ),
-                child: const ProfileIconWidget(iconIndex: 1),
+                child: ProfileIconWidget(iconIndex: widget.thisProfileNumber),
               ),
               Gaps.h8,
               Column(

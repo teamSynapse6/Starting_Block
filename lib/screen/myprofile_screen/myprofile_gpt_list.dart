@@ -156,15 +156,19 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
                                 thisEmptyListTap();
                               },
                               child: Ink(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 7),
                                 decoration: BoxDecoration(
-                                  color: AppColors.g1,
                                   borderRadius: BorderRadius.circular(2),
+                                  border: Border.all(
+                                    color: AppColors.g3,
+                                    width: 1,
+                                  ),
                                 ),
                                 child: Text(
                                   '교외 지원 사업 확인하러 가기',
                                   style: AppTextStyles.bd6
-                                      .copyWith(color: AppColors.g6),
+                                      .copyWith(color: AppColors.g4),
                                 ),
                               ),
                             ),

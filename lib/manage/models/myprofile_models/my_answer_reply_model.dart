@@ -1,16 +1,18 @@
 class MyAnswerReplyModel {
+  final int announcementId;
   final String announcementType;
   final String announcementName;
-  final int questionWriterProfile;
+  final int questionWriterprofileNumber;
   final String questionWriterName;
   final String questionContent;
   final MyAnswer? myAnswer;
   final MyReply? myReply;
 
   MyAnswerReplyModel.fromJson(Map<String, dynamic> json)
-      : announcementType = json['announcementType'] ?? '',
+      : announcementId = json['announcementId'] ?? 0,
+        announcementType = json['announcementType'] ?? '',
         announcementName = json['announcementName'] ?? '',
-        questionWriterProfile = json['questionWrtierProfile'] ?? 0,
+        questionWriterprofileNumber = json['profileNumber'] ?? 0,
         questionWriterName = json['questionWriterName'] ?? '',
         questionContent = json['questionContent'] ?? '',
         myAnswer = json['myAnswer'] != null
@@ -34,13 +36,13 @@ class MyAnswer {
 }
 
 class MyReply {
-  final int answerWriterProfile;
+  final int firstReplierProfileNumber;
   final String answerWriterName;
   final String answerContent;
   final List<ReplyDetail> replyList;
 
   MyReply.fromJson(Map<String, dynamic> json)
-      : answerWriterProfile = json['answerWriterProfile'] ?? 0,
+      : firstReplierProfileNumber = json['profileNumber'] ?? 0,
         answerWriterName = json['answerWriterName'] ?? '',
         answerContent = json['answerContent'] ?? '',
         replyList = json['replyList'] != null
@@ -51,7 +53,7 @@ class MyReply {
 }
 
 class ReplyDetail {
-  final int replyWriterProfile;
+  final int replierProfileNumber;
   final String replyWriterName;
   final String replyContent;
   final String createdAt;
@@ -59,7 +61,7 @@ class ReplyDetail {
   final bool mine;
 
   ReplyDetail.fromJson(Map<String, dynamic> json)
-      : replyWriterProfile = json['replyWriterProfile'] ?? 0,
+      : replierProfileNumber = json['profileNumber'] ?? 0,
         replyWriterName = json['replyWriterName'] ?? '',
         replyContent = json['replyContent'] ?? '',
         createdAt = json['createdAt'] ?? '',

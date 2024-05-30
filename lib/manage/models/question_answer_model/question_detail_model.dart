@@ -1,5 +1,6 @@
 class QuestionDetailModel {
   final String userName;
+  final int profileNumber;
   final String content;
   final String createdAt;
   final int heartCount;
@@ -11,6 +12,7 @@ class QuestionDetailModel {
 
   QuestionDetailModel.fromJson(Map<String, dynamic> json)
       : userName = json['userName'] ?? '',
+        profileNumber = json['profileNumber'] ?? 0,
         content = json['content'] ?? '',
         createdAt = json['createdAt'] ?? '',
         heartCount = json['heartCount'] ?? 0,
@@ -43,17 +45,19 @@ class ContactAnswer {
 class AnswerModel {
   final int answerId;
   final String userName;
+  final int profileNumber;
   final String content;
   final String createdAt;
   final int heartCount;
   final bool isMyHeart;
   final int? heartId;
-  final bool isMyAnswer; // Added new field
+  final bool isMyAnswer;
   final List<ReplyModel> replyResponse;
 
   AnswerModel.fromJson(Map<String, dynamic> json)
       : answerId = json['answerId'] ?? 0,
         userName = json['userName'] ?? '',
+        profileNumber = json['profileNumber'] ?? 0,
         content = json['content'] ?? '',
         createdAt = json['createdAt'] ?? '',
         heartCount = json['heartCount'] ?? 0,
@@ -70,6 +74,7 @@ class AnswerModel {
 class ReplyModel {
   final int replyId;
   final String userName;
+  final int profileNumber;
   final String content;
   final String createdAt;
   final int heartCount;
@@ -80,6 +85,7 @@ class ReplyModel {
   ReplyModel.fromJson(Map<String, dynamic> json)
       : replyId = json['replyId'] ?? 0,
         userName = json['userName'] ?? '',
+        profileNumber = json['profileNumber'] ?? 0,
         content = json['content'] ?? '',
         createdAt = json['createdAt'] ?? '',
         heartCount = json['heartCount'] ?? 0,

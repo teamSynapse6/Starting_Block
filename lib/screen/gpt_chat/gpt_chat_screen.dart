@@ -27,11 +27,11 @@ class _GptChatScreenState extends State<GptChatScreen> {
   String? _threadId;
   List<Message> _messages = [];
   bool _isLoading = false; // Changed variable name from _isLoaded to _isLoading
-  bool _isGptApiAvailable = false;
 
   @override
   void initState() {
     super.initState();
+    getGptApiStauts();
     initializeWidget();
     _loadMessages().then((loadedMessages) {
       setState(() {
@@ -39,7 +39,6 @@ class _GptChatScreenState extends State<GptChatScreen> {
         _scrollToBottom();
       });
     });
-
     _controller.addListener(_handleTextInputChange);
   }
 
@@ -48,6 +47,30 @@ class _GptChatScreenState extends State<GptChatScreen> {
     _controller.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  //GPT API 상태 호출 메소드
+  void getGptApiStauts() async {
+    GptStatusModel status = await GptApi.getGptApiStatus();
+    if (status.incidents.isNotEmpty && mounted) {
+      showDialog(
+          context: context,
+          builder: ((context) {
+            return DialogComponent(
+              title: '기능 오류 안내',
+              description:
+                  '일시적으로 AI에 오류가 발생하여\nAI로 공고 분석하기 기능에 제한이 발생할 수 있습니다.',
+              rightActionText: '이어서 분석',
+              rightActionTap: () {
+                Navigator.pop(context);
+              },
+              leftActionTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            );
+          }));
+    }
   }
 
   void _handleTextInputChange() {
@@ -250,26 +273,6 @@ class _GptChatScreenState extends State<GptChatScreen> {
     return DateTime.parse(formattedString);
   }
 
-  //GPT API 상태 호출 메소드
-  void getGptApiStauts() async {
-    try {
-      GptStatusModel status = await GptApi.getGptApiStatus();
-      if (status.incidents.isEmpty) {
-        setState(() {
-          _isGptApiAvailable = false;
-        });
-      } else {
-        setState(() {
-          _isGptApiAvailable = true;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _isGptApiAvailable = true;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -313,14 +316,6 @@ class _GptChatScreenState extends State<GptChatScreen> {
                         textAlign: TextAlign.start,
                       ),
                       Gaps.v8,
-                      if (_isGptApiAvailable) Gaps.v8,
-                      if (_isGptApiAvailable)
-                        Text(
-                          '오류로 인해 일시적으로 AI로 공고 분석하기 기능에 제약이 발생할 수 있습니다',
-                          style: AppTextStyles.caption.copyWith(
-                            color: AppColors.g5,
-                          ),
-                        ),
                     ],
                   ),
                 ),
@@ -468,6 +463,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.end,
                                               children: [
+                                                Gaps.h12,
                                                 Text(
                                                   _formatMessageTime(
                                                       message.time),
@@ -561,6 +557,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
                                                               color:
                                                                   AppColors.g4),
                                                     ),
+                                                    Gaps.h12,
                                                   ],
                                                 )
                                               ],

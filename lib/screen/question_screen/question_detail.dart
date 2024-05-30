@@ -293,6 +293,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisQuestionLikeCancelTap: deleteHeartForQuestion,
                         thisQuestionHeardID: questionDetail.heartId,
                         myNickName: userNickName,
+                        thisProfileNumber: questionDetail.profileNumber,
                       ),
                       const CustomDividerH8G1(),
                       QuestionContactComment(

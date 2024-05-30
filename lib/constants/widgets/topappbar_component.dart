@@ -46,6 +46,7 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             children: [
               GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: () {
                   Navigator.push(
                     context,
@@ -61,6 +62,7 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: () {
                   Navigator.push(
                     context,
