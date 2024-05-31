@@ -79,20 +79,17 @@ class ThemeManage {
         }),
       ),
       tabBarTheme: TabBarTheme(
+        splashFactory: NoSplash.splashFactory,
         labelStyle: AppTextStyles.bd1,
         unselectedLabelStyle: AppTextStyles.bd2,
         labelColor: AppColors.blue,
         unselectedLabelColor: AppColors.g4,
         indicatorColor: AppColors.blue,
         indicatorSize: TabBarIndicatorSize.tab,
-        dividerColor: Colors.transparent,
+        dividerColor: AppColors.g2,
         overlayColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
-            if (states.contains(MaterialState.focused) ||
-                states.contains(MaterialState.pressed)) {
-              return AppColors.g1;
-            }
-            return AppColors.g1;
+            return Colors.transparent; // overlay 색상을 투명으로 설정
           },
         ),
       ),

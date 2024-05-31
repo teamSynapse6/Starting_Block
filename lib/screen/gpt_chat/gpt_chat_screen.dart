@@ -353,7 +353,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
                           Gaps.v24,
                           Center(
                             child: Text(
-                              '오늘은 어떤 도움이 필요하세요?\nAI와 공고의 첨푸파일 관련 대화를 시작해 보세요.',
+                              '오늘은 어떤 도움이 필요하세요?\nAI와 공고의 첨부파일 관련 대화를 시작해 보세요.',
                               style: AppTextStyles.btn2
                                   .copyWith(color: AppColors.g4),
                               textAlign: TextAlign.center,

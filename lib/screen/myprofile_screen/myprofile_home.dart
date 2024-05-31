@@ -191,16 +191,13 @@ class _MyProfileHomeState extends State<MyProfileHome>
                   ),
                 ),
               ),
-              Material(
-                color: AppColors.white,
-                child: TabBar(
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: '내 질문'),
-                    Tab(text: '내 답변'),
-                    Tab(text: '내 궁금해요'),
-                  ],
-                ),
+              TabBar(
+                controller: _tabController,
+                tabs: const [
+                  Tab(text: '내 질문'),
+                  Tab(text: '내 답변'),
+                  Tab(text: '내 궁금해요'),
+                ],
               ),
               Expanded(
                 child: TabBarView(

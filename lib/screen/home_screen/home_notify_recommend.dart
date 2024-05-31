@@ -64,7 +64,10 @@ class _HomeNotifyRecommendState extends State<HomeNotifyRecommend> {
     }
 
     return Container(
-      color: AppColors.white,
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(4),
+      ),
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 20,

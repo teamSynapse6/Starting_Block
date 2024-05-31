@@ -109,6 +109,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: thisBackGroundColor ?? AppColors.white,
         actions: <Widget>[
           GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: thisSearchTapAction,
             child: SizedBox(
               height: 48,
@@ -144,6 +145,7 @@ class OnCampusSearchAppBar extends StatelessWidget
         Padding(
           padding: const EdgeInsets.only(right: 12),
           child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: () {
               Navigator.push(
                 context,
@@ -195,6 +197,7 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: false,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: onBackTap,
         child: Container(
           width: 48,
@@ -266,6 +269,7 @@ class SearchResultAppBar extends StatelessWidget
     return AppBar(
       centerTitle: false,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: onBackTap,
         child: Container(
           width: 48,
@@ -300,6 +304,7 @@ class SearchResultAppBar extends StatelessWidget
       ),
       actions: [
         GestureDetector(
+          behavior: HitTestBehavior.translucent,
           onTap: onCloseTap,
           child: Container(
             width: 48,
@@ -347,6 +352,7 @@ class SearchFiledAppBarForOnca extends StatelessWidget
     return AppBar(
       centerTitle: false,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: onBackTap,
         child: Container(
           width: 48,
@@ -418,6 +424,7 @@ class SearchResultAppBarForOnca extends StatelessWidget
     return AppBar(
       centerTitle: false,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: onBackTap,
         child: Container(
           width: 48,
@@ -452,6 +459,7 @@ class SearchResultAppBarForOnca extends StatelessWidget
       ),
       actions: [
         GestureDetector(
+          behavior: HitTestBehavior.translucent,
           onTap: onCloseTap,
           child: Container(
             width: 48,
@@ -482,6 +490,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: thisBgColor ?? AppColors.white,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           Navigator.pop(context, state);
         },
@@ -506,6 +515,7 @@ class BackAppBarWithBlueBG extends StatelessWidget
       centerTitle: false,
       backgroundColor: AppColors.blue,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           Navigator.pop(context);
         },
@@ -534,9 +544,11 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
         right: 12,
       ),
       child: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: false,
         actions: <Widget>[
           GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: () {
               Navigator.pop(context, state);
             },
@@ -573,6 +585,7 @@ class SaveAppBar extends StatelessWidget implements PreferredSizeWidget {
         centerTitle: false,
 
         leading: GestureDetector(
+          behavior: HitTestBehavior.translucent,
           onTap: () {
             Navigator.pop(context);
           },
@@ -613,6 +626,7 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: false,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           Navigator.pop(context, state);
         },
@@ -622,6 +636,7 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: const EdgeInsets.only(right: 12.0),
           child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: thisOnTap,
             child: SizedBox(
               width: 73,
@@ -658,6 +673,7 @@ class BackTitleAppBarForGptList extends StatelessWidget
       centerTitle: false,
       backgroundColor: Colors.transparent,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           Navigator.pop(context);
         },
@@ -724,6 +740,7 @@ class TermAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       backgroundColor: thisBgColor ?? AppColors.white,
       leading: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           Navigator.pop(context, state);
         },

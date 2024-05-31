@@ -80,6 +80,7 @@ class _RoadMapEditState extends State<RoadMapEdit> {
         preferredSize: const Size.fromHeight(56),
         child: AppBar(
           leading: GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: () {
               Navigator.pop(context);
             },

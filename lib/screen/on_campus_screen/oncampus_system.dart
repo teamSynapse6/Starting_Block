@@ -116,6 +116,7 @@ class _OnCampusSystemState extends State<OnCampusSystem> {
                       expandedHeight: 128,
                       collapsedHeight: 56,
                       leading: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
                         onTap: () => Navigator.of(context).pop(),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4),

@@ -172,6 +172,7 @@ class _BookMarkButtonState extends State<BookMarkButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () => _bookMarkTap(context),
       child: SizedBox(
         height: 24,

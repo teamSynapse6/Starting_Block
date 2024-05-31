@@ -67,8 +67,10 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
       // _isInputValid가 true로 업데이트된 후, _onNextTap() 자동 호출
       if (_isInputValid) {
         Future.delayed(const Duration(milliseconds: 500), () {
+          setState(() {
+            _isCheacking = false;
+          });
           _onNextTap();
-          _isCheacking = false;
         });
       } else {
         setState(() {
