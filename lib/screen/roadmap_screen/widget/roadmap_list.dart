@@ -116,14 +116,17 @@ class RoadMapListState extends State<RoadMapList> {
                           const Spacer(),
                           Material(
                             color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () async {
+                                Navigator.pop(context);
+                                await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const RoadMapEdit()),
                                 );
+                                loadRoadMaps();
                               },
                               child: SizedBox(
                                 height: 32,

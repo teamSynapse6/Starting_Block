@@ -4,6 +4,7 @@ import 'package:starting_block/manage/api/roadmap_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'dart:math' as math;
+import 'package:flutter/scheduler.dart'; // 이 부분을 추가
 
 class RoadmapHome extends StatefulWidget {
   const RoadmapHome({super.key});
@@ -17,7 +18,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
   late TabController _tabController;
   String _nickName = "";
   String _selectedRoadmapText = ""; // 선택된 Roadmap 텍스트를 저장
-  bool _isCurrentStageSelected = false; // 현재 단계가 선택되었는지 여부
+  bool _isCurrentStageSelected = false; // 현재 단계가 선택되었지 여부
   int _selectedRoadmapStage = 0; //선택된 로드맵의 단계
   int _roadMapId = 0;
   final GlobalKey<RoadMapListState> roadMapListKey =
@@ -107,7 +108,10 @@ class _RoadmapHomeState extends State<RoadmapHome>
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
+              stretch: false,
               centerTitle: false,
+              snap: true,
+              floating: true,
               automaticallyImplyLeading: false,
               elevation: 0,
               forceElevated: true,
@@ -140,23 +144,35 @@ class _RoadmapHomeState extends State<RoadmapHome>
                       child: RoadMapList(
                         key: roadMapListKey,
                         selectedRoadMapTitle: (String title) {
-                          setState(() {
-                            _selectedRoadmapText = title;
+                          // 상태 변경을 다음 프레임으로 예약합니다.
+                          SchedulerBinding.instance.addPostFrameCallback((_) {
+                            setState(() {
+                              _selectedRoadmapText = title;
+                            });
                           });
                         },
                         selectedRoadMapId: (int id) {
-                          setState(() {
-                            _roadMapId = id;
+                          // 상태 변경을 다음 프레임으로 예약합니다.
+                          SchedulerBinding.instance.addPostFrameCallback((_) {
+                            setState(() {
+                              _roadMapId = id;
+                            });
                           });
                         },
                         isCurrentStage: (bool currentStage) {
-                          setState(() {
-                            _isCurrentStageSelected = currentStage;
+                          // 상태 변경을 다음 프레임으로 예약합니다.
+                          SchedulerBinding.instance.addPostFrameCallback((_) {
+                            setState(() {
+                              _isCurrentStageSelected = currentStage;
+                            });
                           });
                         },
                         selectedRoadMapStage: (int selectedStage) {
-                          setState(() {
-                            _selectedRoadmapStage = selectedStage;
+                          // 상태 변경을 다음 프레임으로 예약합니다.
+                          SchedulerBinding.instance.addPostFrameCallback((_) {
+                            setState(() {
+                              _selectedRoadmapStage = selectedStage;
+                            });
                           });
                         },
                       ),

@@ -166,7 +166,7 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
                                   ),
                                 ),
                                 child: Text(
-                                  '교외 지원 사업 확인하러 가기',
+                                  '교외지원사업 확인하러 가기',
                                   style: AppTextStyles.bd6
                                       .copyWith(color: AppColors.g4),
                                 ),

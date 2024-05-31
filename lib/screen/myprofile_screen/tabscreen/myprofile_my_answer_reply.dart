@@ -60,9 +60,7 @@ class _MyProfileMyAnswerReplyState extends State<MyProfileMyAnswerReply> {
                     myReply: answerReply.myReply,
                     thisQuestionWriterProfile:
                         answerReply.questionWriterprofileNumber,
-                    thisTap: () => _thisTap(
-                        questionID: answerReply
-                            .announcementId), // 이 부분에서 questionID를 넘겨주는 부분이 필요
+                    thisTap: () => _thisTap(questionID: answerReply.questionId),
                   ),
                   if (index < myAnswerReply.length - 1)
                     const Padding(

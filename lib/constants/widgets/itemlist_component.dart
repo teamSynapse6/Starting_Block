@@ -123,3 +123,90 @@ class ItemList extends StatelessWidget {
     );
   }
 }
+
+class ItemListForRecommend extends StatelessWidget {
+  final String thisID,
+      thisOrganize,
+      thisTitle,
+      thisStartDate,
+      thisEndDate,
+      thisClassification;
+  final bool isSaved, isContactExist, isFileUploaded;
+
+  const ItemListForRecommend({
+    super.key,
+    required this.thisID,
+    required this.thisOrganize,
+    required this.thisTitle,
+    required this.thisStartDate,
+    required this.thisEndDate,
+    required this.thisClassification,
+    required this.isSaved,
+    required this.isContactExist,
+    required this.isFileUploaded,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String formattedStartDate = formatedStartDate(thisStartDate);
+    String formattedEndDate = formatedEndDate(thisEndDate);
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OffCampusDetail(thisID: thisID),
+            fullscreenDialog: false,
+          ),
+        );
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gaps.v16,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                OrganizeChipForOfca(text: thisOrganize),
+                if (isContactExist)
+                  const Row(
+                    children: [
+                      Gaps.h4,
+                      ConatactChip(),
+                    ],
+                  ),
+                if (isFileUploaded)
+                  const Row(
+                    children: [
+                      Gaps.h4,
+                      AIChip(),
+                    ],
+                  ),
+              ],
+            ),
+            Gaps.v12,
+            Text(
+              thisTitle,
+              style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
+            ),
+            Gaps.v10,
+            Text(
+              '등록일 $formattedStartDate',
+              style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
+            ),
+            Gaps.v4,
+            Text(
+              '마감일 $formattedEndDate',
+              style: AppTextStyles.bd6.copyWith(color: AppColors.g5),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

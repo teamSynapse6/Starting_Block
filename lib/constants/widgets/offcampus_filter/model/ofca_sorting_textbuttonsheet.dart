@@ -71,7 +71,8 @@ class _OffCampusSortingButtonState extends State<OffCampusSortingButton> {
   @override
   Widget build(BuildContext context) {
     final filterModel = Provider.of<FilterModel>(context);
-    return InkWell(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () => onSortingBottom(context, filterModel),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 2, 4, 2),

@@ -74,18 +74,22 @@ class _OnCampusSortingButtonState extends State<OnCampusSortingButton> {
   Widget build(BuildContext context) {
     // Provider를 사용하여 OnCaFilterModel 인스턴스에 접근
     final filterModel = Provider.of<OnCaFilterModel>(context);
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => onSortingBottom(context, filterModel),
-          child: Text(
-            filterModel.selectedSorting, // 선택된 정렬 옵션 표시
-            style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
-          ),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => onSortingBottom(context, filterModel),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
+        child: Row(
+          children: [
+            Text(
+              filterModel.selectedSorting, // 선택된 정렬 옵션 표시
+              style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
+            ),
+            Gaps.h4,
+            AppIcon.down_g3,
+          ],
         ),
-        Gaps.h4,
-        AppIcon.down_g3,
-      ],
+      ),
     );
   }
 }

@@ -134,204 +134,203 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
               color: AppColors.white,
             ),
           ),
-          body: Stack(
-            children: [
-              NestedScrollView(
-                controller: _scrollController,
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBar(
-                      centerTitle: false,
-                      snap: true,
-                      floating: true,
-                      elevation: 0,
-                      forceElevated: innerBoxIsScrolled,
-                      backgroundColor: AppColors.white,
-                      pinned: true,
-                      expandedHeight: 128,
-                      collapsedHeight: 56,
-                      leading: GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: AppIcon.back,
-                        ),
-                      ),
-                      actions: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: GestureDetector(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const OnCampusSearch(),
-                                ),
-                              );
-                              loadFilterValue();
-                            },
-                            child: SizedBox(
-                              height: 48,
-                              width: 48,
-                              child: AppIcon.search,
-                            ),
+          body: Consumer<BookMarkNotifier>(
+              builder: (context, bookmarkNotifier, child) {
+            if (bookmarkNotifier.isUpdated) {
+              print('호출됨');
+              loadFilterValue();
+              bookmarkNotifier.resetUpdate();
+            }
+            return Stack(
+              children: [
+                NestedScrollView(
+                  controller: _scrollController,
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverAppBar(
+                        centerTitle: false,
+                        snap: true,
+                        floating: true,
+                        elevation: 0,
+                        forceElevated: innerBoxIsScrolled,
+                        backgroundColor: AppColors.white,
+                        pinned: true,
+                        expandedHeight: 128,
+                        collapsedHeight: 56,
+                        leading: GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 4),
+                            child: AppIcon.back,
                           ),
                         ),
-                      ],
-                      flexibleSpace: LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
-                          // AppBar의 최대 높이와 현재 높이를 기준으로 패딩 값을 계산
-                          double appBarHeight = constraints.biggest.height;
-                          double maxPaddingTop = 20;
-                          double minPaddingTop = 16;
-                          double paddingTopRange =
-                              maxPaddingTop - minPaddingTop;
-                          double heightRange =
-                              128 - 56; // expandedHeight - collapsedHeight
-
-                          // 선형적으로 paddingBottom 계산
-                          double paddingBottom = minPaddingTop +
-                              paddingTopRange *
-                                  ((appBarHeight - 56) / heightRange);
-
-                          return FlexibleSpaceBar(
-                            centerTitle: false,
-                            expandedTitleScale: 24 / 18,
-                            titlePadding: EdgeInsets.only(
-                              top: 16,
-                              bottom: paddingBottom,
-                              left: 60,
+                        actions: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const OnCampusSearch(),
+                                  ),
+                                );
+                                loadFilterValue();
+                              },
+                              child: SizedBox(
+                                height: 48,
+                                width: 48,
+                                child: AppIcon.search,
+                              ),
                             ),
-                            title: Text(
-                              '지원 공고',
-                              style: AppTextStyles.st2
-                                  .copyWith(color: AppColors.g6),
-                            ),
-                            background: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 24),
+                          ),
+                        ],
+                        flexibleSpace: LayoutBuilder(
+                          builder: (BuildContext context,
+                              BoxConstraints constraints) {
+                            // AppBar의 최대 높이와 현재 높이를 기준으로 패딩 값을 계산
+                            double appBarHeight = constraints.biggest.height;
+                            double maxPaddingTop = 20;
+                            double minPaddingTop = 16;
+                            double paddingTopRange =
+                                maxPaddingTop - minPaddingTop;
+                            double heightRange =
+                                128 - 56; // expandedHeight - collapsedHeight
+
+                            // 선형적으로 paddingBottom 계산
+                            double paddingBottom = minPaddingTop +
+                                paddingTopRange *
+                                    ((appBarHeight - 56) / heightRange);
+
+                            return FlexibleSpaceBar(
+                              centerTitle: false,
+                              expandedTitleScale: 24 / 18,
+                              titlePadding: EdgeInsets.only(
+                                top: 16,
+                                bottom: paddingBottom,
+                                left: 60,
+                              ),
+                              title: Text(
+                                '지원 공고',
+                                style: AppTextStyles.st2
+                                    .copyWith(color: AppColors.g6),
+                              ),
+                              background: const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 24),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Gaps.v80,
+                                    SizedBox(
+                                      height: 24,
+                                      width: 24,
+                                      child: SchoolLogoWidget(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SliverPersistentHeader(
+                        pinned: true,
+                        delegate: OnCampusNotifyDelegate(
+                          child: Container(
+                            color: AppColors.white,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Gaps.v80,
-                                  SizedBox(
-                                    height: 24,
-                                    width: 24,
-                                    child: SchoolLogoWidget(),
+                                  const ProgramChipsSheet(),
+                                  Gaps.v12,
+                                  Container(
+                                    height: 32,
+                                    decoration: const BoxDecoration(
+                                      border: BorderDirectional(
+                                        top: BorderSide(
+                                            width: 2, color: AppColors.g1),
+                                        bottom: BorderSide(
+                                            width: 2, color: AppColors.g1),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${_notifyList.length}개의 공고',
+                                          style: AppTextStyles.bd4
+                                              .copyWith(color: AppColors.g4),
+                                        ),
+                                        const OnCampusSortingButton()
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                    SliverPersistentHeader(
-                      pinned: true,
-                      delegate: OnCampusNotifyDelegate(
-                        child: Container(
-                          color: AppColors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const ProgramChipsSheet(),
-                                Gaps.v12,
-                                Container(
-                                  height: 32,
-                                  decoration: const BoxDecoration(
-                                    border: BorderDirectional(
-                                      top: BorderSide(
-                                          width: 2, color: AppColors.g1),
-                                      bottom: BorderSide(
-                                          width: 2, color: AppColors.g1),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${_notifyList.length}개의 공고',
-                                        style: AppTextStyles.bd4
-                                            .copyWith(color: AppColors.g4),
-                                      ),
-                                      const Spacer(),
-                                      const OnCampusSortingButton()
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ];
-                },
-                body: isLoading
-                    ? const OncaSkeletonNotify()
-                    : widget.hasNotifyData
-                        ? Consumer<BookMarkNotifier>(
-                            builder: (context, bookmarkNotifier, child) {
-                              if (bookmarkNotifier.isUpdated) {
-                                loadFilterValue();
-                                bookmarkNotifier.resetUpdate();
-                              }
-                              return SingleChildScrollView(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24),
-                                  child: Column(
-                                    children: [
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: _notifyList.length,
-                                        itemBuilder: (context, index) {
-                                          final notify = _notifyList[index];
-                                          return Column(
-                                            children: [
-                                              OnCampusNotifyListCard(
-                                                thisProgramText: notify.keyword,
-                                                thisId: notify.announcementId
-                                                    .toString(),
-                                                thisTitle: notify.title,
-                                                thisStartDate:
-                                                    notify.insertDate,
-                                                thisUrl: notify.detailUrl,
-                                                isSaved: notify.isBookmarked,
-                                              ),
-                                              if (index <
-                                                  _notifyList.length - 1)
-                                                const CustomDividerH2G1(),
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                    ];
+                  },
+                  body: isLoading
+                      ? const OncaSkeletonNotify()
+                      : widget.hasNotifyData
+                          ? SingleChildScrollView(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                child: Column(
+                                  children: [
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: _notifyList.length,
+                                      itemBuilder: (context, index) {
+                                        final notify = _notifyList[index];
+                                        return Column(
+                                          children: [
+                                            OnCampusNotifyListCard(
+                                              thisProgramText: notify.keyword,
+                                              thisId: notify.announcementId
+                                                  .toString(),
+                                              thisTitle: notify.title,
+                                              thisStartDate: notify.insertDate,
+                                              thisUrl: notify.detailUrl,
+                                              isSaved: notify.isBookmarked,
+                                            ),
+                                            if (index < _notifyList.length - 1)
+                                              const CustomDividerH2G1(),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
-                              );
-                            },
-                          )
-                        : OnCampusEmptyDisplay(
-                            userNickName: _userNickName,
-                          ),
-              ),
-              if (_isScrolled && _notifyList.isNotEmpty)
-                Positioned(
-                  right: 24,
-                  bottom: 12,
-                  child: ScrollToTopButton(
-                    thisBackToTopTap: backToTopTap,
-                  ),
-                )
-            ],
-          ),
+                              ),
+                            )
+                          : OnCampusEmptyDisplay(
+                              userNickName: _userNickName,
+                            ),
+                ),
+                if (_isScrolled && _notifyList.isNotEmpty)
+                  Positioned(
+                    right: 24,
+                    bottom: 12,
+                    child: ScrollToTopButton(
+                      thisBackToTopTap: backToTopTap,
+                    ),
+                  )
+              ],
+            );
+          }),
         );
       },
     );

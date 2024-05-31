@@ -2,6 +2,7 @@ class MyAnswerReplyModel {
   final int announcementId;
   final String announcementType;
   final String announcementName;
+  final int questionId;
   final int questionWriterprofileNumber;
   final String questionWriterName;
   final String questionContent;
@@ -12,6 +13,7 @@ class MyAnswerReplyModel {
       : announcementId = json['announcementId'] ?? 0,
         announcementType = json['announcementType'] ?? '',
         announcementName = json['announcementName'] ?? '',
+        questionId = json['questionId'] ?? 0,
         questionWriterprofileNumber = json['profileNumber'] ?? 0,
         questionWriterName = json['questionWriterName'] ?? '',
         questionContent = json['questionContent'] ?? '',
