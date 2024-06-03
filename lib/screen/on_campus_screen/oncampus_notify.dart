@@ -135,7 +135,6 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
           body: Consumer<BookMarkNotifier>(
               builder: (context, bookmarkNotifier, child) {
             if (bookmarkNotifier.isUpdated) {
-              print('호출됨');
               loadFilterValue();
               bookmarkNotifier.resetUpdate();
             }
