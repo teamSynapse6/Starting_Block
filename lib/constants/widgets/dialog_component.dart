@@ -55,6 +55,7 @@ class DialogComponent extends StatelessWidget {
                 children: [
                   Gaps.h152,
                   GestureDetector(
+                    behavior: HitTestBehavior.translucent,
                     onTap: leftActionTap ??
                         () {
                           Navigator.pop(context);
@@ -72,6 +73,7 @@ class DialogComponent extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
+                    behavior: HitTestBehavior.translucent,
                     onTap: rightActionTap,
                     child: SizedBox(
                       width: 76,

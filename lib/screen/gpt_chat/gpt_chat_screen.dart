@@ -59,7 +59,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
             return DialogComponent(
               title: '기능 오류 안내',
               description:
-                  '일시적으로 AI에 오류가 발생하여\nAI로 공고 분석하기 기능에 제한이 발생할 수 있습니다.',
+                  '일시적으로 AI에 오류가 발생하여,\nAI로 공고 분석하기 기능에 제한이 발생할 수 있습니다.',
               rightActionText: '이어서 분석',
               rightActionTap: () {
                 Navigator.pop(context);

@@ -27,7 +27,7 @@ class MyQuestionList extends StatelessWidget {
     String formatDate(String date) {
       DateTime dateTime = DateTime.parse(date);
       String formattedDate =
-          "${dateTime.year}.${dateTime.month.toString().padLeft(2, '0')}.${dateTime.day.toString().padLeft(2, '0')}";
+          "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
       return formattedDate;
     }
 

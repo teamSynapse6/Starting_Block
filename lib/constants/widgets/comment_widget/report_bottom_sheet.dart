@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class AnswerCommentReport extends StatefulWidget {
-  const AnswerCommentReport({super.key});
+class AnswerCommentReport extends StatelessWidget {
+  const AnswerCommentReport({
+    super.key,
+  });
 
-  @override
-  State<AnswerCommentReport> createState() => _AnswerCommentReportState();
-}
-
-class _AnswerCommentReportState extends State<AnswerCommentReport> {
   @override
   Widget build(BuildContext context) {
     void thisReportAction() async {
       // 스낵바로 '신고가 접수되었습니다' 메시지 출력
+
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('신고가 접수되었습니다'),
-          duration: Duration(seconds: 2),
-          backgroundColor: AppColors.activered,
+        SnackBar(
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          content: Text('신고가 접수되었습니다',
+              style: AppTextStyles.bd4.copyWith(
+                color: AppColors.white,
+              )),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color(0xff121212).withOpacity(0.8),
         ),
       );
     }
@@ -63,24 +70,31 @@ class _AnswerCommentReportState extends State<AnswerCommentReport> {
   }
 }
 
-class ReplyCommentReport extends StatefulWidget {
-  const ReplyCommentReport({super.key});
+class ReplyCommentReport extends StatelessWidget {
+  const ReplyCommentReport({
+    super.key,
+  });
 
-  @override
-  State<ReplyCommentReport> createState() => _ReplyCommentReportState();
-}
-
-class _ReplyCommentReportState extends State<ReplyCommentReport> {
   @override
   Widget build(BuildContext context) {
     void thisReportAction() async {
       // 스낵바로 '신고가 접수되었습니다' 메시지 출력
+
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('신고가 접수되었습니다'),
-          duration: Duration(seconds: 2),
-          backgroundColor: AppColors.activered,
+        SnackBar(
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          content: Text('신고가 접수되었습니다',
+              style: AppTextStyles.bd4.copyWith(
+                color: AppColors.white,
+              )),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color(0xff121212).withOpacity(0.8),
         ),
       );
     }

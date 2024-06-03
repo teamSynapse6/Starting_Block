@@ -46,10 +46,7 @@ class _OnCampusSortingButtonState extends State<OnCampusSortingButton> {
                           String sortingItem = sortingList[index];
                           return BottomSheetList(
                             thisText: sortingItem,
-                            thisColor:
-                                sortingItem == filterModel.selectedSorting
-                                    ? AppColors.g1
-                                    : AppColors.white,
+                            thisColor: AppColors.white,
                             thisTapAction: () {
                               setStateBottomSheet(() {
                                 filterModel.selectedSorting = sortingItem;

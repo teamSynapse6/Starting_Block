@@ -7,8 +7,8 @@ class OncaSystemModel {
 
   OncaSystemModel.fromJson(Map<String, dynamic> json)
       : systemId = json['systemId'] ?? 0,
-        title = (json['title'] ?? '').replaceAll('/n', ''),
-        target = (json['target'] ?? '')..replaceAll('/n', ''),
-        content = (json['content'] ?? '').replaceAll('/n', ''),
+        title = (json['title'] ?? ''),
+        target = (json['target'] ?? ''),
+        content = (json['content'] ?? ''),
         isBookmarked = json['isBookmarked'] ?? false;
 }
