@@ -36,7 +36,7 @@ class GotoSaveItem extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                '지원사업 저장하러가기',
+                '지원사업 저장하러 가기',
                 style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
               ),
             ),

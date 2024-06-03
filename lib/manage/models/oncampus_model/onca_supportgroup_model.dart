@@ -8,7 +8,7 @@ class OncaSupportGroupModel {
   OncaSupportGroupModel.fromJson(Map<String, dynamic> json)
       : announcementId = json['announcementId'] ?? 0,
         // '\n'을 모두 제거
-        title = (json['title'] ?? '').replaceAll('/n', ''),
-        content = (json['content'] ?? '').replaceAll('/n', ''),
+        title = (json['title'] ?? ''),
+        content = (json['content'] ?? ''),
         isBookmarked = json['isBookmarked'] ?? false;
 }

@@ -3,7 +3,7 @@ import 'package:starting_block/constants/constants.dart';
 
 class QuestionDetailInfo extends StatelessWidget {
   final String thisUserName, thisQuestion, thisDate, myNickName;
-  final int thisLike, thisQuestionHeardID;
+  final int thisLike, thisQuestionHeardID, thisProfileNumber;
   final bool isMyHeart;
   final VoidCallback thisQuestionLikeTap, thisQuestionLikeCancelTap;
 
@@ -18,6 +18,7 @@ class QuestionDetailInfo extends StatelessWidget {
     required this.thisQuestionLikeCancelTap,
     required this.thisQuestionHeardID,
     required this.myNickName,
+    required this.thisProfileNumber,
   });
 
   String formatDate(String date) {
@@ -52,7 +53,7 @@ class QuestionDetailInfo extends StatelessWidget {
                     color: AppColors.g2,
                   ),
                 ),
-                child: const ProfileIconWidget(iconIndex: 1),
+                child: ProfileIconWidget(iconIndex: thisProfileNumber),
               ),
               Gaps.h12,
               Column(

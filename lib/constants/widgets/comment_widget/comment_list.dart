@@ -10,7 +10,7 @@ String formatDate(String date) {
 
 class CommentList extends StatefulWidget {
   final String thisUserName, thisAnswer, thisDate, myNickName;
-  final int thisLike, thisAnswerId;
+  final int thisLike, thisAnswerId, thisProfileNumber;
   final bool isMyHeart, isMyAnswer;
   final VoidCallback thisReplyTap,
       thisCommentHeartTap,
@@ -31,6 +31,7 @@ class CommentList extends StatefulWidget {
     required this.isMyAnswer,
     required this.thisAnswerDeleteTap,
     required this.myNickName,
+    required this.thisProfileNumber,
   });
 
   @override
@@ -64,7 +65,7 @@ class _CommentListState extends State<CommentList> {
                     color: AppColors.g2,
                   ),
                 ),
-                child: const ProfileIconWidget(iconIndex: 1),
+                child: ProfileIconWidget(iconIndex: widget.thisProfileNumber),
               ),
               Gaps.h10,
               Column(

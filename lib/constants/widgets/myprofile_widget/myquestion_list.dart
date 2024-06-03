@@ -27,7 +27,7 @@ class MyQuestionList extends StatelessWidget {
     String formatDate(String date) {
       DateTime dateTime = DateTime.parse(date);
       String formattedDate =
-          "${dateTime.year}.${dateTime.month.toString().padLeft(2, '0')}.${dateTime.day.toString().padLeft(2, '0')}";
+          "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
       return formattedDate;
     }
 
@@ -80,7 +80,11 @@ class MyQuestionList extends StatelessWidget {
                   style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                 ),
                 Gaps.h6,
-                AppIcon.row_divider,
+                Container(
+                  width: 1,
+                  height: 9,
+                  color: AppColors.g2,
+                ),
                 Gaps.h6,
                 SizedBox(
                   height: 18,
@@ -95,7 +99,11 @@ class MyQuestionList extends StatelessWidget {
                   ),
                 ),
                 Gaps.h6,
-                AppIcon.row_divider,
+                Container(
+                  width: 1,
+                  height: 9,
+                  color: AppColors.g2,
+                ),
                 Gaps.h6,
                 SizedBox(
                   height: 18,

@@ -45,10 +45,7 @@ class _OffCampusSortingButtonState extends State<OffCampusSortingButton> {
                           String sortingItem = sortingList[index];
                           return BottomSheetList(
                             thisText: sortingItem,
-                            thisColor:
-                                sortingItem == filterModel.selectedSorting
-                                    ? AppColors.g1
-                                    : AppColors.white,
+                            thisColor: AppColors.white,
                             thisTapAction: () {
                               filterModel.selectedSorting =
                                   sortingItem; // 선택한 정렬 옵션을 FilterModel에 저장
@@ -71,7 +68,8 @@ class _OffCampusSortingButtonState extends State<OffCampusSortingButton> {
   @override
   Widget build(BuildContext context) {
     final filterModel = Provider.of<FilterModel>(context);
-    return InkWell(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () => onSortingBottom(context, filterModel),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 2, 4, 2),

@@ -207,7 +207,6 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                   ),
                   Expanded(
                     child: ReorderableListView(
-                      shrinkWrap: true,
                       onReorderStart: (int newIndex) {
                         setState(() {
                           draggingIndex = newIndex;
@@ -252,7 +251,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                         for (final item
                             in _initialRoadmapItems) // roadmapItems는 screen_manage.dart에서 정의된 것으로 가정
                           ReorderCustomTile(
-                            key: UniqueKey(),
+                            key: Key(item),
                             thisText: item,
                             thisTextStyle: AppTextStyles.bd2.copyWith(
                               color: AppColors.g6,

@@ -4,6 +4,7 @@ import 'package:starting_block/manage/model_manage.dart';
 
 class GptApi {
   static String baseUrl = 'https://pdfgpt.startingblock.co.kr';
+  // static String baseUrl = 'http://10.0.2.2:5001'; //내부 서버 테스트용
   static String gptStart = 'gpt/start';
   static String gptChat = 'gpt/chat';
   static String gptEnd = 'gpt/end';

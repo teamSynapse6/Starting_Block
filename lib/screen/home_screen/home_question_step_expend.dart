@@ -33,13 +33,13 @@ class HomeQuestionStepExpanded extends StatelessWidget {
       },
       {
         "stage": 2,
-        "title": "$thisUserName님의 최신 질문이\n발송되었어요",
-        "content": "답변이 도착하면 알려드릴게요",
+        "title": "담당처에서 답변을\n준비 중이에요",
+        "content": "질문에 따라 소요시간이 다를 수 있습니다",
       },
       {
         "stage": 3,
-        "title": "$thisUserName님의 최신 질문에 대한\n답변이 도착했어요",
-        "content": "도착한 답변을 확인해보세요",
+        "title": "$thisUserName님 질문의\n답변이 도착했어요",
+        "content": "추가 궁금한 사항이 있으면, 다시 질문할 수 있어요",
       },
     ];
 

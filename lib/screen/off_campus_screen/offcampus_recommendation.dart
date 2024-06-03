@@ -43,7 +43,7 @@ class Recommendation extends StatelessWidget {
                       var item = filteredData[index];
                       return Column(
                         children: [
-                          ItemList(
+                          ItemListForRecommend(
                             thisID: item.announcementId.toString(),
                             thisOrganize: item.departmentName,
                             thisTitle: item.title,

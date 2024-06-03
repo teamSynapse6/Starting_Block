@@ -98,7 +98,8 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
                 ),
               ),
               Gaps.v20,
-              if (_schoolInfo.isNotEmpty) // 조건 추가
+              if (_schoolInfo.isNotEmpty &&
+                  filteredSchoolList.isNotEmpty) // 조건 추가
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
@@ -124,6 +125,11 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
                       );
                     },
                   ),
+                )
+              else if (_schoolInfo.isNotEmpty && filteredSchoolList.isEmpty)
+                Text(
+                  "'현재 수도권 대학만을 지원해요.\n입력하신 학교의 정보를 빠르게 제공하도록 노력할게요'",
+                  style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
                 ),
               const Spacer(),
             ],

@@ -232,9 +232,6 @@ class AppIcon {
   static Widget get my_contact_tail =>
       SvgPicture.asset('assets/icon/other/my_contact_tail.svg',
           fit: BoxFit.scaleDown);
-  static Widget get row_divider =>
-      SvgPicture.asset('assets/icon/other/row_divider.svg',
-          fit: BoxFit.scaleDown);
   static Widget get contact_logo_28 =>
       SvgPicture.asset('assets/icon/other/contact_logo_28.svg',
           fit: BoxFit.scaleDown);
@@ -260,6 +257,9 @@ class AppIcon {
           fit: BoxFit.scaleDown);
   static Widget get starter_emptylist =>
       SvgPicture.asset('assets/icon/other/starter_emptylist.svg',
+          fit: BoxFit.scaleDown);
+  static Widget get comments_18 =>
+      SvgPicture.asset('assets/icon/other/comments_18.svg',
           fit: BoxFit.scaleDown);
 
   // Profile Image

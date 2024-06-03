@@ -123,6 +123,12 @@ class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
                         child: GotoSaveItem(
                           tapAction: () {
                             IntergrateScreen.setSelectedIndexToOne(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OnCampusSystem(),
+                              ),
+                            );
                           },
                         ),
                       ),

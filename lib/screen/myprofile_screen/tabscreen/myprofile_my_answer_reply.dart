@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/mypage_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
+import 'package:starting_block/manage/screen_manage.dart';
 
 class MyProfileMyAnswerReply extends StatefulWidget {
   const MyProfileMyAnswerReply({super.key});
@@ -27,6 +27,15 @@ class _MyProfileMyAnswerReplyState extends State<MyProfileMyAnswerReply> {
     });
   }
 
+  void _thisTap({required int questionID}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuestionDetail(questionID: questionID),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return myAnswerReply.isNotEmpty
@@ -49,6 +58,9 @@ class _MyProfileMyAnswerReplyState extends State<MyProfileMyAnswerReply> {
                     questionContent: answerReply.questionContent,
                     myAnswer: answerReply.myAnswer,
                     myReply: answerReply.myReply,
+                    thisQuestionWriterProfile:
+                        answerReply.questionWriterprofileNumber,
+                    thisTap: () => _thisTap(questionID: answerReply.questionId),
                   ),
                   if (index < myAnswerReply.length - 1)
                     const Padding(

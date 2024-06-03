@@ -37,6 +37,7 @@ class _SettingHomeState extends State<SettingHome> {
     bool success = await UserInfoManageApi.postDeleteAccount();
     if (success) {
       await secureStorage.deleteAll();
+      await DeleteAllChatData.deleteAllGptChatData();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear();
       if (mounted) {
@@ -79,15 +80,15 @@ class _SettingHomeState extends State<SettingHome> {
           ),
           SettingListWithDialog(
             thisText: '로그아웃',
-            thisTitle: '로그아웃',
-            thisDescription: '정말 로그아웃 할까요?',
+            thisTitle: '정말 로그아웃할까요?',
+            thisDescription: '로그아웃 시, 공고 분석 내역이 삭제됩니다.',
             thisRightActionText: '확인',
             thisRightactionTap: _logOutTap,
           ),
           SettingListWithDialog(
             //여기 수정필요
             thisText: '회원탈퇴',
-            thisTitle: '회원탈퇴',
+            thisTitle: '정말 회원 탈퇴할까요?',
             thisDescription: '회원 탈퇴 시 기존 데이터를 복구할 수 없어요.',
             thisRightActionText: '확인',
             thisRightactionTap: _deleteAccountTap,

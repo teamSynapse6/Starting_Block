@@ -102,32 +102,36 @@ class _QuestionDetailState extends State<QuestionDetail> {
 
   Widget _sendReplyButton() {
     return GestureDetector(
-      onTap: () async {
-        if (_isTyped && replyingToAnswerId != null) {
-          FocusScope.of(context).unfocus(); // 키보드 숨김
-          final content = _controller.text;
+        behavior: HitTestBehavior.translucent,
+        onTap: () async {
+          if (_isTyped && replyingToAnswerId != null) {
+            FocusScope.of(context).unfocus(); // 키보드 숨김
+            final content = _controller.text;
 
-          try {
-            // 답글 작성 API 호출
-            await QuestionAnswerApi.postReplyWrite(
-                replyingToAnswerId!, content);
+            try {
+              // 답글 작성 API 호출
+              await QuestionAnswerApi.postReplyWrite(
+                  replyingToAnswerId!, content);
 
-            // 성공적으로 답글이 작성된 후의 처리
-            _controller.clear(); // 입력 필드 초기화
-            _loadQuestionDetail();
-            setState(() {
-              _isTyped = false;
-              isReplying = false; // 답글 작성 UI 숨김
-            });
-          } catch (e) {
-            // 답글 작성 중 오류 발생 시 처리
+              // 성공적으로 답글이 작성된 후의 처리
+              _controller.clear(); // 입력 필드 초기화
+              _loadQuestionDetail();
+              setState(() {
+                _isTyped = false;
+                isReplying = false; // 답글 작성 UI 숨김
+              });
+            } catch (e) {
+              // 답글 작성 중 오류 발생 시 처리
+            }
           }
-        }
-      },
-      child: _isTyped && !hasKoreanProfanity
-          ? AppIcon.send_actived
-          : AppIcon.send_inactived,
-    );
+        },
+        child: SizedBox(
+          width: 24,
+          height: 24,
+          child: _isTyped && !hasKoreanProfanity
+              ? AppIcon.send_actived
+              : AppIcon.send_inactived,
+        ));
   }
 
   // 답글(대댓글 작성 메소드)
@@ -293,6 +297,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
                         thisQuestionLikeCancelTap: deleteHeartForQuestion,
                         thisQuestionHeardID: questionDetail.heartId,
                         myNickName: userNickName,
+                        thisProfileNumber: questionDetail.profileNumber,
                       ),
                       const CustomDividerH8G1(),
                       QuestionContactComment(
