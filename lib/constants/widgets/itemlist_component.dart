@@ -60,6 +60,7 @@ class ItemList extends StatelessWidget {
     String formattedEndDate = formatedEndDate(thisEndDate);
 
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         Navigator.push(
           context,

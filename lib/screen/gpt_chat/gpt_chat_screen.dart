@@ -283,6 +283,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
         appBar: AppBar(
           centerTitle: false,
           leading: GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: () {
               _deleteGptEnd();
               Navigator.pop(context);
