@@ -15,7 +15,7 @@ class QuestionExpandedStepper extends StatelessWidget {
     final double barWidth = screenWidth - 72; // 36 + 36 = 72 (좌우 Gaps.h36)
     final double step1Width = barWidth * (105 / 280);
     final double step2Width = barWidth * (205 / 280);
-    final double step3Width = barWidth * (244 / 280);
+    final double step3Width = barWidth * (236 / 280);
 
     return Stack(
       children: [
