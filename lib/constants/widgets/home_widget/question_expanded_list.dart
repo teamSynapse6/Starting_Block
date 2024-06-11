@@ -89,24 +89,25 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
                               color: AppColors.blue,
                             ),
                     ),
-                    Text(
-                      '($thisReceptionTime)',
-                      style: questionStage >= 2
-                          ? const TextStyle(
-                              fontFamily: 'pretendard',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              height: 14 / 10,
-                              color: AppColors.bluelight,
-                            )
-                          : const TextStyle(
-                              fontFamily: 'pretendard',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              height: 14 / 10,
-                              color: AppColors.blue,
-                            ),
-                    ),
+                    if (thisReceptionTime.isNotEmpty)
+                      Text(
+                        '($thisReceptionTime)',
+                        style: questionStage >= 2
+                            ? const TextStyle(
+                                fontFamily: 'pretendard',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                height: 14 / 10,
+                                color: AppColors.bluelight,
+                              )
+                            : const TextStyle(
+                                fontFamily: 'pretendard',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                height: 14 / 10,
+                                color: AppColors.blue,
+                              ),
+                      ),
                   ],
                 ),
               ),
@@ -136,7 +137,7 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
                                     height: 14 / 10,
                                     color: AppColors.bluelight,
                                   )),
-                    if (questionStage >= 2)
+                    if (questionStage >= 2 && thisSendTime.isNotEmpty)
                       Text('($thisSendTime)',
                           style: questionStage == 2
                               ? const TextStyle(
@@ -175,7 +176,7 @@ class HomeQuestionStepExpandedList extends StatelessWidget {
                             )
                           : AppTextStyles.caption.copyWith(color: AppColors.g3),
                     ),
-                    if (questionStage >= 3)
+                    if (questionStage >= 3 && thisArriveTime.isNotEmpty)
                       Text(
                         '($thisArriveTime)',
                         style: questionStage == 3

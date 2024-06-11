@@ -26,7 +26,7 @@ class OffCampusDetailGptCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'AI와 대화를 통해,\n공고 첨부 파일의 필요한 부분을 빠르게 확인해보세요',
+                  'AI와의 대화를 통해,\n첨부 파일의 필요한 부분을 빠르게 확인해보세요',
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
                 ),
                 Gaps.v14,
@@ -49,7 +49,7 @@ class OffCampusDetailGptCard extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: Center(
                           child: Text(
-                            'AI와 대화 시작하기',
+                            'AI로 공고 분석하기',
                             style: AppTextStyles.bd4
                                 .copyWith(color: AppColors.blue),
                           ),

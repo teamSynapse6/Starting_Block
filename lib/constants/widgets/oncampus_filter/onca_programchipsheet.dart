@@ -57,9 +57,7 @@ class _ProgramChipsSheetState extends State<ProgramChipsSheet> {
                           String program = programList[index];
                           return BottomSheetList(
                             thisText: program,
-                            thisColor: filterModel.selectedProgram == program
-                                ? AppColors.g1
-                                : AppColors.white,
+                            thisColor: AppColors.white,
                             thisTapAction: () {
                               setStateBottomSheet(() {
                                 filterModel.setSelectedProgram(program);

@@ -60,7 +60,8 @@ class QuestionContactComment extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        contactAnswer!.organizationManager,
+                        // contactAnswer!.organizationManager,
+                        '문의처',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.bd3.copyWith(color: AppColors.g6),

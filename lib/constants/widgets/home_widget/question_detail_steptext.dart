@@ -4,14 +4,24 @@ import 'package:starting_block/constants/constants.dart';
 class QuestionDetailStepText extends StatelessWidget {
   final int questionStage;
   final String? thisSendDay;
+
   const QuestionDetailStepText({
     super.key,
     required this.questionStage,
     this.thisSendDay,
   });
 
+  String getDayFromDateTime(String dateTime) {
+    if (dateTime.length >= 10) {
+      return dateTime.substring(8, 10);
+    }
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final day = thisSendDay != null ? getDayFromDateTime(thisSendDay!) : '';
+
     return questionStage == 1
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +73,7 @@ class QuestionDetailStepText extends StatelessWidget {
               ),
               Gaps.v6,
               Text(
-                '$thisSendDay일 오전 9시 발송 완료\n',
+                '$day일 오전 9시 발송 완료\n', //문제 발생 가능성 있음.
                 style: AppTextStyles.bd6.copyWith(color: AppColors.blue),
               ),
               Gaps.v36,
