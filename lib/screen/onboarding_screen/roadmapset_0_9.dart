@@ -237,6 +237,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                               return Material(
                                 elevation: elevation,
                                 child: ReorderCustomTile(
+                                  thisIndex: index,
                                   thisText: currentItemText,
                                   thisTextStyle: AppTextStyles.bd1
                                       .copyWith(color: AppColors.g6),
@@ -255,6 +256,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                         for (final item
                             in _initialRoadmapItems) // roadmapItems는 screen_manage.dart에서 정의된 것으로 가정
                           ReorderCustomTile(
+                            thisIndex: _initialRoadmapItems.indexOf(item),
                             key: Key(item),
                             thisText: item,
                             thisTextStyle: AppTextStyles.bd2.copyWith(
