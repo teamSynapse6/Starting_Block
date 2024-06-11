@@ -125,9 +125,11 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
                       ),
                 const CustomDividerH1G1(),
                 Gaps.v8,
-                SizedBox(
-                  child: GestureDetector(
-                    onTap: _toggleExpand,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: _toggleExpand,
+                  child: SizedBox(
+                    width: double.infinity,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

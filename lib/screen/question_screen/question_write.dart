@@ -106,7 +106,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
           thisOnTap: _thisWriteTap,
           text: '작성하기',
           thisTextStyle: _isTextEntered
-              ? AppTextStyles.btn1.copyWith(color: AppColors.blue)
+              ? AppTextStyles.btn1.copyWith(color: AppColors.g6)
               : AppTextStyles.btn1.copyWith(color: AppColors.g4),
         ),
         body: Padding(

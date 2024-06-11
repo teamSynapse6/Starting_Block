@@ -145,7 +145,8 @@ class MyQuestionList extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          organizationManger,
+                                          // organizationManger, //수정 필요함
+                                          '문의처',
                                           style: AppTextStyles.bd6
                                               .copyWith(color: AppColors.g5),
                                         ),

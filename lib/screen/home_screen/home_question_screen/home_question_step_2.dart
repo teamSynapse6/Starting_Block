@@ -13,12 +13,6 @@ class HomeQuestionStage2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String daySeperate(String sendTime) {
-      if (sendTime.length < 2) return sendTime;
-      // 분리된 마지막 두 자리를 반환
-      return sendTime.substring(sendTime.length - 2);
-    }
-
     return Scaffold(
       backgroundColor: AppColors.g1,
       appBar: const BackAppBarWithBlueBG(),
@@ -122,7 +116,7 @@ class HomeQuestionStage2 extends StatelessWidget {
                       Gaps.h12,
                       QuestionDetailStepText(
                         questionStage: 2,
-                        thisSendDay: daySeperate(thisSendTime),
+                        thisSendDay: thisSendTime,
                       ),
                     ],
                   ),
