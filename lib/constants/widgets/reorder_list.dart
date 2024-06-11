@@ -8,6 +8,7 @@ class ReorderCustomTile extends StatelessWidget {
   final TextStyle thisTextStyle;
   final bool? isComlete;
   final thisBGColor;
+  final int thisIndex;
 
   const ReorderCustomTile({
     super.key,
@@ -15,6 +16,7 @@ class ReorderCustomTile extends StatelessWidget {
     required this.thisTextStyle,
     this.isComlete,
     this.thisBGColor,
+    required this.thisIndex,
   });
 
   @override
@@ -36,10 +38,13 @@ class ReorderCustomTile extends StatelessWidget {
               if (isComlete == true)
                 Container()
               else
-                SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: AppIcon.sort_actived,
+                ReorderableDragStartListener(
+                  index: thisIndex,
+                  child: SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: AppIcon.sort_actived,
+                  ),
                 ),
             ],
           ),

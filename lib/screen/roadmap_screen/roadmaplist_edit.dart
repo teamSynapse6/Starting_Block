@@ -169,6 +169,7 @@ class _RoadMapEditState extends State<RoadMapEdit> {
                         ignoring: roadMap.roadmapStatus == "COMPLETED",
                         key: ValueKey(roadMap.roadmapId),
                         child: ReorderCustomTile(
+                          thisIndex: index,
                           thisText: roadMap.title,
                           thisTextStyle: roadMap.roadmapStatus == "COMPLETED"
                               ? AppTextStyles.bd2.copyWith(color: AppColors.g4)
@@ -200,6 +201,7 @@ class _RoadMapEditState extends State<RoadMapEdit> {
                               color: AppColors.white,
                               elevation: elevation,
                               child: ReorderCustomTile(
+                                thisIndex: index,
                                 thisText: roadMaps![index].title,
                                 thisTextStyle: AppTextStyles.bd1
                                     .copyWith(color: AppColors.g6),

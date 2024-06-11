@@ -34,12 +34,13 @@ class QuestionStepper extends StatelessWidget {
                   color: AppColors.blue,
                 ),
               ),
-              Text(
-                '($receptionTime)',
-                style: AppTextStyles.caption.copyWith(
-                  color: AppColors.blue,
-                ),
-              )
+              if (receptionTime.isNotEmpty)
+                Text(
+                  '($receptionTime)',
+                  style: AppTextStyles.caption.copyWith(
+                    color: AppColors.blue,
+                  ),
+                )
             ],
           ),
           Expanded(
@@ -66,7 +67,7 @@ class QuestionStepper extends StatelessWidget {
                           : AppColors.g3,
                 ),
               ),
-              if (sendTime != '')
+              if (sendTime.isNotEmpty)
                 Text(
                   '($sendTime)',
                   style: AppTextStyles.caption.copyWith(
@@ -95,12 +96,12 @@ class QuestionStepper extends StatelessWidget {
               stage == 3 ? AppIcon.stepper_actived : AppIcon.stepper_inactived,
               Gaps.v4,
               Text(
-                '질문 발송',
+                '질문 도착',
                 style: AppTextStyles.btn2.copyWith(
                   color: stage == 3 ? AppColors.blue : AppColors.g3,
                 ),
               ),
-              if (arriveTime != '')
+              if (arriveTime.isNotEmpty)
                 Text(
                   '($arriveTime)',
                   style: AppTextStyles.caption.copyWith(

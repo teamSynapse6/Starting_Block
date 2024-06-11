@@ -24,7 +24,7 @@ class HomeQuestionStatusModel {
         arriveTime.isEmpty) {
       return 2; // receptionTime과 sendTime 모두 null이 아닌 경우
     } else if (arriveTime.isNotEmpty) {
-      return 3; // arriveTime도 null이 아닌 경우
+      return 3; // arriveTime이 null이 아닌 경우
     }
     return 1; // 기본값
   }
