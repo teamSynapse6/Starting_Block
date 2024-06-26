@@ -56,23 +56,23 @@ class ThemeManage {
         ),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.selected)) {
+        thumbColor:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.selected)) {
             return AppColors.white;
           }
           return AppColors.white; // 기본 상태의 색상
         }),
-        trackColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.selected)) {
+        trackColor:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.selected)) {
             return AppColors.blue; // 선택된 상태의 트랙 색상
           }
           return AppColors.g1; // 기본 상태의 트랙 색상
         }),
-        trackOutlineColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.selected)) {
+        trackOutlineColor:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.selected)) {
             return Colors.transparent; // 선택된 상태의 트랙 색상
           }
           return Colors.transparent;
@@ -87,8 +87,8 @@ class ThemeManage {
         indicatorColor: AppColors.blue,
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: AppColors.g2,
-        overlayColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
+        overlayColor: WidgetStateProperty.resolveWith<Color?>(
+          (Set<WidgetState> states) {
             return Colors.transparent; // overlay 색상을 투명으로 설정
           },
         ),
