@@ -52,7 +52,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
   //GPT API 상태 호출 메소드
   void getGptApiStauts() async {
     GptStatusModel status = await GptApi.getGptApiStatus();
-    if (status.incidents.isNotEmpty && mounted) {
+    if (status.status.contains('caution') && mounted) {
       showDialog(
           context: context,
           builder: ((context) {

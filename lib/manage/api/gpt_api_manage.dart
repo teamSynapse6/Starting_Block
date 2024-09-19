@@ -56,14 +56,18 @@ class GptApi {
   // OpenAi GPT API 서버 Status 호출 메소드
   static Future<GptStatusModel> getGptApiStatus() async {
     final statusUrl =
-        Uri.parse('https://status.openai.com/api/v2/incidents/unresolved.json');
+        Uri.parse('https://pdfgpt.startingblock.co.kr/gpt/api_status');
     final response = await http.get(statusUrl);
 
     if (response.statusCode == 200) {
       final responseData = jsonDecode(response.body);
       return GptStatusModel.fromJson(responseData);
     } else {
-      throw Exception('Failed to load status data');
+      final failedResponse = {
+        'status': 'caution',
+        'message': '서버 상태를 불러오는 중 오류가 발생했습니다.'
+      };
+      return GptStatusModel.fromJson(failedResponse);
     }
   }
 }

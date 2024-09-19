@@ -83,7 +83,8 @@ class DialogComponent extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
+                Gaps.h8,
               ],
             ),
           )
