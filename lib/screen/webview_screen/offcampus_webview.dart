@@ -105,7 +105,7 @@ class _OffCampusWebViewScreenState extends State<OffCampusWebViewScreen> {
           ),
           bottomNavigationBar: AnimatedContainer(
             duration: const Duration(milliseconds: 100),
-            height: _isBottomAppBarVisible ? 48 : 0,
+            height: _isBottomAppBarVisible ? 63 : 0,
             child: Container(
               width: MediaQuery.of(context).size.width,
               color: AppColors.white,
@@ -113,6 +113,7 @@ class _OffCampusWebViewScreenState extends State<OffCampusWebViewScreen> {
                 padding: const EdgeInsets.only(
                   left: 24,
                   right: 24,
+                  bottom: 15,
                 ),
                 child: InkWell(
                   onTap: () {

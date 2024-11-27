@@ -27,13 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
       String? userId = await secureStorage.read(key: 'kakaoUserID');
       String? userEmail = await secureStorage.read(key: 'kakaoUserEmail');
 
-      if (userId == null || userEmail == null) {
+      if (userEmail == null) {
         throw Exception('저장된 사용자 정보를 찾을 수 없습니다.');
       }
 
       // UserInfoManageApi를 통해 로그인 상태 확인
       UserSignInModel signInData =
-          await UserInfoManageApi.postSignIn(userId, userEmail);
+          await UserInfoManageApi.postSignIn(userId!, userEmail);
 
       //유저 토큰 저장
       await UserTokenManage().setRefreshToken(signInData.refreshToken);
