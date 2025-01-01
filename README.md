@@ -3,6 +3,11 @@
 대학(원)생 창업자를 위한 스타트업 헬퍼 서비스 프로젝트.
 MJU DCD | Graduation project 
 
+## 프로젝트 진행 기간
+Kick-Off : 2023.07
+End: 2024.12
+프로젝트 종료 후 서비스 지속 유지
+
 ## Convention
 - [CHORE]: 프로덕션 코드가 바뀌지 않고 개발 로직과 상관 없는 가벼운 일들
 - [DEPS]: Dependency와 관련 있는 내용
