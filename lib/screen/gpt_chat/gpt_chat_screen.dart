@@ -191,12 +191,9 @@ class _GptChatScreenState extends State<GptChatScreen> {
   Future<List<Message>> _loadMessages() async {
     final prefs = await SharedPreferences.getInstance();
     String? encodedData = prefs.getString('chat_${widget.thisID}');
-    if (encodedData == null) {
-      return [];
-    }
 
     // JSON 데이터를 Map<String, dynamic>으로 파싱합니다.
-    Map<String, dynamic> jsonData = jsonDecode(encodedData);
+    Map<String, dynamic> jsonData = jsonDecode(encodedData!);
     List<dynamic> messageData =
         jsonData['messages']; // 'messages' 키를 사용하여 메시지 배열을 추출
 
