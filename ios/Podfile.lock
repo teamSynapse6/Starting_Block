@@ -9,7 +9,7 @@ PODS:
     - OrderedSet (~> 6.0.3)
   - flutter_secure_storage (6.0.0):
     - Flutter
-  - kakao_flutter_sdk_common (1.9.6):
+  - kakao_flutter_sdk_common (1.9.7-3):
     - Flutter
   - OrderedSet (6.0.3)
   - path_provider_foundation (0.0.1):
@@ -47,12 +47,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_inappwebview_ios: 6f63631e2c62a7c350263b13fa5427aedefe81d4
-  flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
-  kakao_flutter_sdk_common: 4f10f98226da5d0f7cbdeeaed5cc21f144515209
+  flutter_inappwebview_ios: b89ba3482b96fb25e00c967aae065701b66e9b99
+  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
+  kakao_flutter_sdk_common: 600d55b532da0bd37268a529e1add49302477710
   OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
 
 PODFILE CHECKSUM: 7be2f5f74864d463a8ad433546ed1de7e0f29aef
 
