@@ -48,7 +48,7 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
         _tabController = TabController(length: myTabs.length, vsync: this);
       });
     } catch (e) {
-      print("탭 데이터 로드 실패: $e");
+      debugPrint("탭 데이터 로드 실패: $e");
     }
   }
 

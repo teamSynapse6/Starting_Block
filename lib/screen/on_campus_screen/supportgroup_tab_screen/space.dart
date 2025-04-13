@@ -35,7 +35,7 @@ class _OnCaGroupSpaceState extends State<OnCaGroupSpace> {
         isLoading = false;
       });
     } catch (e) {
-      print('공간 정보 로드 실패: $e');
+      debugPrint('공간 정보 로드 실패: $e');
     }
   }
 

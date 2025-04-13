@@ -35,7 +35,7 @@ class _OnCaGroupCompetitionState extends State<OnCaGroupCompetition> {
         isLoading = false;
       });
     } catch (e) {
-      print('경진대회 정보 로드 실패: $e');
+      debugPrint('경진대회 정보 로드 실패: $e');
     }
   }
 

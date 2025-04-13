@@ -35,7 +35,7 @@ class _OnCaGroupEtcState extends State<OnCaGroupEtc> {
         isLoading = false;
       });
     } catch (e) {
-      print('기타 정보 로드 실패: $e');
+      debugPrint('기타 정보 로드 실패: $e');
     }
   }
 

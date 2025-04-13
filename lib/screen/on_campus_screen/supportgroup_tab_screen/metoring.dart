@@ -35,7 +35,7 @@ class _OnCaGroupMentoringState extends State<OnCaGroupMentoring> {
         isLoading = false;
       });
     } catch (e) {
-      print('멘토링 정보 로드 실패: $e');
+      debugPrint('멘토링 정보 로드 실패: $e');
     }
   }
 

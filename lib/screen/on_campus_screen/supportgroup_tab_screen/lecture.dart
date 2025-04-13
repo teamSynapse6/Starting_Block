@@ -35,7 +35,7 @@ class _OnCaGroupLectureState extends State<OnCaGroupLecture> {
         isLoading = false;
       });
     } catch (e) {
-      print('강연 정보 로드 실패: $e');
+      debugPrint('강연 정보 로드 실패: $e');
     }
   }
 

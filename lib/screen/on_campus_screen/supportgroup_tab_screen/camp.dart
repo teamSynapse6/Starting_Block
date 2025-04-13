@@ -35,7 +35,7 @@ class _OnCaGroupCampState extends State<OnCaGroupCamp> {
         isLoading = false;
       });
     } catch (e) {
-      print('동아리 정보 로드 실패: $e');
+      debugPrint('동아리 정보 로드 실패: $e');
     }
   }
 

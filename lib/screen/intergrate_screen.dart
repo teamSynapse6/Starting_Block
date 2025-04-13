@@ -140,7 +140,7 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
               if (userInfo.hasChanged) {
                 _loadSchoolName();
                 _loadRoadMap();
-                print('호출됨');
+                debugPrint('호출됨');
                 userInfo.resetChangeFlag();
               }
               return _getCurrentScreen();
