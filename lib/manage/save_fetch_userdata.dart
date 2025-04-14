@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -8,6 +9,8 @@ class SaveUserData {
     try {
       // UserInfoManageApi에서 사용자 정보를 가져옴
       UserDataModel userData = await UserInfoManageApi.getUserInfoData();
+      debugPrint(
+          '유저 데이터: ${userData.nickname}, ${userData.birth}, ${userData.isCompletedBusinessRegistration}, ${userData.residence}, ${userData.university}');
 
       // birth 데이터에서 '-'를 제거하여 YYYYMMDD 형식으로 변환
       String formattedBirth = userData.birth.replaceAll('-', '');
@@ -20,8 +23,10 @@ class SaveUserData {
       await UserInfo().setResidence(userData.residence);
       await UserInfo().setSchoolName(userData.university);
       await UserInfo().setSelectedIconIndex(userData.profileNumber);
+      debugPrint('사용자 정보 저장 완료');
     } catch (e) {
       // 예외 발생 시 오류 메시지 출력
+      print('사용자 정보를 저장하는 중 오류 발생: $e');
     }
   }
 
@@ -47,6 +52,10 @@ class SaveUserData {
       int finalProfileNumber =
           inputProfileNumber ?? await UserInfo.getSelectedIconIndex();
 
+      // 가져온 데이터를 출력하여 확인합니다.
+      print(
+          '유저 데이터: $finalUserBirthday, $finalEntrepreneurCheck, $finalResidence, $finalSchoolName, $finalProfileNumber');
+
       //이 데이터를 서버에 Fetch하여 저장.
       bool result = await UserInfoManageApi.patchUserInfo(
         birth: finalUserBirthday,
@@ -64,9 +73,11 @@ class SaveUserData {
         await UserInfo().setResidence(finalResidence);
         await UserInfo().setSchoolName(finalSchoolName);
         await UserInfo().setSelectedIconIndex(finalProfileNumber);
-      } else {}
+      } else {
+        print('사용자 정보 저장 실패');
+      }
     } catch (e) {
-      // 예외 발생 시 오류 메시지 출력}
+      print('서버에러 발생: $e');
     }
   }
 }

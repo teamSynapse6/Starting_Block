@@ -89,7 +89,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
         isLoading = false;
       });
     } catch (e) {
-      return;
+      debugPrint('공고 정보 로드 실패: $e');
     }
   }
 
@@ -135,6 +135,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
           body: Consumer<BookMarkNotifier>(
               builder: (context, bookmarkNotifier, child) {
             if (bookmarkNotifier.isUpdated) {
+              debugPrint('호출됨');
               loadFilterValue();
               bookmarkNotifier.resetUpdate();
             }

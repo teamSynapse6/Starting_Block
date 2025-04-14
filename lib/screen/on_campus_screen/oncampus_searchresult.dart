@@ -75,7 +75,7 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
         isLoading = false;
       });
     } catch (e) {
-      return;
+      debugPrint('공고 정보 로드 실패: $e');
     }
   }
 

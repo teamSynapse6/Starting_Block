@@ -87,9 +87,11 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           );
         }
       }
-      if (!isSuccess) {}
+      if (!isSuccess) {
+        debugPrint('유저 정보 저장 중 오류 발생');
+      }
     } catch (e) {
-      return;
+      debugPrint('서버 저장 중 오류가 발생했습니다: $e');
     }
   }
 
@@ -109,7 +111,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         }
       }
     } catch (e) {
-      return;
+      debugPrint('다음에 설정하기_서버 저장 중 오류가 발생했습니다: $e');
     }
   }
 

@@ -33,7 +33,7 @@ class _OnCaGroupClubState extends State<OnCaGroupClub> {
         isLoading = false;
       });
     } catch (e) {
-      return;
+      debugPrint('동아리 정보 로드 실패: $e');
     }
   }
 

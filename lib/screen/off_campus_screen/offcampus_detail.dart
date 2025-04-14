@@ -27,6 +27,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   @override
   void initState() {
     super.initState();
+    debugPrint('ID: ${widget.thisID}');
     loadoffCampusDetailData();
     loadRecommendations(); // 추천 공고 데이터를 로드하는 메소드 호출
     loadQuestionData();

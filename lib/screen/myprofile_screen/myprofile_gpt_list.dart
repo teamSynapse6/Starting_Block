@@ -85,7 +85,7 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
                     horizontal: 16,
                     vertical: 6,
                   ),
-                  color: AppColors.bluebg.withOpacity(0.8),
+                  color: AppColors.bluebg.withValues(alpha: 204),
                   child: const Text(
                     '공고의 첨부파일을 학습하여\n창업자님의 질문에 답변을 드려요!',
                     style: TextStyle(

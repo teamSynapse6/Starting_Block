@@ -34,7 +34,7 @@ class _HomeQuestionStage3State extends State<HomeQuestionStage3> {
         contactAnswer = questionDetail.contactAnswer?.content ?? '데이터 없음';
       });
     } catch (e) {
-      return;
+      debugPrint('Error loading question details: $e');
     }
   }
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:http/http.dart' as http;
@@ -75,6 +76,8 @@ class RoadMapApi {
   static Future<void> addAnnouncementToRoadMap(
       int roadmapId, String announcementId,
       {int retryCount = 1}) async {
+    debugPrint('아이디: $announcementId, 로드맵 아이디: $roadmapId');
+
     final url = Uri.parse(
         '$baseUrl/api/v1/roadmaps/$roadmapId/announcement?announcementId=$announcementId');
     Map<String, String> headers = await getHeaders();
@@ -139,6 +142,8 @@ class RoadMapApi {
   // 로드맵에 창업 강의 저장 메소드
   static Future<void> addLectureToRoadMap(int roadmapId, String lectureId,
       {int retryCount = 1}) async {
+    debugPrint('강의 아이디: $lectureId, 로드맵 아이디: $roadmapId');
+
     final url = Uri.parse(
         '$baseUrl/api/v1/roadmaps/$roadmapId/lecture?lectureId=$lectureId');
     Map<String, String> headers = await getHeaders();
@@ -450,6 +455,7 @@ class RoadMapApi {
   // 로드맵의 교내제도 추천 리스트를 불러오는 메소드
   static Future<RoadMapSystemRecModel?> getSystemRec(int roadmapId,
       {int retryCount = 1}) async {
+    debugPrint('로드맵 ID: $roadmapId');
     final url =
         Uri.parse('$baseUrl/api/v1/roadmaps/$roadmapId/recommend/system');
     Map<String, String> headers = await getHeaders();

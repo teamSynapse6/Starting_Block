@@ -43,7 +43,7 @@ class _HomeQuestionStepState extends State<HomeQuestionStep> {
         _isLoading = false; // 데이터 로딩 완료
       });
     } catch (e) {
-      return;
+      debugPrint('Error fetching question status: $e');
     }
   }
 

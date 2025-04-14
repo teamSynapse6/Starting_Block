@@ -43,12 +43,14 @@ class _BookMarkButtonState extends State<BookMarkButton> {
     try {
       await RoadMapApi.addAnnouncementToRoadMap(roadmapId, widget.thisID);
       // 성공적으로 추가된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
+      debugPrint('공고가 성공적으로 추가되었습니다.');
       _updateRoadMapsModal(setStateModal);
       if (mounted) {
         Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
         Navigator.pop(context);
       }
     } catch (e) {
+      debugPrint('공고 추가에 실패했습니다: $e');
       // 실패 시 사용자에게 알림을 제공할 수 있습니다.
     }
   }
@@ -57,12 +59,14 @@ class _BookMarkButtonState extends State<BookMarkButton> {
     try {
       await RoadMapApi.deleteAnnouncementFromRoadMap(roadmapId, widget.thisID);
       // 성공적으로 삭제된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
+      debugPrint('공고가 성공적으로 삭제되었습니다.');
       _updateRoadMapsModal(setStateModal);
       if (mounted) {
         Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
         Navigator.pop(context);
       }
     } catch (e) {
+      debugPrint('공고 삭제에 실패했습니다: $e');
       // 실패 시 사용자에게 알림을 제공할 수 있습니다.
     }
   }
@@ -138,6 +142,7 @@ class _BookMarkButtonState extends State<BookMarkButton> {
                             thisText: roadMap.title,
                             thisColor: AppColors.white,
                             thisTapAction: () async {
+                              debugPrint('클릭이 되었습니다.');
                               if (roadMap.isAnnouncementSaved) {
                                 _deleteAction(roadMap.roadmapId, setStateModal);
                               } else {
