@@ -82,13 +82,16 @@ class SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       const Duration(milliseconds: 1000),
       () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                _isLogIned ? const IntergrateScreen() : const LoginScreen(),
-          ),
-        );
+        if (context.mounted) {
+          final navigatorContext = context;
+          Navigator.pushReplacement(
+            navigatorContext,
+            MaterialPageRoute(
+              builder: (context) =>
+                  _isLogIned ? const IntergrateScreen() : const LoginScreen(),
+            ),
+          );
+        }
         SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
           systemNavigationBarColor: AppColors.white, // 원래 색상으로 설정
         ));

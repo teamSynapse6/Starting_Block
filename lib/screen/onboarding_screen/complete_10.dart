@@ -10,11 +10,13 @@ class CompleteScreen extends StatelessWidget {
     // 레이아웃이 완성된 직후에 실행
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(seconds: 2), () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const IntergrateScreen(),
-          ),
-        );
+        if (context.mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const IntergrateScreen(),
+            ),
+          );
+        }
       });
     });
 

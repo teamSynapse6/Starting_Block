@@ -17,7 +17,7 @@ class GoBackToStep extends StatelessWidget {
       onTap: thisTap,
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white.withOpacity(0.08),
+          color: AppColors.white.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(4),
         ),
         height: 32,

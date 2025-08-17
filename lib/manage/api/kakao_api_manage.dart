@@ -28,10 +28,14 @@ Future<void> signInWithKakao(BuildContext context) async {
         if (error is PlatformException && error.code == 'CANCELED') {
           return;
         }
-        await tryKakaoAccountLogin(context);
+        if (context.mounted) {
+          await tryKakaoAccountLogin(context);
+        }
       }
     } else {
-      await tryKakaoAccountLogin(context);
+      if (context.mounted) {
+        await tryKakaoAccountLogin(context);
+      }
     }
   } catch (error) {
     // signInWithKakao 전반 에러 처리 (필요한 경우 추가 구현)

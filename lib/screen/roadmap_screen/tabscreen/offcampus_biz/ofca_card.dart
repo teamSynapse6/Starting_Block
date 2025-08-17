@@ -57,7 +57,7 @@ class OfCaCardOne extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(2),
-                color: AppColors.white.withOpacity(0.1),
+                color: AppColors.white.withValues(alpha: 0.1),
               ),
               child: Center(
                 child: Text(

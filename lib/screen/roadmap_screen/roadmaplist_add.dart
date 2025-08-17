@@ -44,11 +44,17 @@ class _RoadMapAddState extends State<RoadMapAdd> {
     if (_isNextButtonEnabled) {
       String valueToAdd = _selectedChip ?? _textController.text;
       RoadMapApi.addRoadMap(valueToAdd).then((_) {
-        Navigator.pop(context);
+        if (context.mounted) {
+          final navigatorContext = context;
+          Navigator.pop(navigatorContext);
+        }
       }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('추가하는 데 실패했습니다: $error')),
-        );
+        if (context.mounted) {
+          final scaffoldContext = context;
+          ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+            SnackBar(content: Text('추가하는 데 실패했습니다: $error')),
+          );
+        }
       });
     }
   }

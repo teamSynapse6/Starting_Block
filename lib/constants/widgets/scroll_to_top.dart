@@ -18,10 +18,10 @@ class ScrollToTopButton extends StatelessWidget {
         height: 56,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.black.withOpacity(0.5),
+            color: AppColors.black.withValues(alpha: 0.5),
             boxShadow: [
               BoxShadow(
-                color: AppColors.black.withOpacity(0.25),
+                color: AppColors.black.withValues(alpha: 0.25),
                 spreadRadius: 0,
                 blurRadius: 4,
                 offset: const Offset(0, 4),

@@ -32,7 +32,10 @@ class _BirthdayEditState extends State<BirthdayEdit> {
     if (!_isInputValid) return;
     _saveBirthday();
     await Future.delayed(const Duration(milliseconds: 200)).then((_) {
-      Navigator.of(context).pop();
+      if (context.mounted) {
+        final navigatorContext = context;
+        Navigator.of(navigatorContext).pop();
+      }
     });
   }
 

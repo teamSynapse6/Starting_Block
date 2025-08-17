@@ -14,9 +14,9 @@ class BottomGradient extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.white.withOpacity(0), // 상단 투명도 0
-            AppColors.white.withOpacity(0.66), // 50% 지점 투명도 0.66
-            AppColors.white.withOpacity(1), // 최하단 투명도 1
+            AppColors.white.withValues(alpha: 0), // 상단 투명도 0
+            AppColors.white.withValues(alpha: 0.66), // 50% 지점 투명도 0.66
+            AppColors.white.withValues(alpha: 1), // 최하단 투명도 1
           ],
         ),
       ),
