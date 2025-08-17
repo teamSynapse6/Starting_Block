@@ -25,7 +25,9 @@ class LeapFirstScreen extends StatelessWidget {
                 Brightness.dark, // 네비게이션 바 아이콘 색상 설정
           ));
 
-          Navigator.of(context).pop();
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
         },
       );
     });

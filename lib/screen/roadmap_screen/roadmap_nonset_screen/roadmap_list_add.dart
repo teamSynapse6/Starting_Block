@@ -55,12 +55,18 @@ class _RoadmapListSetAddState extends State<RoadmapListSetAdd> {
         // 변경된 아이템 리스트를 다시 저장합니다.
         userInfo.setTempInitialRoadmapItems(currentItems).then((_) {
           // 저장 후에 화면을 닫거나 다른 처리를 할 수 있습니다.
-          Navigator.pop(context);
+          if (context.mounted) {
+            final navigatorContext = context;
+            Navigator.pop(navigatorContext);
+          }
         }).catchError((error) {
           // 오류 처리
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('추가하는 데 실패했습니다: $error')),
-          );
+          if (context.mounted) {
+            final scaffoldContext = context;
+            ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+              SnackBar(content: Text('추가하는 데 실패했습니다: $error')),
+            );
+          }
         });
       });
     }

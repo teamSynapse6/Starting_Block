@@ -154,7 +154,7 @@ class _ProfileIconEditState extends State<ProfileIconEdit> {
             ),
             Container(
               height: 8,
-              color: AppColors.g2.withOpacity(0.4),
+              color: AppColors.g2.withValues(alpha: 0.4),
             ),
             ListView.builder(
               shrinkWrap: true,

@@ -25,7 +25,7 @@ class AnswerCommentReport extends StatelessWidget {
               )),
           duration: const Duration(seconds: 2),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color(0xff121212).withOpacity(0.8),
+          backgroundColor: const Color(0xff121212).withValues(alpha: 0.8),
         ),
       );
     }
@@ -94,7 +94,7 @@ class ReplyCommentReport extends StatelessWidget {
               )),
           duration: const Duration(seconds: 2),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color(0xff121212).withOpacity(0.8),
+          backgroundColor: const Color(0xff121212).withValues(alpha: 0.8),
         ),
       );
     }

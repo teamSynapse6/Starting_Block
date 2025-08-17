@@ -131,11 +131,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () async {
+                      if (!mounted) return;
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ProfileIconEdit()),
                       );
+                      if (!mounted) return;
                       _loadUserInfo();
                     },
                     child: SizedBox(
@@ -163,11 +165,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () async {
+                    if (!mounted) return;
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const NickNameEdit()),
                     );
+                    if (!mounted) return;
                     _loadUserInfo();
                   },
                   child: SizedBox(
@@ -207,11 +211,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () async {
+                    if (!mounted) return;
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const BirthdayEdit()),
                     );
+                    if (!mounted) return;
                     _loadUserInfo();
                   },
                   child: SizedBox(
@@ -251,11 +257,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () async {
+                    if (!mounted) return;
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const SchoolNameEdit()),
                     );
+                    if (!mounted) return;
                     _loadUserInfo();
                   },
                   child: SizedBox(
@@ -301,11 +309,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () async {
+                    if (!mounted) return;
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const ResidenceEdit()),
                     );
+                    if (!mounted) return;
                     _loadUserInfo();
                   },
                   child: SizedBox(
@@ -345,11 +355,13 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () async {
+                    if (!mounted) return;
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const EnterprenutEdit()),
                     );
+                    if (!mounted) return;
                     _loadUserInfo();
                   },
                   child: SizedBox(

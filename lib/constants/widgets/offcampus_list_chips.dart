@@ -187,7 +187,7 @@ class AIChip extends StatelessWidget {
         vertical: 3,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xFFFF6B0A).withOpacity(0.1),
+        color: const Color(0xFFFF6B0A).withValues(alpha: 0.1),
         borderRadius: const BorderRadius.all(Radius.circular(2)),
       ),
       child: Center(
