@@ -1,0 +1,2 @@
+/Users/febook/Documents/Synapse/Starting_Block/android/app/.cxx/Debug/l1325704/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/febook/Documents/Synapse/Starting_Block/android/app/.cxx/Debug/l1325704/arm64-v8a/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/Users/febook/Documents/Synapse/Starting_Block/build/app/intermediates/cxx/RelWithDebInfo/3v5a6u12/obj/x86_64
