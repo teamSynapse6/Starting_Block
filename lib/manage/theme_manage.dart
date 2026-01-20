@@ -33,7 +33,7 @@ class ThemeManage {
           borderSide: BorderSide(color: AppColors.activered),
         ),
       ),
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
           padding: EdgeInsets.all(0),
           elevation: 0,
           color: AppColors.white,
@@ -48,7 +48,7 @@ class ThemeManage {
         ),
         clipBehavior: Clip.hardEdge,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: AppColors.white,
         surfaceTintColor: AppColors.white,
         shape: RoundedRectangleBorder(
@@ -78,7 +78,7 @@ class ThemeManage {
           return Colors.transparent;
         }),
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         splashFactory: NoSplash.splashFactory,
         labelStyle: AppTextStyles.bd1,
         unselectedLabelStyle: AppTextStyles.bd2,
@@ -93,7 +93,7 @@ class ThemeManage {
           },
         ),
       ),
-      cardTheme: const CardTheme(
+      cardTheme: const CardThemeData(
         elevation: 0,
       ),
       canvasColor: AppColors.white,

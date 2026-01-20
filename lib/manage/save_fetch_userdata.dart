@@ -26,7 +26,7 @@ class SaveUserData {
       debugPrint('사용자 정보 저장 완료');
     } catch (e) {
       // 예외 발생 시 오류 메시지 출력
-      print('사용자 정보를 저장하는 중 오류 발생: $e');
+      debugPrint('사용자 정보를 저장하는 중 오류 발생: $e');
     }
   }
 
@@ -53,7 +53,7 @@ class SaveUserData {
           inputProfileNumber ?? await UserInfo.getSelectedIconIndex();
 
       // 가져온 데이터를 출력하여 확인합니다.
-      print(
+      debugPrint(
           '유저 데이터: $finalUserBirthday, $finalEntrepreneurCheck, $finalResidence, $finalSchoolName, $finalProfileNumber');
 
       //이 데이터를 서버에 Fetch하여 저장.
@@ -74,10 +74,10 @@ class SaveUserData {
         await UserInfo().setSchoolName(finalSchoolName);
         await UserInfo().setSelectedIconIndex(finalProfileNumber);
       } else {
-        print('사용자 정보 저장 실패');
+        debugPrint('사용자 정보 저장 실패');
       }
     } catch (e) {
-      print('서버에러 발생: $e');
+      debugPrint('서버에러 발생: $e');
     }
   }
 }

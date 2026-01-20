@@ -1,0 +1,2 @@
+/Users/febook/Documents/Synapse/Starting_Block/android/app/.cxx/RelWithDebInfo/332qz705/x86/CMakeFiles/edit_cache.dir
+/Users/febook/Documents/Synapse/Starting_Block/android/app/.cxx/RelWithDebInfo/332qz705/x86/CMakeFiles/rebuild_cache.dir
