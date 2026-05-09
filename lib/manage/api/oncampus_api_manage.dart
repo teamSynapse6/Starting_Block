@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:starting_block/manage/api/api_baseurl.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +13,7 @@ class OnCampusApi {
     };
   }
 
-  static String baseUrl = 'https://api.startingblock.co.kr';
+  static String baseUrl = apiBaseUrl;
 
   //창업지원단 페이지 탭 항목 데이터를 가져오는 메소드
   static Future<List<String>> getSupportGroupTab({int retryCount = 1}) async {

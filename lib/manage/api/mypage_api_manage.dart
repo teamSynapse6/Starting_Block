@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:starting_block/manage/api/api_baseurl.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
@@ -12,7 +13,7 @@ class MyPageApi {
     };
   }
 
-  static String baseUrl = 'https://api.startingblock.co.kr';
+  static String baseUrl = apiBaseUrl;
 
   // 내 궁금해요 불러오기
   static Future<List<MyProfileHearModel>> getMyHeart(

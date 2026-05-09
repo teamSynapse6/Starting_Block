@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:starting_block/manage/api/api_baseurl.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,7 @@ class RoadMapApi {
     };
   }
 
-  static String baseUrl = 'https://api.startingblock.co.kr';
+  static String baseUrl = apiBaseUrl;
   static String getRDList = 'api/v1/roadmaps';
   static String addRDList = 'api/v1/roadmaps/add';
 

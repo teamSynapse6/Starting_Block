@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:starting_block/manage/api/api_baseurl.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
@@ -13,7 +14,7 @@ class QuestionAnswerApi {
     };
   }
 
-  static String baseUrl = 'https://api.startingblock.co.kr';
+  static String baseUrl = apiBaseUrl;
 
   // 질문 작성 메소드
   static Future<void> postQuestionWrite(
