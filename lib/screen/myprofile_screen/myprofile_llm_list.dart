@@ -1,7 +1,9 @@
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/llm_api_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
-import 'package:starting_block/manage/userdata/llm_list_manage.dart';
 
 class MyProfileLlmList extends StatefulWidget {
   const MyProfileLlmList({super.key});
@@ -13,7 +15,8 @@ class MyProfileLlmList extends StatefulWidget {
 class _MyProfileLlmListState extends State<MyProfileLlmList> {
   Color topColor = const Color(0xff5E8BFF);
   Color bottomColor = const Color(0xff00288F);
-  List<LlmListModel> chatList = [];
+  List<LlmConversationSummary> chatList = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -22,20 +25,63 @@ class _MyProfileLlmListState extends State<MyProfileLlmList> {
   }
 
   void loadChatData() async {
-    List<LlmListModel> tempList = await LlmListManage.loadChatData();
-    setState(() {
-      chatList = tempList;
-    });
+    try {
+      final tempList = await LlmApi.getLlmList();
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        chatList = tempList;
+        isLoading = false;
+      });
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        chatList = [];
+        isLoading = false;
+      });
+    }
   }
 
-  void thisLlmListTap(String id, String title) async {
+  void thisLlmListTap(LlmConversationSummary chat) async {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LlmChatScreen(thisTitle: title, thisID: id),
+          builder: (context) => LlmChatScreen(
+            thisTitle: chat.title,
+            thisID: chat.announcementId.toString(),
+            threadId: chat.threadId,
+          ),
         ));
     if (result == true) {
       loadChatData();
+    }
+  }
+
+  Future<void> deleteLlmChat(LlmConversationSummary chat) async {
+    try {
+      final success = await LlmApi.deleteLlmEnd(chat.threadId);
+      if (!mounted) {
+        return;
+      }
+      if (success) {
+        setState(() {
+          chatList.removeWhere((item) => item.threadId == chat.threadId);
+        });
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('대화 삭제에 실패했습니다.')),
+      );
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('대화 삭제 중 오류가 발생했습니다.')),
+      );
     }
   }
 
@@ -109,73 +155,96 @@ class _MyProfileLlmListState extends State<MyProfileLlmList> {
                     topRight: Radius.circular(8),
                   ),
                 ),
-                child: chatList.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: chatList.length,
-                        itemBuilder: (context, index) {
-                          final chat = chatList[index];
-                          return Column(
-                            children: [
-                              MyProfileLlmListWidget(
-                                thisTitle: chat.title,
-                                thisLastContent: chat.lastMessage,
-                                thisLastDate: chat.lastDate.toString(),
-                                thisTap: () => thisLlmListTap(
-                                    chat.id.toString(), chat.title),
-                                actionTap: () {},
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 24),
-                                child: CustomDividerH1G1(),
-                              ),
-                            ],
-                          );
-                        },
+                child: isLoading
+                    ? Center(
+                        child: SizedBox(
+                          height: 38,
+                          child: AppAnimation.chatting_progress_indicator,
+                        ),
                       )
-                    : Column(
-                        children: [
-                          Gaps.v124,
-                          Text(
-                            '공고 분석을 시작해 보세요',
-                            style:
-                                AppTextStyles.bd1.copyWith(color: AppColors.g5),
-                          ),
-                          Gaps.v6,
-                          Text(
-                            '원하는 공고의 상세 페이지에서\n공고 분석하기를 시작해 보세요',
-                            style:
-                                AppTextStyles.bd6.copyWith(color: AppColors.g5),
-                            textAlign: TextAlign.center,
-                          ),
-                          Gaps.v36,
-                          Material(
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(2),
-                              highlightColor: AppColors.g2,
-                              onTap: () {
-                                thisEmptyListTap();
-                              },
-                              child: Ink(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 7),
-                                decoration: BoxDecoration(
+                    : chatList.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: chatList.length,
+                            itemBuilder: (context, index) {
+                              final chat = chatList[index];
+                              return Column(
+                                children: [
+                                  Slidable(
+                                    key: ValueKey(chat.threadId),
+                                    endActionPane: ActionPane(
+                                      motion: const DrawerMotion(),
+                                      extentRatio: 0.22,
+                                      children: [
+                                        SlidableAction(
+                                          onPressed: (_) => deleteLlmChat(chat),
+                                          backgroundColor: AppColors.activered,
+                                          foregroundColor: AppColors.white,
+                                          icon: Icons.delete_outline,
+                                          label: '삭제',
+                                        ),
+                                      ],
+                                    ),
+                                    child: MyProfileLlmListWidget(
+                                      thisTitle: chat.title,
+                                      thisLastContent: chat.lastMessage,
+                                      thisLastDate: chat.lastDate.toString(),
+                                      thisTap: () => thisLlmListTap(chat),
+                                      actionTap: () {},
+                                    ),
+                                  ),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 24),
+                                    child: CustomDividerH1G1(),
+                                  ),
+                                ],
+                              );
+                            },
+                          )
+                        : Column(
+                            children: [
+                              Gaps.v124,
+                              Text(
+                                '공고 분석을 시작해 보세요',
+                                style: AppTextStyles.bd1
+                                    .copyWith(color: AppColors.g5),
+                              ),
+                              Gaps.v6,
+                              Text(
+                                '원하는 공고의 상세 페이지에서\n공고 분석하기를 시작해 보세요',
+                                style: AppTextStyles.bd6
+                                    .copyWith(color: AppColors.g5),
+                                textAlign: TextAlign.center,
+                              ),
+                              Gaps.v36,
+                              Material(
+                                child: InkWell(
                                   borderRadius: BorderRadius.circular(2),
-                                  border: Border.all(
-                                    color: AppColors.g3,
-                                    width: 1,
+                                  highlightColor: AppColors.g2,
+                                  onTap: () {
+                                    thisEmptyListTap();
+                                  },
+                                  child: Ink(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 7),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(2),
+                                      border: Border.all(
+                                        color: AppColors.g3,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      '교외지원사업 확인하러 가기',
+                                      style: AppTextStyles.bd6
+                                          .copyWith(color: AppColors.g4),
+                                    ),
                                   ),
                                 ),
-                                child: Text(
-                                  '교외지원사업 확인하러 가기',
-                                  style: AppTextStyles.bd6
-                                      .copyWith(color: AppColors.g4),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                              )
+                            ],
+                          ),
               ),
             ),
           ],

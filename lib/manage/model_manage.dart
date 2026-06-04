@@ -41,6 +41,8 @@ export 'package:starting_block/manage/models/roadmap_rec_models/roadmap_class_re
 //채팅 모델 관리용
 export 'package:starting_block/manage/models/llm_chat_models/message_model.dart'; //채팅 모델
 export 'package:starting_block/manage/models/llm_chat_models/llm_status_model.dart'; //LLM API 상태 모델
+export 'package:starting_block/manage/models/llm_chat_models/llm_stream_event_model.dart'; //LLM SSE 이벤트 모델
+export 'package:starting_block/manage/models/llm_chat_models/llm_conversation_summary_model.dart'; //LLM 대화 목록 모델
 
 //질문&답변 Model파일 관리용
 export 'package:starting_block/manage/models/question_answer_model/question_list_model.dart'; //질문 리스트(질문 메인화면) 모델

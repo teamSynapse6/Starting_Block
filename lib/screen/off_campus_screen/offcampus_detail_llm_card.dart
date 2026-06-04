@@ -5,11 +5,13 @@ import 'package:starting_block/manage/screen_manage.dart';
 class OffCampusDetailLlmCard extends StatelessWidget {
   final String thisTitle;
   final String thisID;
+  final String threadId;
 
   const OffCampusDetailLlmCard({
     super.key,
     required this.thisTitle,
     required this.thisID,
+    required this.threadId,
   });
 
   @override
@@ -40,7 +42,10 @@ class OffCampusDetailLlmCard extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => LlmChatScreen(
-                                thisTitle: thisTitle, thisID: thisID),
+                              thisTitle: thisTitle,
+                              thisID: thisID,
+                              threadId: threadId,
+                            ),
                           ),
                         );
                       },

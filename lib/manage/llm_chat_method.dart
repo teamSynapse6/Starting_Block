@@ -42,18 +42,10 @@ mixin LlmChatMethods on State<LlmChatScreen> {
 
   Future<void> initializeWidget() async {
     try {
-      final meta = await LlmListManage.loadChatMeta(_announcementId);
-      var threadId = meta?.threadId ?? '';
+      var threadId = widget.threadId;
 
       if (threadId.isEmpty) {
         threadId = await LlmApi.getLlmStart();
-        await LlmListManage.upsertChatMeta(
-          announcementId: _announcementId,
-          title: widget.thisTitle,
-          threadId: threadId,
-          lastUpdatedAt: _formatCurrentTime(DateTime.now()),
-          hasRunningGeneration: false,
-        );
       }
 
       LlmBackgroundStreamWatcher.stop(threadId);
@@ -97,13 +89,6 @@ mixin LlmChatMethods on State<LlmChatScreen> {
 
     if (session == null && messages.isEmpty) {
       final newThreadId = await LlmApi.getLlmStart();
-      await LlmListManage.upsertChatMeta(
-        announcementId: _announcementId,
-        title: widget.thisTitle,
-        threadId: newThreadId,
-        lastUpdatedAt: _formatCurrentTime(DateTime.now()),
-        hasRunningGeneration: false,
-      );
       if (!mounted) {
         return;
       }
@@ -315,15 +300,7 @@ mixin LlmChatMethods on State<LlmChatScreen> {
   }
 
   Future<void> _saveMetaFromMessages({required bool hasRunningGeneration}) {
-    final preview = _lastPreview();
-    return LlmListManage.upsertChatMeta(
-      announcementId: _announcementId,
-      title: widget.thisTitle,
-      threadId: _threadId ?? '',
-      lastPreview: preview,
-      lastUpdatedAt: _formatCurrentTime(DateTime.now()),
-      hasRunningGeneration: hasRunningGeneration,
-    );
+    return Future.value();
   }
 
   List<Message> _messagesFromHistory(Map<String, dynamic> history) {
@@ -439,23 +416,6 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       return null;
     }
     return _formatCurrentTime(parsed.toLocal());
-  }
-
-  String _lastPreview() {
-    for (final message in _messages.reversed) {
-      if (!message.isUser && message.message.trim().isNotEmpty) {
-        return _clipPreview(message.message);
-      }
-    }
-    return _messages.isNotEmpty ? _clipPreview(_messages.last.message) : '';
-  }
-
-  String _clipPreview(String value) {
-    final normalized = value.replaceAll(RegExp(r'\s+'), ' ').trim();
-    if (normalized.length <= 80) {
-      return normalized;
-    }
-    return '${normalized.substring(0, 80)}...';
   }
 
   String _statusMessage(String stage) {

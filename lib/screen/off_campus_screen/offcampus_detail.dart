@@ -105,6 +105,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                   OffCampusDetailLlmCard(
                     thisTitle: _offcampusDetail[0].title,
                     thisID: widget.thisID,
+                    threadId: _offcampusDetail[0].threadId,
                   ),
                 Container(
                   height: 8,

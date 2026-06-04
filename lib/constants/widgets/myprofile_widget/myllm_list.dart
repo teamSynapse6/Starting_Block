@@ -16,6 +16,9 @@ class MyProfileLlmListWidget extends StatelessWidget {
   });
 
   String _formatDate(String rawDate) {
+    if (rawDate.length < 12 || rawDate == '0') {
+      return '';
+    }
     DateTime date = DateTime.parse(
         "${rawDate.substring(0, 4)}-${rawDate.substring(4, 6)}-${rawDate.substring(6, 8)} ${rawDate.substring(8, 10)}:${rawDate.substring(10, 12)}");
     DateTime now = DateTime.now();

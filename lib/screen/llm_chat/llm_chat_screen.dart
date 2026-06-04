@@ -8,18 +8,19 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/llm_api_manage.dart';
 import 'package:starting_block/manage/llm_background_stream_watcher.dart';
 import 'package:starting_block/manage/model_manage.dart';
-import 'package:starting_block/manage/userdata/llm_list_manage.dart';
 
 part '../../manage/llm_chat_method.dart';
 
 class LlmChatScreen extends StatefulWidget {
   final String thisTitle;
   final String thisID;
+  final String threadId;
 
   const LlmChatScreen({
     super.key,
     required this.thisTitle,
     required this.thisID,
+    this.threadId = '',
   });
 
   @override

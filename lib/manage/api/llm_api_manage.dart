@@ -5,27 +5,6 @@ import 'package:starting_block/manage/api/api_baseurl.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
-class LlmStreamEvent {
-  final String event;
-  final Map<String, dynamic> data;
-
-  const LlmStreamEvent({
-    required this.event,
-    required this.data,
-  });
-
-  String get stage => data['stage']?.toString() ?? '';
-  String get text => data['text']?.toString() ?? '';
-  String get response => data['response']?.toString() ?? '';
-  String get detail => data['detail']?.toString() ?? '';
-
-  bool get isToken => event == 'token';
-  bool get isThinking => event == 'thinking';
-  bool get isStatus => event == 'status';
-  bool get isDone => event == 'done';
-  bool get isError => event == 'error';
-}
-
 class LlmSseParser {
   String _buffer = '';
 
@@ -112,6 +91,7 @@ class LlmApi {
   static String llmStream = 'llm/stream';
   static String llmStatus = 'llm/status';
   static String llmHistory = 'llm/history';
+  static String llmList = 'llm/list';
   static String llmCancel = 'llm/cancel';
   static String llmEnd = 'llm/delete';
 
@@ -121,7 +101,10 @@ class LlmApi {
     final headers = await getHeaders();
     final response = await http.post(llmStartUrl, headers: headers);
     if (response.statusCode == 200) {
-      final threadId = _decodeJsonResponse(response)['thread_id'];
+      final responseData = _decodeJsonResponse(response);
+      final threadId = responseData is Map<String, dynamic>
+          ? responseData['thread_id']?.toString() ?? ''
+          : responseData?.toString() ?? '';
       debugPrint('쓰레드 ID: $threadId');
       return threadId;
     } else if (response.statusCode == 401 && retryCount > 0) {
@@ -161,6 +144,28 @@ class LlmApi {
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return getLlmHistory(threadId, retryCount: retryCount - 1);
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  static Future<List<LlmConversationSummary>> getLlmList(
+      {int retryCount = 1}) async {
+    final uri = Uri.parse('$baseUrl/$llmList');
+    final headers = await getHeaders();
+    final response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      final responseData = _decodeJsonResponse(response);
+      if (responseData is List) {
+        return responseData
+            .whereType<Map<String, dynamic>>()
+            .map(LlmConversationSummary.fromJson)
+            .toList();
+      }
+      return [];
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getLlmList(retryCount: retryCount - 1);
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
     }
@@ -256,8 +261,7 @@ class LlmApi {
     final headers = await getHeaders();
     final response = await http.post(uri, headers: headers);
     if (response.statusCode == 200) {
-      final responseData = _decodeJsonResponse(response);
-      return responseData['cancelled'] ?? false;
+      return _boolFromResponse(response, key: 'cancelled');
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return cancelLlmChat(threadId, retryCount: retryCount - 1);
@@ -269,17 +273,38 @@ class LlmApi {
   //대화 종료를 위한 쓰레드 삭제 메소드
   static Future<bool> deleteLlmEnd(String threadId,
       {int retryCount = 1}) async {
-    final llmEndUrl = Uri.parse('$baseUrl/$llmEnd?thread_id=$threadId');
+    final llmEndUrl = Uri.parse('$baseUrl/$llmEnd').replace(
+      queryParameters: {'thread_id': threadId},
+    );
     final headers = await getHeaders();
     final response = await http.delete(llmEndUrl, headers: headers);
     if (response.statusCode == 200) {
-      final responseData = _decodeJsonResponse(response);
-      return responseData['deleted'] ?? false;
+      return _boolFromResponse(response, key: 'deleted');
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return deleteLlmEnd(threadId, retryCount: retryCount - 1);
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  static bool _boolFromResponse(http.Response response, {required String key}) {
+    if (response.bodyBytes.isEmpty) {
+      return true;
+    }
+    try {
+      final decoded = _decodeJsonResponse(response);
+      if (decoded is bool) {
+        return decoded;
+      }
+      if (decoded is Map<String, dynamic>) {
+        final value = decoded[key];
+        return value is bool ? value : value?.toString() != 'false';
+      }
+      final text = decoded?.toString().toLowerCase() ?? '';
+      return text != 'false';
+    } catch (_) {
+      return response.body.trim().toLowerCase() != 'false';
     }
   }
 }

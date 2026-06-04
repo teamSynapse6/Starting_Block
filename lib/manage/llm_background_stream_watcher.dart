@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:starting_block/manage/api/llm_api_manage.dart';
 import 'package:starting_block/manage/llm_notification_manage.dart';
-import 'package:starting_block/manage/userdata/llm_list_manage.dart';
+import 'package:starting_block/manage/model_manage.dart';
 
 class LlmBackgroundStreamWatcher {
   LlmBackgroundStreamWatcher._();
@@ -33,12 +33,6 @@ class LlmBackgroundStreamWatcher {
       (event) async {
         if (event.isToken && event.text.isNotEmpty) {
           responseBuffer.write(event.text);
-          await _saveRunningMeta(
-            announcementId: announcementId,
-            title: title,
-            threadId: threadId,
-            preview: responseBuffer.toString(),
-          );
         } else if (event.isDone) {
           final preview = event.response.isNotEmpty
               ? event.response
@@ -86,22 +80,6 @@ class LlmBackgroundStreamWatcher {
     _subscriptions[threadId] = subscription;
   }
 
-  static Future<void> _saveRunningMeta({
-    required int announcementId,
-    required String title,
-    required String threadId,
-    required String preview,
-  }) async {
-    await LlmListManage.upsertChatMeta(
-      announcementId: announcementId,
-      title: title,
-      threadId: threadId,
-      lastPreview: _clipPreview(preview),
-      lastUpdatedAt: _formatCurrentTime(DateTime.now()),
-      hasRunningGeneration: true,
-    );
-  }
-
   static Future<void> _finish({
     required int announcementId,
     required String title,
@@ -110,14 +88,6 @@ class LlmBackgroundStreamWatcher {
     required bool notify,
   }) async {
     final clippedPreview = _clipPreview(preview);
-    await LlmListManage.upsertChatMeta(
-      announcementId: announcementId,
-      title: title,
-      threadId: threadId,
-      lastPreview: clippedPreview,
-      lastUpdatedAt: _formatCurrentTime(DateTime.now()),
-      hasRunningGeneration: false,
-    );
     if (notify) {
       await LlmNotificationManage.showLlmComplete(
         announcementId: announcementId,
@@ -143,16 +113,6 @@ class LlmBackgroundStreamWatcher {
       final history = await LlmApi.getLlmHistory(threadId);
       final preview = _lastAssistantPreview(history);
 
-      await LlmListManage.upsertChatMeta(
-        announcementId: announcementId,
-        title: title,
-        threadId: threadId,
-        lastPreview: preview,
-        lastUpdatedAt: _formatCurrentTime(DateTime.now()),
-        hasRunningGeneration:
-            generationStatus == 'queued' || generationStatus == 'running',
-      );
-
       if (notify && generationStatus == 'completed') {
         await LlmNotificationManage.showLlmComplete(
           announcementId: announcementId,
@@ -160,14 +120,7 @@ class LlmBackgroundStreamWatcher {
           preview: preview,
         );
       }
-    } catch (_) {
-      await LlmListManage.upsertChatMeta(
-        announcementId: announcementId,
-        title: title,
-        threadId: threadId,
-        hasRunningGeneration: false,
-      );
-    }
+    } catch (_) {}
   }
 
   static String _lastAssistantPreview(Map<String, dynamic> history) {
@@ -194,10 +147,5 @@ class LlmBackgroundStreamWatcher {
       return normalized;
     }
     return '${normalized.substring(0, 80)}...';
-  }
-
-  static int _formatCurrentTime(DateTime currentTime) {
-    return int.parse(
-        '${currentTime.year}${currentTime.month.toString().padLeft(2, '0')}${currentTime.day.toString().padLeft(2, '0')}${currentTime.hour.toString().padLeft(2, '0')}${currentTime.minute.toString().padLeft(2, '0')}');
   }
 }

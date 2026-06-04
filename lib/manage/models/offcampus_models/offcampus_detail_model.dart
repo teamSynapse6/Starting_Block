@@ -14,7 +14,8 @@ class OffCampusDetailModel {
       region,
       postTarget,
       classification,
-      contact;
+      contact,
+      threadId;
   final bool isBookmarked, isContactExist, isFileUploaded;
 
   static String decodeHtmlEntities(String htmlString) {
@@ -38,6 +39,7 @@ class OffCampusDetailModel {
         saved = json['saved'] as int,
         classification = json['classification'] ?? '',
         contact = json['contact'] ?? '',
+        threadId = json['thread_id']?.toString() ?? '',
         isBookmarked = json['isBookmarked'] ?? false,
         isContactExist = json['isContactExist'] ?? false,
         isFileUploaded = json['isFileUploaded'] ?? false;
