@@ -6,12 +6,19 @@ import 'package:starting_block/manage/screen_manage.dart';
 import 'package:provider/provider.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:starting_block/firebase_options.dart';
+import 'package:starting_block/manage/fcm_notification_manage.dart';
 import 'package:starting_block/manage/llm_notification_manage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
   initializeDateFormatting('ko_KR', null); // LLM 채팅에서 시간 표시를 위한 초기화
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await LlmNotificationManage.initialize();
+  await FcmNotificationManage.initialize();
 
   // 네비게이션 바의 색상 설정
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

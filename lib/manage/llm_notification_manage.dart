@@ -6,6 +6,13 @@ class LlmNotificationManage {
   static final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
   static bool _initialized = false;
+  static const AndroidNotificationChannel _fcmChannel =
+      AndroidNotificationChannel(
+    'fcm_default',
+    '앱 알림',
+    description: '서버에서 발송한 앱 알림을 표시합니다.',
+    importance: Importance.high,
+  );
 
   static Future<void> initialize() async {
     if (_initialized) {
@@ -23,6 +30,11 @@ class LlmNotificationManage {
     );
 
     await _notifications.initialize(settings);
+
+    await _notifications
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(_fcmChannel);
 
     await _notifications
         .resolvePlatformSpecificImplementation<
@@ -68,6 +80,37 @@ class LlmNotificationManage {
       'AI 공고 분석이 완료됐어요',
       preview.isNotEmpty ? preview : title,
       details,
+    );
+  }
+
+  static Future<void> showRemoteNotification({
+    required int id,
+    required String title,
+    required String body,
+    String? payload,
+  }) async {
+    await initialize();
+
+    const androidDetails = AndroidNotificationDetails(
+      'fcm_default',
+      '앱 알림',
+      channelDescription: '서버에서 발송한 앱 알림을 표시합니다.',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+    const iosDetails = DarwinNotificationDetails();
+    const details = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+      macOS: iosDetails,
+    );
+
+    await _notifications.show(
+      id,
+      title,
+      body,
+      details,
+      payload: payload,
     );
   }
 }
