@@ -56,7 +56,7 @@ class _HomeQuestionStage3State extends State<HomeQuestionStage3> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const BackTitleAppBarForGptList(
+        appBar: const BackTitleAppBarForLlmList(
           title: '',
         ),
         body: Padding(

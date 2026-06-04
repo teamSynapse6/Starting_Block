@@ -97,15 +97,15 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getBool('LoginStatus') ?? false;
   }
 
-  // gptThreadID 메소드
-  Future<void> setGptThreadID(String gptThreadID) async {
-    await _prefs.setString('gptThreadID', gptThreadID);
+  // llmThreadID 메소드
+  Future<void> setLlmThreadID(String llmThreadID) async {
+    await _prefs.setString('llmThreadID', llmThreadID);
     notifyListeners();
   }
 
-  static Future<String> getGptThreadID() async {
+  static Future<String> getLlmThreadID() async {
     await initialize();
-    return _prefs.getString('gptThreadID') ?? "";
+    return _prefs.getString('llmThreadID') ?? "";
   }
 
   // 초기 로드맵 설정 메소드

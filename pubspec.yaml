@@ -48,6 +48,8 @@ dependencies:
   lottie: ^3.1.0
   shimmer: ^3.0.0
   flutter_oss_licenses: ^2.0.1
+  flutter_local_notifications: ^18.0.1
+  firebase_messaging: ^16.3.0
 
 dev_dependencies:
   flutter_test:

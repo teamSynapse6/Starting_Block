@@ -5,7 +5,7 @@ import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
-import 'package:starting_block/manage/userdata/gpt_list_manage.dart';
+import 'package:starting_block/manage/userdata/llm_list_manage.dart';
 
 class SettingHome extends StatefulWidget {
   const SettingHome({super.key});
@@ -27,7 +27,7 @@ class _SettingHomeState extends State<SettingHome> {
         (Route<dynamic> route) => false,
       );
       await secureStorage.deleteAll();
-      await DeleteAllChatData.deleteAllGptChatData();
+      await DeleteAllChatData.deleteAllLlmChatData();
       await UserInfo().setLoginStatus(false);
       await UserInfoManageApi.postUserLogOut();
     }
@@ -37,7 +37,7 @@ class _SettingHomeState extends State<SettingHome> {
     bool success = await UserInfoManageApi.postDeleteAccount();
     if (success) {
       await secureStorage.deleteAll();
-      await DeleteAllChatData.deleteAllGptChatData();
+      await DeleteAllChatData.deleteAllLlmChatData();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear();
       if (mounted) {

@@ -21,13 +21,13 @@ export 'package:starting_block/constants/widgets/bottom_navigation/gnb_tap.dart'
 export 'package:starting_block/screen/off_campus_screen/offcampus_home.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_detail.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_detail_info.dart';
-export 'package:starting_block/screen/off_campus_screen/offcampus_detail_gpt_card.dart';
+export 'package:starting_block/screen/off_campus_screen/offcampus_detail_llm_card.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_recommendation.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_search.dart';
 export 'package:starting_block/screen/off_campus_screen/offcampus_searchresult.dart';
 
-//GPT 채팅 페이지
-export 'package:starting_block/screen/gpt_chat/gpt_chat_screen.dart';
+//LLM 채팅 페이지
+export 'package:starting_block/screen/llm_chat/llm_chat_screen.dart';
 
 //로드맵 페이지
 export 'package:starting_block/screen/roadmap_screen/roadmap_home.dart';
@@ -88,7 +88,7 @@ export 'package:starting_block/screen/myprofile_screen/setting/license/custom_se
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_heart.dart'; //탭_내 궁금해요
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_answer_reply.dart'; //탭_내 댓글,답글
 export 'package:starting_block/screen/myprofile_screen/tabscreen/myprofile_my_question.dart'; //탭_내 질문
-export 'package:starting_block/screen/myprofile_screen/myprofile_gpt_list.dart'; //AI로 공고 분석하기 리스트 화면
+export 'package:starting_block/screen/myprofile_screen/myprofile_llm_list.dart'; //AI로 공고 분석하기 리스트 화면
 
 //홈_페이지
 export 'package:starting_block/screen/home_screen/home_screen.dart'; //홈 메인 화면
@@ -134,4 +134,3 @@ export 'package:starting_block/skeleton_screen/home_skeleton/home_question_rec_s
 export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_ofca_onca_skeleton.dart'; //로드맵_교외사업 탭 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_class_skeleton.dart'; //로드맵_교내강의 탭 스켈레톤 로더 화면
 export 'package:starting_block/skeleton_screen/roadmap_skeleton/roadmap_tap_system_skeleton.dart'; //로드맵_교내제도 탭 스켈레톤 로더 화면
-

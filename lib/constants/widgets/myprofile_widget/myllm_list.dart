@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:starting_block/constants/constants.dart';
 
-class MyProfileGptListWidget extends StatelessWidget {
+class MyProfileLlmListWidget extends StatelessWidget {
   final String thisTitle, thisLastContent, thisLastDate;
-  final VoidCallback thisTap;
+  final VoidCallback thisTap, actionTap;
 
-  const MyProfileGptListWidget({
+  const MyProfileLlmListWidget({
     super.key,
     required this.thisTitle,
     required this.thisLastDate,
     required this.thisLastContent,
     required this.thisTap,
+    required this.actionTap,
   });
 
   String _formatDate(String rawDate) {
@@ -42,6 +43,7 @@ class MyProfileGptListWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: thisTap,
+      onLongPress: actionTap,
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(

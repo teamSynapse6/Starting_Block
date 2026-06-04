@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/screen_manage.dart';
-import 'package:starting_block/manage/userdata/gpt_list_manage.dart';
+import 'package:starting_block/manage/userdata/llm_list_manage.dart';
 
-class MyProfileGptList extends StatefulWidget {
-  const MyProfileGptList({super.key});
+class MyProfileLlmList extends StatefulWidget {
+  const MyProfileLlmList({super.key});
 
   @override
-  State<MyProfileGptList> createState() => _MyProfileGptListState();
+  State<MyProfileLlmList> createState() => _MyProfileLlmListState();
 }
 
-class _MyProfileGptListState extends State<MyProfileGptList> {
+class _MyProfileLlmListState extends State<MyProfileLlmList> {
   Color topColor = const Color(0xff5E8BFF);
   Color bottomColor = const Color(0xff00288F);
-  List<GptListModel> chatList = [];
+  List<LlmListModel> chatList = [];
 
   @override
   void initState() {
@@ -22,17 +22,17 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
   }
 
   void loadChatData() async {
-    List<GptListModel> tempList = await GptListManage.loadChatData();
+    List<LlmListModel> tempList = await LlmListManage.loadChatData();
     setState(() {
       chatList = tempList;
     });
   }
 
-  void thisGptListTap(String id, String title) async {
+  void thisLlmListTap(String id, String title) async {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => GptChatScreen(thisTitle: title, thisID: id),
+          builder: (context) => LlmChatScreen(thisTitle: title, thisID: id),
         ));
     if (result == true) {
       loadChatData();
@@ -65,7 +65,7 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const BackTitleAppBarForGptList(
+        appBar: const BackTitleAppBarForLlmList(
           title: 'AI로 공고 분석하기',
         ),
         body: Column(
@@ -74,10 +74,10 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
             Row(
               children: [
                 Gaps.h24,
-                AppIcon.gpt_robot_icon,
+                AppIcon.llm_robot_icon,
                 Gaps.h14,
                 Column(
-                  children: [Gaps.v25, AppIcon.gpt_listpage_tail],
+                  children: [Gaps.v25, AppIcon.llm_listpage_tail],
                 ),
                 Container(
                   width: 220,
@@ -117,12 +117,13 @@ class _MyProfileGptListState extends State<MyProfileGptList> {
                           final chat = chatList[index];
                           return Column(
                             children: [
-                              MyProfileGptListWidget(
+                              MyProfileLlmListWidget(
                                 thisTitle: chat.title,
                                 thisLastContent: chat.lastMessage,
                                 thisLastDate: chat.lastDate.toString(),
-                                thisTap: () => thisGptListTap(
+                                thisTap: () => thisLlmListTap(
                                     chat.id.toString(), chat.title),
+                                actionTap: () {},
                               ),
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 24),

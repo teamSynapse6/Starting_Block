@@ -51,14 +51,14 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MyProfileGptList(),
+                      builder: (context) => const MyProfileLlmList(),
                     ),
                   );
                 },
                 child: SizedBox(
                   height: 48,
                   width: 48,
-                  child: AppIcon.gpt_robot_24,
+                  child: AppIcon.llm_robot_24,
                 ),
               ),
               GestureDetector(
@@ -655,11 +655,11 @@ class BackTitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-class BackTitleAppBarForGptList extends StatelessWidget
+class BackTitleAppBarForLlmList extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
 
-  const BackTitleAppBarForGptList({
+  const BackTitleAppBarForLlmList({
     super.key,
     required this.title,
   });

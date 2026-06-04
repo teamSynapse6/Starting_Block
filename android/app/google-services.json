@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "654130182816",
+    "project_id": "startingblock-1e512",
+    "storage_bucket": "startingblock-1e512.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654130182816:android:23c022649791c4da74a7c5",
+        "android_client_info": {
+          "package_name": "com.synapse.startingblock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPIY6wmd9lFANDsdLh4QzWhNqYC6p4OzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -102,7 +102,7 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
                 if (_offcampusDetail.isNotEmpty &&
                     _offcampusDetail[0].isFileUploaded &&
                     !isLoading)
-                  OffCampusDetailGptCard(
+                  OffCampusDetailLlmCard(
                     thisTitle: _offcampusDetail[0].title,
                     thisID: widget.thisID,
                   ),

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
-class OffCampusDetailGptCard extends StatelessWidget {
+class OffCampusDetailLlmCard extends StatelessWidget {
   final String thisTitle;
   final String thisID;
 
-  const OffCampusDetailGptCard({
+  const OffCampusDetailLlmCard({
     super.key,
     required this.thisTitle,
     required this.thisID,
@@ -39,7 +39,7 @@ class OffCampusDetailGptCard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => GptChatScreen(
+                            builder: (context) => LlmChatScreen(
                                 thisTitle: thisTitle, thisID: thisID),
                           ),
                         );
