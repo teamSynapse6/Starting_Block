@@ -26,12 +26,12 @@ class _GptChatScreenState extends State<GptChatScreen> {
   bool _isTyped = false;
   String? _threadId;
   List<Message> _messages = [];
-  bool _isLoading = false; // Changed variable name from _isLoaded to _isLoading
+  bool _isLoading = false;
+  bool _isStreaming = false;
 
   @override
   void initState() {
     super.initState();
-    getGptApiStauts();
     initializeWidget();
     _loadMessages().then((loadedMessages) {
       setState(() {
@@ -47,30 +47,6 @@ class _GptChatScreenState extends State<GptChatScreen> {
     _controller.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  //GPT API 상태 호출 메소드
-  void getGptApiStauts() async {
-    GptStatusModel status = await GptApi.getGptApiStatus();
-    if (status.status.contains('caution') && mounted) {
-      showDialog(
-          context: context,
-          builder: ((context) {
-            return DialogComponent(
-              title: '기능 오류 안내',
-              description:
-                  '일시적으로 AI에 오류가 발생하여,\nAI로 공고 분석하기 기능에 제한이 발생할 수 있습니다.',
-              rightActionText: '이어서 분석',
-              rightActionTap: () {
-                Navigator.pop(context);
-              },
-              leftActionTap: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            );
-          }));
-    }
   }
 
   void _handleTextInputChange() {
@@ -89,12 +65,10 @@ class _GptChatScreenState extends State<GptChatScreen> {
 
   void initializeWidget() async {
     await _getThreadId();
-    if (_threadId == null) {
-      await _getGptStart();
-    } else {
+    if (_threadId != null && _threadId!.isNotEmpty) {
       await _deleteGptEnd();
-      await _getGptStart();
     }
+    await _getGptStart();
   }
 
   //Userinfo에 저장된 threadId를 가져옵니다.
@@ -105,10 +79,12 @@ class _GptChatScreenState extends State<GptChatScreen> {
 
   //대화 시작을 위한 쓰레드 생성 메소드
   Future<void> _getGptStart() async {
-    if (_threadId == null) {
+    if (_threadId == null || _threadId!.isEmpty) {
       String threadId = await GptApi.getGptStart();
-      UserInfo().setGptThreadID(threadId);
-      _threadId = threadId;
+      await UserInfo().setGptThreadID(threadId);
+      setState(() {
+        _threadId = threadId;
+      });
     }
   }
 
@@ -121,50 +97,73 @@ class _GptChatScreenState extends State<GptChatScreen> {
     }
   }
 
-// 메시지 보내기 메소드
+// 메시지 보내기 메소드 (SSE 스트리밍)
   Future<void> _postGptChat(String message) async {
+    if (_threadId == null || _threadId!.isEmpty) return;
+
+    final currentTime = DateTime.now();
+    final formattedTime = _formatCurrentTime(currentTime);
+    final String thisMessage = message;
+
     setState(() {
       _isLoading = true;
+      _isStreaming = true;
     });
 
-    String thisMessage = '${widget.thisID}에서찾아. $message';
-
     try {
-      if (_threadId != null) {
-        String chatResponse = await GptApi.postGptChat(_threadId!, thisMessage);
-        final currentTime = DateTime.now();
-        final formattedTime = _formatCurrentTime(currentTime);
-
-        setState(() {
-          _messages.add(Message(
-            isUser: false,
-            message: chatResponse,
-            time: formattedTime,
-          ));
-          _isLoading = false;
-        });
-
-        await _saveMessages(_messages);
-        _scrollToBottom();
-      }
-    } catch (e) {
-      // 에러 처리 및 사용자에게 에러 메시지 표시
-      final currentTime = DateTime.now();
-      final formattedTime = _formatCurrentTime(currentTime);
-
+      // 빈 AI 메시지 버블을 먼저 추가하고 로딩 인디케이터 제거
       setState(() {
-        _messages.add(Message(
-            isUser: false,
-            message:
-                "답변을 찾는 과정에서 오류가 발생했습니다.\n자세한 내용으로 물어보면 더 정확한 답변을 찾을 수 있습니다.",
-            time: formattedTime));
+        _messages.add(Message(isUser: false, message: '', time: formattedTime));
         _isLoading = false;
       });
+      _scrollToBottom();
 
+      // SSE 스트림을 수신하며 실시간으로 메시지 업데이트
+      await for (final chunk in GptApi.postGptChat(
+          _threadId!, thisMessage, int.parse(widget.thisID))) {
+        setState(() {
+          _messages[_messages.length - 1] = Message(
+            isUser: false,
+            message: _messages.last.message + chunk,
+            time: formattedTime,
+          );
+        });
+        _scrollToBottom();
+      }
+
+      await _saveMessages(_messages);
+      _scrollToBottom();
+    } catch (e) {
+      final errTime = _formatCurrentTime(DateTime.now());
+      setState(() {
+        // 이미 빈 버블이 추가된 경우 해당 버블을 에러 메시지로 교체
+        if (_messages.isNotEmpty &&
+            !_messages.last.isUser &&
+            _messages.last.message.isEmpty) {
+          _messages[_messages.length - 1] = Message(
+            isUser: false,
+            message:
+                '답변을 찾는 과정에서 오류가 발생했습니다.\n자세한 내용으로 물어보면 더 정확한 답변을 찾을 수 있습니다.',
+            time: errTime,
+          );
+        } else {
+          _messages.add(Message(
+            isUser: false,
+            message:
+                '답변을 찾는 과정에서 오류가 발생했습니다.\n자세한 내용으로 물어보면 더 정확한 답변을 찾을 수 있습니다.',
+            time: errTime,
+          ));
+        }
+        _isLoading = false;
+      });
       await _saveMessages(_messages);
       await _deleteGptEnd();
       await _getGptStart();
       _scrollToBottom();
+    } finally {
+      setState(() {
+        _isStreaming = false;
+      });
     }
   }
 
@@ -204,7 +203,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
   // _buildSendMessageButton 메소드를 만들어서 '보내기' 버튼을 구성합니다.
   Widget _buildSendMessageButton() {
     return GestureDetector(
-      onTap: _isTyped && !_isLoading
+      onTap: _isTyped && !_isLoading && !_isStreaming
           ? () async {
               FocusScope.of(context).unfocus();
               _scrollToBottom();
@@ -281,7 +280,6 @@ class _GptChatScreenState extends State<GptChatScreen> {
           centerTitle: false,
           leading: GestureDetector(
             onTap: () {
-              _deleteGptEnd();
               Navigator.pop(context);
             },
             child: AppIcon.back,
@@ -599,7 +597,7 @@ class _GptChatScreenState extends State<GptChatScreen> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: TextField(
-                        enabled: !_isLoading,
+                        enabled: !_isLoading && !_isStreaming,
                         controller: _controller,
                         cursorColor: AppColors.g6,
                         minLines: 1,
