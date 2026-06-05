@@ -31,6 +31,10 @@ target 'Runner' do
   use_frameworks!  # required by simple_permission
   use_modular_headers!
 
+  # Keep Firebase pods importable from generated Objective-C plugin code.
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
   target 'RunnerTests' do

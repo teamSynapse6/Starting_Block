@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/kakao_api_manage.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
@@ -15,24 +14,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-
   void _onNextTap() async {
     try {
       // signInWithKakao를 호출하고 로그인 결과를 기다림
-      await signInWithKakao(context);
-
-      // FlutterSecureStorage에서 userID와 userEmail 불러오기
-      String? userId = await secureStorage.read(key: 'kakaoUserID');
-      String? userEmail = await secureStorage.read(key: 'kakaoUserEmail');
-
-      if (userEmail == null) {
-        throw Exception('저장된 사용자 정보를 찾을 수 없습니다.');
-      }
+      final kakaoUser = await signInWithKakao(context);
 
       // UserInfoManageApi를 통해 로그인 상태 확인
-      UserSignInModel signInData =
-          await UserInfoManageApi.postSignIn(userId!, userEmail);
+      UserSignInModel signInData = await UserInfoManageApi.postSignIn(
+        kakaoUser.providerId,
+        kakaoUser.email,
+      );
 
       //유저 토큰 저장
       await UserTokenManage().setRefreshToken(signInData.refreshToken);
