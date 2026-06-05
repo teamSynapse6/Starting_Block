@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:starting_block/firebase_options.dart';
+import 'package:starting_block/manage/firebase_options.dart';
 import 'package:starting_block/manage/fcm_notification_manage.dart';
 import 'package:starting_block/manage/llm_notification_manage.dart';
 
