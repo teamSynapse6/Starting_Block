@@ -1,4 +1,4 @@
-part of '../screen/llm_chat/llm_chat_screen.dart';
+part of '../../screen/llm_chat/llm_chat_screen.dart';
 
 mixin LlmChatMethods on State<LlmChatScreen> {
   ScrollController get _scrollController;

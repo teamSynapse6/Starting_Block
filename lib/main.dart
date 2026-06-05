@@ -12,7 +12,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:starting_block/manage/firebase_options.dart';
 import 'package:starting_block/manage/fcm_notification_manage.dart';
-import 'package:starting_block/manage/llm_notification_manage.dart';
+import 'package:starting_block/manage/llm/llm_notification_manage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화

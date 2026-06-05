@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:liquid_glass_bar/liquid_glass_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/roadmap_api_manage.dart';
@@ -42,6 +44,9 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
   int _selectedIndex = 2;
   String _schoolName = "";
   bool _isRoadmapSet = true;
+
+  bool get _useLiquidGlassBar =>
+      defaultTargetPlatform == TargetPlatform.iOS;
 
   @override
   void initState() {
@@ -134,9 +139,119 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     }
   }
 
+  Widget _buildBottomNavigationBar() {
+    if (_useLiquidGlassBar) {
+      return LiquidGlassBar(
+        currentIndex: _selectedIndex,
+        onTap: _onTap,
+        items: const [
+          LiquidGlassBarItem(
+            svgAssetPath: 'assets/icon/24/gnb_part/OutSchool_active.svg',
+            label: '교외 지원',
+          ),
+          LiquidGlassBarItem(
+            svgAssetPath: 'assets/icon/24/gnb_part/School_active.svg',
+            label: '교내 지원',
+          ),
+          LiquidGlassBarItem(
+            svgAssetPath: 'assets/icon/24/gnb_part/Home_active.svg',
+            label: '홈',
+          ),
+          LiquidGlassBarItem(
+            svgAssetPath: 'assets/icon/24/gnb_part/RoadMap_active.svg',
+            label: '로드맵',
+          ),
+          LiquidGlassBarItem(
+            svgAssetPath: 'assets/icon/24/gnb_part/MyProfile_active.svg',
+            label: '마이페이지',
+          ),
+        ],
+        style: const LiquidGlassBarStyle(
+          activeColor: AppColors.g5,
+          inactiveColor: AppColors.g3,
+          borderRadius: 32,
+          height: 57,
+          padding: EdgeInsets.fromLTRB(20, 10, 20, 22),
+          iconSize: 24,
+          selectedIconScale: 1.15,
+          liquidGlassSettings: LiquidGlassSettings(
+            thickness: 20,
+            blur: 16,
+            glassColor: Color(0xCCFFFFFF),
+            lightIntensity: 0.6,
+            refractiveIndex: 1.5,
+          ),
+        ),
+      );
+    }
+
+    return _buildLegacyBottomNavigationBar();
+  }
+
+  Widget _buildLegacyBottomNavigationBar() {
+    return BottomAppBar(
+      height: 71,
+      elevation: 0,
+      color: const Color.fromRGBO(0, 0, 0, 0),
+      child: Column(
+        children: [
+          Gaps.v8,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GnbTap(
+                text: '교외 지원',
+                isSelected: _selectedIndex == 0,
+                onTap: () => _onTap(0),
+                selectedIndex: _selectedIndex,
+                selecetedIcon: AppIcon.outSchool_active,
+                unselecetedIcon: AppIcon.outSchool_inactive,
+              ),
+              GnbTap(
+                text: '교내 지원',
+                isSelected: _selectedIndex == 1,
+                onTap: () => _onTap(1),
+                selectedIndex: _selectedIndex,
+                selecetedIcon: AppIcon.school_active,
+                unselecetedIcon: AppIcon.school_inactive,
+              ),
+              GnbTap(
+                text: '홈',
+                isSelected: _selectedIndex == 2,
+                onTap: () => _onTap(2),
+                selectedIndex: _selectedIndex,
+                selecetedIcon: AppIcon.home_active,
+                unselecetedIcon: AppIcon.home_inactive,
+              ),
+              GnbTap(
+                text: '로드맵',
+                isSelected: _selectedIndex == 3,
+                onTap: () => _onTap(3),
+                selectedIndex: _selectedIndex,
+                selecetedIcon: AppIcon.roadMap_active,
+                unselecetedIcon: AppIcon.roadMap_inactive,
+              ),
+              GnbTap(
+                text: '마이페이지',
+                isSelected: _selectedIndex == 4,
+                onTap: () => _onTap(4),
+                selectedIndex: _selectedIndex,
+                selecetedIcon: AppIcon.myProfile_active,
+                unselecetedIcon: AppIcon.myProfile_inactive,
+              ),
+            ],
+          ),
+          Gaps.v15,
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: _useLiquidGlassBar,
       body: Stack(
         children: [
           Consumer<UserInfo>(
@@ -156,64 +271,7 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        height: 71,
-        elevation: 0,
-        color: const Color.fromRGBO(0, 0, 0, 0),
-        child: Column(
-          children: [
-            Gaps.v8,
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // 각 탭 구성
-                GnbTap(
-                  text: '교외 지원',
-                  isSelected: _selectedIndex == 0,
-                  onTap: () => _onTap(0),
-                  selectedIndex: _selectedIndex,
-                  selecetedIcon: AppIcon.outSchool_active,
-                  unselecetedIcon: AppIcon.outSchool_inactive,
-                ),
-                GnbTap(
-                  text: '교내 지원',
-                  isSelected: _selectedIndex == 1,
-                  onTap: () => _onTap(1),
-                  selectedIndex: _selectedIndex,
-                  selecetedIcon: AppIcon.school_active,
-                  unselecetedIcon: AppIcon.school_inactive,
-                ),
-                GnbTap(
-                  text: '홈',
-                  isSelected: _selectedIndex == 2,
-                  onTap: () => _onTap(2),
-                  selectedIndex: _selectedIndex,
-                  selecetedIcon: AppIcon.home_active,
-                  unselecetedIcon: AppIcon.home_inactive,
-                ),
-                GnbTap(
-                  text: '로드맵',
-                  isSelected: _selectedIndex == 3,
-                  onTap: () => _onTap(3),
-                  selectedIndex: _selectedIndex,
-                  selecetedIcon: AppIcon.roadMap_active,
-                  unselecetedIcon: AppIcon.roadMap_inactive,
-                ),
-                GnbTap(
-                  text: '마이페이지',
-                  isSelected: _selectedIndex == 4,
-                  onTap: () => _onTap(4),
-                  selectedIndex: _selectedIndex,
-                  selecetedIcon: AppIcon.myProfile_active,
-                  unselecetedIcon: AppIcon.myProfile_inactive,
-                ),
-              ],
-            ),
-            Gaps.v15,
-          ],
-        ),
-      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 }

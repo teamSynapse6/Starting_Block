@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:starting_block/manage/api/llm_api_manage.dart';
-import 'package:starting_block/manage/llm_notification_manage.dart';
+import 'package:starting_block/manage/llm/llm_notification_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
 class LlmBackgroundStreamWatcher {

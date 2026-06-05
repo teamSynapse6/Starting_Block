@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:starting_block/manage/api/fcm_api_manage.dart';
 import 'package:starting_block/manage/firebase_options.dart';
-import 'package:starting_block/manage/llm_notification_manage.dart';
+import 'package:starting_block/manage/llm/llm_notification_manage.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {

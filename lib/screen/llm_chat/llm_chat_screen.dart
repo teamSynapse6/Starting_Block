@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/llm_api_manage.dart';
-import 'package:starting_block/manage/llm_background_stream_watcher.dart';
+import 'package:starting_block/manage/llm/llm_background_stream_watcher.dart';
+import 'package:starting_block/manage/llm/llm_text_parser.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
-part '../../manage/llm_chat_method.dart';
+part '../../manage/llm/llm_chat_method.dart';
 
 class LlmChatScreen extends StatefulWidget {
   final String thisTitle;
@@ -519,10 +520,12 @@ class _LlmChatScreenState extends State<LlmChatScreen>
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 9),
-                      child: Text(
-                        message.message,
-                        style:
-                            AppTextStyles.bd4.copyWith(color: AppColors.black),
+                      child: RichText(
+                        text: LlmTextParser.parse(
+                          message.message,
+                          color: AppColors.black,
+                          baseStyle: AppTextStyles.bd4,
+                        ),
                       ),
                     ),
                   ),
