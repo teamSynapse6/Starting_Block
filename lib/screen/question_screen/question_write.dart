@@ -47,7 +47,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
 
   void _thisWriteTap() {
     if (!_isTextEntered) return;
-    FocusScope.of(context).requestFocus(FocusNode());
+    FocusScope.of(context).unfocus();
     showDialog(
       context: context,
       builder: (context) {
@@ -99,7 +99,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         appBar: BackTitleAppBar(

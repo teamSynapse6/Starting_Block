@@ -33,6 +33,7 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
   @override
   void dispose() {
     recentSearchManager.onSearchUpdate = null;
+    _controller.dispose();
     super.dispose();
   }
 
@@ -78,7 +79,7 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         appBar: SearchFiledAppBar(

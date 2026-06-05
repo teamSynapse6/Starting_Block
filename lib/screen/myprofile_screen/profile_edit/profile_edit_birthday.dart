@@ -42,7 +42,7 @@ class _BirthdayEditState extends State<BirthdayEdit> {
   void _updateBirthday() {
     final input = _birthdayController.text.replaceAll('.', '');
     if (input.length == 8) {
-      FocusScope.of(context).requestFocus(FocusNode());
+      FocusScope.of(context).unfocus();
       setState(() {
         _isCheacking = true;
       });
@@ -68,8 +68,13 @@ class _BirthdayEditState extends State<BirthdayEdit> {
       // _isInputValid가 true로 업데이트된 후, _onNextTap() 자동 호출
       if (_isInputValid) {
         Future.delayed(const Duration(milliseconds: 500), () {
+          if (!mounted) {
+            return;
+          }
           _onNextTap();
-          _isCheacking = false;
+          setState(() {
+            _isCheacking = false;
+          });
         });
       } else {
         setState(() {
@@ -82,13 +87,20 @@ class _BirthdayEditState extends State<BirthdayEdit> {
   }
 
   @override
+  void dispose() {
+    _birthdayController.removeListener(_updateBirthday);
+    _birthdayController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return IgnorePopWrapper(
       ignoring: _isCheacking,
       canPop: !_isCheacking,
       child: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
         },
         child: Scaffold(
           appBar: const BackAppBar(),

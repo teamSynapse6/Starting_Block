@@ -45,6 +45,12 @@ class _RoadMapSetFirstPopUpState extends State<RoadMapSetFirstPopUp> {
   }
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CloseAppBar(),

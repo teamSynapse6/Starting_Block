@@ -24,6 +24,9 @@ class _OnCampusHomeState extends State<OnCampusHome> {
 
   Future<void> _loadSchoolName() async {
     String schoolName = await UserInfo.getSchoolName();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _schoolName = schoolName;
     });
@@ -43,6 +46,9 @@ class _OnCampusHomeState extends State<OnCampusHome> {
     List<OncaAnnouncementModel> topFiveNotifyList = notifyList.take(5).toList();
 
     // 상태 업데이트
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _notifyList = topFiveNotifyList;
     });

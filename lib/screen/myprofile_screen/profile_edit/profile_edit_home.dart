@@ -38,6 +38,9 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
 
   Future<void> _loadNickName() async {
     String nickName = await UserInfo.getNickName();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _nickName = nickName;
     });
@@ -45,6 +48,9 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
 
   Future<void> _loadBirthDay() async {
     String birthDay = await UserInfo.getUserBirthday();
+    if (!mounted) {
+      return;
+    }
     if (birthDay.length == 8) {
       String formattedBirthDay =
           "${birthDay.substring(0, 4)}.${birthDay.substring(4, 6)}.${birthDay.substring(6, 8)}";
@@ -60,6 +66,9 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
 
   Future<void> _loadSchoolName() async {
     String schoolName = await UserInfo.getSchoolName();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _schoolName = schoolName;
     });
@@ -67,6 +76,9 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
 
   Future<void> _loadEntrepreneurCheck() async {
     bool isEntrepreneur = await UserInfo.getEntrepreneurCheck();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _entrepreneurCheck = isEntrepreneur ? "등록 완료" : "등록 미완료";
     });
@@ -74,6 +86,9 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
 
   Future<void> _loadResidenceName() async {
     String residenceName = await UserInfo.getResidence();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _residenceName = residenceName;
     });
@@ -81,6 +96,9 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
 
   Future<void> _loadSelectedProfileIcon() async {
     int selectedIconIndex = await UserInfo.getSelectedIconIndex();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _iconIndex = selectedIconIndex;
     });

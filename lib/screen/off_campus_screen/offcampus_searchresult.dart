@@ -31,6 +31,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
   String _sorting = '';
   bool _isScrolled = false;
   bool _isLoading = false;
+  bool _isLoadingMore = false;
 
   @override
   void initState() {
@@ -66,6 +67,9 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
   }
 
   Future<void> _loadOffCampusList() async {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _isLoading = true;
     });
@@ -82,6 +86,9 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
     List<OffCampusListModel> offCampusList = result['offCampusList'];
     bool last = result['last'];
 
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _offcampusList.clear(); // 기존 목록을 지우고 새 데이터로 채웁니다.
       _offcampusList.addAll(offCampusList);
@@ -94,6 +101,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -105,40 +113,43 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
         _loadMoreData();
       }
     }
-    if (_scrollController.offset == 0) {
+    final isScrolled = _scrollController.offset != 0;
+    if (_isScrolled != isScrolled) {
       setState(() {
-        _isScrolled = false;
-      });
-    }
-    if (_scrollController.offset != 0) {
-      setState(() {
-        _isScrolled = true;
+        _isScrolled = isScrolled;
       });
     }
   }
 
   Future<void> _loadMoreData() async {
+    if (_isLoadingMore || !_hasMoreData) {
+      return;
+    }
+    _isLoadingMore = true;
     // 페이지 번호를 증가시킵니다.
     _pageNumber++;
-    var result = await OffCampusApi.getOffCampusHomeList(
-      page: _pageNumber,
-      sorting: _sorting,
-      postTarget: _postTarget,
-      region: _region,
-      supportType: _supportType,
-    );
+    try {
+      var result = await OffCampusApi.getOffCampusHomeList(
+        page: _pageNumber,
+        sorting: _sorting,
+        postTarget: _postTarget,
+        region: _region,
+        supportType: _supportType,
+      );
 
-    // 결과에서 공고 리스트와 'last' 값을 추출합니다.
-    List<OffCampusListModel> moreOffcampusList = result['offCampusList'];
-    bool last = result['last'];
-    setState(() {
-      _offcampusList.addAll(moreOffcampusList);
-      if (last) {
-        _hasMoreData = false;
-      } else {
-        _hasMoreData = true;
+      // 결과에서 공고 리스트와 'last' 값을 추출합니다.
+      List<OffCampusListModel> moreOffcampusList = result['offCampusList'];
+      bool last = result['last'];
+      if (!mounted) {
+        return;
       }
-    });
+      setState(() {
+        _offcampusList.addAll(moreOffcampusList);
+        _hasMoreData = !last;
+      });
+    } finally {
+      _isLoadingMore = false;
+    }
   }
 
   Future<void> _reloadAllData() async {
@@ -155,6 +166,9 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
 
     List<OffCampusListModel> reloadedData = result['offCampusList'];
 
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _offcampusList = reloadedData;
     });
@@ -186,7 +200,7 @@ class _OffCampusSearchResultState extends State<OffCampusSearchResult> {
       body: Consumer<FilterModel>(
         builder: (context, filterModel, child) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (filterModel.hasChanged) {
+            if (mounted && filterModel.hasChanged) {
               _pageNumber = 0;
               loadFilterValue();
               filterModel.resetChangeFlag();

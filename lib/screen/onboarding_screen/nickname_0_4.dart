@@ -101,9 +101,12 @@ class _NickNameScreenState extends State<NickNameScreen> {
       _isCheacking = true;
     });
 
-    FocusScope.of(context).requestFocus(FocusNode());
+    FocusScope.of(context).unfocus();
     try {
       bool isAvailable = await UserInfoManageApi.patchUserNickName(_nickname);
+      if (!mounted) {
+        return;
+      }
       _isNicknameChecked = true; // 중복 확인 완료
       setState(() {
         _isNicknameAvailable = isAvailable;
@@ -112,6 +115,9 @@ class _NickNameScreenState extends State<NickNameScreen> {
       });
       if (isAvailable) {
         await Future.delayed(const Duration(milliseconds: 500));
+        if (!mounted) {
+          return;
+        }
         _onNextTap();
         _isCheacking = false;
       } else if (!isAvailable) {
@@ -124,6 +130,12 @@ class _NickNameScreenState extends State<NickNameScreen> {
         _isNicknameAvailable = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _nicknameController.dispose();
+    super.dispose();
   }
 
   void _onNextTap() async {
@@ -148,7 +160,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
       canPop: !_isCheacking,
       child: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
         },
         child: Scaffold(
           appBar: const BackAppBar(),

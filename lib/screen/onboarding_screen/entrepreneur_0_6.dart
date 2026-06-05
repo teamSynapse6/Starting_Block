@@ -48,7 +48,7 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
     return Scaffold(
       appBar: const BackAppBar(),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        onTap: () => FocusScope.of(context).unfocus(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

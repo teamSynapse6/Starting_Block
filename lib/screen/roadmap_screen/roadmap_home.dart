@@ -36,6 +36,9 @@ class _RoadmapHomeState extends State<RoadmapHome>
 
   Future<void> _loadNickName() async {
     String nickName = await UserInfo.getNickName();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _nickName = nickName;
     });
@@ -44,6 +47,7 @@ class _RoadmapHomeState extends State<RoadmapHome>
   @override
   void dispose() {
     _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     _tabController.dispose();
     super.dispose();
   }
@@ -57,14 +61,10 @@ class _RoadmapHomeState extends State<RoadmapHome>
   }
 
   void _onScroll() {
-    if (_scrollController.offset == 0) {
+    final isScrolled = _scrollController.offset != 0;
+    if (_isScrolled != isScrolled) {
       setState(() {
-        _isScrolled = false;
-      });
-    }
-    if (_scrollController.offset != 0) {
-      setState(() {
-        _isScrolled = true;
+        _isScrolled = isScrolled;
       });
     }
   }

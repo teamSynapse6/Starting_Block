@@ -276,6 +276,9 @@ mixin LlmChatMethods on State<LlmChatScreen> {
         final status = await LlmApi.getLlmStatus(_threadId!);
         final generation = _mapValue(status['generation']);
         final generationStatus = generation?['status']?.toString() ?? '';
+        if (!mounted) {
+          return;
+        }
         if (generationStatus == 'queued' || generationStatus == 'running') {
           _listenToStream(LlmApi.reconnectLlmStream(_threadId!));
           return;
@@ -392,7 +395,7 @@ mixin LlmChatMethods on State<LlmChatScreen> {
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
+      if (mounted && _scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 500),

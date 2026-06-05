@@ -38,6 +38,9 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
     // API 호출을 통해 상세 데이터를 가져옵니다.
     OffCampusDetailModel detailData =
         await OffCampusApi.getOffcampusDetailInfo(id);
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _offcampusDetail.clear();
       _offcampusDetail.add(detailData);
@@ -53,6 +56,9 @@ class _OffCampusDetailState extends State<OffCampusDetail> {
   void loadQuestionData() async {
     final questions = await QuestionAnswerApi.getQuestionList(
         int.tryParse(widget.thisID) ?? 0);
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _questionCount = questions.length.toString(); // _questionData 업데이트
     });

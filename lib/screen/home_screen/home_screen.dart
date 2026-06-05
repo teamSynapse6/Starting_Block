@@ -21,6 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadNickName() async {
     String nickName = await UserInfo.getNickName();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _nickName = nickName;
     });

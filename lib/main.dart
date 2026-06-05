@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:starting_block/constants/constants.dart';
@@ -13,7 +16,10 @@ import 'package:starting_block/manage/llm_notification_manage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
-  initializeDateFormatting('ko_KR', null); // LLM 채팅에서 시간 표시를 위한 초기화
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
+  await initializeDateFormatting('ko_KR', null); // LLM 채팅에서 시간 표시를 위한 초기화
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -75,6 +81,7 @@ class SplashScreen extends StatefulWidget {
 
 class SplashScreenState extends State<SplashScreen> {
   bool _isLogIned = false;
+  Timer? _navigationTimer;
 
   @override
   void initState() {
@@ -88,13 +95,12 @@ class SplashScreenState extends State<SplashScreen> {
       ),
     );
 
-    Future.delayed(
+    _navigationTimer = Timer(
       const Duration(milliseconds: 1000),
       () {
-        if (context.mounted) {
-          final navigatorContext = context;
+        if (mounted) {
           Navigator.pushReplacement(
-            navigatorContext,
+            context,
             MaterialPageRoute(
               builder: (context) =>
                   _isLogIned ? const IntergrateScreen() : const LoginScreen(),
@@ -106,6 +112,12 @@ class SplashScreenState extends State<SplashScreen> {
         ));
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _navigationTimer?.cancel();
+    super.dispose();
   }
 
   void loadLogInStatus() async {

@@ -86,6 +86,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
       );
     }
 
+    _controller.removeListener(_handleTextInputChange);
     _queueTextNotifier.dispose();
     _controller.dispose();
     _scrollController.dispose();

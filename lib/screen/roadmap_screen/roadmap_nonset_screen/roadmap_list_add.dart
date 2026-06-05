@@ -82,7 +82,7 @@ class _RoadmapListSetAddState extends State<RoadmapListSetAdd> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         appBar: const CloseAppBar(

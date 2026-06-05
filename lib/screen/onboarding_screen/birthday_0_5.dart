@@ -67,6 +67,9 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
       // _isInputValid가 true로 업데이트된 후, _onNextTap() 자동 호출
       if (_isInputValid) {
         Future.delayed(const Duration(milliseconds: 500), () {
+          if (!mounted) {
+            return;
+          }
           setState(() {
             _isCheacking = false;
           });
@@ -83,13 +86,20 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   }
 
   @override
+  void dispose() {
+    _birthdayController.removeListener(_updateBirthday);
+    _birthdayController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return IgnorePopWrapper(
       ignoring: _isCheacking,
       canPop: !_isCheacking,
       child: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
         },
         child: Scaffold(
           appBar: const BackAppBar(),

@@ -23,41 +23,43 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
   @override
   void initState() {
     super.initState();
-    _schoolInfoController.addListener(() {
-      setState(() {
-        _schoolInfo = _schoolInfoController.text;
-        filterSearchResults(_schoolInfo);
-        _isSchoolSelected = false; // 사용자가 입력을 변경하면 선택 상태를 초기화
-      });
-    });
     filteredSchoolList = List.from(schoolList);
+    _schoolInfoController.addListener(_handleSchoolInputChange);
   }
 
-  void filterSearchResults(String query) {
-    if (query.isNotEmpty) {
-      List<String> tempList = schoolList
-          .where((school) => school.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      setState(() {
-        filteredSchoolList = tempList;
-      });
-    } else {
-      setState(() {
-        filteredSchoolList = List.from(schoolList);
-      });
+  void _handleSchoolInputChange() {
+    final query = _schoolInfoController.text;
+    final nextFilteredSchoolList = _filterSchoolList(query);
+    setState(() {
+      _schoolInfo = query;
+      filteredSchoolList = nextFilteredSchoolList;
+      _isSchoolSelected = false; // 사용자가 입력을 변경하면 선택 상태를 초기화
+    });
+  }
+
+  List<String> _filterSchoolList(String query) {
+    if (query.isEmpty) {
+      return List.from(schoolList);
     }
+    return schoolList
+        .where((school) => school.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   void _onSchoolTap(String selectedSchool) async {
-    FocusScope.of(context).requestFocus(FocusNode());
+    FocusScope.of(context).unfocus();
+    _schoolInfoController.text = selectedSchool;
     setState(() {
-      _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
+      filteredSchoolList = _filterSchoolList(selectedSchool);
       _isSchoolSelected = true;
     });
     await _saveSchoolName();
     await _saveUserInfoToServer();
     await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+      if (!mounted) {
+        return;
+      }
       _onNextTap();
     });
   }
@@ -89,8 +91,14 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
       return;
     } else if (_schoolInfo.isNotEmpty && _isSchoolSelected) {
       bool updateSuccess = await _saveUserInfoToServer();
+      if (!mounted) {
+        return;
+      }
       if (updateSuccess) {
         await _saveSchoolName();
+        if (!mounted) {
+          return;
+        }
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -107,10 +115,17 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
   }
 
   @override
+  void dispose() {
+    _schoolInfoController.removeListener(_handleSchoolInputChange);
+    _schoolInfoController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         appBar: const BackAppBar(),

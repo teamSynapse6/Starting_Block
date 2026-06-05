@@ -102,9 +102,12 @@ class _NickNameEditState extends State<NickNameEdit> {
       _isCheacking = true;
     });
 
-    FocusScope.of(context).requestFocus(FocusNode());
+    FocusScope.of(context).unfocus();
     try {
       bool isAvailable = await UserInfoManageApi.patchUserNickName(_nickname);
+      if (!mounted) {
+        return;
+      }
       _isNicknameChecked = true; // 중복 확인 완료
       setState(() {
         _isNicknameAvailable = isAvailable;
@@ -113,6 +116,9 @@ class _NickNameEditState extends State<NickNameEdit> {
       });
       if (isAvailable) {
         await Future.delayed(const Duration(milliseconds: 500));
+        if (!mounted) {
+          return;
+        }
         _saveNickname();
         _isCheacking = false;
         Navigator.pop(context);
@@ -129,13 +135,19 @@ class _NickNameEditState extends State<NickNameEdit> {
   }
 
   @override
+  void dispose() {
+    _nicknameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return IgnorePopWrapper(
       ignoring: _isCheacking,
       canPop: !_isCheacking,
       child: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
         },
         child: Scaffold(
           appBar: const BackAppBar(),

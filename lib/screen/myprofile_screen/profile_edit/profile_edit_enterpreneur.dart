@@ -38,7 +38,7 @@ class _EnterprenutEditState extends State<EnterprenutEdit> {
     return Scaffold(
       appBar: const BackAppBar(),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        onTap: () => FocusScope.of(context).unfocus(),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(

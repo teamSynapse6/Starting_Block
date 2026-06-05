@@ -72,6 +72,9 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
 
   Future<void> _loadSchoolName() async {
     String schoolName = await UserInfo.getSchoolName(); // 비동기 호출
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _schoolName = schoolName;
     });
@@ -81,6 +84,9 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     //실제 데이터 불러오는 값
     List roadMap = await RoadMapApi.getRoadMapList();
     bool isRoadmapSet = roadMap.isNotEmpty;
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _isRoadmapSet = isRoadmapSet;
     });

@@ -20,38 +20,40 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
   @override
   void initState() {
     super.initState();
-    _schoolInfoController.addListener(() {
-      setState(() {
-        _schoolInfo = _schoolInfoController.text;
-        filterSearchResults(_schoolInfo);
-      });
-    });
     filteredSchoolList = List.from(schoolList);
+    _schoolInfoController.addListener(_handleSchoolInputChange);
   }
 
-  void filterSearchResults(String query) {
-    if (query.isNotEmpty) {
-      List<String> tempList = schoolList
-          .where((school) => school.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      setState(() {
-        filteredSchoolList = tempList;
-      });
-    } else {
-      setState(() {
-        filteredSchoolList = List.from(schoolList);
-      });
+  void _handleSchoolInputChange() {
+    final query = _schoolInfoController.text;
+    final nextFilteredSchoolList = _filterSchoolList(query);
+    setState(() {
+      _schoolInfo = query;
+      filteredSchoolList = nextFilteredSchoolList;
+    });
+  }
+
+  List<String> _filterSchoolList(String query) {
+    if (query.isEmpty) {
+      return List.from(schoolList);
     }
+    return schoolList
+        .where((school) => school.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   void _onSchoolTap(String selectedSchool) async {
-    FocusScope.of(context).requestFocus(FocusNode());
+    FocusScope.of(context).unfocus();
+    _schoolInfoController.text = selectedSchool;
     setState(() {
-      _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
+      filteredSchoolList = _filterSchoolList(selectedSchool);
     });
     await _saveSchoolName();
     await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+      if (!mounted) {
+        return;
+      }
       _onNextTap();
     });
   }
@@ -66,15 +68,25 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
     if (_schoolInfo.isEmpty) return;
     // 대학교명을 SharedPreferences에 저장
     await _saveSchoolName();
+    if (!mounted) {
+      return;
+    }
     // 현재 화면을 pop하여 이전 화면으로 돌아감
     Navigator.of(context).pop();
+  }
+
+  @override
+  void dispose() {
+    _schoolInfoController.removeListener(_handleSchoolInputChange);
+    _schoolInfoController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         appBar: const BackAppBar(),

@@ -20,37 +20,39 @@ class _SchoolScreenState extends State<SchoolScreen> {
   @override
   void initState() {
     super.initState();
-    _schoolInfoController.addListener(() {
-      setState(() {
-        _schoolInfo = _schoolInfoController.text;
-        filterSearchResults(_schoolInfo);
-      });
-    });
     filteredSchoolList = List.from(schoolList);
+    _schoolInfoController.addListener(_handleSchoolInputChange);
   }
 
-  void filterSearchResults(String query) {
-    if (query.isNotEmpty) {
-      List<String> tempList = schoolList
-          .where((school) => school.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      setState(() {
-        filteredSchoolList = tempList;
-      });
-    } else {
-      setState(() {
-        filteredSchoolList = List.from(schoolList);
-      });
+  void _handleSchoolInputChange() {
+    final query = _schoolInfoController.text;
+    final nextFilteredSchoolList = _filterSchoolList(query);
+    setState(() {
+      _schoolInfo = query;
+      filteredSchoolList = nextFilteredSchoolList;
+    });
+  }
+
+  List<String> _filterSchoolList(String query) {
+    if (query.isEmpty) {
+      return List.from(schoolList);
     }
+    return schoolList
+        .where((school) => school.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   void _onSchoolTap(String selectedSchool) async {
+    _schoolInfoController.text = selectedSchool;
     setState(() {
-      _schoolInfoController.text = selectedSchool;
       _schoolInfo = selectedSchool;
+      filteredSchoolList = _filterSchoolList(selectedSchool);
     });
 
     Future.delayed(const Duration(milliseconds: 500), () {
+      if (!mounted) {
+        return;
+      }
       _onNextTap();
     });
   }
@@ -66,6 +68,9 @@ class _SchoolScreenState extends State<SchoolScreen> {
   void _onNextTap() async {
     if (_schoolInfo.isEmpty) return;
     await _saveSchoolName();
+    if (!mounted) {
+      return;
+    }
     // 다음 화면으로 이동
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -76,6 +81,9 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
   void _onSkipTap() async {
     await _skipSchoolName();
+    if (!mounted) {
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const RoadmapScreen(),
@@ -84,10 +92,17 @@ class _SchoolScreenState extends State<SchoolScreen> {
   }
 
   @override
+  void dispose() {
+    _schoolInfoController.removeListener(_handleSchoolInputChange);
+    _schoolInfoController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         appBar: const BackAppBar(),

@@ -53,6 +53,9 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
 
     String? keyword = programKeywords[selectedProgram];
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _selectedProgram = keyword!;
         // _selectedSorting = selectedSorting;
@@ -70,6 +73,9 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
         search: widget.searchWord,
       );
 
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _searchResult = notifyList;
         isLoading = false;
@@ -77,6 +83,12 @@ class _OnCampusSearchResultState extends State<OnCampusSearchResult> {
     } catch (e) {
       debugPrint('공고 정보 로드 실패: $e');
     }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

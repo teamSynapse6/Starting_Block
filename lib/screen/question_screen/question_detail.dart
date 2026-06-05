@@ -54,6 +54,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
 
   @override
   void dispose() {
+    _replyFocusNode.dispose();
     _controller.dispose(); // 리소스를 정리합니다.
     super.dispose();
   }
@@ -61,6 +62,9 @@ class _QuestionDetailState extends State<QuestionDetail> {
   // 유저 닉네임 로드 메소드
   void _loadUserNickName() async {
     final user = await UserInfo.getNickName();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       userNickName = user;
     });
@@ -88,6 +92,9 @@ class _QuestionDetailState extends State<QuestionDetail> {
 
           await QuestionAnswerApi.postAnswerWrite(
               questionId, content, isContact);
+          if (!mounted) {
+            return;
+          }
           _loadQuestionDetail();
 
           setState(() {
@@ -113,6 +120,9 @@ class _QuestionDetailState extends State<QuestionDetail> {
               await QuestionAnswerApi.postReplyWrite(
                   replyingToAnswerId!, content);
 
+              if (!mounted) {
+                return;
+              }
               // 성공적으로 답글이 작성된 후의 처리
               _controller.clear(); // 입력 필드 초기화
               _loadQuestionDetail();
@@ -142,7 +152,9 @@ class _QuestionDetailState extends State<QuestionDetail> {
       isReplying = true;
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).requestFocus(_replyFocusNode);
+      if (mounted) {
+        FocusScope.of(context).requestFocus(_replyFocusNode);
+      }
     });
   }
 
@@ -156,11 +168,17 @@ class _QuestionDetailState extends State<QuestionDetail> {
 
     bool success =
         await QuestionAnswerApi.postHeart(widget.questionID, 'QUESTION');
+    if (!mounted) {
+      return;
+    }
     if (success) {
       _loadQuestionDetail();
     }
 
     await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) {
+      return;
+    }
     setState(() {
       isHeartLoading = false;
     });
@@ -175,15 +193,24 @@ class _QuestionDetailState extends State<QuestionDetail> {
     });
 
     final questionDetail = await _questionDetailFuture;
+    if (!mounted) {
+      return;
+    }
     if (questionDetail?.heartId != null) {
       bool success =
           await QuestionAnswerApi.deleteHeart(questionDetail!.heartId);
+      if (!mounted) {
+        return;
+      }
       if (success) {
         _loadQuestionDetail();
       }
     } else {}
 
     await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) {
+      return;
+    }
     setState(() {
       isHeartLoading = false;
     });
@@ -198,11 +225,17 @@ class _QuestionDetailState extends State<QuestionDetail> {
     });
 
     bool success = await QuestionAnswerApi.postHeart(answerId, 'ANSWER');
+    if (!mounted) {
+      return;
+    }
     if (success) {
       _loadQuestionDetail();
     }
 
     await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) {
+      return;
+    }
     setState(() {
       isHeartLoading = false;
     });
@@ -217,11 +250,17 @@ class _QuestionDetailState extends State<QuestionDetail> {
     });
 
     bool success = await QuestionAnswerApi.deleteHeart(heartId);
+    if (!mounted) {
+      return;
+    }
     if (success) {
       _loadQuestionDetail();
     }
 
     await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) {
+      return;
+    }
     setState(() {
       isHeartLoading = false;
     });
@@ -236,11 +275,17 @@ class _QuestionDetailState extends State<QuestionDetail> {
     });
 
     bool success = await QuestionAnswerApi.postHeart(replyId, 'REPLY');
+    if (!mounted) {
+      return;
+    }
     if (success) {
       _loadQuestionDetail();
     }
 
     await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) {
+      return;
+    }
     setState(() {
       isHeartLoading = false;
     });
@@ -255,11 +300,17 @@ class _QuestionDetailState extends State<QuestionDetail> {
     });
 
     bool success = await QuestionAnswerApi.deleteHeart(replyHeartId);
+    if (!mounted) {
+      return;
+    }
     if (success) {
       _loadQuestionDetail();
     }
 
     await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) {
+      return;
+    }
     setState(() {
       isHeartLoading = false;
     });

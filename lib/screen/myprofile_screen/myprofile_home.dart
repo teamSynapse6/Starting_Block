@@ -39,6 +39,9 @@ class _MyProfileHomeState extends State<MyProfileHome>
     bool isEntrepreneur = await UserInfo.getEntrepreneurCheck();
     String residenceName = await UserInfo.getResidence();
     int selectedIconIndex = await UserInfo.getSelectedIconIndex();
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _nickName = nickName;
       _schoolName = schoolName;
