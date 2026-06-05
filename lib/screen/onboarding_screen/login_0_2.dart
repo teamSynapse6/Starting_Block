@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/kakao_api_manage.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
+import 'package:starting_block/manage/fcm_notification_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -36,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       //유저 토큰 저장
       await UserTokenManage().setRefreshToken(signInData.refreshToken);
       await UserTokenManage().setAccessToken(signInData.accessToken);
+      await FcmNotificationManage.registerCurrentToken();
       debugPrint(
           '로그인 완료: ${signInData.accessToken}\n 리프레시 토큰: ${signInData.refreshToken}');
 

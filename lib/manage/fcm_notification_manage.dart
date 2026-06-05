@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:starting_block/manage/api/fcm_api_manage.dart';
 import 'package:starting_block/manage/firebase_options.dart';
 import 'package:starting_block/manage/llm_notification_manage.dart';
 
@@ -31,7 +32,10 @@ class FcmNotificationManage {
     await _logCurrentToken();
 
     FirebaseMessaging.onMessage.listen((message) async {
-      await showRemoteMessageAsLocalNotification(message);
+      debugPrint('Foreground FCM: ${message.notification?.title}');
+      if (_shouldShowLocalNotificationInForeground(message)) {
+        await showRemoteMessageAsLocalNotification(message);
+      }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
@@ -43,9 +47,9 @@ class FcmNotificationManage {
       debugPrint('FCM initial notification: ${initialMessage.messageId}');
     }
 
-    _messaging.onTokenRefresh.listen((token) {
+    _messaging.onTokenRefresh.listen((token) async {
       debugPrint('FCM token refreshed: $token');
-      // TODO: 서버 FCM 토큰 등록 API가 준비되면 여기에서 갱신 토큰을 전송합니다.
+      await registerCurrentToken();
     });
 
     _initialized = true;
@@ -63,9 +67,9 @@ class FcmNotificationManage {
 
   static Future<void> _configureForegroundPresentation() {
     return _messaging.setForegroundNotificationPresentationOptions(
-      alert: false,
-      badge: false,
-      sound: false,
+      alert: true,
+      badge: true,
+      sound: true,
     );
   }
 
@@ -73,7 +77,6 @@ class FcmNotificationManage {
     try {
       final token = await getToken();
       debugPrint('FCM token: $token');
-      // TODO: 서버 FCM 토큰 등록 API가 준비되면 여기에서 최초 토큰을 전송합니다.
     } catch (error) {
       debugPrint('FCM token load failed: $error');
     }
@@ -81,6 +84,25 @@ class FcmNotificationManage {
 
   static Future<String?> getToken() {
     return _messaging.getToken();
+  }
+
+  static Future<String?> registerCurrentToken() async {
+    final token = await getToken();
+    if (token == null || token.isEmpty) {
+      return token;
+    }
+    final success = await FcmApiManage.registerToken(token);
+    debugPrint(
+        'FCM token register ${success ? 'succeeded' : 'skipped/failed'}');
+    return token;
+  }
+
+  static Future<bool> deleteCurrentToken() async {
+    final token = await getToken();
+    if (token == null || token.isEmpty) {
+      return false;
+    }
+    return FcmApiManage.deleteToken(token);
   }
 
   static Future<void> showRemoteMessageAsLocalNotification(
@@ -100,5 +122,17 @@ class FcmNotificationManage {
       body: body,
       payload: message.data.isEmpty ? null : message.data.toString(),
     );
+  }
+
+  static bool _shouldShowLocalNotificationInForeground(RemoteMessage message) {
+    final isApplePlatform = defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.macOS;
+    if (!isApplePlatform) {
+      return true;
+    }
+
+    // iOS/macOS는 foreground presentation 옵션으로 notification payload를
+    // 시스템 배너로 표시합니다. data-only 메시지는 로컬 알림으로 fallback합니다.
+    return message.notification == null;
   }
 }

@@ -111,7 +111,17 @@ class SplashScreenState extends State<SplashScreen> {
   void loadLogInStatus() async {
     bool isLogIned = await UserInfo.getLoginStatus();
     if (isLogIned) {
-      await SaveUserData.fetchAndSaveUserData();
+      try {
+        await SaveUserData.fetchAndSaveUserData();
+        await FcmNotificationManage.registerCurrentToken();
+      } catch (error) {
+        debugPrint('로그인 상태 확인 중 오류 발생: $error');
+        isLogIned = false;
+        await UserInfo().setLoginStatus(false);
+      }
+    }
+    if (!mounted) {
+      return;
     }
     setState(() {
       _isLogIned = isLogIned;

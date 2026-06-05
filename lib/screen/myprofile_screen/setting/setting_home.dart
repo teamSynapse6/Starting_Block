@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
+import 'package:starting_block/manage/fcm_notification_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/manage/userdata/llm_list_manage.dart';
@@ -18,6 +19,11 @@ class _SettingHomeState extends State<SettingHome> {
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   void _logOutTap() async {
+    await FcmNotificationManage.deleteCurrentToken();
+    await UserInfoManageApi.postUserLogOut();
+    await secureStorage.deleteAll();
+    await DeleteAllChatData.deleteAllLlmChatData();
+    await UserInfo().setLoginStatus(false);
     if (mounted) {
       Navigator.pushAndRemoveUntil(
         context,
@@ -26,14 +32,11 @@ class _SettingHomeState extends State<SettingHome> {
         ),
         (Route<dynamic> route) => false,
       );
-      await secureStorage.deleteAll();
-      await DeleteAllChatData.deleteAllLlmChatData();
-      await UserInfo().setLoginStatus(false);
-      await UserInfoManageApi.postUserLogOut();
     }
   }
 
   void _deleteAccountTap() async {
+    await FcmNotificationManage.deleteCurrentToken();
     bool success = await UserInfoManageApi.postDeleteAccount();
     if (success) {
       await secureStorage.deleteAll();
