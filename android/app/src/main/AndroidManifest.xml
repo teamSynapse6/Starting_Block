@@ -8,7 +8,7 @@
 
         <!-- 카카오 로그인 커스텀 URL 스킴 설정 -->
         <activity 
-            android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
+            android:name="com.kakao.sdk.flutter.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter android:label="flutter_web_auth">
                 <action android:name="android.intent.action.VIEW" />

@@ -32,7 +32,7 @@ void main() async {
   ));
 
   // Kakao 로그인 초기화
-  KakaoSdk.init(
+  await KakaoSdk.init(
     nativeAppKey: '49b9cdd5c3366e805ef2180657040178',
     javaScriptAppKey: '5e1919efb19e574a2d9929e51b51c5a7',
   );

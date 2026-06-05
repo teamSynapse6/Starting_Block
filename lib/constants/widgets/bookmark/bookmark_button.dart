@@ -33,6 +33,8 @@ class _BookMarkButtonState extends State<BookMarkButton> {
     // widget.thisID를 통해 announcementId를 받아오고, API를 호출합니다.
     final roadMapAnnounceList =
         await RoadMapApi.getRoadMapAnnounceList(widget.thisID);
+    if (!mounted) return;
+
     // 받아온 데이터로 상태를 업데이트합니다.
     setState(() {
       roadMaps = roadMapAnnounceList;
@@ -44,7 +46,6 @@ class _BookMarkButtonState extends State<BookMarkButton> {
       await RoadMapApi.addAnnouncementToRoadMap(roadmapId, widget.thisID);
       // 성공적으로 추가된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
       debugPrint('공고가 성공적으로 추가되었습니다.');
-      _updateRoadMapsModal(setStateModal);
       if (mounted) {
         Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
         Navigator.pop(context);
@@ -60,7 +61,6 @@ class _BookMarkButtonState extends State<BookMarkButton> {
       await RoadMapApi.deleteAnnouncementFromRoadMap(roadmapId, widget.thisID);
       // 성공적으로 삭제된 후의 로직, 예를 들어 상태 업데이트나 사용자에게 알림
       debugPrint('공고가 성공적으로 삭제되었습니다.');
-      _updateRoadMapsModal(setStateModal);
       if (mounted) {
         Provider.of<BookMarkNotifier>(context, listen: false).updateBookmark();
         Navigator.pop(context);
@@ -69,14 +69,6 @@ class _BookMarkButtonState extends State<BookMarkButton> {
       debugPrint('공고 삭제에 실패했습니다: $e');
       // 실패 시 사용자에게 알림을 제공할 수 있습니다.
     }
-  }
-
-  void _updateRoadMapsModal(StateSetter setStateModal) async {
-    final roadMapAnnounceList =
-        await RoadMapApi.getRoadMapAnnounceList(widget.thisID);
-    setStateModal(() {
-      roadMaps = roadMapAnnounceList;
-    });
   }
 
   void gotoSaveRoadmapTap() {
@@ -148,8 +140,6 @@ class _BookMarkButtonState extends State<BookMarkButton> {
                               } else {
                                 _saveAction(roadMap.roadmapId, setStateModal);
                               }
-                              // 모달의 상태를 업데이트합니다.
-                              _updateRoadMapsModal(setStateModal);
                             },
                             thisIcon: roadMap.isAnnouncementSaved
                                 ? AppIcon.plus_actived

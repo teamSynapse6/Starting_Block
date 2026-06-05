@@ -18,8 +18,8 @@ class KakaoLoginUser {
 Future<KakaoLoginUser> signInWithKakao(BuildContext context) async {
   try {
     // 카카오 해시값 출력
-    final origin = await KakaoSdk.origin;
-    debugPrint('카카오해시값: $origin');
+    final origin = KakaoSdk.platformInfo.origin;
+    debugPrint('카카오 origin: $origin');
 
     // 카카오톡 설치 여부 확인
     bool kakaoTalkInstalled = await isKakaoTalkInstalled();
