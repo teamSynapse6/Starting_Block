@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/llm_api_manage.dart';
 import 'package:starting_block/manage/llm/llm_background_stream_watcher.dart';
+import 'package:starting_block/manage/llm/on_device_llm_manage.dart';
 import 'package:starting_block/manage/llm/llm_text_parser.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
@@ -45,13 +46,18 @@ class _LlmChatScreenState extends State<LlmChatScreen>
   bool _isInitializing = true;
   bool _isSending = false;
   bool _isStreaming = false;
+  bool _isOnDeviceGeneration = false;
   bool _hasRunningGeneration = false;
   bool _isQueueModalVisible = false;
+  bool _didPrepareToLeave = false;
   int _reconnectAttempts = 0;
 
   String? _threadId;
   String _statusText = '';
   String _thinkingText = '';
+  LlmResponseEngine _selectedEngine = LlmResponseEngine.server;
+  String? _selectedModelName;
+  List<String> _installedModelNames = [];
   List<Message> _messages = [];
 
   int get _announcementId => int.tryParse(widget.thisID) ?? 0;
@@ -73,18 +79,11 @@ class _LlmChatScreenState extends State<LlmChatScreen>
 
   @override
   void dispose() {
-    final shouldWatch = _threadId != null &&
-        _threadId!.isNotEmpty &&
-        (_isStreaming || _hasRunningGeneration);
-    final threadId = _threadId;
-
+    _prepareToLeave();
     _streamSubscription?.cancel();
-    if (shouldWatch && threadId != null) {
-      LlmBackgroundStreamWatcher.watch(
-        announcementId: _announcementId,
-        title: widget.thisTitle,
-        threadId: threadId,
-      );
+    if (_isOnDeviceGeneration) {
+      unawaited(OnDeviceLlmManage.stopGeneration());
+      unawaited(OnDeviceLlmManage.closeActiveSession());
     }
 
     _controller.removeListener(_handleTextInputChange);
@@ -105,6 +104,90 @@ class _LlmChatScreenState extends State<LlmChatScreen>
         width: 24,
         height: 24,
         child: _isTyped ? AppIcon.send_actived : AppIcon.send_inactived,
+      ),
+    );
+  }
+
+  Future<void> _handleModelSelectionChanged(String? value) async {
+    if (value == null || _isStreaming || _isSending) {
+      return;
+    }
+
+    if (value == _serverModelValue) {
+      await OnDeviceLlmManage.saveServerSelection();
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _selectedEngine = LlmResponseEngine.server;
+        _selectedModelName = null;
+      });
+      return;
+    }
+
+    await OnDeviceLlmManage.saveOnDeviceSelection(value);
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _selectedEngine = LlmResponseEngine.onDevice;
+      _selectedModelName = value;
+    });
+  }
+
+  String get _serverModelValue => 'server';
+
+  String get _selectedModelValue {
+    if (_selectedEngine == LlmResponseEngine.onDevice &&
+        _selectedModelName != null &&
+        _installedModelNames.contains(_selectedModelName)) {
+      return _selectedModelName!;
+    }
+    return _serverModelValue;
+  }
+
+  Widget _buildModelSelector() {
+    final items = <DropdownMenuItem<String>>[
+      DropdownMenuItem(
+        value: _serverModelValue,
+        child: Text(
+          '서버 AI',
+          overflow: TextOverflow.ellipsis,
+          style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+        ),
+      ),
+      ..._installedModelNames.map(
+        (modelName) => DropdownMenuItem(
+          value: modelName,
+          child: Text(
+            modelName,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
+          ),
+        ),
+      ),
+    ];
+
+    return Container(
+      height: 38,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.g2),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedModelValue,
+          isExpanded: true,
+          icon: const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: AppColors.g4,
+          ),
+          items: items,
+          onChanged: _isInitializing || _isSending || _isStreaming
+              ? null
+              : _handleModelSelectionChanged,
+        ),
       ),
     );
   }
@@ -597,6 +680,8 @@ class _LlmChatScreenState extends State<LlmChatScreen>
                               AppTextStyles.bd3.copyWith(color: AppColors.g5),
                           textAlign: TextAlign.start,
                         ),
+                        Gaps.v8,
+                        _buildModelSelector(),
                         Gaps.v8,
                       ],
                     ),

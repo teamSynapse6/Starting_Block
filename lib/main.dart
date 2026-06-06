@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gemma/flutter_gemma.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
@@ -19,6 +20,7 @@ void main() async {
   if (kReleaseMode) {
     debugPrint = (String? message, {int? wrapWidth}) {};
   }
+  await FlutterGemma.initialize();
   await initializeDateFormatting('ko_KR', null); // LLM 채팅에서 시간 표시를 위한 초기화
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

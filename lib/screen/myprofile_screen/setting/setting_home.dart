@@ -78,6 +78,10 @@ class _SettingHomeState extends State<SettingHome> {
             thisText: "개인정보처리방침 및 이용약관",
           ),
           const SettingList(
+            onTapScreen: SettingLlmModel(),
+            thisText: "온디바이스 AI 모델",
+          ),
+          const SettingList(
             onTapScreen: CustomLicensePage(),
             thisText: "오픈소스 라이선스",
           ),

@@ -28,7 +28,7 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  use_frameworks!  # required by simple_permission
+  use_frameworks! :linkage => :static  # required by flutter_gemma and simple_permission
   use_modular_headers!
 
   # Keep Firebase pods importable from generated Objective-C plugin code.

@@ -88,12 +88,16 @@ class LlmApi {
   static String baseUrl = apiBaseUrl;
   static String llmStart = 'llm/start';
   static String llmChat = 'llm/chat';
+  static String llmRetrieval = 'llm/retrieval';
+  static String llmReplySave = 'llm/reply-save';
   static String llmStream = 'llm/stream';
   static String llmStatus = 'llm/status';
   static String llmHistory = 'llm/history';
   static String llmList = 'llm/list';
   static String llmCancel = 'llm/cancel';
   static String llmEnd = 'llm/delete';
+  static String modelList = 'model/list';
+  static String modelDownload = 'model/download';
 
   //대화를 위한 쓰레드 생성 메소드
   static Future<String> getLlmStart({int retryCount = 1}) async {
@@ -176,17 +180,29 @@ class LlmApi {
       String threadId, String message, int announcementId,
       {int retryCount = 1}) async* {
     final llmChatUrl = Uri.parse('$baseUrl/$llmChat');
+    final request = LlmChatRequest(
+      threadId: threadId,
+      message: message,
+      announcementId: announcementId,
+    );
+    yield* _postLlmSse(llmChatUrl, request.toJson(), retryCount: retryCount);
+  }
+
+  static Stream<LlmStreamEvent> postLlmRetrieval(LlmChatRequest request,
+      {int retryCount = 1}) async* {
+    final uri = Uri.parse('$baseUrl/$llmRetrieval');
+    yield* _postLlmSse(uri, request.toJson(), retryCount: retryCount);
+  }
+
+  static Stream<LlmStreamEvent> _postLlmSse(Uri uri, Map<String, dynamic> body,
+      {int retryCount = 1}) async* {
     final headers = await getHeaders();
 
     final client = http.Client();
     try {
-      final request = http.Request('POST', llmChatUrl);
+      final request = http.Request('POST', uri);
       request.headers.addAll(headers);
-      request.body = jsonEncode({
-        'thread_id': threadId,
-        'message': message,
-        'announcement_id': announcementId,
-      });
+      request.body = jsonEncode(body);
 
       final streamedResponse = await client.send(request);
 
@@ -203,14 +219,85 @@ class LlmApi {
         }
       } else if (streamedResponse.statusCode == 401 && retryCount > 0) {
         await UserInfoManageApi.updateAccessToken();
-        yield* postLlmChat(threadId, message, announcementId,
-            retryCount: retryCount - 1);
+        yield* _postLlmSse(uri, body, retryCount: retryCount - 1);
       } else {
         throw Exception('서버 오류: ${streamedResponse.statusCode}');
       }
     } finally {
       client.close();
     }
+  }
+
+  static Future<String> saveLlmReply(LlmReplySaveRequest request,
+      {int retryCount = 1}) async {
+    final uri = Uri.parse('$baseUrl/$llmReplySave');
+    final headers = await getHeaders();
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonEncode(request.toJson()),
+    );
+    if (response.statusCode == 200) {
+      final decoded = _decodeJsonResponse(response);
+      return decoded?.toString() ?? '';
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return saveLlmReply(request, retryCount: retryCount - 1);
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  static Future<List<LlmModelInfo>> getLlmModelList(
+      {int retryCount = 1}) async {
+    final uri = Uri.parse('$baseUrl/$modelList');
+    final headers = await getHeaders();
+    final response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      final decoded = _decodeJsonResponse(response);
+      if (decoded is List) {
+        return decoded
+            .whereType<Map<String, dynamic>>()
+            .map(LlmModelInfo.fromJson)
+            .where((model) => model.modelName.isNotEmpty)
+            .toList();
+      }
+      return [];
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getLlmModelList(retryCount: retryCount - 1);
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  static Uri getModelDownloadUri(String modelName) {
+    final baseUri = Uri.parse(baseUrl);
+    return baseUri.replace(
+      pathSegments: [
+        ...baseUri.pathSegments.where((segment) => segment.isNotEmpty),
+        'model',
+        'download',
+        modelName,
+      ],
+    );
+  }
+
+  static Uri getModelChunkDownloadUri(String modelName, int chunkNum) {
+    final baseUri = Uri.parse(baseUrl);
+    return baseUri.replace(
+      pathSegments: [
+        ...baseUri.pathSegments.where((segment) => segment.isNotEmpty),
+        'model',
+        'download',
+        modelName,
+        chunkNum.toString(),
+      ],
+    );
+  }
+
+  static Future<String?> getModelDownloadToken() {
+    return UserTokenManage.getAccessToken();
   }
 
   static Stream<LlmStreamEvent> reconnectLlmStream(String threadId,
