@@ -95,17 +95,26 @@ class OnDeviceLlmManage {
     return _modelId(modelName);
   }
 
+  static String localModelName(LlmModelInfo model) {
+    return _modelId(model.localModelName);
+  }
+
+  static String serverModelName(String localModelName) {
+    return _serverModelNameFromLocal(localModelName);
+  }
+
   static Future<LlmModelDownloadSnapshot> getDownloadSnapshot(
       LlmModelInfo model) async {
-    final cached = _downloadSnapshots[model.modelName];
+    final localModelName = model.localModelName;
+    final cached = _downloadSnapshots[localModelName];
     if (cached != null) {
       return cached;
     }
 
-    final installed = await isInstalled(model.modelName);
+    final installed = await isInstalled(localModelName);
     if (installed) {
       return LlmModelDownloadSnapshot(
-        modelName: model.modelName,
+        modelName: localModelName,
         progress: 100,
         downloadedChunks: model.chunkCount,
         totalChunks: model.chunkCount,
@@ -116,26 +125,27 @@ class OnDeviceLlmManage {
     final downloadedChunks = await _countDownloadedChunks(model);
     final progress = _progressFromChunks(downloadedChunks, model.chunkCount);
     final snapshot = LlmModelDownloadSnapshot(
-      modelName: model.modelName,
+      modelName: localModelName,
       progress: progress,
       downloadedChunks: downloadedChunks,
       totalChunks: model.chunkCount,
-      isDownloading: _downloadTasks.containsKey(model.modelName),
+      isDownloading: _downloadTasks.containsKey(localModelName),
     );
-    _downloadSnapshots[model.modelName] = snapshot;
+    _downloadSnapshots[localModelName] = snapshot;
     return snapshot;
   }
 
   static Future<void> downloadModel(LlmModelInfo model) {
-    final runningTask = _downloadTasks[model.modelName];
+    final localModelName = model.localModelName;
+    final runningTask = _downloadTasks[localModelName];
     if (runningTask != null) {
       return runningTask;
     }
 
     final task = _downloadModelInChunks(model);
-    _downloadTasks[model.modelName] = task;
+    _downloadTasks[localModelName] = task;
     task.whenComplete(() {
-      _downloadTasks.remove(model.modelName);
+      _downloadTasks.remove(localModelName);
     });
     return task;
   }
@@ -233,6 +243,8 @@ class OnDeviceLlmManage {
 
   static Future<void> _downloadModelInChunks(LlmModelInfo model) async {
     final chunkCount = model.chunkCount;
+    final serverModelName = model.modelName;
+    final localModelName = model.localModelName;
     if (chunkCount <= 0) {
       throw StateError('모델 chunk 정보가 없습니다.');
     }
@@ -240,13 +252,13 @@ class OnDeviceLlmManage {
     try {
       final initialDownloadedChunks = await _countDownloadedChunks(model);
       _emitDownloadSnapshot(
-        modelName: model.modelName,
+        modelName: localModelName,
         downloadedChunks: initialDownloadedChunks,
         totalChunks: chunkCount,
         isDownloading: true,
       );
 
-      final chunkBase = await _resolveChunkIndexBase(model.modelName);
+      final chunkBase = await _resolveChunkIndexBase(serverModelName);
       var nextChunkIndex = 0;
       var downloadedChunks = initialDownloadedChunks;
 
@@ -258,20 +270,20 @@ class OnDeviceLlmManage {
             return;
           }
 
-          final chunkFile = await _chunkFile(model.modelName, chunkIndex);
+          final chunkFile = await _chunkFile(localModelName, chunkIndex);
           if (await chunkFile.exists() && await chunkFile.length() > 0) {
             continue;
           }
 
           await _downloadChunk(
-            modelName: model.modelName,
+            modelName: serverModelName,
             chunkIndex: chunkIndex,
             serverChunkNum: chunkIndex + chunkBase,
             chunkFile: chunkFile,
           );
           downloadedChunks += 1;
           _emitDownloadSnapshot(
-            modelName: model.modelName,
+            modelName: localModelName,
             downloadedChunks: downloadedChunks,
             totalChunks: chunkCount,
             isDownloading: true,
@@ -282,19 +294,19 @@ class OnDeviceLlmManage {
       final workerCount = min(_maxConcurrentChunkDownloads, chunkCount);
       await Future.wait(List.generate(workerCount, (_) => worker()));
       final outputFile = await _mergeChunks(model);
-      final spec = _buildSpec(model.modelName, filePath: outputFile.path);
+      final spec = _buildSpec(localModelName, filePath: outputFile.path);
       await gemma.FlutterGemmaPlugin.instance.modelManager
           .ensureModelReadyFromSpec(spec);
-      await _deleteChunkDirectory(model.modelName);
+      await _deleteChunkDirectory(localModelName);
       _emitDownloadSnapshot(
-        modelName: model.modelName,
+        modelName: localModelName,
         downloadedChunks: chunkCount,
         totalChunks: chunkCount,
         isDownloading: false,
       );
     } catch (error) {
       _emitDownloadSnapshot(
-        modelName: model.modelName,
+        modelName: localModelName,
         downloadedChunks: await _countDownloadedChunks(model),
         totalChunks: chunkCount,
         isDownloading: false,
@@ -397,7 +409,8 @@ class OnDeviceLlmManage {
   }
 
   static Future<File> _mergeChunks(LlmModelInfo model) async {
-    final outputFile = File(await _modelFilePath(model.modelName));
+    final localModelName = model.localModelName;
+    final outputFile = File(await _modelFilePath(localModelName));
     final tempOutputFile = File('${outputFile.path}.part');
     await tempOutputFile.parent.create(recursive: true);
     if (await tempOutputFile.exists()) {
@@ -407,7 +420,7 @@ class OnDeviceLlmManage {
     final sink = tempOutputFile.openWrite();
     try {
       for (var index = 0; index < model.chunkCount; index += 1) {
-        final chunkFile = await _chunkFile(model.modelName, index);
+        final chunkFile = await _chunkFile(localModelName, index);
         if (!await chunkFile.exists()) {
           throw Exception('누락된 모델 chunk가 있습니다.');
         }
@@ -450,9 +463,10 @@ class OnDeviceLlmManage {
   }
 
   static Future<int> _countDownloadedChunks(LlmModelInfo model) async {
+    final localModelName = model.localModelName;
     var count = 0;
     for (var index = 0; index < model.chunkCount; index += 1) {
-      final chunkFile = await _chunkFile(model.modelName, index);
+      final chunkFile = await _chunkFile(localModelName, index);
       if (await chunkFile.exists() && await chunkFile.length() > 0) {
         count += 1;
       }
@@ -498,7 +512,10 @@ class OnDeviceLlmManage {
     String? filePath,
   }) {
     final modelSource = filePath == null
-        ? ModelSource.network(LlmApi.getModelDownloadUri(modelName).toString())
+        ? ModelSource.network(
+            LlmApi.getModelDownloadUri(_serverModelNameFromLocal(modelName))
+                .toString(),
+          )
         : ModelSource.file(filePath);
     return gemma.InferenceModelSpec(
       name: _modelId(modelName),
@@ -511,6 +528,18 @@ class OnDeviceLlmManage {
 
   static String _modelId(String modelName) {
     return Uri.parse('/$modelName').pathSegments.last;
+  }
+
+  static String _serverModelNameFromLocal(String localModelName) {
+    final modelId = _modelId(localModelName);
+    final lowerModelId = modelId.toLowerCase();
+    const extensions = ['.litertlm', '.bin', '.tflite'];
+    for (final extension in extensions) {
+      if (lowerModelId.endsWith(extension)) {
+        return modelId.substring(0, modelId.length - extension.length);
+      }
+    }
+    return modelId;
   }
 
   static gemma.ModelFileType _inferFileType(String modelName) {

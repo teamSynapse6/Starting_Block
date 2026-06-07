@@ -423,7 +423,7 @@ mixin LlmChatMethods on State<LlmChatScreen> {
           LlmReplySaveRequest(
             threadId: _threadId ?? '',
             announcementId: _announcementId,
-            modelName: modelName,
+            modelName: OnDeviceLlmManage.serverModelName(modelName),
             reply: reply,
           ),
         );

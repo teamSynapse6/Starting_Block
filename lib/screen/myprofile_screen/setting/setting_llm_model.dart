@@ -64,7 +64,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
       final installedModels = await OnDeviceLlmManage.getInstalledModelNames();
       final snapshots = <String, LlmModelDownloadSnapshot>{};
       for (final model in models) {
-        snapshots[model.modelName] =
+        snapshots[OnDeviceLlmManage.localModelName(model)] =
             await OnDeviceLlmManage.getDownloadSnapshot(model);
       }
       if (!mounted) {
@@ -90,7 +90,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
   }
 
   Future<void> _downloadModel(LlmModelInfo model) async {
-    final modelName = model.modelName;
+    final modelName = OnDeviceLlmManage.localModelName(model);
     if (_downloadSnapshots[modelName]?.isDownloading == true) {
       return;
     }
@@ -125,7 +125,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
   }
 
   Future<void> _deleteModel(LlmModelInfo model) async {
-    final modelName = model.modelName;
+    final modelName = OnDeviceLlmManage.localModelName(model);
     if (_deletingModels.contains(modelName)) {
       return;
     }
@@ -170,8 +170,15 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
   }
 
   bool _isInstalled(LlmModelInfo model) {
-    return _installedModelIds
-        .contains(OnDeviceLlmManage.modelId(model.modelName));
+    return _installedModelIds.contains(OnDeviceLlmManage.localModelName(model));
+  }
+
+  String _formatModelFormat(LlmModelInfo model) {
+    final format = model.normalizedFormat;
+    if (format.isEmpty) {
+      return '포맷 정보 없음';
+    }
+    return format.toUpperCase();
   }
 
   String _formatSize(int size) {
@@ -231,9 +238,10 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
 
   Widget _buildModelRow(LlmModelInfo model) {
     final isInstalled = _isInstalled(model);
-    final snapshot = _downloadSnapshots[model.modelName];
+    final modelName = OnDeviceLlmManage.localModelName(model);
+    final snapshot = _downloadSnapshots[modelName];
     final isDownloading = snapshot?.isDownloading == true;
-    final isDeleting = _deletingModels.contains(model.modelName);
+    final isDeleting = _deletingModels.contains(modelName);
     final progress = snapshot?.progress ?? 0;
     final downloadedChunks = snapshot?.downloadedChunks ?? 0;
     final totalChunks = snapshot?.totalChunks ?? model.chunkCount;
@@ -255,7 +263,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
                 ),
                 Gaps.v6,
                 Text(
-                  '${_formatSize(model.size)} · ${isInstalled ? '다운로드됨' : '미다운로드'}',
+                  '${_formatModelFormat(model)} · ${_formatSize(model.size)} · ${isInstalled ? '다운로드됨' : '미다운로드'}',
                   style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                 ),
                 if (isDownloading) ...[
