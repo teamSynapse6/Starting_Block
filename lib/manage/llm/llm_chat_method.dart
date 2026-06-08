@@ -7,9 +7,14 @@ mixin LlmChatMethods on State<LlmChatScreen> {
 
   StreamSubscription<LlmStreamEvent>? get _streamSubscription;
   set _streamSubscription(StreamSubscription<LlmStreamEvent>? value);
+  StreamSubscription<OnDeviceLlmGenerationSnapshot>?
+      get _onDeviceGenerationSubscription;
+  set _onDeviceGenerationSubscription(
+      StreamSubscription<OnDeviceLlmGenerationSnapshot>? value);
 
   bool get _isTyped;
   set _isTyped(bool value);
+  bool get _isInitializing;
   set _isInitializing(bool value);
   bool get _isSending;
   set _isSending(bool value);
@@ -39,6 +44,8 @@ mixin LlmChatMethods on State<LlmChatScreen> {
   set _installedModelNames(List<String> value);
   List<Message> get _messages;
   set _messages(List<Message> value);
+
+  bool get _chatAvailable => !_isInitializing && !_isSending && !_isStreaming;
 
   void _showQueueModal(String message);
   void _hideQueueModal();
@@ -70,7 +77,10 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       });
 
       await _loadModelSelection();
-      await _syncFromServer(reconnectIfRunning: true);
+      final hasOnDeviceGeneration =
+          OnDeviceLlmGenerationTracker.isRunning(threadId);
+      await _syncFromServer(reconnectIfRunning: !hasOnDeviceGeneration);
+      _listenToOnDeviceGeneration(threadId);
     } catch (_) {
       if (!mounted) {
         return;
@@ -133,7 +143,7 @@ mixin LlmChatMethods on State<LlmChatScreen> {
   }
 
   Future<void> _handleModelSelectionChanged(String? value) async {
-    if (value == null || _isStreaming || _isSending) {
+    if (value == null || !_chatAvailable) {
       return;
     }
 
@@ -181,8 +191,10 @@ mixin LlmChatMethods on State<LlmChatScreen> {
     final messages = LlmChatMessageManager.messagesFromHistory(history);
     final generation = LlmChatMessageManager.mapValue(status['generation']);
     final session = LlmChatMessageManager.mapValue(status['session']);
+    final hasOnDeviceGeneration =
+        OnDeviceLlmGenerationTracker.isRunning(threadId);
 
-    if (session == null && messages.isEmpty) {
+    if (session == null && messages.isEmpty && !hasOnDeviceGeneration) {
       final newThreadId = await LlmApi.getLlmStart();
       if (!mounted) {
         return;
@@ -323,13 +335,20 @@ mixin LlmChatMethods on State<LlmChatScreen> {
     required String messageText,
     required String modelName,
   }) async {
+    OnDeviceLlmGenerationTracker.start(
+      threadId: threadId,
+      messageText: messageText,
+      modelName: modelName,
+    );
     final retrievalBuffer = StringBuffer();
     String fallbackRawData = '';
     final retrievalDone = Completer<void>();
+    StreamSubscription<LlmStreamEvent>? retrievalSubscription;
 
     try {
-      _streamSubscription?.cancel();
-      _streamSubscription = LlmApi.postLlmRetrieval(
+      await _streamSubscription?.cancel();
+      _streamSubscription = null;
+      retrievalSubscription = LlmApi.postLlmRetrieval(
         LlmChatRequest(
           threadId: threadId,
           message: messageText,
@@ -337,22 +356,28 @@ mixin LlmChatMethods on State<LlmChatScreen> {
         ),
       ).listen(
         (event) {
-          if (!mounted || retrievalDone.isCompleted) {
+          if (retrievalDone.isCompleted) {
             return;
           }
 
           if (event.isStatus) {
             final stage = event.stage;
-            setState(() {
-              _statusText = LlmChatStageText.statusMessage(stage);
-              _hasRunningGeneration = !LlmChatStageText.isFinishedStage(stage);
-            });
-            _handleQueueByStage(stage);
+            OnDeviceLlmGenerationTracker.updateStage(threadId, stage);
+            if (mounted) {
+              setState(() {
+                _statusText = LlmChatStageText.statusMessage(stage);
+                _hasRunningGeneration =
+                    !LlmChatStageText.isFinishedStage(stage);
+              });
+              _handleQueueByStage(stage);
+            }
             return;
           }
 
           if (event.isError) {
-            _hideQueueModal();
+            if (mounted) {
+              _hideQueueModal();
+            }
             final message = event.detail.isNotEmpty
                 ? event.detail
                 : '공고 내용을 찾는 중 오류가 발생했습니다.';
@@ -361,6 +386,10 @@ mixin LlmChatMethods on State<LlmChatScreen> {
           }
 
           if (event.isDone) {
+            OnDeviceLlmGenerationTracker.updateStage(
+              threadId,
+              'retrieval_completed',
+            );
             fallbackRawData =
                 event.rawData.isNotEmpty ? event.rawData : event.retrievalData;
             final doneText = event.retrievalText;
@@ -386,10 +415,11 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       );
 
       await retrievalDone.future;
-      await _streamSubscription?.cancel();
-      _streamSubscription = null;
+      await retrievalSubscription.cancel();
+      retrievalSubscription = null;
 
-      if (!mounted || !_isOnDeviceGeneration) {
+      if (!_isOnDeviceGeneration) {
+        OnDeviceLlmGenerationTracker.clear(threadId);
         return;
       }
 
@@ -397,58 +427,67 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       final context =
           retrievalContext.isNotEmpty ? retrievalContext : fallbackRawData;
       await _runOnDeviceGeneration(
+        threadId: threadId,
         modelName: modelName,
         messageText: messageText,
         retrievalContext: context,
       );
     } catch (error) {
-      await _recoverAfterStreamError(
-        fallbackMessage: _errorMessage(error),
-        allowReconnect: false,
-      );
+      if (mounted) {
+        await _recoverAfterStreamError(
+          fallbackMessage: _errorMessage(error),
+          allowReconnect: false,
+        );
+      }
+      await OnDeviceLlmManage.disposeActiveModel();
+    } finally {
+      await retrievalSubscription?.cancel();
     }
   }
 
   Future<void> _runOnDeviceGeneration({
+    required String threadId,
     required String modelName,
     required String messageText,
     required String retrievalContext,
   }) async {
     final replyBuffer = StringBuffer();
+    final announcementId = _announcementId;
+    final recentMessages = List<Message>.from(_messages);
 
     try {
-      _hideQueueModal();
-      if (!mounted) {
-        return;
+      if (mounted) {
+        _hideQueueModal();
+        setState(() {
+          _statusText = LlmChatStageText.statusMessage('llm_model_ready');
+          _isSending = true;
+          _isStreaming = true;
+          _isOnDeviceGeneration = true;
+          _hasRunningGeneration = true;
+        });
       }
-      setState(() {
-        _statusText = LlmChatStageText.statusMessage('llm_model_ready');
-        _isSending = true;
-        _isStreaming = true;
-        _isOnDeviceGeneration = true;
-        _hasRunningGeneration = true;
-      });
+      OnDeviceLlmGenerationTracker.updateStage(threadId, 'llm_model_ready');
 
       await for (final token in OnDeviceLlmManage.generateReply(
         modelName: modelName,
         userMessage: messageText,
         context: retrievalContext,
-        recentMessages: _messages,
+        recentMessages: recentMessages,
       )) {
-        if (!mounted) {
-          return;
-        }
         replyBuffer.write(token);
-        setState(() {
-          LlmChatMessageManager.appendAssistantMessage(_messages, token);
-          _statusText = LlmChatStageText.statusMessage('llm_generating');
-          _isSending = false;
-          _isStreaming = true;
-          _isOnDeviceGeneration = true;
-          _hasRunningGeneration = true;
-        });
-        await _saveMetaFromMessages(hasRunningGeneration: true);
-        _scrollToBottom();
+        OnDeviceLlmGenerationTracker.appendReply(threadId, token);
+        if (mounted) {
+          setState(() {
+            LlmChatMessageManager.appendAssistantMessage(_messages, token);
+            _statusText = LlmChatStageText.statusMessage('llm_generating');
+            _isSending = false;
+            _isStreaming = true;
+            _isOnDeviceGeneration = true;
+            _hasRunningGeneration = true;
+          });
+          await _saveMetaFromMessages(hasRunningGeneration: true);
+          _scrollToBottom();
+        }
       }
 
       final reply = replyBuffer.toString().trim().isNotEmpty
@@ -461,19 +500,24 @@ mixin LlmChatMethods on State<LlmChatScreen> {
         throw StateError('온디바이스 AI가 빈 답변을 반환했습니다.');
       }
 
-      if (!mounted) {
-        return;
+      if (mounted) {
+        setState(() {
+          _statusText =
+              LlmChatStageText.statusMessage('llm_response_generated');
+        });
       }
-      setState(() {
-        _statusText = LlmChatStageText.statusMessage('llm_response_generated');
-      });
+      OnDeviceLlmGenerationTracker.updateStage(
+        threadId,
+        'llm_response_generated',
+      );
 
       var didSaveReply = true;
       try {
+        OnDeviceLlmGenerationTracker.finishSaving(threadId);
         await LlmApi.saveLlmReply(
           LlmReplySaveRequest(
-            threadId: _threadId ?? '',
-            announcementId: _announcementId,
+            threadId: threadId,
+            announcementId: announcementId,
             modelName: OnDeviceLlmManage.serverModelName(modelName),
             reply: reply,
           ),
@@ -486,27 +530,35 @@ mixin LlmChatMethods on State<LlmChatScreen> {
           );
         }
       }
+      OnDeviceLlmGenerationTracker.finish(
+        threadId,
+        didSaveReply: didSaveReply,
+      );
 
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _thinkingText = '';
-        _statusText = '';
-        _isSending = false;
-        _isStreaming = false;
-        _isOnDeviceGeneration = false;
-        _hasRunningGeneration = false;
-      });
-      await _saveMetaFromMessages(hasRunningGeneration: false);
-      if (didSaveReply) {
-        await _syncFromServer(reconnectIfRunning: false);
+      if (mounted) {
+        setState(() {
+          _thinkingText = '';
+          _statusText = '';
+          _isSending = false;
+          _isStreaming = false;
+          _isOnDeviceGeneration = false;
+          _hasRunningGeneration = false;
+        });
+        await _saveMetaFromMessages(hasRunningGeneration: false);
+        if (didSaveReply) {
+          await _syncFromServer(reconnectIfRunning: false);
+        }
       }
     } catch (error) {
-      await _recoverAfterStreamError(
-        fallbackMessage: _errorMessage(error),
-        allowReconnect: false,
-      );
+      OnDeviceLlmGenerationTracker.fail(threadId, _errorMessage(error));
+      if (mounted) {
+        await _recoverAfterStreamError(
+          fallbackMessage: _errorMessage(error),
+          allowReconnect: false,
+        );
+      }
+    } finally {
+      await OnDeviceLlmManage.disposeActiveModel();
     }
   }
 
@@ -572,6 +624,86 @@ mixin LlmChatMethods on State<LlmChatScreen> {
         fallbackMessage: event.detail.isNotEmpty ? event.detail : null,
       );
     }
+  }
+
+  void _listenToOnDeviceGeneration(String threadId) {
+    final snapshot = OnDeviceLlmGenerationTracker.snapshot(threadId);
+    if (snapshot == null) {
+      return;
+    }
+
+    _onDeviceGenerationSubscription?.cancel();
+    _onDeviceGenerationSubscription =
+        OnDeviceLlmGenerationTracker.watch(threadId).listen(
+      (snapshot) {
+        unawaited(_handleOnDeviceGenerationSnapshot(snapshot));
+      },
+    );
+  }
+
+  Future<void> _handleOnDeviceGenerationSnapshot(
+    OnDeviceLlmGenerationSnapshot snapshot,
+  ) async {
+    if (!mounted || snapshot.threadId != _threadId) {
+      return;
+    }
+
+    _applyOnDeviceGenerationSnapshot(snapshot);
+
+    if (!snapshot.isRunning) {
+      await _onDeviceGenerationSubscription?.cancel();
+      _onDeviceGenerationSubscription = null;
+      if (snapshot.didSaveReply) {
+        OnDeviceLlmGenerationTracker.clear(snapshot.threadId);
+        await _syncFromServer(reconnectIfRunning: false);
+      }
+    }
+  }
+
+  void _applyOnDeviceGenerationSnapshot(
+    OnDeviceLlmGenerationSnapshot snapshot,
+  ) {
+    if (!mounted) {
+      return;
+    }
+
+    final nextMessages = [..._messages];
+    final hasPendingPair = nextMessages.length >= 2 &&
+        nextMessages[nextMessages.length - 2].isUser &&
+        nextMessages[nextMessages.length - 2].message == snapshot.messageText &&
+        !nextMessages.last.isUser;
+    final hasPendingUser = nextMessages.isNotEmpty &&
+        nextMessages.last.isUser &&
+        nextMessages.last.message == snapshot.messageText;
+
+    if (!hasPendingPair && !hasPendingUser) {
+      nextMessages.add(Message(
+        isUser: true,
+        message: snapshot.messageText,
+        time: LlmChatTimeFormatter.formatCurrentTime(DateTime.now()),
+      ));
+    }
+
+    LlmChatMessageManager.replaceAssistantMessage(
+      nextMessages,
+      snapshot.hasError ? snapshot.errorMessage : snapshot.reply,
+    );
+
+    setState(() {
+      _messages = nextMessages;
+      _thinkingText = '';
+      _statusText = snapshot.hasError
+          ? ''
+          : LlmChatStageText.statusMessage(snapshot.stage);
+      _isInitializing = false;
+      _isSending = snapshot.isRunning && snapshot.reply.isEmpty;
+      _isStreaming = snapshot.isRunning;
+      _isOnDeviceGeneration = snapshot.isRunning;
+      _hasRunningGeneration = snapshot.isRunning;
+      _selectedEngine = LlmResponseEngine.onDevice;
+      _selectedModelName = snapshot.modelName;
+    });
+    _scrollToBottom();
   }
 
   Future<void> _recoverAfterStreamError({
@@ -642,7 +774,11 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       return;
     }
 
-    if (!_isOnDeviceGeneration && (_isStreaming || _hasRunningGeneration)) {
+    if (_isOnDeviceGeneration && (_isStreaming || _hasRunningGeneration)) {
+      return;
+    }
+
+    if (_isStreaming || _hasRunningGeneration) {
       LlmBackgroundStreamWatcher.watch(
         announcementId: _announcementId,
         title: widget.thisTitle,

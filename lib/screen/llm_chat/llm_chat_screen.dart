@@ -11,6 +11,7 @@ import 'package:starting_block/manage/llm/llm_chat_message_manager.dart';
 import 'package:starting_block/manage/llm/llm_chat_scroll_manager.dart';
 import 'package:starting_block/manage/llm/llm_chat_stage_text.dart';
 import 'package:starting_block/manage/llm/llm_chat_time_formatter.dart';
+import 'package:starting_block/manage/llm/on_device_llm_generation_tracker.dart';
 import 'package:starting_block/manage/llm/on_device_llm_manage.dart';
 import 'package:starting_block/manage/llm/llm_text_parser.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -46,6 +47,8 @@ class _LlmChatScreenState extends State<LlmChatScreen>
   late final AnimationController _glowController;
   late final AnimationController _thinkingAvatarController;
   StreamSubscription<LlmStreamEvent>? _streamSubscription;
+  StreamSubscription<OnDeviceLlmGenerationSnapshot>?
+      _onDeviceGenerationSubscription;
 
   bool _isTyped = false;
   bool _isInitializing = true;
@@ -86,10 +89,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
   void dispose() {
     _prepareToLeave();
     _streamSubscription?.cancel();
-    if (_isOnDeviceGeneration) {
-      unawaited(OnDeviceLlmManage.stopGeneration());
-      unawaited(OnDeviceLlmManage.closeActiveSession());
-    }
+    _onDeviceGenerationSubscription?.cancel();
 
     _controller.removeListener(_handleTextInputChange);
     _queueTextNotifier.dispose();
@@ -102,9 +102,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
 
   Widget _buildSendMessageButton() {
     return GestureDetector(
-      onTap: _isTyped && !_isInitializing && !_isSending && !_isStreaming
-          ? _sendMessage
-          : null,
+      onTap: _isTyped && _chatAvailable ? _sendMessage : null,
       child: SizedBox(
         width: 24,
         height: 24,
@@ -120,7 +118,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
     }
 
     final allValues = [_serverModelValue, ..._installedModelNames];
-    final isEnabled = !_isInitializing && !_isSending && !_isStreaming;
+    final isEnabled = _chatAvailable;
 
     return Builder(
       builder: (context) => Material(
@@ -691,9 +689,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             TextField(
-                              enabled: !_isInitializing &&
-                                  !_isSending &&
-                                  !_isStreaming,
+                              enabled: _chatAvailable,
                               controller: _controller,
                               cursorColor: AppColors.g6,
                               minLines: 1,
@@ -712,9 +708,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
                                 disabledBorder: const UnderlineInputBorder(
                                   borderSide: BorderSide.none,
                                 ),
-                                hintText: !_isInitializing &&
-                                        !_isSending &&
-                                        !_isStreaming
+                                hintText: _chatAvailable
                                     ? '공고에서 궁금한 점을 입력하세요'
                                     : '잠시만 기다려 주세요',
                                 hintStyle: AppTextStyles.bd4

@@ -275,6 +275,14 @@ class OnDeviceLlmManage {
     await chat?.close();
   }
 
+  static Future<void> disposeActiveModel() async {
+    await closeActiveSession();
+    final model = _activeModel;
+    _activeModel = null;
+    _activeModelName = null;
+    await model?.close();
+  }
+
   static Future<gemma.InferenceModelSpec?> _prepareInstalledSpec(
       String modelName) async {
     final modelManager = gemma.FlutterGemmaPlugin.instance.modelManager;
