@@ -47,7 +47,6 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   lottie: ^3.1.0
   shimmer: ^3.0.0
-  flutter_oss_licenses: ^2.0.1
   flutter_local_notifications: ^18.0.1
   firebase_messaging: ^16.3.0
   flutter_slidable: ^4.0.3
@@ -64,7 +63,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.1
+  flutter_lints: ^6.0.0
+  dart_pubspec_licenses: ^3.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

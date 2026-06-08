@@ -61,12 +61,12 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
 
     try {
       final models = await LlmApi.getLlmModelList();
-      final installedModels = await OnDeviceLlmManage.getInstalledModelNames();
       final snapshots = <String, LlmModelDownloadSnapshot>{};
       for (final model in models) {
         snapshots[OnDeviceLlmManage.localModelName(model)] =
             await OnDeviceLlmManage.getDownloadSnapshot(model);
       }
+      final installedModels = await OnDeviceLlmManage.getInstalledModelNames();
       if (!mounted) {
         return;
       }
@@ -173,14 +173,6 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
     return _installedModelIds.contains(OnDeviceLlmManage.localModelName(model));
   }
 
-  String _formatModelFormat(LlmModelInfo model) {
-    final format = model.normalizedFormat;
-    if (format.isEmpty) {
-      return '포맷 정보 없음';
-    }
-    return format.toUpperCase();
-  }
-
   String _formatSize(int size) {
     if (size <= 0) {
       return '용량 정보 없음';
@@ -263,7 +255,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
                 ),
                 Gaps.v6,
                 Text(
-                  '${_formatModelFormat(model)} · ${_formatSize(model.size)} · ${isInstalled ? '다운로드됨' : '미다운로드'}',
+                  '${_formatSize(model.size)} · ${isInstalled ? '다운로드됨' : '미다운로드'}',
                   style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                 ),
                 if (isDownloading) ...[

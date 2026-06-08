@@ -43,6 +43,11 @@ class OnDeviceLlmManage {
   static const int _maxTokens = 4096;
   static const int _recentMessageLimit = 6;
   static const int _maxConcurrentChunkDownloads = 4;
+  static const List<String> _knownModelExtensions = [
+    'litertlm',
+    'bin',
+    'tflite',
+  ];
 
   static gemma.InferenceModel? _activeModel;
   static gemma.InferenceChat? _activeChat;
@@ -81,14 +86,26 @@ class OnDeviceLlmManage {
     await prefs.setString(_selectedModelKey, modelName);
   }
 
-  static Future<List<String>> getInstalledModelNames() {
-    return gemma.FlutterGemmaPlugin.instance.modelManager
-        .getInstalledModels(gemma.ModelManagementType.inference);
+  static Future<List<String>> getInstalledModelNames() async {
+    final candidateNames = <String>{
+      ...await _registeredModelNames(),
+      ...await _localModelFileNames(),
+    };
+    final installedModelNames = <String>[];
+
+    for (final modelName in candidateNames) {
+      final resolvedModelName = await resolveInstalledModelName(modelName);
+      if (resolvedModelName != null) {
+        installedModelNames.add(resolvedModelName);
+      }
+    }
+
+    return installedModelNames.toSet().toList()
+      ..sort((a, b) => serverModelName(a).compareTo(serverModelName(b)));
   }
 
-  static Future<bool> isInstalled(String modelName) {
-    return gemma.FlutterGemmaPlugin.instance.modelManager
-        .isModelInstalled(_buildSpec(modelName));
+  static Future<bool> isInstalled(String modelName) async {
+    return await resolveInstalledModelName(modelName) != null;
   }
 
   static String modelId(String modelName) {
@@ -103,9 +120,14 @@ class OnDeviceLlmManage {
     return _serverModelNameFromLocal(localModelName);
   }
 
+  static Future<String?> resolveInstalledModelName(String modelName) async {
+    final spec = await _prepareInstalledSpec(modelName);
+    return spec == null ? null : _modelId(spec.name);
+  }
+
   static Future<LlmModelDownloadSnapshot> getDownloadSnapshot(
       LlmModelInfo model) async {
-    final localModelName = model.localModelName;
+    final localModelName = _modelId(model.localModelName);
     final cached = _downloadSnapshots[localModelName];
     if (cached != null) {
       return cached;
@@ -136,7 +158,7 @@ class OnDeviceLlmManage {
   }
 
   static Future<void> downloadModel(LlmModelInfo model) {
-    final localModelName = model.localModelName;
+    final localModelName = _modelId(model.localModelName);
     final runningTask = _downloadTasks[localModelName];
     if (runningTask != null) {
       return runningTask;
@@ -151,19 +173,47 @@ class OnDeviceLlmManage {
   }
 
   static Future<void> deleteModel(String modelName) async {
-    final spec = _buildSpec(modelName);
-    await gemma.FlutterGemmaPlugin.instance.modelManager.deleteModel(spec);
-    await _deleteChunkDirectory(modelName);
-    _downloadSnapshots.remove(modelName);
+    final modelNames = await _localModelNameCandidates(modelName);
     final selectedModelName = await getSelectedModelName();
-    if (selectedModelName == modelName) {
+    final shouldResetSelection = selectedModelName != null &&
+        modelNames.any((name) => _isSameModelName(name, selectedModelName));
+
+    Object? deleteError;
+    for (final localModelName in modelNames) {
+      final spec = await _buildBestAvailableSpec(localModelName);
+      if (spec != null) {
+        try {
+          await gemma.FlutterGemmaPlugin.instance.modelManager
+              .deleteModel(spec);
+        } catch (error) {
+          deleteError = error;
+          debugPrint('On-device model registration delete failed: $error');
+        }
+      }
+
+      try {
+        await _deleteModelFile(localModelName);
+        await _deleteChunkDirectory(localModelName);
+        _downloadSnapshots.remove(localModelName);
+      } catch (error) {
+        deleteError = error;
+      }
+    }
+
+    if (shouldResetSelection) {
       await saveServerSelection();
     }
-    if (_activeModelName == modelName) {
+    if (_activeModelName != null &&
+        modelNames.any((name) => _isSameModelName(name, _activeModelName!))) {
       await closeActiveSession();
       await _activeModel?.close();
       _activeModel = null;
       _activeModelName = null;
+    }
+
+    final hasRemainingFile = await _hasAnyModelFile(modelNames);
+    if (hasRemainingFile && deleteError != null) {
+      throw Exception('모델 파일을 삭제하지 못했습니다.');
     }
   }
 
@@ -173,17 +223,16 @@ class OnDeviceLlmManage {
     required String context,
     required List<Message> recentMessages,
   }) async* {
-    final installed = await isInstalled(modelName);
-    if (!installed) {
+    final spec = await _prepareInstalledSpec(modelName);
+    if (spec == null) {
       throw StateError('다운로드된 온디바이스 모델을 찾을 수 없어요.');
     }
 
-    final spec = _buildSpec(modelName);
     gemma.FlutterGemmaPlugin.instance.modelManager.setActiveModel(spec);
-    await _ensureActiveModel(modelName);
+    await _ensureActiveModel(spec.name);
     await closeActiveSession();
 
-    final modelType = _inferModelType(modelName);
+    final modelType = _inferModelType(spec.name);
     final chat = await _activeModel!.openChat(
       temperature: 0.7,
       topK: 40,
@@ -226,6 +275,136 @@ class OnDeviceLlmManage {
     await chat?.close();
   }
 
+  static Future<gemma.InferenceModelSpec?> _prepareInstalledSpec(
+      String modelName) async {
+    final modelManager = gemma.FlutterGemmaPlugin.instance.modelManager;
+    for (final localModelName in await _localModelNameCandidates(modelName)) {
+      final filePath = await _existingModelFilePath(localModelName);
+      if (filePath != null) {
+        final spec = _buildSpec(localModelName, filePath: filePath);
+        try {
+          if (!await modelManager.isModelInstalled(spec)) {
+            await modelManager.ensureModelReadyFromSpec(spec);
+          }
+          return spec;
+        } catch (error) {
+          debugPrint('On-device model registration repair failed: $error');
+        }
+      }
+
+      final registeredSpec = _buildSpec(localModelName);
+      try {
+        if (await modelManager.isModelInstalled(registeredSpec)) {
+          return registeredSpec;
+        }
+      } catch (error) {
+        debugPrint('On-device model installed check failed: $error');
+      }
+    }
+    return null;
+  }
+
+  static Future<gemma.InferenceModelSpec?> _buildBestAvailableSpec(
+      String modelName) async {
+    final filePath = await _existingModelFilePath(modelName);
+    if (filePath != null) {
+      return _buildSpec(modelName, filePath: filePath);
+    }
+    return _buildSpec(modelName);
+  }
+
+  static Future<List<String>> _localModelNameCandidates(
+      String modelName) async {
+    final modelId = _modelId(modelName);
+    final serverName = _serverModelNameFromLocal(modelId);
+    final candidates = <String>{modelId};
+
+    if (!_hasSupportedExtension(modelId)) {
+      candidates.addAll(
+        _knownModelExtensions.map((extension) => '$modelId.$extension'),
+      );
+    }
+
+    final knownModelNames = [
+      ...await _registeredModelNames(),
+      ...await _localModelFileNames(),
+    ];
+    for (final knownModelName in knownModelNames) {
+      if (_serverModelNameFromLocal(knownModelName) == serverName) {
+        candidates.add(_modelId(knownModelName));
+      }
+    }
+
+    return candidates.toList();
+  }
+
+  static Future<List<String>> _registeredModelNames() async {
+    try {
+      return gemma.FlutterGemmaPlugin.instance.modelManager
+          .getInstalledModels(gemma.ModelManagementType.inference);
+    } catch (error) {
+      debugPrint('On-device installed model list failed: $error');
+      return [];
+    }
+  }
+
+  static Future<List<String>> _localModelFileNames() async {
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    if (!await documentsDirectory.exists()) {
+      return [];
+    }
+
+    final files = <String>[];
+    await for (final entity in documentsDirectory.list(followLinks: false)) {
+      if (entity is File) {
+        final fileName = _modelId(entity.path);
+        if (_hasSupportedExtension(fileName) && await entity.length() > 0) {
+          files.add(fileName);
+        }
+      }
+    }
+    return files;
+  }
+
+  static Future<String?> _existingModelFilePath(String modelName) async {
+    final file = File(await _modelFilePath(modelName));
+    if (await file.exists() && await file.length() > 0) {
+      return file.path;
+    }
+    return null;
+  }
+
+  static Future<bool> _hasAnyModelFile(List<String> modelNames) async {
+    for (final modelName in modelNames) {
+      if (await _existingModelFilePath(modelName) != null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static Future<void> _deleteModelFile(String modelName) async {
+    final file = File(await _modelFilePath(modelName));
+    final tempFile = File('${file.path}.part');
+    if (await tempFile.exists()) {
+      await tempFile.delete();
+    }
+    if (await file.exists()) {
+      await file.delete();
+    }
+  }
+
+  static bool _isSameModelName(String left, String right) {
+    return _serverModelNameFromLocal(left) == _serverModelNameFromLocal(right);
+  }
+
+  static bool _hasSupportedExtension(String modelName) {
+    final lowerName = modelName.toLowerCase();
+    return _knownModelExtensions.any(
+      (extension) => lowerName.endsWith('.$extension'),
+    );
+  }
+
   static Future<void> _ensureActiveModel(String modelName) async {
     if (_activeModel != null && _activeModelName == modelName) {
       return;
@@ -244,7 +423,7 @@ class OnDeviceLlmManage {
   static Future<void> _downloadModelInChunks(LlmModelInfo model) async {
     final chunkCount = model.chunkCount;
     final serverModelName = model.modelName;
-    final localModelName = model.localModelName;
+    final localModelName = _modelId(model.localModelName);
     if (chunkCount <= 0) {
       throw StateError('모델 chunk 정보가 없습니다.');
     }

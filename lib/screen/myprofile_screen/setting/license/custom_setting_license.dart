@@ -10,7 +10,7 @@ class CustomLicensePage extends StatefulWidget {
 }
 
 class _CustomLicensePageState extends State<CustomLicensePage> {
-  List<Package> packages = ossLicenses;
+  final List<Package> packages = allDependencies;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class _CustomLicensePageState extends State<CustomLicensePage> {
           final package = packages[index];
           return ListTile(
             title: Text(package.name),
-            subtitle: Text('Version ${package.version}'),
+            subtitle: Text('Version ${package.version ?? '-'}'),
             onTap: () {
               // 세부 정보 페이지로 이동
               Navigator.push(
@@ -61,7 +61,7 @@ class LicenseDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              "License:\n${package.license}",
+              "License:\n${package.license ?? '라이선스 정보를 찾을 수 없습니다.'}",
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],

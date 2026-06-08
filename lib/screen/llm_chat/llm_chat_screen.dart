@@ -7,6 +7,10 @@ import 'package:intl/intl.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/llm_api_manage.dart';
 import 'package:starting_block/manage/llm/llm_background_stream_watcher.dart';
+import 'package:starting_block/manage/llm/llm_chat_message_manager.dart';
+import 'package:starting_block/manage/llm/llm_chat_scroll_manager.dart';
+import 'package:starting_block/manage/llm/llm_chat_stage_text.dart';
+import 'package:starting_block/manage/llm/llm_chat_time_formatter.dart';
 import 'package:starting_block/manage/llm/on_device_llm_manage.dart';
 import 'package:starting_block/manage/llm/llm_text_parser.dart';
 import 'package:starting_block/manage/model_manage.dart';
@@ -35,6 +39,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _controller = TextEditingController();
+  final LlmChatScrollManager _scrollManager = LlmChatScrollManager();
   final ValueNotifier<String> _queueTextNotifier =
       ValueNotifier<String>('AI 답변 순서를 기다리고 있어요.');
 
@@ -108,105 +113,81 @@ class _LlmChatScreenState extends State<LlmChatScreen>
     );
   }
 
-  Future<void> _handleModelSelectionChanged(String? value) async {
-    if (value == null || _isStreaming || _isSending) {
-      return;
-    }
-
-    if (value == _serverModelValue) {
-      await OnDeviceLlmManage.saveServerSelection();
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _selectedEngine = LlmResponseEngine.server;
-        _selectedModelName = null;
-      });
-      return;
-    }
-
-    await OnDeviceLlmManage.saveOnDeviceSelection(value);
-    if (!mounted) {
-      return;
-    }
-    setState(() {
-      _selectedEngine = LlmResponseEngine.onDevice;
-      _selectedModelName = value;
-    });
-  }
-
-  String get _serverModelValue => 'server';
-
-  String get _selectedModelValue {
-    if (_selectedEngine == LlmResponseEngine.onDevice &&
-        _selectedModelName != null &&
-        _installedModelNames.contains(_selectedModelName)) {
-      return _selectedModelName!;
-    }
-    return _serverModelValue;
-  }
-
   Widget _buildModelSelector() {
-    final items = <DropdownMenuItem<String>>[
-      DropdownMenuItem(
-        value: _serverModelValue,
-        child: Text(
-          '서버 AI',
-          overflow: TextOverflow.ellipsis,
-          style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-        ),
-      ),
-      ..._installedModelNames.map(
-        (modelName) => DropdownMenuItem(
-          value: modelName,
-          child: Text(
-            modelName,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bd4.copyWith(color: AppColors.g6),
-          ),
-        ),
-      ),
-    ];
+    String displayName(String value) {
+      if (value == _serverModelValue) return '서버 AI';
+      return OnDeviceLlmManage.serverModelName(value);
+    }
 
-    return Container(
-      height: 38,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.g2),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: _selectedModelValue,
-          isExpanded: true,
-          icon: const Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: AppColors.g4,
+    final allValues = [_serverModelValue, ..._installedModelNames];
+    final isEnabled = !_isInitializing && !_isSending && !_isStreaming;
+
+    return Builder(
+      builder: (context) => Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(6),
+          onTap: isEnabled
+              ? () async {
+                  final renderBox = context.findRenderObject() as RenderBox;
+                  final offset = renderBox.localToGlobal(Offset.zero);
+                  final size = renderBox.size;
+
+                  final result = await showMenu<String>(
+                    context: context,
+                    position: RelativeRect.fromLTRB(
+                      offset.dx,
+                      offset.dy + size.height + 4,
+                      offset.dx + size.width,
+                      0,
+                    ),
+                    items: allValues
+                        .map(
+                          (value) => PopupMenuItem<String>(
+                            value: value,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                displayName(value),
+                                style: AppTextStyles.btn1.copyWith(
+                                  color: value == _selectedModelValue
+                                      ? AppColors.blue
+                                      : AppColors.g4,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    color: AppColors.white,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                  );
+
+                  if (result != null) {
+                    _handleModelSelectionChanged(result);
+                  }
+                }
+              : null,
+          child: Padding(
+            // 터치 영역 크기 조절: 상하(vertical), 좌우(horizontal) 값으로 설정
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  displayName(_selectedModelValue),
+                  style: AppTextStyles.btn2.copyWith(color: AppColors.blue),
+                ),
+                Gaps.h4,
+                AppIcon.arrow_down_16,
+              ],
+            ),
           ),
-          items: items,
-          onChanged: _isInitializing || _isSending || _isStreaming
-              ? null
-              : _handleModelSelectionChanged,
         ),
       ),
     );
-  }
-
-  String _formatMessageTime(int messageTime) {
-    if (messageTime <= 0) {
-      return '';
-    }
-    final dateTime = _parseMessageDateTime(messageTime);
-    var formattedTime = DateFormat('a h:mm', 'ko_KR').format(dateTime);
-    formattedTime = formattedTime.replaceAll('AM', '오전').replaceAll('PM', '오후');
-    return formattedTime;
-  }
-
-  DateTime _parseMessageDateTime(int messageTime) {
-    final dateTimeString = messageTime.toString().padLeft(12, '0');
-    final formattedString =
-        '${dateTimeString.substring(0, 4)}-${dateTimeString.substring(4, 6)}-${dateTimeString.substring(6, 8)} ${dateTimeString.substring(8, 10)}:${dateTimeString.substring(10, 12)}';
-    return DateTime.tryParse(formattedString) ?? DateTime.now();
   }
 
   void _showQueueModal(String message) {
@@ -482,9 +463,12 @@ class _LlmChatScreenState extends State<LlmChatScreen>
           final message = _messages[index];
           final isFirstItem = index == 0;
           final isLastItem = index == _messages.length - 1;
-          final messageDate = _parseMessageDateTime(message.time);
+          final messageDate =
+              LlmChatTimeFormatter.parseMessageDateTime(message.time);
           final isFirstMessageOfDay = index == 0 ||
-              _parseMessageDateTime(_messages[index - 1].time).day !=
+              LlmChatTimeFormatter.parseMessageDateTime(
+                    _messages[index - 1].time,
+                  ).day !=
                   messageDate.day;
 
           return Column(
@@ -540,7 +524,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
         children: [
           Gaps.h12,
           Text(
-            _formatMessageTime(message.time),
+            LlmChatTimeFormatter.formatMessageTime(message.time),
             style: AppTextStyles.caption.copyWith(color: AppColors.g4),
           ),
           Gaps.h4,
@@ -620,7 +604,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
                 ),
               Gaps.h4,
               Text(
-                _formatMessageTime(message.time),
+                LlmChatTimeFormatter.formatMessageTime(message.time),
                 style: AppTextStyles.caption.copyWith(color: AppColors.g4),
               ),
               Gaps.h12,
@@ -669,21 +653,12 @@ class _LlmChatScreenState extends State<LlmChatScreen>
                     color: AppColors.white,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.thisTitle,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              AppTextStyles.bd3.copyWith(color: AppColors.g5),
-                          textAlign: TextAlign.start,
-                        ),
-                        Gaps.v8,
-                        _buildModelSelector(),
-                        Gaps.v8,
-                      ],
+                    child: Text(
+                      widget.thisTitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.bd3.copyWith(color: AppColors.g5),
+                      textAlign: TextAlign.start,
                     ),
                   ),
                   _buildMessageList(),
@@ -696,7 +671,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
             ],
           ),
           bottomNavigationBar: Container(
-            color: Colors.white,
+            color: AppColors.white,
             padding: MediaQuery.of(context).viewInsets,
             child: SafeArea(
               child: Padding(
@@ -707,36 +682,58 @@ class _LlmChatScreenState extends State<LlmChatScreen>
                   children: [
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                           border: Border.all(width: 1.5, color: AppColors.g2),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: TextField(
-                          enabled:
-                              !_isInitializing && !_isSending && !_isStreaming,
-                          controller: _controller,
-                          cursorColor: AppColors.g6,
-                          minLines: 1,
-                          maxLines: 3,
-                          style:
-                              AppTextStyles.bd2.copyWith(color: AppColors.g6),
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 0,
-                              vertical: 0,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextField(
+                              enabled: !_isInitializing &&
+                                  !_isSending &&
+                                  !_isStreaming,
+                              controller: _controller,
+                              cursorColor: AppColors.g6,
+                              minLines: 1,
+                              maxLines: 3,
+                              style: AppTextStyles.bd2
+                                  .copyWith(color: AppColors.g6),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 0),
+                                enabledBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                disabledBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                hintText: !_isInitializing &&
+                                        !_isSending &&
+                                        !_isStreaming
+                                    ? '공고에서 궁금한 점을 입력하세요'
+                                    : '잠시만 기다려 주세요',
+                                hintStyle: AppTextStyles.bd4
+                                    .copyWith(color: AppColors.g4),
+                              ),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide.none,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                _buildModelSelector(),
+                                Gaps.h2,
+                                _buildSendMessageButton(),
+                              ],
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide.none),
-                          ),
+                            Gaps.v6,
+                          ],
                         ),
                       ),
                     ),
-                    Gaps.h8,
-                    _buildSendMessageButton(),
                   ],
                 ),
               ),

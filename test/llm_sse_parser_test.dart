@@ -52,5 +52,18 @@ void main() {
       expect(events.single.event, 'token');
       expect(events.single.text, 'hello\nworld');
     });
+
+    test('reads retrieval data arrays from done events', () {
+      final parser = LlmSseParser();
+
+      final events = parser.addChunk(
+        'event: done\n'
+        'data: {"retrevial_data":["첫 번째 공고 내용","두 번째 공고 내용"]}\n\n',
+      );
+
+      expect(events, hasLength(1));
+      expect(events.single.isDone, isTrue);
+      expect(events.single.retrievalText, '첫 번째 공고 내용\n두 번째 공고 내용');
+    });
   });
 }
