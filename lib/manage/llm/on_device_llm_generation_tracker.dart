@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:starting_block/manage/llm/on_device_llm_manage.dart';
+
 class OnDeviceLlmGenerationSnapshot {
   final String threadId;
   final String messageText;
   final String modelName;
+  final LlmResponseEngine engine;
   final String stage;
   final String reply;
   final bool isRunning;
@@ -14,6 +17,7 @@ class OnDeviceLlmGenerationSnapshot {
     required this.threadId,
     required this.messageText,
     required this.modelName,
+    this.engine = LlmResponseEngine.onDevice,
     required this.stage,
     required this.reply,
     required this.isRunning,
@@ -34,6 +38,7 @@ class OnDeviceLlmGenerationSnapshot {
       threadId: threadId,
       messageText: messageText,
       modelName: modelName,
+      engine: engine,
       stage: stage ?? this.stage,
       reply: reply ?? this.reply,
       isRunning: isRunning ?? this.isRunning,
@@ -79,11 +84,13 @@ class OnDeviceLlmGenerationTracker {
     required String threadId,
     required String messageText,
     required String modelName,
+    LlmResponseEngine engine = LlmResponseEngine.onDevice,
   }) {
     _emit(OnDeviceLlmGenerationSnapshot(
       threadId: threadId,
       messageText: messageText,
       modelName: modelName,
+      engine: engine,
       stage: 'request_received',
       reply: '',
       isRunning: true,

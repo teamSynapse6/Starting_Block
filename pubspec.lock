@@ -302,6 +302,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_foundation_models:
+    dependency: "direct main"
+    description:
+      name: flutter_foundation_models
+      sha256: "0d5d9cb3d79ac090e2cea17584f05da3ddedef60ce55d24cbf4de335f37743b7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
+  flutter_foundation_models_annotations:
+    dependency: transitive
+    description:
+      name: flutter_foundation_models_annotations
+      sha256: bc6999e5eda95358cb6a348a125c309286f6e4c47d8a3b80dc9508106709a2c3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   flutter_gemma:
     dependency: "direct main"
     description:

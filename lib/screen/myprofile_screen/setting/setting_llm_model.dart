@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/llm_api_manage.dart';
+import 'package:starting_block/manage/llm/apple_intelligence_llm_manage.dart';
 import 'package:starting_block/manage/llm/on_device_llm_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
@@ -20,6 +22,8 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
 
   List<LlmModelInfo> _models = [];
   Set<String> _installedModelIds = {};
+  AppleIntelligenceAvailability? _appleAvailability;
+  bool _isAppleAvailabilityLoading = false;
   bool _isLoading = true;
   String _errorText = '';
 
@@ -43,6 +47,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
       }
     });
     unawaited(_loadModels());
+    unawaited(_loadAppleAvailability());
   }
 
   @override
@@ -87,6 +92,27 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
         _errorText = '모델 목록을 불러오지 못했습니다.';
       });
     }
+  }
+
+  Future<void> _loadAppleAvailability() async {
+    if (!Platform.isIOS) {
+      return;
+    }
+
+    if (mounted) {
+      setState(() {
+        _isAppleAvailabilityLoading = true;
+      });
+    }
+
+    final availability = await AppleIntelligenceLlmManage.checkAvailability();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _appleAvailability = availability;
+      _isAppleAvailabilityLoading = false;
+    });
   }
 
   Future<void> _downloadModel(LlmModelInfo model) async {
@@ -158,7 +184,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
       builder: (dialogContext) {
         return DialogComponent(
           title: '모델을 삭제할까요?',
-          description: '삭제 후 다시 사용하려면 모델을 다시 다운로드해야 합니다.',
+          description: '삭제 후 다시 사용하려면 모델을 다운로드해야 합니다.',
           rightActionText: '삭제',
           rightActionTap: () {
             Navigator.pop(dialogContext);
@@ -171,18 +197,6 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
 
   bool _isInstalled(LlmModelInfo model) {
     return _installedModelIds.contains(OnDeviceLlmManage.localModelName(model));
-  }
-
-  String _formatSize(int size) {
-    if (size <= 0) {
-      return '용량 정보 없음';
-    }
-    const gb = 1024 * 1024 * 1024;
-    const mb = 1024 * 1024;
-    if (size >= gb) {
-      return '${(size / gb).toStringAsFixed(2)}GB';
-    }
-    return '${(size / mb).toStringAsFixed(0)}MB';
   }
 
   Widget _buildBody() {
@@ -216,13 +230,18 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
     return RefreshIndicator(
       color: AppColors.blue,
       onRefresh: _loadModels,
-      child: ListView.separated(
-        padding: const EdgeInsets.only(top: 8, bottom: 24),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(top: 4, bottom: 4),
         itemCount: _models.length,
-        separatorBuilder: (context, index) =>
-            Container(height: 1, color: AppColors.g2),
         itemBuilder: (context, index) {
-          return _buildModelRow(_models[index]);
+          return Column(
+            children: [
+              _buildModelRow(_models[index]),
+              if (index != _models.length - 1) const CustomDividerH2G1(),
+            ],
+          );
         },
       ),
     );
@@ -238,86 +257,88 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
     final downloadedChunks = snapshot?.downloadedChunks ?? 0;
     final totalChunks = snapshot?.totalChunks ?? model.chunkCount;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  model.modelName,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
-                ),
-                Gaps.v6,
-                Text(
-                  '${_formatSize(model.size)} · ${isInstalled ? '다운로드됨' : '미다운로드'}',
-                  style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
-                ),
-                if (isDownloading) ...[
-                  Gaps.v8,
-                  LinearProgressIndicator(
-                    minHeight: 4,
-                    value: progress <= 0 ? null : progress / 100,
-                    color: AppColors.blue,
-                    backgroundColor: AppColors.g2,
-                  ),
-                  Gaps.v6,
-                  Text(
-                    '$progress% · $downloadedChunks/$totalChunks',
-                    style: AppTextStyles.caption.copyWith(color: AppColors.g4),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          Gaps.h16,
-          _buildActionButton(
-            label: isInstalled ? '삭제' : '다운로드',
-            isBusy: isDownloading || isDeleting,
-            onTap: isInstalled
-                ? () => _showDeleteDialog(model)
-                : () => unawaited(_downloadModel(model)),
-          ),
-        ],
-      ),
+    return ItemListForModel(
+      modelName: model.modelName,
+      size: model.size,
+      isInstalled: isInstalled,
+      isDownloading: isDownloading,
+      isDeleting: isDeleting,
+      progress: progress,
+      downloadedChunks: downloadedChunks,
+      totalChunks: totalChunks,
+      onDownloadTap: () => unawaited(_downloadModel(model)),
+      onDeleteTap: () => _showDeleteDialog(model),
     );
   }
 
-  Widget _buildActionButton({
-    required String label,
-    required bool isBusy,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: isBusy ? null : onTap,
-      child: Container(
-        width: 76,
-        height: 36,
-        decoration: BoxDecoration(
-          color: isBusy ? AppColors.g2 : AppColors.blue,
-          borderRadius: BorderRadius.circular(6),
+  Widget _appleIntelligence() {
+    if (!Platform.isIOS) {
+      return const SizedBox.shrink();
+    }
+    final availability = _appleAvailability;
+    final statusText = _isAppleAvailabilityLoading
+        ? '확인 중'
+        : availability?.isAvailable == true
+            ? '사용 가능'
+            : '사용 불가';
+    final reason = availability?.unavailableReason.trim() ?? '';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Gaps.v30,
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Apple Intelligence 모델',
+                style: AppTextStyles.st2.copyWith(color: AppColors.g6),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: 76,
+              child: Text(
+                statusText,
+                style: AppTextStyles.bd5.copyWith(
+                    color: availability?.isAvailable == true
+                        ? AppColors.blue
+                        : AppColors.activered),
+              ),
+            ),
+          ],
         ),
-        child: Center(
-          child: isBusy
-              ? const SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: AppColors.g4,
+        Gaps.v12,
+        RichText(
+          text: TextSpan(
+            style: AppTextStyles.caption.copyWith(color: AppColors.g4),
+            children: [
+              const TextSpan(text: ''),
+              WidgetSpan(
+                alignment: PlaceholderAlignment.baseline,
+                baseline: TextBaseline.alphabetic,
+                child: GestureDetector(
+                  onTap: () =>
+                      unawaited(AppleIntelligenceLlmManage.openSettings()),
+                  child: Text(
+                    '설정 > Apple Intelligence 및 Siri',
+                    style: AppTextStyles.caption.copyWith(
+                      color: AppColors.blue,
+                      decoration: TextDecoration.underline,
+                      decorationColor: AppColors.blue,
+                    ),
                   ),
-                )
-              : Text(
-                  label,
-                  style: AppTextStyles.btn2.copyWith(color: AppColors.white),
                 ),
+              ),
+              const TextSpan(
+                text:
+                    '에서 Apple Intelligence가 활성되어 있으며 모델이 다운로드되어 있어야 합니다.\n활성화 및 모델이 다운로드 되어 있는 경우 자동으로 활성화됩니다.\niOS 26 및 iPhone 15 Pro 이상에서만 사용 가능합니다.',
+              ),
+              if (reason.isNotEmpty) TextSpan(text: '\n$reason'),
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -325,28 +346,33 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Gaps.v24,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Text(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gaps.v24,
+            Text(
               '온디바이스 AI 모델',
               style: AppTextStyles.st1.copyWith(color: AppColors.g6),
             ),
-          ),
-          Gaps.v12,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Text(
+            Gaps.v12,
+            Text(
               '기기에 저장된 모델은 서버 생성 대신 직접 답변을 만들 때 사용됩니다.',
               style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
             ),
-          ),
-          Gaps.v16,
-          Expanded(child: _buildBody()),
-        ],
+            Gaps.v16,
+            Flexible(
+              fit: FlexFit.loose,
+              child: _buildBody(),
+            ),
+            Text(
+              '※ 모델 다운로드 시 데이터 사용량이 많을 수 있습니다.',
+              style: AppTextStyles.caption.copyWith(color: AppColors.g4),
+            ),
+            _appleIntelligence(),
+          ],
+        ),
       ),
     );
   }

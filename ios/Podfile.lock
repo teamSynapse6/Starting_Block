@@ -34,6 +34,8 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 8.1)
     - nanopb (~> 3.30910.0)
   - Flutter (1.0.0)
+  - flutter_foundation_models (0.2.0):
+    - Flutter
   - flutter_gemma (0.16.4):
     - Flutter
     - MediaPipeTasksGenAI (= 0.10.33)
@@ -121,6 +123,7 @@ DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - FirebaseCore
   - Flutter (from `Flutter`)
+  - flutter_foundation_models (from `.symlinks/plugins/flutter_foundation_models/ios`)
   - flutter_gemma (from `.symlinks/plugins/flutter_gemma/ios`)
   - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -156,6 +159,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
+  flutter_foundation_models:
+    :path: ".symlinks/plugins/flutter_foundation_models/ios"
   flutter_gemma:
     :path: ".symlinks/plugins/flutter_gemma/ios"
   flutter_inappwebview_ios:
@@ -185,6 +190,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 7cdc919e29dc54306edeffdbdc1eed1a40d7d1e7
   FirebaseMessaging: 4803888ce3002188f24e19faa8d2326261538426
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  flutter_foundation_models: c83b0b2e066b7a1c240d741323536f8b16988934
   flutter_gemma: 08f68b25d109fdfaef4e59108047b41ebc2941f4
   flutter_inappwebview_ios: b89ba3482b96fb25e00c967aae065701b66e9b99
   flutter_local_notifications: 395056b3175ba4f08480a7c5de30cd36d69827e4

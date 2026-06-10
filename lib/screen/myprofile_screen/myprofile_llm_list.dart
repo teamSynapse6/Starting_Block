@@ -24,7 +24,7 @@ class _MyProfileLlmListState extends State<MyProfileLlmList> {
     loadChatData();
   }
 
-  void loadChatData() async {
+  Future<void> loadChatData() async {
     try {
       final tempList = await LlmApi.getLlmList();
       if (!mounted) {
@@ -155,96 +155,118 @@ class _MyProfileLlmListState extends State<MyProfileLlmList> {
                     topRight: Radius.circular(8),
                   ),
                 ),
-                child: isLoading
-                    ? Center(
-                        child: SizedBox(
-                          height: 38,
-                          child: AppAnimation.chatting_progress_indicator,
-                        ),
-                      )
-                    : chatList.isNotEmpty
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: chatList.length,
-                            itemBuilder: (context, index) {
-                              final chat = chatList[index];
-                              return Column(
-                                children: [
-                                  Slidable(
-                                    key: ValueKey(chat.threadId),
-                                    endActionPane: ActionPane(
-                                      motion: const DrawerMotion(),
-                                      extentRatio: 0.22,
-                                      children: [
-                                        SlidableAction(
-                                          onPressed: (_) => deleteLlmChat(chat),
-                                          backgroundColor: AppColors.activered,
-                                          foregroundColor: AppColors.white,
-                                          icon: Icons.delete_outline,
-                                          label: '삭제',
-                                        ),
-                                      ],
-                                    ),
-                                    child: MyProfileLlmListWidget(
-                                      thisTitle: chat.title,
-                                      thisLastContent: chat.lastMessage,
-                                      thisLastDate: chat.lastDate.toString(),
-                                      thisTap: () => thisLlmListTap(chat),
-                                      actionTap: () {},
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 24),
-                                    child: CustomDividerH1G1(),
-                                  ),
-                                ],
-                              );
-                            },
-                          )
-                        : Column(
-                            children: [
-                              Gaps.v124,
-                              Text(
-                                '공고 분석을 시작해 보세요',
-                                style: AppTextStyles.bd1
-                                    .copyWith(color: AppColors.g5),
+                child: RefreshIndicator(
+                  color: AppColors.blue,
+                  onRefresh: loadChatData,
+                  child: isLoading
+                      ? ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.45,
+                              child: Center(
+                                child: SizedBox(
+                                  height: 38,
+                                  child:
+                                      AppAnimation.chatting_progress_indicator,
+                                ),
                               ),
-                              Gaps.v6,
-                              Text(
-                                '원하는 공고의 상세 페이지에서\n공고 분석하기를 시작해 보세요',
-                                style: AppTextStyles.bd6
-                                    .copyWith(color: AppColors.g5),
-                                textAlign: TextAlign.center,
-                              ),
-                              Gaps.v36,
-                              Material(
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(2),
-                                  highlightColor: AppColors.g2,
-                                  onTap: () {
-                                    thisEmptyListTap();
-                                  },
-                                  child: Ink(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 7),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(2),
-                                      border: Border.all(
-                                        color: AppColors.g3,
-                                        width: 1,
+                            ),
+                          ],
+                        )
+                      : chatList.isNotEmpty
+                          ? ListView.builder(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: chatList.length,
+                              itemBuilder: (context, index) {
+                                final chat = chatList[index];
+                                return Column(
+                                  children: [
+                                    Slidable(
+                                      key: ValueKey(chat.threadId),
+                                      endActionPane: ActionPane(
+                                        motion: const DrawerMotion(),
+                                        extentRatio: 0.22,
+                                        children: [
+                                          SlidableAction(
+                                            onPressed: (_) =>
+                                                deleteLlmChat(chat),
+                                            backgroundColor:
+                                                AppColors.activered,
+                                            foregroundColor: AppColors.white,
+                                            icon: Icons.delete_outline,
+                                            label: '삭제',
+                                          ),
+                                        ],
+                                      ),
+                                      child: MyProfileLlmListWidget(
+                                        thisTitle: chat.title,
+                                        thisLastContent: chat.lastMessage,
+                                        thisLastDate: chat.lastDate.toString(),
+                                        thisTap: () => thisLlmListTap(chat),
+                                        actionTap: () {},
                                       ),
                                     ),
-                                    child: Text(
-                                      '교외지원사업 확인하러 가기',
-                                      style: AppTextStyles.bd6
-                                          .copyWith(color: AppColors.g4),
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 24),
+                                      child: CustomDividerH1G1(),
+                                    ),
+                                  ],
+                                );
+                              },
+                            )
+                          : ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              children: [
+                                Gaps.v124,
+                                Text(
+                                  '공고 분석을 시작해 보세요',
+                                  style: AppTextStyles.bd1
+                                      .copyWith(color: AppColors.g5),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Gaps.v6,
+                                Text(
+                                  '원하는 공고의 상세 페이지에서\n공고 분석하기를 시작해 보세요',
+                                  style: AppTextStyles.bd6
+                                      .copyWith(color: AppColors.g5),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Gaps.v36,
+                                Center(
+                                  child: Material(
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(2),
+                                      highlightColor: AppColors.g2,
+                                      onTap: () {
+                                        thisEmptyListTap();
+                                      },
+                                      child: Ink(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 7,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          border: Border.all(
+                                            color: AppColors.g3,
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '교외지원사업 확인하러 가기',
+                                          style: AppTextStyles.bd6
+                                              .copyWith(color: AppColors.g4),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
+                                )
+                              ],
+                            ),
+                ),
               ),
             ),
           ],

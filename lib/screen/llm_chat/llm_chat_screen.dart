@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/llm_api_manage.dart';
+import 'package:starting_block/manage/llm/apple_intelligence_llm_manage.dart';
 import 'package:starting_block/manage/llm/llm_background_stream_watcher.dart';
 import 'package:starting_block/manage/llm/llm_chat_message_manager.dart';
 import 'package:starting_block/manage/llm/llm_chat_scroll_manager.dart';
@@ -66,6 +67,7 @@ class _LlmChatScreenState extends State<LlmChatScreen>
   LlmResponseEngine _selectedEngine = LlmResponseEngine.server;
   String? _selectedModelName;
   List<String> _installedModelNames = [];
+  bool _canShowAppleIntelligence = false;
   List<Message> _messages = [];
 
   int get _announcementId => int.tryParse(widget.thisID) ?? 0;
@@ -114,10 +116,17 @@ class _LlmChatScreenState extends State<LlmChatScreen>
   Widget _buildModelSelector() {
     String displayName(String value) {
       if (value == _serverModelValue) return '서버 AI';
+      if (value == _appleIntelligenceModelValue) {
+        return AppleIntelligenceLlmManage.displayName;
+      }
       return OnDeviceLlmManage.serverModelName(value);
     }
 
-    final allValues = [_serverModelValue, ..._installedModelNames];
+    final allValues = [
+      _serverModelValue,
+      if (_canShowAppleIntelligence) _appleIntelligenceModelValue,
+      ..._installedModelNames,
+    ];
     final isEnabled = _chatAvailable;
 
     return Builder(

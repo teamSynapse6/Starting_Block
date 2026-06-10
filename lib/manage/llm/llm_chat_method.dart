@@ -42,6 +42,8 @@ mixin LlmChatMethods on State<LlmChatScreen> {
   set _selectedModelName(String? value);
   List<String> get _installedModelNames;
   set _installedModelNames(List<String> value);
+  bool get _canShowAppleIntelligence;
+  set _canShowAppleIntelligence(bool value);
   List<Message> get _messages;
   set _messages(List<Message> value);
 
@@ -102,6 +104,11 @@ mixin LlmChatMethods on State<LlmChatScreen> {
     try {
       final installedModels = await OnDeviceLlmManage.getInstalledModelNames();
       final selectedEngine = await OnDeviceLlmManage.getSelectedEngine();
+      final canShowAppleIntelligence =
+          AppleIntelligenceLlmManage.isSupportedPlatform;
+      final appleAvailability = canShowAppleIntelligence
+          ? await AppleIntelligenceLlmManage.checkAvailability()
+          : const AppleIntelligenceAvailability(isAvailable: false);
       final selectedModelName = await OnDeviceLlmManage.getSelectedModelName();
       final resolvedSelectedModelName = selectedModelName == null
           ? null
@@ -111,8 +118,14 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       final canUseOnDevice = selectedEngine == LlmResponseEngine.onDevice &&
           resolvedSelectedModelName != null &&
           installedModels.contains(resolvedSelectedModelName);
+      final canUseAppleIntelligence =
+          selectedEngine == LlmResponseEngine.appleIntelligence &&
+              appleAvailability.isAvailable;
 
       if (!canUseOnDevice && selectedEngine == LlmResponseEngine.onDevice) {
+        await OnDeviceLlmManage.saveServerSelection();
+      } else if (!canUseAppleIntelligence &&
+          selectedEngine == LlmResponseEngine.appleIntelligence) {
         await OnDeviceLlmManage.saveServerSelection();
       } else if (canUseOnDevice &&
           selectedModelName != resolvedSelectedModelName) {
@@ -125,9 +138,12 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       }
       setState(() {
         _installedModelNames = installedModels;
-        _selectedEngine = canUseOnDevice
-            ? LlmResponseEngine.onDevice
-            : LlmResponseEngine.server;
+        _canShowAppleIntelligence = canShowAppleIntelligence;
+        _selectedEngine = canUseAppleIntelligence
+            ? LlmResponseEngine.appleIntelligence
+            : canUseOnDevice
+                ? LlmResponseEngine.onDevice
+                : LlmResponseEngine.server;
         _selectedModelName = canUseOnDevice ? resolvedSelectedModelName : null;
       });
     } catch (_) {
@@ -136,6 +152,8 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       }
       setState(() {
         _installedModelNames = [];
+        _canShowAppleIntelligence =
+            AppleIntelligenceLlmManage.isSupportedPlatform;
         _selectedEngine = LlmResponseEngine.server;
         _selectedModelName = null;
       });
@@ -159,6 +177,33 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       return;
     }
 
+    if (value == _appleIntelligenceModelValue) {
+      final availability = await AppleIntelligenceLlmManage.checkAvailability();
+      if (!availability.isAvailable) {
+        if (mounted) {
+          final reason = availability.unavailableReason.trim();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                reason.isEmpty ? 'Apple Intelligence를 사용할 수 없습니다.' : reason,
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      await OnDeviceLlmManage.saveAppleIntelligenceSelection();
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _selectedEngine = LlmResponseEngine.appleIntelligence;
+        _selectedModelName = null;
+      });
+      return;
+    }
+
     await OnDeviceLlmManage.saveOnDeviceSelection(value);
     if (!mounted) {
       return;
@@ -170,8 +215,14 @@ mixin LlmChatMethods on State<LlmChatScreen> {
   }
 
   String get _serverModelValue => 'server';
+  String get _appleIntelligenceModelValue =>
+      AppleIntelligenceLlmManage.modelValue;
 
   String get _selectedModelValue {
+    if (_selectedEngine == LlmResponseEngine.appleIntelligence &&
+        _canShowAppleIntelligence) {
+      return _appleIntelligenceModelValue;
+    }
     if (_selectedEngine == LlmResponseEngine.onDevice &&
         _selectedModelName != null &&
         _installedModelNames.contains(_selectedModelName)) {
@@ -281,6 +332,8 @@ mixin LlmChatMethods on State<LlmChatScreen> {
     final useOnDevice = _selectedEngine == LlmResponseEngine.onDevice &&
         selectedModelName != null &&
         selectedModelName.isNotEmpty;
+    final useAppleIntelligence =
+        _selectedEngine == LlmResponseEngine.appleIntelligence;
 
     FocusScope.of(context).unfocus();
     final now = LlmChatTimeFormatter.formatCurrentTime(DateTime.now());
@@ -292,7 +345,7 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       _isTyped = false;
       _isSending = true;
       _isStreaming = true;
-      _isOnDeviceGeneration = useOnDevice;
+      _isOnDeviceGeneration = useOnDevice || useAppleIntelligence;
       _hasRunningGeneration = true;
       _statusText = 'AI가 질문을 확인하고 있어요.';
       _thinkingText = '';
@@ -301,11 +354,19 @@ mixin LlmChatMethods on State<LlmChatScreen> {
     _scrollToBottom();
 
     await _saveMetaFromMessages(hasRunningGeneration: true);
-    if (useOnDevice) {
+    if (useAppleIntelligence) {
+      unawaited(_runOnDeviceFlow(
+        threadId: threadId,
+        messageText: messageText,
+        modelName: AppleIntelligenceLlmManage.displayName,
+        engine: LlmResponseEngine.appleIntelligence,
+      ));
+    } else if (useOnDevice) {
       unawaited(_runOnDeviceFlow(
         threadId: threadId,
         messageText: messageText,
         modelName: selectedModelName,
+        engine: LlmResponseEngine.onDevice,
       ));
     } else {
       _isOnDeviceGeneration = false;
@@ -334,11 +395,13 @@ mixin LlmChatMethods on State<LlmChatScreen> {
     required String threadId,
     required String messageText,
     required String modelName,
+    required LlmResponseEngine engine,
   }) async {
     OnDeviceLlmGenerationTracker.start(
       threadId: threadId,
       messageText: messageText,
       modelName: modelName,
+      engine: engine,
     );
     final retrievalBuffer = StringBuffer();
     String fallbackRawData = '';
@@ -429,6 +492,7 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       await _runOnDeviceGeneration(
         threadId: threadId,
         modelName: modelName,
+        engine: engine,
         messageText: messageText,
         retrievalContext: context,
       );
@@ -448,6 +512,7 @@ mixin LlmChatMethods on State<LlmChatScreen> {
   Future<void> _runOnDeviceGeneration({
     required String threadId,
     required String modelName,
+    required LlmResponseEngine engine,
     required String messageText,
     required String retrievalContext,
   }) async {
@@ -468,12 +533,20 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       }
       OnDeviceLlmGenerationTracker.updateStage(threadId, 'llm_model_ready');
 
-      await for (final token in OnDeviceLlmManage.generateReply(
-        modelName: modelName,
-        userMessage: messageText,
-        context: retrievalContext,
-        recentMessages: recentMessages,
-      )) {
+      final replyStream = engine == LlmResponseEngine.appleIntelligence
+          ? AppleIntelligenceLlmManage.generateReply(
+              userMessage: messageText,
+              context: retrievalContext,
+              recentMessages: recentMessages,
+            )
+          : OnDeviceLlmManage.generateReply(
+              modelName: modelName,
+              userMessage: messageText,
+              context: retrievalContext,
+              recentMessages: recentMessages,
+            );
+
+      await for (final token in replyStream) {
         replyBuffer.write(token);
         OnDeviceLlmGenerationTracker.appendReply(threadId, token);
         if (mounted) {
@@ -518,7 +591,9 @@ mixin LlmChatMethods on State<LlmChatScreen> {
           LlmReplySaveRequest(
             threadId: threadId,
             announcementId: announcementId,
-            modelName: OnDeviceLlmManage.serverModelName(modelName),
+            modelName: engine == LlmResponseEngine.appleIntelligence
+                ? AppleIntelligenceLlmManage.displayName
+                : OnDeviceLlmManage.serverModelName(modelName),
             reply: reply,
           ),
         );
@@ -700,8 +775,13 @@ mixin LlmChatMethods on State<LlmChatScreen> {
       _isStreaming = snapshot.isRunning;
       _isOnDeviceGeneration = snapshot.isRunning;
       _hasRunningGeneration = snapshot.isRunning;
-      _selectedEngine = LlmResponseEngine.onDevice;
-      _selectedModelName = snapshot.modelName;
+      _selectedEngine = snapshot.engine;
+      _selectedModelName = snapshot.engine == LlmResponseEngine.onDevice
+          ? snapshot.modelName
+          : null;
+      if (snapshot.engine == LlmResponseEngine.appleIntelligence) {
+        _canShowAppleIntelligence = true;
+      }
     });
     _scrollToBottom();
   }

@@ -53,6 +53,7 @@ dependencies:
   firebase_core: ^4.10.0
   liquid_glass_bar: ^0.1.1
   flutter_gemma: ^0.16.4
+  flutter_foundation_models: ^0.3.0
 
 dev_dependencies:
   flutter_test:

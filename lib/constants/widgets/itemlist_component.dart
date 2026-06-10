@@ -210,3 +210,142 @@ class ItemListForRecommend extends StatelessWidget {
     );
   }
 }
+
+class ItemListForModel extends StatelessWidget {
+  final String modelName;
+  final int size;
+  final bool isInstalled;
+  final bool isDownloading;
+  final bool isDeleting;
+  final int progress;
+  final int downloadedChunks;
+  final int totalChunks;
+  final VoidCallback onDownloadTap;
+  final VoidCallback onDeleteTap;
+
+  const ItemListForModel({
+    super.key,
+    required this.modelName,
+    required this.size,
+    required this.isInstalled,
+    required this.isDownloading,
+    required this.isDeleting,
+    required this.progress,
+    required this.downloadedChunks,
+    required this.totalChunks,
+    required this.onDownloadTap,
+    required this.onDeleteTap,
+  });
+
+  String _formatSize(int size) {
+    if (size <= 0) {
+      return '용량 정보 없음';
+    }
+
+    const gb = 1024 * 1024 * 1024;
+    const mb = 1024 * 1024;
+    if (size >= gb) {
+      return '${(size / gb).toStringAsFixed(2)}GB';
+    }
+    return '${(size / mb).toStringAsFixed(0)}MB';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isBusy = isDownloading || isDeleting;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      modelName,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+                    ),
+                    Gaps.v6,
+                    Text(
+                      '${_formatSize(size)} · ${isInstalled ? '다운로드됨' : '미다운로드'}',
+                      style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
+                    ),
+                    if (isDownloading) ...[
+                      Gaps.v8,
+                      LinearProgressIndicator(
+                        minHeight: 4,
+                        value: progress <= 0 ? null : progress / 100,
+                        color: AppColors.blue,
+                        backgroundColor: AppColors.g2,
+                      ),
+                      Gaps.v6,
+                      Text(
+                        '$progress% · $downloadedChunks/$totalChunks',
+                        style:
+                            AppTextStyles.caption.copyWith(color: AppColors.g4),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              Gaps.h16,
+              _ModelActionButton(
+                label: isInstalled ? '삭제' : '다운로드',
+                isBusy: isBusy,
+                onTap: isInstalled ? onDeleteTap : onDownloadTap,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ModelActionButton extends StatelessWidget {
+  final String label;
+  final bool isBusy;
+  final VoidCallback onTap;
+
+  const _ModelActionButton({
+    required this.label,
+    required this.isBusy,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: isBusy ? null : onTap,
+      child: Container(
+        width: 76,
+        height: 36,
+        decoration: BoxDecoration(
+          color: isBusy ? AppColors.g2 : AppColors.blue,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Center(
+          child: isBusy
+              ? const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: AppColors.g4,
+                  ),
+                )
+              : Text(
+                  label,
+                  style: AppTextStyles.btn2.copyWith(color: AppColors.white),
+                ),
+        ),
+      ),
+    );
+  }
+}
