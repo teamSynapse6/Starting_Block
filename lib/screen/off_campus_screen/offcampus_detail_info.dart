@@ -72,7 +72,7 @@ class OffCampusDetailInfo extends StatelessWidget {
             ],
           ),
           Gaps.v16,
-          Text(
+          SelectableText(
             title,
             style: AppTextStyles.st1.copyWith(color: AppColors.black),
           ),
@@ -91,11 +91,13 @@ class OffCampusDetailInfo extends StatelessWidget {
           Gaps.v16,
           Text('지원 대상', style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
           Gaps.v4,
-          Text(target, style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
+          SelectableText(target,
+              style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
           Gaps.v20,
           Text('지원 유형', style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
           Gaps.v4,
-          Text(type, style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
+          SelectableText(type,
+              style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
           Gaps.v20,
           if (content.isNotEmpty)
             Column(
@@ -104,7 +106,7 @@ class OffCampusDetailInfo extends StatelessWidget {
                 Text('지원 혜택',
                     style: AppTextStyles.bd5.copyWith(color: AppColors.g4)),
                 Gaps.v4,
-                Text(content,
+                SelectableText(content,
                     style: AppTextStyles.bd2.copyWith(color: AppColors.g6)),
                 Gaps.v20,
               ],
@@ -119,7 +121,7 @@ class OffCampusDetailInfo extends StatelessWidget {
                 onTapAction: () async {
                   final dynamic result = await Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    trackedRoute(
                       builder: (context) => QuestionHome(
                         thisID: thisID,
                         isContactExist: isContatcExist,
@@ -139,7 +141,7 @@ class OffCampusDetailInfo extends StatelessWidget {
                 onTapAction: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    trackedRoute(
                       builder: (context) => OffCampusWebViewScreen(
                         url: link,
                         id: thisID,

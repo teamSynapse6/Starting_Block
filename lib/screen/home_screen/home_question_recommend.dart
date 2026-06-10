@@ -36,7 +36,7 @@ class _HomeQuestionRecommendState extends State<HomeQuestionRecommend> {
   void thisOnTap({required int questionID}) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => QuestionDetail(
           questionID: questionID,
         ),

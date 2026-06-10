@@ -82,7 +82,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const CompleteScreen()),
+            trackedRoute(builder: (context) => const CompleteScreen()),
             (Route<dynamic> route) => false,
           );
         }
@@ -105,7 +105,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const CompleteScreen()),
+            trackedRoute(builder: (context) => const CompleteScreen()),
             (Route<dynamic> route) => false,
           );
         }
@@ -156,7 +156,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(
+                                  trackedRoute(
                                     builder: (context) =>
                                         const RoadmapScreenAdd(),
                                   ),
@@ -177,7 +177,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                             InkWell(
                               onTap: () async {
                                 final result = await Navigator.of(context).push(
-                                  MaterialPageRoute(
+                                  trackedRoute(
                                     builder: (context) =>
                                         const RoadmapScreenDelete(),
                                   ),

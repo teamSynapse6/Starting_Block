@@ -75,7 +75,7 @@ class _BookMarkLectureButtonState extends State<BookMarkLectureButton> {
   void gotoSaveRoadmapTap() {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => const IntergrateScreen(
           switchIndex: SwitchIndex.toThree,
         ),

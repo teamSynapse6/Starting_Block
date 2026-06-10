@@ -122,7 +122,7 @@ class RoadMapListState extends State<RoadMapList> {
                                 Navigator.pop(context);
                                 await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
+                                  trackedRoute(
                                       builder: (context) =>
                                           const RoadMapEdit()),
                                 );

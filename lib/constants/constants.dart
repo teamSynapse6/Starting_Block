@@ -4,6 +4,9 @@ export 'package:starting_block/constants/sizes.dart';
 export 'package:starting_block/constants/font_table.dart';
 export 'package:starting_block/constants/color_table.dart';
 export 'package:starting_block/constants/icon_table.dart';
+export 'package:starting_block/manage/firebase/firebase_screen.dart';
+export 'package:starting_block/manage/firebase/tracked_route.dart';
+
 export 'package:starting_block/constants/animation_table.dart';
 
 // 컴포넌트 관리

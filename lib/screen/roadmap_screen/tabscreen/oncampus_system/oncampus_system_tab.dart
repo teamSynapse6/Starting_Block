@@ -125,7 +125,7 @@ class _TabScreenOnCaSystemState extends State<TabScreenOnCaSystem> {
                             IntergrateScreen.setSelectedIndexToOne(context);
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              trackedRoute(
                                 builder: (context) => const OnCampusSystem(),
                               ),
                             );

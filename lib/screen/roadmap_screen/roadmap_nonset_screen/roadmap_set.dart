@@ -25,7 +25,7 @@ class _RoadMapSetState extends State<RoadMapSet> {
       // Navigator를 사용하여 RoadMapSetFirstPopUp 화면으로 이동
       Navigator.push(
         context,
-        MaterialPageRoute(
+        trackedRoute(
           builder: (context) => const RoadMapSetFirstPopUp(),
         ),
       );
@@ -85,7 +85,7 @@ class _RoadMapSetState extends State<RoadMapSet> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  Navigator.push(context, trackedRoute(builder: (context) {
                     return const RoadmapListSet();
                   }));
                 },

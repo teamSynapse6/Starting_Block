@@ -40,7 +40,7 @@ class OffCampusDetailLlmCard extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          trackedRoute(
                             builder: (context) => LlmChatScreen(
                               thisTitle: thisTitle,
                               thisID: thisID,

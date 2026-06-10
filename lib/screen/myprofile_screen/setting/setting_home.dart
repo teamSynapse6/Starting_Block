@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
-import 'package:starting_block/manage/fcm_notification_manage.dart';
+import 'package:starting_block/manage/firebase/firebase_fcm_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 import 'package:starting_block/manage/userdata/llm_list_manage.dart';
@@ -27,7 +27,7 @@ class _SettingHomeState extends State<SettingHome> {
     if (mounted) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
+        trackedRoute(
           builder: (context) => const LoginScreen(),
         ),
         (Route<dynamic> route) => false,
@@ -46,7 +46,7 @@ class _SettingHomeState extends State<SettingHome> {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
+          trackedRoute(
             builder: (context) => const LoginScreen(),
           ),
           (Route<dynamic> route) => false,

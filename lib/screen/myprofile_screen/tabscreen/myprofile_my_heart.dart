@@ -53,7 +53,7 @@ class _MyProfileMyHeartState extends State<MyProfileMyHeart> {
                     thisTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        trackedRoute(
                             builder: (context) => QuestionDetail(
                                 questionID: question.questionId)),
                       );

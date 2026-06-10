@@ -37,7 +37,7 @@ class _EnterprenutScreenState extends State<EnterprenutScreen> {
     await _saveEntrepreneurCheck();
     // 다음 화면으로 이동
     Navigator.of(context).push(
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => const ResidenceScreen(),
       ),
     );

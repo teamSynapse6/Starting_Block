@@ -60,7 +60,7 @@ class _RoadmapListSetState extends State<RoadmapListSet> {
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(
+            trackedRoute(
                 builder: (context) => const IntergrateScreen(
                       switchIndex: SwitchIndex.toThree,
                     )),
@@ -108,7 +108,7 @@ class _RoadmapListSetState extends State<RoadmapListSet> {
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(
+                                  trackedRoute(
                                     builder: (context) =>
                                         const RoadmapListSetAdd(),
                                   ),
@@ -129,7 +129,7 @@ class _RoadmapListSetState extends State<RoadmapListSet> {
                             InkWell(
                               onTap: () async {
                                 final result = await Navigator.of(context).push(
-                                  MaterialPageRoute(
+                                  trackedRoute(
                                     builder: (context) =>
                                         const RoadmapListSetDelete(),
                                   ),

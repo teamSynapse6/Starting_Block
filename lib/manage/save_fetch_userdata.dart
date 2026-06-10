@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
+import 'package:starting_block/manage/firebase/firebase_analytics_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
 class SaveUserData {
@@ -23,6 +24,13 @@ class SaveUserData {
       await UserInfo().setResidence(userData.residence);
       await UserInfo().setSchoolName(userData.university);
       await UserInfo().setSelectedIconIndex(userData.profileNumber);
+      if (userData.userId != null && userData.userId!.isNotEmpty) {
+        await UserInfo().setUserId(userData.userId!);
+        await FirebaseAnalyticsManage.instance
+            .setAnalyticsUserId(userData.userId);
+      } else {
+        await FirebaseAnalyticsManage.instance.setAnalyticsUserId(null);
+      }
       debugPrint('사용자 정보 저장 완료');
     } catch (e) {
       // 예외 발생 시 오류 메시지 출력

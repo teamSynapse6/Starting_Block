@@ -28,6 +28,17 @@ class UserInfo extends ChangeNotifier {
     return _prefs.getString('userNickName') ?? "";
   }
 
+  // Analytics용 서버 내부 유저 ID 메소드
+  Future<void> setUserId(String userId) async {
+    await _secureStorage.write(key: 'userId', value: userId);
+    _hasChanged = true;
+    notifyListeners();
+  }
+
+  static Future<String> getUserId() async {
+    return await _secureStorage.read(key: 'userId') ?? "";
+  }
+
   // 생일 메소드
   Future<void> setUserBirthday(String birthday) async {
     await _secureStorage.write(key: 'userBirthday', value: birthday);

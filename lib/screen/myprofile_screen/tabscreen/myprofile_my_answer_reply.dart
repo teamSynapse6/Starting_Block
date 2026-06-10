@@ -30,7 +30,7 @@ class _MyProfileMyAnswerReplyState extends State<MyProfileMyAnswerReply> {
   void _thisTap({required int questionID}) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => QuestionDetail(questionID: questionID),
       ),
     );

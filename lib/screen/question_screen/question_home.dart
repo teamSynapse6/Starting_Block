@@ -80,7 +80,7 @@ class _QuestionHomeState extends State<QuestionHome> {
         thisOnTap: () async {
           final dynamic result = await Navigator.push(
             context,
-            MaterialPageRoute(
+            trackedRoute(
               builder: (context) => QuestionWrite(
                 thisID: widget.thisID,
                 isContactExist: widget.isContactExist,
@@ -122,7 +122,7 @@ class _QuestionHomeState extends State<QuestionHome> {
                               thisOnTap: () async {
                                 final dynamic result = await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
+                                  trackedRoute(
                                     builder: (context) => QuestionDetail(
                                       questionID: item.questionId,
                                     ),

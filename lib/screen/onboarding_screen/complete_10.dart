@@ -12,7 +12,7 @@ class CompleteScreen extends StatelessWidget {
       Future.delayed(const Duration(seconds: 2), () {
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
+            trackedRoute(
               builder: (context) => const IntergrateScreen(),
             ),
           );

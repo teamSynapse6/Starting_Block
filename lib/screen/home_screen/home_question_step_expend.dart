@@ -52,7 +52,7 @@ class HomeQuestionStepExpanded extends StatelessWidget {
       if (tapQuestionStatus.questionStage == 1) {
         Navigator.push(
             context,
-            MaterialPageRoute(
+            trackedRoute(
                 builder: (context) => HomeQuestionStage1(
                       thisTitle: tapQuestionStatus.title,
                       thisContent: tapQuestionStatus.content,
@@ -60,7 +60,7 @@ class HomeQuestionStepExpanded extends StatelessWidget {
       } else if (tapQuestionStatus.questionStage == 2) {
         Navigator.push(
             context,
-            MaterialPageRoute(
+            trackedRoute(
                 builder: (context) => HomeQuestionStage2(
                       thisTitle: tapQuestionStatus.title,
                       thisContent: tapQuestionStatus.content,
@@ -69,7 +69,7 @@ class HomeQuestionStepExpanded extends StatelessWidget {
       } else if (tapQuestionStatus.questionStage == 3) {
         Navigator.push(
           context,
-          MaterialPageRoute(
+          trackedRoute(
             builder: (context) => HomeQuestionStage3(
               thisTitle: tapQuestionStatus.title,
               thisContent: tapQuestionStatus.content,

@@ -24,7 +24,7 @@ class OnCampusGroupList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (thisTitle.isNotEmpty)
-              Text(
+              SelectableText(
                 thisTitle,
                 style: AppTextStyles.bd1.copyWith(color: AppColors.g6),
               ),
@@ -32,7 +32,7 @@ class OnCampusGroupList extends StatelessWidget {
               Column(
                 children: [
                   Gaps.v4,
-                  Text(
+                  SelectableText(
                     thisContent,
                     style: AppTextStyles.bd2.copyWith(color: AppColors.g5),
                   ),

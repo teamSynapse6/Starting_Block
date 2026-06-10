@@ -36,7 +36,7 @@ class _OnCampusCardMediumState extends State<OnCampusCardMedium> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                trackedRoute(
                   builder: (context) => const OnCampusSupportGroup(),
                 ),
               );

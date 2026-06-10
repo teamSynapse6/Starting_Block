@@ -50,7 +50,7 @@ class _OffCampusSearchState extends State<OffCampusSearch> {
   void navigateToSearchResult(String query) async {
     final bool? isUpdated = await Navigator.push(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => OffCampusSearchResult(searchWord: query),
       ),
     );

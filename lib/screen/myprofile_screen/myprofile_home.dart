@@ -149,7 +149,7 @@ class _MyProfileHomeState extends State<MyProfileHome>
                             onTap: () async {
                               await Navigator.push(
                                 context,
-                                MaterialPageRoute(
+                                trackedRoute(
                                   builder: (context) => const ProfileEditHome(),
                                 ),
                               );

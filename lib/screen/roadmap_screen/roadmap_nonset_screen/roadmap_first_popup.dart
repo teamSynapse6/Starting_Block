@@ -38,7 +38,7 @@ class _RoadMapSetFirstPopUpState extends State<RoadMapSetFirstPopUp> {
   void thisTap() {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => const RoadmapListSet(),
       ),
     );

@@ -50,7 +50,7 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    trackedRoute(
                       builder: (context) => const MyProfileLlmList(),
                     ),
                   );
@@ -66,7 +66,7 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    trackedRoute(
                       builder: (context) => const SettingHome(),
                     ),
                   );
@@ -149,7 +149,7 @@ class OnCampusSearchAppBar extends StatelessWidget
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => searchTapScreen),
+                trackedRoute(builder: (context) => searchTapScreen),
               );
             },
             child: SizedBox(
@@ -186,7 +186,7 @@ class SearchFiledAppBar extends StatelessWidget implements PreferredSizeWidget {
     await recentSearchManager.addSearch(query);
     Navigator.push(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => OffCampusSearchResult(searchWord: query),
       ),
     );
@@ -258,7 +258,7 @@ class SearchResultAppBar extends StatelessWidget
     await recentSearchManager.addSearch(query);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => OffCampusSearchResult(searchWord: query),
       ),
     );
@@ -341,7 +341,7 @@ class SearchFiledAppBarForOnca extends StatelessWidget
     await recentSearchManager.addSearch(query);
     Navigator.push(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => OnCampusSearchResult(searchWord: query),
       ),
     );
@@ -413,7 +413,7 @@ class SearchResultAppBarForOnca extends StatelessWidget
     await recentSearchManager.addSearch(query);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => OnCampusSearchResult(searchWord: query),
       ),
     );

@@ -101,7 +101,7 @@ class _OnCampusSchoolSearchState extends State<OnCampusSchoolSearch> {
         }
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
+          trackedRoute(
             builder: (context) => const IntergrateScreen(
               switchIndex: SwitchIndex.toOne,
             ),

@@ -58,7 +58,7 @@ class OnCampusSchoolSet extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  Navigator.push(context, trackedRoute(builder: (context) {
                     return const OnCampusSchoolSearch();
                   }));
                 },

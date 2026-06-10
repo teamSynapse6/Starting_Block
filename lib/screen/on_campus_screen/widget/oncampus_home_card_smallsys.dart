@@ -33,7 +33,7 @@ class _OnCampusCardSmallSystemState extends State<OnCampusCardSmallSystem> {
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
+                trackedRoute(
                   builder: (context) => const OnCampusSystem(),
                 ),
               );

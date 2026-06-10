@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
@@ -159,7 +161,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
         thisSearchTapAction: () async {
           await Navigator.push(
             context,
-            MaterialPageRoute(
+            trackedRoute(
               builder: (context) => const OffCampusSearch(),
             ),
           );
@@ -277,7 +279,7 @@ class _OffCampusHomeState extends State<OffCampusHome> {
               _isScrolled
                   ? Positioned(
                       right: 24,
-                      bottom: 15 + 9,
+                      bottom: Platform.isIOS ? 100 : 24,
                       child: ScrollToTopButton(
                         thisBackToTopTap: backToTopTap,
                       ))

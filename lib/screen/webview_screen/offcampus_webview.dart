@@ -119,7 +119,7 @@ class _OffCampusWebViewScreenState extends State<OffCampusWebViewScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      trackedRoute(
                         builder: (context) => QuestionHome(
                           thisID: widget.id,
                           isContactExist: widget.isContactExist,

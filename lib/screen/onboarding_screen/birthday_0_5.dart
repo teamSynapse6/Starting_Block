@@ -32,7 +32,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     if (!_isInputValid) return;
     _saveBirthday();
     Navigator.of(context).push(
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => const EnterprenutScreen(),
       ),
     );

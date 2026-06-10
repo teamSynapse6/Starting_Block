@@ -63,7 +63,7 @@ class ItemList extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
+          trackedRoute(
             builder: (context) => OffCampusDetail(thisID: thisID),
             fullscreenDialog: false,
           ),
@@ -155,7 +155,7 @@ class ItemListForRecommend extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
+          trackedRoute(
             builder: (context) => OffCampusDetail(thisID: thisID),
             fullscreenDialog: false,
           ),

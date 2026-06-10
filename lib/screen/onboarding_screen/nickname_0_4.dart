@@ -147,7 +147,7 @@ class _NickNameScreenState extends State<NickNameScreen> {
     // Navigator 호출 전에 현재 위젯이 위젯 트리에 여전히 있는지 확인
     if (!mounted) return;
     Navigator.of(context).push(
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => const BirthdayScreen(),
       ),
     );

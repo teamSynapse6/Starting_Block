@@ -172,7 +172,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                               onTap: () async {
                                 await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
+                                  trackedRoute(
                                     builder: (context) =>
                                         const OnCampusSearch(),
                                   ),

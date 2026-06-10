@@ -4,6 +4,7 @@ import 'package:liquid_glass_bar/liquid_glass_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/roadmap_api_manage.dart';
+import 'package:starting_block/manage/firebase/firebase_analytics_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -45,8 +46,7 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
   String _schoolName = "";
   bool _isRoadmapSet = true;
 
-  bool get _useLiquidGlassBar =>
-      defaultTargetPlatform == TargetPlatform.iOS;
+  bool get _useLiquidGlassBar => defaultTargetPlatform == TargetPlatform.iOS;
 
   @override
   void initState() {
@@ -73,6 +73,9 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
         _selectedIndex = 4;
         break;
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _trackCurrentTab();
+    });
   }
 
   Future<void> _loadSchoolName() async {
@@ -83,6 +86,9 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     setState(() {
       _schoolName = schoolName;
     });
+    if (_selectedIndex == 1) {
+      _trackCurrentTab();
+    }
   }
 
   Future<void> _loadRoadMap() async {
@@ -95,24 +101,60 @@ class _IntergrateScreenState extends State<IntergrateScreen> {
     setState(() {
       _isRoadmapSet = isRoadmapSet;
     });
+    if (_selectedIndex == 3) {
+      _trackCurrentTab();
+    }
   }
 
   void _onTap(int index) {
+    if (_selectedIndex == index) {
+      return;
+    }
     setState(() {
       _selectedIndex = index;
     });
+    _trackCurrentTab(index);
   }
 
   void setSelectedIndexToZero() {
     setState(() {
       _selectedIndex = 0;
     });
+    _trackCurrentTab(0);
   }
 
   void setSelectedIndexToOne() {
     setState(() {
       _selectedIndex = 1;
     });
+    _trackCurrentTab(1);
+  }
+
+  void _trackCurrentTab([int? index]) {
+    final screen = _getCurrentFirebaseScreen(index ?? _selectedIndex);
+    FirebaseAnalyticsManage.instance.enterScreen(screen);
+  }
+
+  FirebaseScreenInfo _getCurrentFirebaseScreen(int index) {
+    switch (index) {
+      case 0:
+        return FirebaseScreens.offcampusHome;
+      case 1:
+        if (_schoolName.isEmpty) {
+          return FirebaseScreens.oncampusSchoolSet;
+        }
+        return FirebaseScreens.oncampusHome;
+      case 2:
+        return FirebaseScreens.homeMain;
+      case 3:
+        if (_isRoadmapSet) {
+          return FirebaseScreens.roadmapHome;
+        }
+        return FirebaseScreens.roadmapSet;
+      case 4:
+      default:
+        return FirebaseScreens.myprofileHome;
+    }
   }
 
   Widget _getCurrentScreen() {

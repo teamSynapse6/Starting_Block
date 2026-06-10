@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/kakao_api_manage.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
-import 'package:starting_block/manage/fcm_notification_manage.dart';
+import 'package:starting_block/manage/firebase/firebase_fcm_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 import 'package:starting_block/manage/screen_manage.dart';
 
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(
+            trackedRoute(
               builder: (context) => const IntergrateScreen(),
             ),
             (route) => false,
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // 회원가입이 완료되지 않은 경우 NickNameScreen으로 이동
         if (mounted) {
           Navigator.of(context).push(
-            MaterialPageRoute(
+            trackedRoute(
               builder: (context) => const NickNameScreen(),
             ),
           );

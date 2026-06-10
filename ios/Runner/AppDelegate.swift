@@ -9,59 +9,6 @@ import Flutter
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
-    if let controller = window?.rootViewController as? FlutterViewController {
-      let channel = FlutterMethodChannel(
-        name: "starting_block/apple_intelligence_settings",
-        binaryMessenger: controller.binaryMessenger
-      )
-      channel.setMethodCallHandler { call, result in
-        guard call.method == "open" else {
-          result(FlutterMethodNotImplemented)
-          return
-        }
-        self.openAppleIntelligenceSettings(result: result)
-      }
-    }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  }
-
-  private func openAppleIntelligenceSettings(result: @escaping FlutterResult) {
-    let candidateStrings = [
-      "App-prefs:APPLE_INTELLIGENCE_AND_SIRI",
-      "App-prefs:root=APPLE_INTELLIGENCE_AND_SIRI",
-      "App-prefs:root=SIRI",
-      "prefs:root=SIRI"
-    ]
-    let fallbackURL = URL(string: UIApplication.openSettingsURLString)
-
-    func openCandidate(at index: Int) {
-      if index >= candidateStrings.count {
-        guard let fallbackURL = fallbackURL else {
-          result(false)
-          return
-        }
-        UIApplication.shared.open(fallbackURL, options: [:]) { success in
-          result(success)
-        }
-        return
-      }
-
-      guard let url = URL(string: candidateStrings[index]) else {
-        openCandidate(at: index + 1)
-        return
-      }
-
-      UIApplication.shared.open(url, options: [:]) { success in
-        if success {
-          result(true)
-        } else {
-          openCandidate(at: index + 1)
-        }
-      }
-    }
-
-    DispatchQueue.main.async {
-      openCandidate(at: 0)
-    }
   }
 }

@@ -87,7 +87,7 @@ class _QuestionWriteState extends State<QuestionWrite> {
       Navigator.of(context).pop();
       await Navigator.push(
           context,
-          MaterialPageRoute(
+          trackedRoute(
               builder: (context) => const QuestionWriteComplete()));
     }
     if (mounted) {

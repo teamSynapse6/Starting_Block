@@ -19,7 +19,7 @@ class SettingList extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
+          trackedRoute(
             builder: (context) => onTapScreen,
           ),
         );

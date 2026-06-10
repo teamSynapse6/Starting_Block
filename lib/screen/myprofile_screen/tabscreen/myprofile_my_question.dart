@@ -50,7 +50,7 @@ class _MyProfileMyQuestionState extends State<MyProfileMyQuestion> {
   void _thisTap(int questionID) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      trackedRoute(
         builder: (context) => QuestionDetail(questionID: questionID),
       ),
     );

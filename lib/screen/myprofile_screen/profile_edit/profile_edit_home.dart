@@ -152,7 +152,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                       if (!mounted) return;
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        trackedRoute(
                             builder: (context) => const ProfileIconEdit()),
                       );
                       if (!mounted) return;
@@ -186,7 +186,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     if (!mounted) return;
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      trackedRoute(
                           builder: (context) => const NickNameEdit()),
                     );
                     if (!mounted) return;
@@ -232,7 +232,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     if (!mounted) return;
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      trackedRoute(
                           builder: (context) => const BirthdayEdit()),
                     );
                     if (!mounted) return;
@@ -278,7 +278,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     if (!mounted) return;
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      trackedRoute(
                           builder: (context) => const SchoolNameEdit()),
                     );
                     if (!mounted) return;
@@ -330,7 +330,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     if (!mounted) return;
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      trackedRoute(
                           builder: (context) => const ResidenceEdit()),
                     );
                     if (!mounted) return;
@@ -376,7 +376,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     if (!mounted) return;
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      trackedRoute(
                           builder: (context) => const EnterprenutEdit()),
                     );
                     if (!mounted) return;

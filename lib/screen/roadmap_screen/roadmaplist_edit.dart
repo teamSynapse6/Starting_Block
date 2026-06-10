@@ -114,7 +114,7 @@ class _RoadMapEditState extends State<RoadMapEdit> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          trackedRoute(
                               builder: (context) => const RoadMapAdd()),
                         ).then((result) {
                           loadRoadMaps();
@@ -136,7 +136,7 @@ class _RoadMapEditState extends State<RoadMapEdit> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          trackedRoute(
                               builder: (context) => const RoadMapDelete()),
                         ).then((result) {
                           loadRoadMaps();

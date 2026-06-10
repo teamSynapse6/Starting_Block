@@ -42,14 +42,14 @@ class _HomeNotifyRecommendState extends State<HomeNotifyRecommend> {
     if (thisAnnouncementType == '교외') {
       Navigator.push(
         context,
-        MaterialPageRoute(
+        trackedRoute(
             builder: (context) =>
                 OffCampusDetail(thisID: announcementId.toString())),
       );
     } else if (thisAnnouncementType == '교내') {
       Navigator.push(
           context,
-          MaterialPageRoute(
+          trackedRoute(
               builder: (context) => OncampusWebViewScreen(
                   url: detailUrl, id: announcementId.toString())));
     }

@@ -9,6 +9,7 @@ class UserDataModel {
   final String providerId;
   final String role;
   final int profileNumber;
+  final String? userId;
 
   // JSON 객체를 이용하여 클래스의 생성자 정의
   UserDataModel.fromJson(Map<String, dynamic> json)
@@ -22,5 +23,6 @@ class UserDataModel {
         email = json['email'] as String,
         provider = json['provider'] as String,
         providerId = json['providerId'] as String,
-        role = json['role'] as String;
+        role = json['role'] as String,
+        userId = json['user_id']?.toString();
 }

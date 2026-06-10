@@ -81,13 +81,13 @@ class _RoadmapHomeState extends State<RoadmapHome>
     if (_selectedRoadmapStage == 0) {
       await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const LeapFirstScreen()),
+        trackedRoute(builder: (context) => const LeapFirstScreen()),
       );
       roadMapListKey.currentState?.loadRoadMaps();
     } else {
       await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const LeapAfterFirstScreen()),
+        trackedRoute(builder: (context) => const LeapAfterFirstScreen()),
       );
       roadMapListKey.currentState?.loadRoadMaps();
     }

@@ -122,7 +122,7 @@ class _OncampusWebViewScreenState extends State<OncampusWebViewScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      trackedRoute(
                         builder: (context) => QuestionHome(
                           thisID: widget.id,
                           isContactExist: false,

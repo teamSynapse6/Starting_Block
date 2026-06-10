@@ -48,7 +48,7 @@ class _MyProfileLlmListState extends State<MyProfileLlmList> {
   void thisLlmListTap(LlmConversationSummary chat) async {
     final result = await Navigator.push(
         context,
-        MaterialPageRoute(
+        trackedRoute(
           builder: (context) => LlmChatScreen(
             thisTitle: chat.title,
             thisID: chat.announcementId.toString(),
@@ -88,7 +88,7 @@ class _MyProfileLlmListState extends State<MyProfileLlmList> {
   void thisEmptyListTap() {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(
+      trackedRoute(
           builder: (context) => const IntergrateScreen(
                 switchIndex: SwitchIndex.toZero,
               )),

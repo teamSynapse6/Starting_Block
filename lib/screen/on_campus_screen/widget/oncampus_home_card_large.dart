@@ -31,7 +31,7 @@ class OnCampusCardLarge extends StatelessWidget {
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
+                trackedRoute(
                   builder: (context) => OnCampusNotify(
                     hasNotifyData: hasNotifyData,
                   ),

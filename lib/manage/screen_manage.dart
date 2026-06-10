@@ -1,4 +1,7 @@
 //Screen파일 관리용
+export 'package:starting_block/manage/firebase/firebase_screen.dart';
+export 'package:starting_block/manage/firebase/tracked_route.dart';
+
 //온보딩 페이지
 export 'package:starting_block/main.dart';
 export 'package:starting_block/screen/onboarding_screen/login_0_2.dart';

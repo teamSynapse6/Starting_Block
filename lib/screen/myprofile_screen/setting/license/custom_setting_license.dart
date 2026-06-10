@@ -29,7 +29,7 @@ class _CustomLicensePageState extends State<CustomLicensePage> {
               // 세부 정보 페이지로 이동
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                trackedRoute(
                   builder: (context) => LicenseDetailPage(package: package),
                 ),
               );

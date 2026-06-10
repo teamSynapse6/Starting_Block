@@ -12,8 +12,13 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:starting_block/manage/firebase_options.dart';
-import 'package:starting_block/manage/fcm_notification_manage.dart';
+import 'package:starting_block/manage/firebase/firebase_fcm_manage.dart';
+import 'package:starting_block/manage/firebase/firebase_analytics_manage.dart';
+import 'package:starting_block/manage/firebase/firebase_screen_observer.dart';
 import 'package:starting_block/manage/llm/llm_notification_manage.dart';
+
+final FirebaseAnalyticsLifecycleObserver _analyticsLifecycleObserver =
+    FirebaseAnalyticsLifecycleObserver();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
@@ -25,6 +30,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseAnalyticsManage.instance.initialize();
+  WidgetsBinding.instance.addObserver(_analyticsLifecycleObserver);
   await LlmNotificationManage.initialize();
   await FcmNotificationManage.initialize();
 
@@ -61,6 +68,10 @@ class StartingBlock extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeManage.theme,
+      navigatorObservers: [
+        firebaseRouteObserver,
+        FirebaseScreenObserver(),
+      ],
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -69,7 +80,10 @@ class StartingBlock extends StatelessWidget {
           child: child!,
         );
       },
-      home: const SplashScreen(),
+      home: const FirebaseRouteScreenTracker(
+        screen: FirebaseScreens.splash,
+        child: SplashScreen(),
+      ),
     );
   }
 }
@@ -103,7 +117,10 @@ class SplashScreenState extends State<SplashScreen> {
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
+            trackedRoute(
+              screen: _isLogIned
+                  ? FirebaseScreens.intergrate
+                  : FirebaseScreens.onboardingLogin,
               builder: (context) =>
                   _isLogIned ? const IntergrateScreen() : const LoginScreen(),
             ),
