@@ -282,6 +282,8 @@ class AppIcon {
   // Exceptional Image
   static Widget get kako_icon =>
       SvgPicture.asset('assets/icon/20/kakao_logo.svg', fit: BoxFit.scaleDown);
+  static Widget get apple_icon =>
+      SvgPicture.asset('assets/icon/20/apple_logo.svg', fit: BoxFit.scaleDown);
   static Widget get run_yes =>
       SvgPicture.asset('assets/onboard_image/run_yes.svg',
           fit: BoxFit.scaleDown);

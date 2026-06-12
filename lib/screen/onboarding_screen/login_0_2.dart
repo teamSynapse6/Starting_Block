@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
+import 'package:starting_block/manage/api/apple_api_manage.dart';
 import 'package:starting_block/manage/api/kakao_api_manage.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
 import 'package:starting_block/manage/firebase/firebase_fcm_manage.dart';
@@ -14,8 +15,32 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  void _onNextTap() async {
+  bool _isSigningIn = false;
+  bool _isAppleSignInAvailable = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAppleSignInAvailability();
+  }
+
+  Future<void> _loadAppleSignInAvailability() async {
+    final isAvailable = await isAppleSignInSupportedOnCurrentPlatform();
+
+    if (mounted) {
+      setState(() {
+        _isAppleSignInAvailable = isAvailable;
+      });
+    }
+  }
+
+  Future<void> _onKakaoTap() async {
+    if (_isSigningIn) return;
+
     try {
+      setState(() {
+        _isSigningIn = true;
+      });
       // signInWithKakao를 호출하고 로그인 결과를 기다림
       final kakaoUser = await signInWithKakao(context);
 
@@ -25,40 +50,75 @@ class _LoginScreenState extends State<LoginScreen> {
         kakaoUser.email,
       );
 
-      //유저 토큰 저장
-      await UserTokenManage().setRefreshToken(signInData.refreshToken);
-      await UserTokenManage().setAccessToken(signInData.accessToken);
-      await FcmNotificationManage.registerCurrentToken();
-      debugPrint(
-          '로그인 완료: ${signInData.accessToken}\n 리프레시 토큰: ${signInData.refreshToken}');
-
-      // 회원가입 완료 상태에 따른 화면 이동
-      if (signInData.isSignUpComplete) {
-        await SaveUserData.fetchAndSaveUserData();
-        UserInfo().setLoginStatus(true);
-        if (mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            trackedRoute(
-              builder: (context) => const IntergrateScreen(),
-            ),
-            (route) => false,
-          );
-        }
-      } else {
-        // 회원가입이 완료되지 않은 경우 NickNameScreen으로 이동
-        if (mounted) {
-          Navigator.of(context).push(
-            trackedRoute(
-              builder: (context) => const NickNameScreen(),
-            ),
-          );
-        }
-      }
+      await _completeSignIn(signInData);
     } catch (error) {
       // 오류 처리
-      debugPrint('로그인 또는 사용자 정보 확인 중 오류 발생: $error');
+      debugPrint('카카오 로그인 또는 사용자 정보 확인 중 오류 발생: $error');
       // 오류가 발생한 경우 적절한 UI 피드백 제공
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSigningIn = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _onAppleTap() async {
+    if (_isSigningIn) return;
+
+    try {
+      setState(() {
+        _isSigningIn = true;
+      });
+
+      final appleUser = await signInWithApple();
+      final signInData = await UserInfoManageApi.postAppleSignIn(appleUser);
+
+      await _completeSignIn(signInData);
+    } catch (error) {
+      // 오류 처리
+      debugPrint('애플 로그인 또는 사용자 정보 확인 중 오류 발생: $error');
+      // 오류가 발생한 경우 적절한 UI 피드백 제공
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSigningIn = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _completeSignIn(UserSignInModel signInData) async {
+    //유저 토큰 저장
+    await UserTokenManage().setRefreshToken(signInData.refreshToken);
+    await UserTokenManage().setAccessToken(signInData.accessToken);
+    await FcmNotificationManage.registerCurrentToken();
+    debugPrint(
+        '로그인 완료: ${signInData.accessToken}\n 리프레시 토큰: ${signInData.refreshToken}');
+
+    // 회원가입 완료 상태에 따른 화면 이동
+    if (signInData.isSignUpComplete) {
+      await SaveUserData.fetchAndSaveUserData();
+      UserInfo().setLoginStatus(true);
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          trackedRoute(
+            builder: (context) => const IntergrateScreen(),
+          ),
+          (route) => false,
+        );
+      }
+    } else {
+      // 회원가입이 완료되지 않은 경우 NickNameScreen으로 이동
+      if (mounted) {
+        Navigator.of(context).push(
+          trackedRoute(
+            builder: (context) => const NickNameScreen(),
+          ),
+        );
+      }
     }
   }
 
@@ -101,37 +161,28 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.only(
                 bottom: Sizes.size140,
               ),
-              child: GestureDetector(
-                onTap: _onNextTap,
-                child: FractionallySizedBox(
-                  widthFactor: 1,
-                  child: Container(
-                      height: 44,
-                      decoration: const BoxDecoration(
-                        color: Color(0XFFFEE500),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(4),
-                        ),
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: 13,
-                            left: 16,
-                            child: AppIcon.kako_icon,
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "카카오로 로그인",
-                              style: AppTextStyles.bd3.copyWith(
-                                color: AppColors.g6,
-                              ),
-                            ),
-                          )
-                        ],
-                      )),
-                ),
+              child: Column(
+                children: [
+                  LoginButton(
+                    onTap: _isSigningIn ? null : _onKakaoTap,
+                    backgroundColor: const Color(0XFFFEE500),
+                    text: "카카오로 로그인",
+                    textColor: AppColors.g6,
+                    icon: AppIcon.kako_icon,
+                    thisStyle: AppTextStyles.bd3,
+                  ),
+                  if (_isAppleSignInAvailable) ...[
+                    Gaps.v12,
+                    LoginButton(
+                      onTap: _isSigningIn ? null : _onAppleTap,
+                      backgroundColor: AppColors.black,
+                      text: "Sign in With Apple",
+                      textColor: AppColors.white,
+                      icon: AppIcon.apple_icon,
+                      thisStyle: AppTextStyles.bd4,
+                    ),
+                  ],
+                ],
               ),
             ),
           ],

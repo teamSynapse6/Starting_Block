@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:starting_block/manage/api/apple_api_manage.dart';
 import 'package:starting_block/manage/api/api_baseurl.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
@@ -78,6 +79,29 @@ class UserInfoManageApi {
     } else {
       // 실패 시 예외 던지기
       throw Exception('로그인 실패: ${response.statusCode}');
+    }
+  }
+
+  static Future<UserSignInModel> postAppleSignIn(
+      AppleLoginUser appleUser) async {
+    String url = '$baseUrl/auth/sign-in/apple';
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    Map<String, dynamic> body = appleUser.toSignInBody();
+
+    http.Response response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: json.encode(body),
+    );
+    debugPrint('애플 로그인 요청 전송');
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      debugPrint('애플 로그인 성공');
+      UserSignInModel signInData =
+          UserSignInModel.fromJson(json.decode(response.body));
+      return signInData;
+    } else {
+      throw Exception('애플 로그인 실패: ${response.statusCode}, ${response.body}');
     }
   }
 

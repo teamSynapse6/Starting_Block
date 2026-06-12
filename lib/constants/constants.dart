@@ -25,6 +25,7 @@ export 'package:starting_block/constants/widgets/reorder_list.dart'; //로드맵
 export 'package:starting_block/constants/widgets/bottom_gradiant.dart'; //하단 투명 Gradient
 export 'package:starting_block/constants/widgets/offcampus_filter/model/ofca_sorting_textbuttonsheet.dart'; //정렬_(최신순, 저장순)정렬 설정
 export 'package:starting_block/constants/widgets/onboarding_state.dart'; //온보딩 화면 상단 현재 단계
+export 'package:starting_block/constants/widgets/login_button.dart'; //로그인 버튼
 export 'package:starting_block/constants/widgets/setting_widget/setting_list.dart'; //설정_리스트 위젯
 export 'package:starting_block/constants/widgets/setting_widget/profile_icon_list.dart'; //설정_프로필 수정 리스트 위젯
 export 'package:starting_block/constants/widgets/comment_widget/question_list.dart'; //질문 홈_리스트 위젯
