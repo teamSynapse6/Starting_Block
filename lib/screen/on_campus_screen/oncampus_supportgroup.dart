@@ -212,7 +212,7 @@ class _OnCampusSupportGroupState extends State<OnCampusSupportGroup>
                   _isScrolled
                       ? Positioned(
                           right: 24,
-                          bottom: 12,
+                          bottom: 24,
                           child: ScrollToTopButton(
                             thisBackToTopTap: backToTopTap,
                           ))

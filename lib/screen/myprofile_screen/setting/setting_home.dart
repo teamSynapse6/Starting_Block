@@ -73,7 +73,7 @@ class _SettingHomeState extends State<SettingHome> {
           Gaps.v24,
           const SettingList(
             onTapScreen: SettingTermWebview(
-              url: 'https://www.startingblock.co.kr/term', //링크 1차 수정
+              url: 'https://startingblock.newlearn.ai.kr/term',
             ),
             thisText: "개인정보처리방침 및 이용약관",
           ),

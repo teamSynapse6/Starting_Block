@@ -323,7 +323,7 @@ class _OnCampusNotifyState extends State<OnCampusNotify> {
                 if (_isScrolled && _notifyList.isNotEmpty)
                   Positioned(
                     right: 24,
-                    bottom: 12,
+                    bottom: 24,
                     child: ScrollToTopButton(
                       thisBackToTopTap: backToTopTap,
                     ),

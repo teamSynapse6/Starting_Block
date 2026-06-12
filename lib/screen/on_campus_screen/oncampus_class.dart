@@ -213,7 +213,7 @@ class _OnCampusClassState extends State<OnCampusClass> {
             if (_isScrolled && _classList.isNotEmpty)
               Positioned(
                   right: 24,
-                  bottom: 12,
+                  bottom: 24,
                   child: ScrollToTopButton(
                     thisBackToTopTap: backToTopTap,
                   ))

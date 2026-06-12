@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:starting_block/manage/api/llm_api_manage.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
+import 'package:starting_block/manage/llm/llm_config_manage.dart';
 import 'package:starting_block/manage/llm/llm_prompt_builder.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
@@ -247,14 +248,18 @@ class OnDeviceLlmManage {
     await _ensureActiveModel(spec.name);
     await closeActiveSession();
 
+    final config = await LlmConfigManage.getConfigForModel(spec.name);
+    final systemInstruction = config.systemInstruction.trim().isEmpty
+        ? LlmPromptBuilder.systemInstruction
+        : config.systemInstruction;
     final modelType = _inferModelType(spec.name);
     final chat = await _activeModel!.openChat(
-      temperature: 0.7,
-      topK: 40,
-      topP: 0.9,
+      temperature: config.temperature,
+      topK: config.topK,
+      topP: config.topP,
       tokenBuffer: 512,
       modelType: modelType,
-      systemInstruction: LlmPromptBuilder.systemInstruction,
+      systemInstruction: systemInstruction,
     );
     _activeChat = chat;
 
@@ -266,9 +271,21 @@ class OnDeviceLlmManage {
     await chat.addQuery(gemma.Message.text(text: prompt, isUser: true));
 
     try {
+      var emittedTokens = 0;
       await for (final response in chat.generateChatResponseAsync()) {
         if (response is gemma.TextResponse) {
+          if (config.maxOutputTokens > 0 &&
+              emittedTokens >= config.maxOutputTokens) {
+            await chat.stopGeneration();
+            break;
+          }
+          emittedTokens += 1;
           yield response.token;
+          if (config.maxOutputTokens > 0 &&
+              emittedTokens >= config.maxOutputTokens) {
+            await chat.stopGeneration();
+            break;
+          }
         } else if (response is gemma.ThinkingResponse) {
           debugPrint('On-device LLM thinking: ${response.content}');
         }

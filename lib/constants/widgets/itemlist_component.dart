@@ -220,6 +220,7 @@ class ItemListForModel extends StatelessWidget {
   final int progress;
   final int downloadedChunks;
   final int totalChunks;
+  final String configStatus;
   final VoidCallback onDownloadTap;
   final VoidCallback onDeleteTap;
 
@@ -233,6 +234,7 @@ class ItemListForModel extends StatelessWidget {
     required this.progress,
     required this.downloadedChunks,
     required this.totalChunks,
+    required this.configStatus,
     required this.onDownloadTap,
     required this.onDeleteTap,
   });
@@ -273,7 +275,7 @@ class ItemListForModel extends StatelessWidget {
                     ),
                     Gaps.v6,
                     Text(
-                      '${_formatSize(size)} · ${isInstalled ? '다운로드됨' : '미다운로드'}',
+                      '${_formatSize(size)} · ${isInstalled ? '다운로드됨' : '미다운로드'} · $configStatus',
                       style: AppTextStyles.bd6.copyWith(color: AppColors.g4),
                     ),
                     if (isDownloading) ...[

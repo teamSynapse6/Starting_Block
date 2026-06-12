@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_foundation_models/flutter_foundation_models.dart';
+import 'package:starting_block/manage/llm/llm_config_manage.dart';
 import 'package:starting_block/manage/llm/llm_prompt_builder.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
@@ -68,8 +69,12 @@ class AppleIntelligenceLlmManage {
       );
     }
 
+    final config = await LlmConfigManage.getConfigForModel(modelValue);
+    final systemInstruction = config.systemInstruction.trim().isEmpty
+        ? LlmPromptBuilder.systemInstruction
+        : config.systemInstruction;
     final session = await LanguageModelSession.create(
-      instructions: LlmPromptBuilder.systemInstruction,
+      instructions: systemInstruction,
     );
     final prompt = LlmPromptBuilder.buildPrompt(
       context: context,
@@ -79,7 +84,15 @@ class AppleIntelligenceLlmManage {
 
     try {
       final buffer = StringBuffer();
-      await for (final text in session.streamResponseTo(prompt)) {
+      await for (final text in session.streamResponseTo(
+        prompt,
+        options: GenerationOptions(
+          sampling: _samplingModeFromConfig(config),
+          temperature: config.temperature,
+          maximumResponseTokens:
+              config.maxOutputTokens > 0 ? config.maxOutputTokens : null,
+        ),
+      )) {
         final current = buffer.toString();
         final delta =
             text.startsWith(current) ? text.substring(current.length) : text;
@@ -92,5 +105,15 @@ class AppleIntelligenceLlmManage {
     } finally {
       await session.dispose();
     }
+  }
+
+  static SamplingMode? _samplingModeFromConfig(LlmGenerationConfig config) {
+    if (config.topP > 0 && config.topP <= 1) {
+      return SamplingMode.topP(config.topP);
+    }
+    if (config.topK > 0) {
+      return SamplingMode.topK(config.topK);
+    }
+    return null;
   }
 }

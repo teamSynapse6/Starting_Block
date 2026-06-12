@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:starting_block/constants/constants.dart';
 import 'package:starting_block/manage/api/llm_api_manage.dart';
 import 'package:starting_block/manage/llm/apple_intelligence_llm_manage.dart';
+import 'package:starting_block/manage/llm/llm_config_manage.dart';
 import 'package:starting_block/manage/llm/on_device_llm_manage.dart';
 import 'package:starting_block/manage/model_manage.dart';
 
@@ -22,7 +23,9 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
 
   List<LlmModelInfo> _models = [];
   Set<String> _installedModelIds = {};
+  Map<String, bool> _configuredModelIds = {};
   AppleIntelligenceAvailability? _appleAvailability;
+  bool _isAppleConfigConfigured = false;
   bool _isAppleAvailabilityLoading = false;
   bool _isLoading = true;
   String _errorText = '';
@@ -72,12 +75,18 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
             await OnDeviceLlmManage.getDownloadSnapshot(model);
       }
       final installedModels = await OnDeviceLlmManage.getInstalledModelNames();
+      await _syncInstalledModelConfigs(
+        models: models,
+        installedModels: installedModels,
+      );
+      final configuredModelIds = await _loadConfiguredModelIds(installedModels);
       if (!mounted) {
         return;
       }
       setState(() {
         _models = models;
         _installedModelIds = installedModels.toSet();
+        _configuredModelIds = configuredModelIds;
         _downloadSnapshots
           ..clear()
           ..addAll(snapshots);
@@ -106,11 +115,25 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
     }
 
     final availability = await AppleIntelligenceLlmManage.checkAvailability();
+    if (availability.isAvailable) {
+      try {
+        await LlmConfigManage.syncModelConfig(
+          LlmConfigManage.appleIntelligenceModelName,
+        );
+      } catch (error) {
+        debugPrint('Apple Intelligence config sync failed: $error');
+      }
+    }
+    final isAppleConfigConfigured =
+        await LlmConfigManage.hasConfiguredRemoteConfig(
+      LlmConfigManage.appleIntelligenceModelName,
+    );
     if (!mounted) {
       return;
     }
     setState(() {
       _appleAvailability = availability;
+      _isAppleConfigConfigured = isAppleConfigConfigured;
       _isAppleAvailabilityLoading = false;
     });
   }
@@ -142,12 +165,45 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
 
   Future<void> _refreshInstalledModels() async {
     final installedModels = await OnDeviceLlmManage.getInstalledModelNames();
+    await _syncInstalledModelConfigs(
+      models: _models,
+      installedModels: installedModels,
+    );
+    final configuredModelIds = await _loadConfiguredModelIds(installedModels);
     if (!mounted) {
       return;
     }
     setState(() {
       _installedModelIds = installedModels.toSet();
+      _configuredModelIds = configuredModelIds;
     });
+  }
+
+  Future<void> _syncInstalledModelConfigs({
+    required List<LlmModelInfo> models,
+    required List<String> installedModels,
+  }) async {
+    if (installedModels.isEmpty) {
+      return;
+    }
+    try {
+      await LlmConfigManage.syncInstalledModelConfigs(
+        availableModels: models,
+        installedModelNames: installedModels,
+      );
+    } catch (error) {
+      debugPrint('LLM config sync failed: $error');
+    }
+  }
+
+  Future<Map<String, bool>> _loadConfiguredModelIds(
+      List<String> installedModels) async {
+    final configuredModelIds = <String, bool>{};
+    for (final modelName in installedModels) {
+      configuredModelIds[modelName] =
+          await LlmConfigManage.hasConfiguredRemoteConfig(modelName);
+    }
+    return configuredModelIds;
   }
 
   Future<void> _deleteModel(LlmModelInfo model) async {
@@ -197,6 +253,14 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
 
   bool _isInstalled(LlmModelInfo model) {
     return _installedModelIds.contains(OnDeviceLlmManage.localModelName(model));
+  }
+
+  String _configStatusText(LlmModelInfo model, bool isInstalled) {
+    if (!isInstalled) {
+      return '설정 전';
+    }
+    final modelName = OnDeviceLlmManage.localModelName(model);
+    return _configuredModelIds[modelName] == true ? '설정 완료' : '기본 설정';
   }
 
   Widget _buildBody() {
@@ -266,6 +330,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
       progress: progress,
       downloadedChunks: downloadedChunks,
       totalChunks: totalChunks,
+      configStatus: _configStatusText(model, isInstalled),
       onDownloadTap: () => unawaited(_downloadModel(model)),
       onDeleteTap: () => _showDeleteDialog(model),
     );
@@ -279,8 +344,15 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
     final statusText = _isAppleAvailabilityLoading
         ? '확인 중'
         : availability?.isAvailable == true
-            ? '사용 가능'
+            ? _isAppleConfigConfigured
+                ? '설정 완료'
+                : '사용 가능'
             : '사용 불가';
+    final statusColor = _isAppleAvailabilityLoading
+        ? AppColors.g4
+        : availability?.isAvailable == true
+            ? AppColors.blue
+            : AppColors.activered;
     final reason = availability?.unavailableReason.trim() ?? '';
 
     return Column(
@@ -300,10 +372,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
               width: 76,
               child: Text(
                 statusText,
-                style: AppTextStyles.bd5.copyWith(
-                    color: availability?.isAvailable == true
-                        ? AppColors.blue
-                        : AppColors.activered),
+                style: AppTextStyles.bd5.copyWith(color: statusColor),
               ),
             ),
           ],
@@ -358,7 +427,7 @@ class _SettingLlmModelState extends State<SettingLlmModel> {
             ),
             Gaps.v12,
             Text(
-              '기기에 저장된 모델은 서버 생성 대신 직접 답변을 만들 때 사용됩니다.',
+              '기기에 저장된 모델은 서버 생성 대신 직접 답변을 만들 때 사용됩니다',
               style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
             ),
             Gaps.v16,

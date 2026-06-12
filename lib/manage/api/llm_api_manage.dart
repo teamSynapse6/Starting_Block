@@ -98,6 +98,7 @@ class LlmApi {
   static String llmEnd = 'llm/delete';
   static String modelList = 'model/list';
   static String modelDownload = 'model/download';
+  static String modelConfig = 'model/config';
 
   //대화를 위한 쓰레드 생성 메소드
   static Future<String> getLlmStart({int retryCount = 1}) async {
@@ -266,6 +267,29 @@ class LlmApi {
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();
       return getLlmModelList(retryCount: retryCount - 1);
+    } else {
+      throw Exception('서버 오류: ${response.statusCode}');
+    }
+  }
+
+  static Future<List<LlmGenerationConfig>> getLlmModelConfigList(
+      {int retryCount = 1}) async {
+    final uri = Uri.parse('$baseUrl/$modelConfig');
+    final headers = await getHeaders();
+    final response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      final decoded = _decodeJsonResponse(response);
+      if (decoded is List) {
+        return decoded
+            .whereType<Map<String, dynamic>>()
+            .map(LlmGenerationConfig.fromJson)
+            .where((config) => config.modelName.isNotEmpty)
+            .toList();
+      }
+      return [];
+    } else if (response.statusCode == 401 && retryCount > 0) {
+      await UserInfoManageApi.updateAccessToken();
+      return getLlmModelConfigList(retryCount: retryCount - 1);
     } else {
       throw Exception('서버 오류: ${response.statusCode}');
     }
