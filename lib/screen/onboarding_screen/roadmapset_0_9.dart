@@ -55,14 +55,15 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     String residence = await UserInfo.getResidence();
     String university = await UserInfo.getSchoolName();
     String birth = await UserInfo.getUserBirthday();
-    String formattedBirth =
-        DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
+    String? formattedBirth = birth.isEmpty
+        ? null
+        : DateFormat('yyyy-MM-dd').format(DateTime.parse(birth));
     int profileNumber = await UserInfo.getSelectedIconIndex();
 
     return await UserInfoManageApi.patchUserInfo(
       birth: formattedBirth,
       isCompletedBusinessRegistration: isEnterpreneurCheck,
-      residence: residence,
+      residence: residence.isEmpty ? null : residence,
       university: university,
       profileNumber: profileNumber,
     );

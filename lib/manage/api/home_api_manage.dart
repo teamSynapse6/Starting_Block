@@ -1,5 +1,6 @@
 // import the model file at the top of the API file
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:starting_block/manage/api/api_baseurl.dart';
 import 'package:starting_block/manage/api/userinfo_api_manage.dart';
@@ -51,6 +52,8 @@ class HomeApi {
       List<HomeAnnouncementRecModel> notifyList = jsonResponse
           .map((json) => HomeAnnouncementRecModel.fromJson(json))
           .toList();
+      debugPrint(
+          "조회 상태: ${response.statusCode}, 조회된 공고 수: ${notifyList.length}");
       return notifyList;
     } else if (response.statusCode == 401 && retryCount > 0) {
       await UserInfoManageApi.updateAccessToken();

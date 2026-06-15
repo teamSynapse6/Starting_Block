@@ -107,24 +107,32 @@ class _MyProfileHomeState extends State<MyProfileHome>
                           Gaps.v8,
                           Row(
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(2),
-                                  color: AppColors.g1,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 4,
-                                    horizontal: 6,
-                                  ),
-                                  child: Text(
-                                    '$_residenceName 거주',
-                                    style: AppTextStyles.btn2
-                                        .copyWith(color: AppColors.blue),
-                                  ),
-                                ),
-                              ),
-                              Gaps.h8,
+                              _residenceName.isNotEmpty
+                                  ? Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                            color: AppColors.g1,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                              horizontal: 6,
+                                            ),
+                                            child: Text(
+                                              '$_residenceName 거주',
+                                              style: AppTextStyles.btn2
+                                                  .copyWith(
+                                                      color: AppColors.blue),
+                                            ),
+                                          ),
+                                        ),
+                                        Gaps.h8,
+                                      ],
+                                    )
+                                  : const SizedBox.shrink(),
                               Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(2),

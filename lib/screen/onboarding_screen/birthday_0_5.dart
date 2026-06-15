@@ -28,9 +28,25 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     await UserInfo().setUserBirthday(_birthday);
   }
 
+  Future<void> _skipBirthday() async {
+    await UserInfo().setUserBirthday('');
+  }
+
   void _onNextTap() {
     if (!_isInputValid) return;
     _saveBirthday();
+    Navigator.of(context).push(
+      trackedRoute(
+        builder: (context) => const EnterprenutScreen(),
+      ),
+    );
+  }
+
+  void _onSkipTap() async {
+    await _skipBirthday();
+    if (!mounted) {
+      return;
+    }
     Navigator.of(context).push(
       trackedRoute(
         builder: (context) => const EnterprenutScreen(),
@@ -117,11 +133,16 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                       "생년월일을 입력해 주세요",
                       style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                     ),
-                    Gaps.v42,
+                    Gaps.v6,
+                    Text(
+                      "나이에 적합한 지원사업 공고 추천에 필요해요",
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                    ),
+                    Gaps.v30,
                     TextField(
                       controller: _birthdayController,
                       decoration: InputDecoration(
-                        hintText: "YYYY.MM.DD",
+                        hintText: "1999.01.01",
                         hintStyle:
                             AppTextStyles.bd2.copyWith(color: AppColors.g3),
                         counterText: "",
@@ -152,6 +173,22 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                 ),
               ),
             ],
+          ),
+          bottomNavigationBar: BottomAppBar(
+            height: 92,
+            color: AppColors.white,
+            child: Ink(
+              padding: const EdgeInsets.fromLTRB(24, 36, 24, 24),
+              child: InkWell(
+                onTap: _isCheacking ? null : _onSkipTap,
+                child: Center(
+                  child: Text(
+                    '다음에 설정하기',
+                    style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),

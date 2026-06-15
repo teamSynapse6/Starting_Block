@@ -100,7 +100,12 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
                 "대학교(원)을 선택해주세요",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
               ),
-              Gaps.v32,
+              Gaps.v6,
+              Text(
+                "재학중인 학교에서 제공하는 지원 제도를 안내드릴 수 있어요",
+                style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+              ),
+              Gaps.v30,
               TextField(
                 style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
                 controller: _schoolInfoController,
@@ -140,7 +145,7 @@ class _SchoolNameEditState extends State<SchoolNameEdit> {
                 )
               else if (_schoolInfo.isNotEmpty && filteredSchoolList.isEmpty)
                 Text(
-                  "'현재 수도권 대학만을 지원해요.\n입력하신 학교의 정보를 빠르게 제공하도록 노력할게요'",
+                  "현재 수도권 대학만을 지원해요.\n입력하신 학교의 정보를 빠르게 제공하도록 노력할게요",
                   style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
                 ),
               const Spacer(),

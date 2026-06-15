@@ -117,7 +117,12 @@ class _BirthdayEditState extends State<BirthdayEdit> {
                       "생년월일을 입력해 주세요",
                       style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                     ),
-                    Gaps.v32,
+                    Gaps.v6,
+                    Text(
+                      "나이에 적합한 지원사업 공고 추천에 필요해요",
+                      style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                    ),
+                    Gaps.v30,
                     TextField(
                       controller: _birthdayController,
                       decoration: InputDecoration(

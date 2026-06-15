@@ -104,6 +104,24 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
     });
   }
 
+  bool _isUnregisteredValue(String value) {
+    return value.trim().isEmpty || value.trim().toLowerCase() == 'null';
+  }
+
+  Widget _profileValueText(String value) {
+    if (_isUnregisteredValue(value)) {
+      return Text(
+        "미등록",
+        style: AppTextStyles.bd2.copyWith(color: AppColors.g4),
+      );
+    }
+
+    return Text(
+      value,
+      style: AppTextStyles.bd2.copyWith(color: AppColors.g6),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,8 +204,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     if (!mounted) return;
                     await Navigator.push(
                       context,
-                      trackedRoute(
-                          builder: (context) => const NickNameEdit()),
+                      trackedRoute(builder: (context) => const NickNameEdit()),
                     );
                     if (!mounted) return;
                     _loadUserInfo();
@@ -232,8 +249,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     if (!mounted) return;
                     await Navigator.push(
                       context,
-                      trackedRoute(
-                          builder: (context) => const BirthdayEdit()),
+                      trackedRoute(builder: (context) => const BirthdayEdit()),
                     );
                     if (!mounted) return;
                     _loadUserInfo();
@@ -247,11 +263,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                       ),
                       child: Row(
                         children: [
-                          Text(
-                            _birthDay,
-                            style:
-                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
-                          ),
+                          _profileValueText(_birthDay),
                           const Spacer(),
                           AppIcon.next_20,
                         ],
@@ -330,8 +342,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                     if (!mounted) return;
                     await Navigator.push(
                       context,
-                      trackedRoute(
-                          builder: (context) => const ResidenceEdit()),
+                      trackedRoute(builder: (context) => const ResidenceEdit()),
                     );
                     if (!mounted) return;
                     _loadUserInfo();
@@ -345,11 +356,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                       ),
                       child: Row(
                         children: [
-                          Text(
-                            _residenceName,
-                            style:
-                                AppTextStyles.bd2.copyWith(color: AppColors.g6),
-                          ),
+                          _profileValueText(_residenceName),
                           const Spacer(),
                           AppIcon.next_20,
                         ],

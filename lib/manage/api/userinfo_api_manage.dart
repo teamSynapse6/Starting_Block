@@ -130,9 +130,9 @@ class UserInfoManageApi {
 
   //유저 세부정보 입력
   static Future<bool> patchUserInfo(
-      {required String birth,
+      {required String? birth,
       required bool isCompletedBusinessRegistration,
-      required String residence,
+      required String? residence,
       required String university,
       required int profileNumber,
       int retryCount = 1 // 재시도 횟수를 추가
@@ -191,9 +191,9 @@ class UserInfoManageApi {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       debugPrint('로그아웃 성공');
       return true; // 성공적으로 로그아웃되면 true 반환
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 && retryCount > 0) {
       await updateAccessToken();
-      return await postDeleteAccount(retryCount: retryCount - 1);
+      return await postUserLogOut(retryCount: retryCount - 1);
     } else {
       debugPrint('로그아웃 실패: ${response.statusCode}, Body: ${response.body}');
       return false; // 로그아웃 실패시 false 반환
@@ -201,23 +201,23 @@ class UserInfoManageApi {
   }
 
   // 회원탈퇴 처리 메소드
-  static Future<bool> postDeleteAccount({int retryCount = 1}) async {
-    String url = '$baseUrl/api/v1/users/inactive';
+  static Future<bool> deleteAccount({int retryCount = 1}) async {
+    String url = '$baseUrl/auth/inactive';
     Map<String, String> headers = await getHeaders();
 
-    http.Response response = await http.post(Uri.parse(url), headers: headers);
+    http.Response response =
+        await http.delete(Uri.parse(url), headers: headers);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      debugPrint('계정 비활성화 성공');
-      return true; // 성공적으로 계정이 비활성화되면 true 반환
+      debugPrint('회원탈퇴 성공');
+      return true;
     } else if (response.statusCode == 401 && retryCount > 0) {
       await updateAccessToken();
-      return await postDeleteAccount(retryCount: retryCount - 1);
+      return await deleteAccount(retryCount: retryCount - 1);
     } else {
-      // 계정 비활성화 실패 또는 재시도 횟수 초과 처리
       debugPrint(
-          '계정 비활성화 실패 or Maximum retry attempts exceeded: ${response.statusCode}, Body: ${response.body}');
-      return false; // 계정 비활성화 실패 시 false 반환
+          '회원탈퇴 실패 or Maximum retry attempts exceeded: ${response.statusCode}, Body: ${response.body}');
+      return false;
     }
   }
 

@@ -14,14 +14,14 @@ class SaveUserData {
           '유저 데이터: ${userData.nickname}, ${userData.birth}, ${userData.isCompletedBusinessRegistration}, ${userData.residence}, ${userData.university}');
 
       // birth 데이터에서 '-'를 제거하여 YYYYMMDD 형식으로 변환
-      String formattedBirth = userData.birth.replaceAll('-', '');
+      String formattedBirth = userData.birth?.replaceAll('-', '') ?? '';
 
       // 불러온 데이터를 UserInfo에 저장
       await UserInfo().setNickName(userData.nickname);
       await UserInfo().setUserBirthday(formattedBirth); // 수정된 생일 형식 저장
       await UserInfo()
           .setEntrepreneurCheck(userData.isCompletedBusinessRegistration);
-      await UserInfo().setResidence(userData.residence);
+      await UserInfo().setResidence(userData.residence ?? '');
       await UserInfo().setSchoolName(userData.university);
       await UserInfo().setSelectedIconIndex(userData.profileNumber);
       if (userData.userId != null && userData.userId!.isNotEmpty) {
@@ -48,13 +48,12 @@ class SaveUserData {
     try {
       // UserInfo 클래스에서 데이터를 가져옵니다.
 
-      String finalUserBirthday = inputUserBirthday != null
-          ? DateFormat('yyyy-MM-dd').format(DateTime.parse(inputUserBirthday))
-          : DateFormat('yyyy-MM-dd')
-              .format(DateTime.parse(await UserInfo.getUserBirthday()));
+      String? finalUserBirthday = _formatBirthdayForServer(inputUserBirthday) ??
+          _formatBirthdayForServer(await UserInfo.getUserBirthday());
       bool finalEntrepreneurCheck =
           inputEntrepreneurCheck ?? await UserInfo.getEntrepreneurCheck();
-      String finalResidence = inputResidence ?? await UserInfo.getResidence();
+      String? finalResidence =
+          _emptyToNull(inputResidence ?? await UserInfo.getResidence());
       String finalSchoolName =
           inputSchoolName ?? await UserInfo.getSchoolName();
       int finalProfileNumber =
@@ -74,11 +73,11 @@ class SaveUserData {
       );
       if (result) {
         // 로컬 저장 시 '-'를 제거하여 YYYYMMDD 형식으로 저장
-        String formattedBirth = finalUserBirthday.replaceAll('-', '');
+        String formattedBirth = finalUserBirthday?.replaceAll('-', '') ?? '';
 
         await UserInfo().setUserBirthday(formattedBirth);
         await UserInfo().setEntrepreneurCheck(finalEntrepreneurCheck);
-        await UserInfo().setResidence(finalResidence);
+        await UserInfo().setResidence(finalResidence ?? '');
         await UserInfo().setSchoolName(finalSchoolName);
         await UserInfo().setSelectedIconIndex(finalProfileNumber);
       } else {
@@ -87,5 +86,21 @@ class SaveUserData {
     } catch (e) {
       debugPrint('서버에러 발생: $e');
     }
+  }
+
+  static String? _formatBirthdayForServer(String? birthday) {
+    if (birthday == null || birthday.isEmpty) {
+      return null;
+    }
+
+    return DateFormat('yyyy-MM-dd').format(DateTime.parse(birthday));
+  }
+
+  static String? _emptyToNull(String? value) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+
+    return value;
   }
 }

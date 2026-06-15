@@ -109,11 +109,27 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
     await UserInfo().setResidence(selectedRegion ?? "");
   }
 
+  Future<void> _skipUserResidence() async {
+    await UserInfo().setResidence('');
+  }
+
   void _onNextTap() async {
     if (selectedRegion == null) return; // 지역이 선택되지 않으면 반환
     // 선택된 지역명을 SharedPreferences에 저장
     await _saveUserResidence();
     // 다음 화면으로 이동
+    Navigator.of(context).push(
+      trackedRoute(
+        builder: (context) => const SchoolScreen(),
+      ),
+    );
+  }
+
+  void _onSkipTap() async {
+    await _skipUserResidence();
+    if (!mounted) {
+      return;
+    }
     Navigator.of(context).push(
       trackedRoute(
         builder: (context) => const SchoolScreen(),
@@ -141,12 +157,33 @@ class _ResidenceScreenState extends State<ResidenceScreen> {
                     "거주지를 선택해 주세요",
                     style: AppTextStyles.h5.copyWith(color: AppColors.g6),
                   ),
-                  Gaps.v42,
+                  Gaps.v6,
+                  Text(
+                    "거주지에 따라 유리한 지원 기관이 달라질 수 있어요",
+                    style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+                  ),
+                  Gaps.v30,
                   residenceGrid(),
                 ],
               ),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 92,
+        color: AppColors.white,
+        child: Ink(
+          padding: const EdgeInsets.fromLTRB(24, 36, 24, 24),
+          child: InkWell(
+            onTap: _onSkipTap,
+            child: Center(
+              child: Text(
+                '다음에 설정하기',
+                style: AppTextStyles.btn1.copyWith(color: AppColors.g5),
+              ),
+            ),
+          ),
         ),
       ),
     );

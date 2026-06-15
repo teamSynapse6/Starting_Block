@@ -130,7 +130,12 @@ class _ResidenceEditState extends State<ResidenceEdit> {
                 "거주지를 선택해주세요",
                 style: AppTextStyles.h5.copyWith(color: AppColors.g6),
               ),
-              Gaps.v32,
+              Gaps.v6,
+              Text(
+                "거주지에 따라 유리한 지원 기관이 달라질 수 있어요",
+                style: AppTextStyles.bd4.copyWith(color: AppColors.g4),
+              ),
+              Gaps.v30,
               residenceGrid(),
             ],
           ),

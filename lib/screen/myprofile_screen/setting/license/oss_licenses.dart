@@ -42,6 +42,9 @@ const allDependencies = <Package>[
   _fake_async,
   _ffi,
   _file,
+  _firebase_analytics,
+  _firebase_analytics_platform_interface,
+  _firebase_analytics_web,
   _firebase_core,
   _firebase_core_platform_interface,
   _firebase_core_web,
@@ -50,6 +53,8 @@ const allDependencies = <Package>[
   _firebase_messaging_web,
   _fixnum,
   _flutter,
+  _flutter_foundation_models,
+  _flutter_foundation_models_annotations,
   _flutter_gemma,
   _flutter_inappwebview,
   _flutter_inappwebview_android,
@@ -143,6 +148,9 @@ const allDependencies = <Package>[
   _shelf_static,
   _shelf_web_socket,
   _shimmer,
+  _sign_in_with_apple,
+  _sign_in_with_apple_platform_interface,
+  _sign_in_with_apple_web,
   _sky_engine,
   _source_map_stack_trace,
   _source_maps,
@@ -195,7 +203,10 @@ const dependencies = <Package>[
   _flutter_slidable,
   _firebase_core,
   _liquid_glass_bar,
-  _flutter_gemma
+  _flutter_gemma,
+  _flutter_foundation_models,
+  _firebase_analytics,
+  _sign_in_with_apple
 ];
 
 /// Direct `dev_dependencies`.
@@ -2302,6 +2313,157 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
+/// firebase_analytics 12.4.2
+const _firebase_analytics = Package(
+  name: 'firebase_analytics',
+  description:
+      'Flutter plugin for Google Analytics for Firebase, an app measurement solution that provides insight on app usage and user engagement on Android and iOS.',
+  homepage: 'https://firebase.google.com/docs/analytics',
+  repository:
+      'https://github.com/firebase/flutterfire/tree/main/packages/firebase_analytics/firebase_analytics',
+  authors: [],
+  version: '12.4.2',
+  spdxIdentifiers: ['BSD-3-Clause'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('firebase_analytics_platform_interface'),
+    PackageRef('firebase_analytics_web'),
+    PackageRef('firebase_core'),
+    PackageRef('firebase_core_platform_interface'),
+    PackageRef('flutter')
+  ],
+  devDependencies: [PackageRef('flutter_test')],
+  license: '''Copyright 2017, the Chromium project authors. All rights reserved.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google Inc. nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+);
+
+/// firebase_analytics_platform_interface 6.0.2
+const _firebase_analytics_platform_interface = Package(
+  name: 'firebase_analytics_platform_interface',
+  description: 'A common platform interface for the firebase_analytics plugin.',
+  homepage:
+      'https://github.com/firebase/flutterfire/tree/main/packages/firebase_analytics/firebase_analytics_platform_interface',
+  repository:
+      'https://github.com/firebase/flutterfire/tree/main/packages/firebase_analytics/firebase_analytics_platform_interface',
+  authors: [],
+  version: '6.0.2',
+  spdxIdentifiers: ['BSD-3-Clause'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('_flutterfire_internals'),
+    PackageRef('firebase_core'),
+    PackageRef('flutter'),
+    PackageRef('meta'),
+    PackageRef('plugin_platform_interface')
+  ],
+  devDependencies: [
+    PackageRef('firebase_core_platform_interface'),
+    PackageRef('flutter_test')
+  ],
+  license: '''Copyright 2017, the Chromium project authors. All rights reserved.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google Inc. nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+);
+
+/// firebase_analytics_web 0.6.1+8
+const _firebase_analytics_web = Package(
+  name: 'firebase_analytics_web',
+  description: 'The web implementation of firebase_analytics',
+  homepage:
+      'https://github.com/firebase/flutterfire/tree/main/packages/firebase_analytics/firebase_analytics_web',
+  repository:
+      'https://github.com/firebase/flutterfire/tree/main/packages/firebase_analytics/firebase_analytics_web',
+  authors: [],
+  version: '0.6.1+8',
+  spdxIdentifiers: ['BSD-3-Clause'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('_flutterfire_internals'),
+    PackageRef('firebase_analytics_platform_interface'),
+    PackageRef('firebase_core'),
+    PackageRef('firebase_core_web'),
+    PackageRef('flutter'),
+    PackageRef('flutter_web_plugins')
+  ],
+  devDependencies: [PackageRef('flutter_test')],
+  license: '''Copyright 2017, the Chromium project authors. All rights reserved.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google Inc. nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+);
+
 /// firebase_core 4.10.0
 const _firebase_core = Package(
   name: 'firebase_core',
@@ -2714,6 +2876,82 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+);
+
+/// flutter_foundation_models 0.3.0
+const _flutter_foundation_models = Package(
+  name: 'flutter_foundation_models',
+  description:
+      "Flutter plugin for Apple's on-device Foundation Models. Generate text, structured output, and use tools with the on-device language model.",
+  repository: 'https://github.com/AlexStrNik/flutter_foundation_models',
+  authors: [],
+  version: '0.3.0',
+  spdxIdentifiers: ['MIT'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('flutter'),
+    PackageRef('plugin_platform_interface'),
+    PackageRef('flutter_foundation_models_annotations')
+  ],
+  devDependencies: [PackageRef('flutter_test'), PackageRef('flutter_lints')],
+  license: '''MIT License
+
+Copyright (c) 2025 Flutter Foundation Models Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+);
+
+/// flutter_foundation_models_annotations 0.1.1
+const _flutter_foundation_models_annotations = Package(
+  name: 'flutter_foundation_models_annotations',
+  description:
+      'Annotations for Flutter Foundation Models. Use @Generable and @Guide to define structured output schemas.',
+  repository: 'https://github.com/AlexStrNik/flutter_foundation_models',
+  authors: [],
+  version: '0.1.1',
+  spdxIdentifiers: ['MIT'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [PackageRef('meta')],
+  devDependencies: [PackageRef('lints'), PackageRef('test')],
+  license: '''MIT License
+
+Copyright (c) 2025 Flutter Foundation Models Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
 );
 
 /// flutter_gemma 0.16.4
@@ -9347,6 +9585,88 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+);
+
+/// sign_in_with_apple 8.1.0
+const _sign_in_with_apple = Package(
+  name: 'sign_in_with_apple',
+  description:
+      'Flutter bridge to initiate Sign in with Apple (on iOS, macOS, and Android). Includes support for keychain entries as well as signing in with an Apple ID.',
+  homepage:
+      'https://github.com/aboutyou/dart_packages/tree/master/packages/sign_in_with_apple',
+  repository: 'https://github.com/aboutyou/dart_packages',
+  authors: [],
+  version: '8.1.0',
+  spdxIdentifiers: ['MIT'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('flutter'),
+    PackageRef('meta'),
+    PackageRef('sign_in_with_apple_platform_interface'),
+    PackageRef('sign_in_with_apple_web')
+  ],
+  devDependencies: [PackageRef('flutter_lints'), PackageRef('flutter_test')],
+  license: '''Copyright 2019 sign_in_with_apple authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.ˀ''',
+);
+
+/// sign_in_with_apple_platform_interface 2.0.0
+const _sign_in_with_apple_platform_interface = Package(
+  name: 'sign_in_with_apple_platform_interface',
+  description: 'A common platform interface for the sign_in_with_apple plugin.',
+  repository:
+      'https://github.com/aboutyou/dart_packages/tree/master/packages/sign_in_with_apple/sign_in_with_apple_platform_interface',
+  authors: [],
+  version: '2.0.0',
+  spdxIdentifiers: ['MIT'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('flutter'),
+    PackageRef('plugin_platform_interface'),
+    PackageRef('meta')
+  ],
+  devDependencies: [PackageRef('flutter_test'), PackageRef('flutter_lints')],
+  license: '''Copyright 2021 sign_in_with_apple_platform_interface authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.ˀ''',
+);
+
+/// sign_in_with_apple_web 3.0.0
+const _sign_in_with_apple_web = Package(
+  name: 'sign_in_with_apple_web',
+  description:
+      'Platform plugin offering web support for Sign in with Apple plugin for Flutter.',
+  repository:
+      'https://github.com/aboutyou/dart_packages/tree/master/packages/sign_in_with_apple/sign_in_with_apple_web',
+  authors: [],
+  version: '3.0.0',
+  spdxIdentifiers: ['MIT'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('flutter'),
+    PackageRef('flutter_web_plugins'),
+    PackageRef('sign_in_with_apple_platform_interface')
+  ],
+  devDependencies: [PackageRef('flutter_lints')],
+  license: '''Copyright 2021 sign_in_with_apple_web authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.ˀ''',
 );
 
 /// sky_engine null
@@ -41203,13 +41523,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// starting_block 1.0.5+17
+/// starting_block 1.0.7+21
 const _starting_block = Package(
   name: 'starting_block',
   description:
       'Startup helper service project for college and graduate students',
   authors: [],
-  version: '1.0.5+17',
+  version: '1.0.7+21',
   spdxIdentifiers: [],
   isMarkdown: false,
   isSdk: false,
@@ -41233,7 +41553,10 @@ const _starting_block = Package(
     PackageRef('flutter_slidable'),
     PackageRef('firebase_core'),
     PackageRef('liquid_glass_bar'),
-    PackageRef('flutter_gemma')
+    PackageRef('flutter_gemma'),
+    PackageRef('flutter_foundation_models'),
+    PackageRef('firebase_analytics'),
+    PackageRef('sign_in_with_apple')
   ],
   devDependencies: [
     PackageRef('flutter_test'),

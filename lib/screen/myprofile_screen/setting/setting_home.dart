@@ -37,7 +37,7 @@ class _SettingHomeState extends State<SettingHome> {
 
   void _deleteAccountTap() async {
     await FcmNotificationManage.deleteCurrentToken();
-    bool success = await UserInfoManageApi.postDeleteAccount();
+    bool success = await UserInfoManageApi.deleteAccount();
     if (success) {
       await secureStorage.deleteAll();
       await DeleteAllChatData.deleteAllLlmChatData();
